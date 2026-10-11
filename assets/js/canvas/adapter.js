@@ -1,3 +1,4 @@
+import { applyAppearance } from '../detail/appearance.js';
 import cytoscape from '../../vendor/cytoscape-entry.js';
 import { t } from '../i18n/index.js';
 const cid = (id) => 'c:' + id,
@@ -215,6 +216,7 @@ export class GraphAdapter {
           this.connectorStart(e, c.id);
         });
         el.append(kicker, title, summary, meta, connector);
+        applyAppearance(el, c);
         el.style.width = c.size.width + 'px';
         el.style.height = c.size.height + 'px';
         el.style.left = c.position.x + 'px';

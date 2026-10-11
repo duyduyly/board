@@ -1242,3 +1242,46 @@ button.primary:hover {
   min-width: 24px;
   min-height: 24px;
 }
+
+.graph-card h3 {
+  font-size: var(--title-font-size, 14.5px);
+}
+.graph-card.no-card-shadow {
+  box-shadow: none;
+}
+.format-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+.shape-presets,
+.text-format-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+.shape-presets button,
+.text-format-tools button {
+  font-size: 12px;
+  min-height: 32px;
+}
+.text-format-tools input[type='color'] {
+  width: 42px;
+  height: 32px;
+  margin: 0;
+  padding: 3px;
+}
+.format-card-preview {
+  overflow: auto;
+  max-height: 400px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.format-card-preview .graph-card {
+  position: relative;
+  flex-shrink: 0;
+}

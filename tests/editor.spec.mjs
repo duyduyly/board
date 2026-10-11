@@ -890,3 +890,88 @@ test('Recovery failure is visible and export remains available', async ({ page }
   const data = await exportData(page);
   expect(data.cards).toHaveLength(3);
 });
+
+test('Format shares draft, previews appearance and applies one undo with portable JSON', async ({
+  page,
+}) => {
+  await sample(page);
+  await selectService(page);
+  await page.locator('#panel-tabs button').nth(1).click();
+  await page.locator('input[name=title]').fill('Styled service');
+  await page.locator('#panel-tabs button').nth(2).click();
+  await expect(page.locator('#modal')).not.toBeVisible();
+  await page.locator('[name=width]').fill('360');
+  await page.locator('[name=height]').fill('230');
+  await page.locator('[name=appearance-radius]').fill('24');
+  await page.locator('[name=appearance-borderWidth]').fill('3');
+  await page.locator('[name=appearance-titleFontSize]').fill('18');
+  await page.locator('[name=appearance-align]').selectOption('center');
+  await expect(page.locator('#format-card-preview .graph-card')).toHaveCSS('border-radius', '24px');
+  await expect(page.locator('#format-card-preview h3')).toHaveText('Styled service');
+  await expect(page.locator('#cards-layer .graph-card[data-id="card-user-service"]')).toHaveCSS(
+    'width',
+    '260px',
+  );
+  await page.screenshot({ path: 'planning/design/detail-format-light.png' });
+  await page.locator('.editor [type=submit]').click();
+  const card = page.locator('#cards-layer .graph-card[data-id="card-user-service"]');
+  await expect(card).toHaveCSS('width', '360px');
+  await expect(card).toHaveCSS('border-radius', '24px');
+  await expect(card.locator('h3')).toHaveCSS('font-size', '18px');
+  await page.locator('[data-action=undo]').click();
+  await expect(card).toHaveCSS('width', '260px');
+  await expect(card.locator('h3')).toHaveText('User Service');
+  await page.locator('[data-action=redo]').click();
+  const data = await exportData(page);
+  expect(
+    data.cards.find((c) => c.id === 'card-user-service').extensions['card-atlas:appearance'].radius,
+  ).toBe(24);
+  await page.locator('#panel-tabs button').nth(2).click();
+  await page.locator('[name=appearance-radius]').fill('40');
+  await page.locator('#cancel-draft').click();
+  await expect(page.locator('[name=appearance-radius]')).toHaveValue('24');
+  await page.locator('#locale').selectOption('en');
+  await page.locator('#theme-toggle').click();
+  await page.screenshot({ path: 'planning/design/detail-format-dark.png' });
+  await expect(page.locator('#panel-tabs button').nth(2)).toHaveText('Format');
+});
+
+test('Text toolbar formats selection and colored text remains safe in preview and overview', async ({
+  page,
+}) => {
+  await sample(page);
+  await selectService(page);
+  await page.locator('#panel-tabs button').nth(1).click();
+  const text = page.locator('textarea[name=content]');
+  await text.fill('Important');
+  await text.evaluate((e) => {
+    e.selectionStart = 0;
+    e.selectionEnd = 9;
+  });
+  await page.locator('[data-text-format=bold]').click();
+  await expect(text).toHaveValue('**Important**');
+  await text.fill('Important');
+  await text.evaluate((e) => {
+    e.selectionStart = 0;
+    e.selectionEnd = 9;
+  });
+  await page.locator('[data-text-format=color]').click();
+  await expect(text).toHaveValue('[Important]{color:#d34f45}');
+  await page.locator('#draft-preview-toggle').click();
+  await expect(page.locator('.draft-preview [data-text-color]')).toHaveCSS(
+    'color',
+    'rgb(211, 79, 69)',
+  );
+  await page.locator('#draft-preview-toggle').click();
+  await text.fill(
+    '[Important]{color:#d34f45}\n\n[Bad]{color:red;position:fixed}\n\n[<img src=x onerror=alert(1)>]{color:#123456}',
+  );
+  await page.locator('.editor [type=submit]').click();
+  await page.locator('#panel-tabs button').nth(0).click();
+  await expect(page.locator('.markdown [data-text-color]').first()).toHaveCSS(
+    'color',
+    'rgb(211, 79, 69)',
+  );
+  await expect(page.locator('.markdown img')).toHaveCount(0);
+  await expect(page.locator('.markdown')).toContainText('color:red;position:fixed');
+});

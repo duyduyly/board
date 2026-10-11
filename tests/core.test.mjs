@@ -315,3 +315,41 @@ test('Markdown downloads inline attachment images and bound repeated expansion',
   card.content += '\n![Chart](attachment:image-one)';
   assert.throws(() => markdownDocument(card), /size/);
 });
+
+test('Appearance is bounded, portable and restored atomically with card size', () => {
+  const p = input();
+  p.cards[0].extensions = {
+    'card-atlas:appearance': {
+      radius: 24,
+      borderWidth: 3,
+      titleFontSize: 18,
+      align: 'center',
+      shadow: 'none',
+    },
+  };
+  assert.deepEqual(validate(p).errors, []);
+  const s = new ProjectStore();
+  s.replace(normalize(p).project);
+  s.commit((p) => {
+    p.cards[0].size.width = 360;
+    p.cards[0].extensions['card-atlas:appearance'].radius = 40;
+  });
+  const portable = stage(serialize(s.project, s.viewport));
+  assert.equal(portable.project.cards[0].extensions['card-atlas:appearance'].radius, 40);
+  s.undo();
+  assert.equal(s.project.cards[0].extensions['card-atlas:appearance'].radius, 24);
+  s.redo();
+  assert.equal(s.project.cards[0].size.width, 360);
+  for (const bad of [
+    { radius: -1 },
+    { radius: 101 },
+    { borderWidth: 9 },
+    { titleFontSize: 100 },
+    { align: 'evil' },
+    { shadow: 'url(x)' },
+    { css: 'position:fixed' },
+  ]) {
+    p.cards[0].extensions['card-atlas:appearance'] = bad;
+    assert.ok(validate(p).errors.some((e) => e.code === 'appearance'));
+  }
+});

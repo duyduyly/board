@@ -1,3 +1,4 @@
+import { APPEARANCE, appearance, applyAppearance } from './detail/appearance.js';
 import {
   recoveryEnabled,
   readRecovery,
@@ -342,17 +343,20 @@ function renderPanelContent() {
   const tabs = $('#panel-tabs');
   tabs.replaceChildren();
   if (selection.kind === 'card')
-    for (const mode of ['overview', 'edit']) {
+    for (const mode of ['overview', 'edit', 'format']) {
       const button = document.createElement('button');
-      button.textContent = t(mode);
+      button.textContent = t(mode === 'format' ? 'appearanceTab' : mode);
       button.className = tab === mode ? 'active' : '';
       button.onclick = async () => {
         if (mode === tab) return;
-        if (!(await guardDraft())) return;
+        const editing = ['edit', 'format'].includes(tab) && ['edit', 'format'].includes(mode);
+        if (!editing && !(await guardDraft())) return;
         tab = mode;
-        draft = null;
-        draftOriginal = null;
-        if (mode === 'edit') beginDraft();
+        if (!editing) {
+          draft = null;
+          draftOriginal = null;
+          if (mode !== 'overview') beginDraft();
+        }
         renderPanel();
         updateStatus();
       };
@@ -423,7 +427,70 @@ function renderPanelContent() {
   if (!draft) beginDraft();
   const d = draft;
   let fields = '';
-  if (selection.kind === 'card') {
+  if (selection.kind === 'card' && tab === 'format') {
+    const a = appearance(d);
+    fields =
+      '<h3>' +
+      esc(t('cardShape')) +
+      '</h3><div class="format-grid">' +
+      ['width', 'height']
+        .map(
+          (k) =>
+            '<label>' +
+            esc(t(k)) +
+            '<input type="number" name="' +
+            k +
+            '" min="1" step="1" value="' +
+            d.size[k] +
+            '"></label>',
+        )
+        .join('') +
+      '</div>';
+    fields +=
+      '<div class="colors">' +
+      ['backgroundColor', 'textColor', 'borderColor']
+        .map((k) => labelField(k, k, d.style[k], { color: true }))
+        .join('') +
+      '</div><div class="format-grid">' +
+      [
+        ['radius', 0, 100],
+        ['borderWidth', 0, 8],
+        ['titleFontSize', 12, 24],
+      ]
+        .map(
+          ([k, min, max]) =>
+            '<label>' +
+            esc(t(k)) +
+            '<input name="appearance-' +
+            k +
+            '" type="number" min="' +
+            min +
+            '" max="' +
+            max +
+            '" step="0.5" value="' +
+            a[k] +
+            '"></label>',
+        )
+        .join('') +
+      '</div>';
+    fields +=
+      labelField('align', 'appearance-align', a.align, {
+        options: ['left', 'center', 'right'].map((value) => ({ value, label: t(value) })),
+      }) +
+      labelField('shadow', 'appearance-shadow', a.shadow, {
+        options: ['none', 'soft'].map((value) => ({ value, label: t(value) })),
+      });
+    fields +=
+      '<div class="shape-presets"><button type="button" data-shape="rectangle">' +
+      esc(t('rectangle')) +
+      '</button><button type="button" data-shape="rounded">' +
+      esc(t('rounded')) +
+      '</button><button type="button" id="reset-appearance">' +
+      esc(t('resetAppearance')) +
+      '</button></div><p class="muted">' +
+      esc(t('formatPreview')) +
+      '</p><div id="format-card-preview" class="format-card-preview"></div>';
+  } else if (selection.kind === 'card') {
     fields +=
       '<details class="editor-metadata" open><summary>' +
       esc(t('metadata')) +
@@ -471,6 +538,28 @@ function renderPanelContent() {
       '</p><div class="markdown"></div></div><div class="writing-source"' +
       (previewDraft ? ' hidden' : '') +
       '>' +
+      '<div class="text-format-tools" role="group" aria-label="' +
+      esc(t('formatText')) +
+      '">' +
+      ['bold', 'italic', 'inlineCode']
+        .map(
+          (k) =>
+            '<button type="button" data-text-format="' +
+            k +
+            '" title="' +
+            esc(t(k)) +
+            '" aria-label="' +
+            esc(t(k)) +
+            '">' +
+            { bold: 'B', italic: 'I', inlineCode: '&lt;/&gt;' }[k] +
+            '</button>',
+        )
+        .join('') +
+      '<input type="color" id="inline-text-color" value="#d34f45" aria-label="' +
+      esc(t('textColorInline')) +
+      '"><button type="button" data-text-format="color">' +
+      esc(t('applyTextColor')) +
+      '</button></div>' +
       labelField('content', 'content', d.content, { textarea: true }) +
       '</div>';
     fields +=
@@ -549,8 +638,17 @@ function renderPanelContent() {
         ['backgroundColor', 'textColor', 'borderColor', 'color', 'line', 'arrow'].includes(name)
       )
         draft.style[name] = value;
-      else draft[name] = value;
+      else if (['width', 'height'].includes(name)) draft.size[name] = Number(value);
+      else if (name.startsWith('appearance-')) {
+        const key = name.slice(11);
+        draft.extensions ||= {};
+        draft.extensions[APPEARANCE] ||= {};
+        draft.extensions[APPEARANCE][key] = ['align', 'shadow'].includes(key)
+          ? value
+          : Number(value);
+      } else draft[name] = value;
     }
+    updateFormatPreview();
     updateStatus();
     scheduleRecovery();
   };
@@ -563,6 +661,70 @@ function renderPanelContent() {
     renderPanel();
     updateStatus();
   };
+  function updateFormatPreview() {
+    const host = $('#format-card-preview');
+    if (!host) return;
+    host.innerHTML =
+      '<article class="graph-card"><div class="card-kicker"><span class="card-badge type-badge">' +
+      esc(draft.type) +
+      '</span></div><h3>' +
+      esc(draft.title) +
+      '</h3><p class="card-summary">' +
+      esc(draft.summary) +
+      '</p><div class="card-meta">' +
+      draft.tags
+        .slice(0, 2)
+        .map((tag) => '<span class="card-badge tag-badge">' + esc(tag) + '</span>')
+        .join('') +
+      '</div></article>';
+    const card = host.firstElementChild;
+    card.style.width = Math.min(10000, Math.max(1, draft.size.width)) + 'px';
+    card.style.height = Math.min(10000, Math.max(1, draft.size.height)) + 'px';
+    applyAppearance(card, draft);
+    card.style.setProperty('--card-background', draft.style.backgroundColor);
+    card.style.setProperty('--card-ink', draft.style.textColor);
+    card.style.setProperty('--card-border', draft.style.borderColor);
+  }
+  updateFormatPreview();
+  if ($('#reset-appearance')) {
+    $('#reset-appearance').onclick = () => {
+      if (draft.extensions) delete draft.extensions[APPEARANCE];
+      renderPanel();
+      updateStatus();
+    };
+    for (const button of body.querySelectorAll('[data-shape]'))
+      button.onclick = () => {
+        draft.extensions ||= {};
+        draft.extensions[APPEARANCE] = {
+          ...appearance(draft),
+          radius: button.dataset.shape === 'rectangle' ? 0 : 24,
+        };
+        renderPanel();
+        updateStatus();
+      };
+  }
+  for (const button of body.querySelectorAll('[data-text-format]')) {
+    button.onpointerdown = (event) => event.preventDefault();
+    button.onclick = () => {
+      const input = body.querySelector('textarea[name=content]');
+      if (!input) return;
+      const start = input.selectionStart,
+        end = input.selectionEnd;
+      const selected = input.value.slice(start, end) || t('content');
+      const mode = button.dataset.textFormat;
+      const pair =
+        mode === 'bold'
+          ? ['**', '**']
+          : mode === 'italic'
+            ? ['*', '*']
+            : mode === 'inlineCode'
+              ? [String.fromCharCode(96), String.fromCharCode(96)]
+              : ['[', ']{color:' + $('#inline-text-color').value + '}'];
+      input.setRangeText(pair[0] + selected + pair[1], start, end, 'select');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    };
+  }
   if ($('#writing-toggle')) {
     $('#writing-toggle').onclick = () => {
       writing = !writing;
@@ -928,7 +1090,7 @@ async function restoreRecovery() {
   if (!(await replaceProject(staged.project, true))) return;
   if (snapshot.viewport) store.setView(snapshot.viewport.zoom, snapshot.viewport.position);
   selection = snapshot.selection;
-  tab = snapshot.tab === 'edit' ? 'edit' : 'overview';
+  tab = ['edit', 'format'].includes(snapshot.tab) ? snapshot.tab : 'overview';
   draft = snapshot.draft;
   draftOriginal = snapshot.draftOriginal;
   if (!entity()) {

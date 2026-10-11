@@ -151,3 +151,11 @@ Mẫu Hướng dẫn/API/Ghi chú được chèn **thêm ở cuối** nội dung
 Bản khôi phục chỉ nằm trong cùng origin/hồ sơ trình duyệt trên máy này, không mã hóa và không upload; người dùng cùng hồ sơ có thể truy cập. Trình duyệt có thể xóa dữ liệu hoặc từ chối lưu. Chỉ lưu bản gần nhất, giới hạn 20 MiB gồm project và draft; không khôi phục undo/redo. Thay đổi trong khoảng debounce cuối trước khi tab bị đóng đột ngột có thể chưa được ghi. Khi báo lỗi lưu, hãy Apply và export JSON.
 
 Xuất JSON chỉ xác nhận yêu cầu download đã được gửi; hãy kiểm tra file trong Downloads trước khi đóng tab.
+
+## Detail: Format và hình dạng card
+
+Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu chữ, màu viền, bo góc (0–100px), độ dày viền (0–8px), cỡ chữ tiêu đề (12–24px), căn trái/giữa/phải và bóng nhẹ/không bóng. Có preset **Góc vuông**, **Bo tròn** và **Đặt lại hình dạng**. Khung xem trước phản ánh bản nháp; **Áp dụng** cập nhật card và relations trên Canvas, **Hủy** khôi phục dữ liệu đã Apply. Undo/Redo phục hồi thay đổi nguyên khối. Đặt lại hình dạng không xóa nội dung, kích thước hoặc màu đã chọn.
+
+Tab **Chỉnh sửa** và **Format** chia sẻ cùng bản nháp; đổi giữa hai tab không cần Apply, chuyển sang Tổng quan/card khác vẫn hỏi khi có thay đổi. Kích thước lưu trong size, các thuộc tính hình dạng lưu dưới extensions.card-atlas:appearance, giữ JSON version1.0. Dark mode điều chỉnh màu card để dễ đọc như trước; Light mode hiển thị màu đã chọn trực tiếp. Kích thước quá nhỏ có thể che overview; hãy tăng kích thước nếu title/tags bị cắt.
+
+Trong tab **Chỉnh sửa**, chọn đoạn chữ trong ô Markdown rồi dùng **B**, **I**, **Code** hoặc chọn màu và bấm **Tô màu chữ đã chọn**. Màu dùng cú pháp: `[Nội dung nổi bật]{color:#d34f45}`. Dùng **Xem trước bản nháp** để kiểm tra trước Apply. Cú pháp màu áp dụng cho đoạn text một dòng; có thể bọc bên ngoài bằng Markdown đậm/nghiêng: `**[Nội dung]{color:#d34f45}**`. Nội dung HTML tùy ý vẫn được hiển thị như text; chỉ màu hex6 được nhận, không nhận CSS tùy ý. Cú pháp màu là phần mở rộng của Card Atlas; trình đọc Markdown khác có thể hiển thị nguyên cú pháp.

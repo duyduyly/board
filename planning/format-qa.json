@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-11T16:50:19.155Z",
+  "browser": "154.0.8037.98",
+  "identity": {
+    "url": "http://127.0.0.1:4173/",
+    "title": "Card Atlas — Trình biên tập đồ thị",
+    "landing": "Kết nối ý tưởng. Giữ trọn ngữ cảnh."
+  },
+  "errors": [],
+  "warnings": [],
+  "viewports": [
+    "1440x900",
+    "1050x800",
+    "390x844"
+  ],
+  "browserPath": "Browser plugin absent; Playwright fallback",
+  "checks": [
+    "Format preview and Apply",
+    "text color draft preview",
+    "desktop overflow",
+    "mobile notice"
+  ]
+}

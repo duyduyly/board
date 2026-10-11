@@ -2,7 +2,7 @@
 
 Ngày tạo: 2026-10-11. Phạm vi: triển khai V1 theo [đặc tả nâng cấp](../wordspace/docs/json-driven-visual-card-graph-editor-spec-v2.md). Phiên bản tài liệu là v2; định dạng dữ liệu là 1.0.
 
-Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 7 task bổ sung E001–E007 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
+Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 8 task bổ sung E001–E008 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
 
 ## Mục tiêu và giới hạn
 
@@ -140,10 +140,10 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 
 ## Tiến độ hiện tại
 
-- V1 hoàn tất: 47/47 task V1 và E001–E007 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
+- V1 hoàn tất: 47/47 task V1 và E001–E008 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
 - Entry tại root index.html; CSS/JS, schema/example và vendor bundles local tại assets/.
 - UI Việt/Anh có nút chuyển, giữ nguyên dữ liệu, draft và history khi đổi ngôn ngữ.
-- Build, lint, kiểm tra contract TypeScript và format pass; core 22/22, UI 87/87 trên Chrome/Edge/Firefox, không flaky.
+- Build, lint, kiểm tra contract TypeScript và format pass; core 23/23, UI 93/93 trên Chrome/Edge/Firefox, không flaky.
 - Benchmark 500 cards/2.000 relations: import 649 ms, Overview max 79.7 ms, median pan 59.9 FPS; đạt cả ba target trên máy ghi trong evidence.
 - Console QA không có lỗi/cảnh báo. IAB không khả dụng, đã dùng Playwright.
 - README có hướng dẫn chạy/deploy static; chưa publish hosting. Mobile chỉ có thông báo dùng desktop.
@@ -169,3 +169,9 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 User yêu cầu thực hiện các cải thiện sau review. E006 DONE: giữ selection/cursor/scroll theo card khi render; nút Viết tập trung với metadata gọn và preview draft; tìm toàn văn có snippet; mục lục headings; template append an toàn; export Markdown tự chứa ảnh. E007 DONE: recovery cục bộ **chỉ khi người dùng bật rõ ràng**, dùng IndexedDB và marker opt-in, lưu project và draft theo debounce, restore chủ động và xóa khi tắt. Không backend/upload/cloud; JSON 1.0 và giới hạn không đổi. Chính sách không persistence mặc định vẫn giữ; opt-in recovery là bổ sung được user yêu cầu sau review. Export JSON vẫn cần kiểm tra file tải xuống; recovery không thay bản sao JSON. Backlog khác giữ nguyên.
 
 - E006/E007 nghiệm thu:54 DONE (47 V1 +7 bổ sung),10 BACKLOG; không có task đang dở. Build/lint/typecheck/format pass; core22/22, UI87/87; QA light/dark/1050/mobile notice không console lỗi/cảnh báo; benchmark đạt mục tiêu. Evidence: [writing-upgrade-evidence.md](writing-upgrade-evidence.md). Chưa push remote.
+
+## E008 — Detail Format và hình dạng Card
+
+DONE theo user: tab Format riêng gồm width/height, nền/chữ/viền, radius0–100px, borderWidth0–8px, titleFontSize12–24px, alignment left/center/right, shadow none/soft; presets rectangle/rounded. Size dùng contract hiện có; appearance trong extensions card-atlas:appearance có validate typed/bounds, không nhận CSS tùy ý. Edit/Format dùng chung draft; Apply/Cancel/guard/undo/JSON roundtrip. Toolbar content bold/italic/inline code và color cú pháp [text]{color:#RRGGBB}; tokenizer riêng, render text escaped và chỉ set color hex sau sanitize, HTML tùy ý vẫn bị escape. UI vi/en, preview hình dạng trong Format trước Apply.
+
+- E008 nghiệm thu:55 DONE (47V1+8 bổ sung),10 BACKLOG; không task đang dở. Core23/23, fullUI93/93 + targeted6/6 sau polish preview; lint/typecheck/format pass. Console QA sạch, desktop1440/1050 và mobile notice390. Evidence: [detail-format-evidence.md](detail-format-evidence.md). README hướng dẫn Format/text colors; chưa push remote.

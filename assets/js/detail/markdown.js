@@ -15,6 +15,22 @@ const external = (href) => {
     return false;
   }
 };
+marked.use({
+  extensions: [
+    {
+      name: 'textColor',
+      level: 'inline',
+      start: (source) => source.search(/\[[^\]\r\n]+\]\{color:#/),
+      tokenizer(source) {
+        const match = /^\[([^\]\r\n]+)\]\{color:(#[0-9a-fA-F]{6})\}/.exec(source);
+        if (match) return { type: 'textColor', raw: match[0], text: match[1], color: match[2] };
+      },
+      renderer(token) {
+        return '<span data-text-color="' + token.color + '">' + escape(token.text) + '</span>';
+      },
+    },
+  ],
+});
 let diagramCounter = 0;
 export async function renderMarkdown(
   host,
@@ -53,6 +69,8 @@ export async function renderMarkdown(
   });
   if (!isCurrent()) return;
   host.innerHTML = safe;
+  for (const span of host.querySelectorAll('[data-text-color]'))
+    if (/^#[0-9a-fA-F]{6}$/.test(span.dataset.textColor)) span.style.color = span.dataset.textColor;
   for (const image of host.querySelectorAll('img')) {
     image.tabIndex = 0;
     image.classList.add('zoomable-image');

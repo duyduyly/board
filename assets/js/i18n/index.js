@@ -23,6 +23,7 @@ export function issueMessage(issue) {
   const key = {
     syntax: 'errorSyntax',
     imageAttachment: 'errorImageAttachment',
+    appearance: 'errorAppearance',
     fileLimit: 'errorFileLimit',
     duplicateId: 'errorDuplicateId',
     missingEndpoint: 'errorMissingEndpoint',
