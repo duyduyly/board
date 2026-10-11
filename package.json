@@ -1,0 +1,31 @@
+{
+  "name": "card-atlas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/core.test.mjs",
+    "check": "node scripts/check.mjs",
+    "typecheck": "tsc --noEmit",
+    "e2e": "playwright test",
+    "format": "prettier --write index.html assets/css assets/js scripts tests playwright.config.js eslint.config.js",
+    "format:check": "prettier --check index.html assets/css assets/js scripts tests playwright.config.js eslint.config.js",
+    "benchmark": "node scripts/benchmark.mjs"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "cytoscape": "3.34.3",
+    "dompurify": "3.4.16",
+    "marked": "18.1.0",
+    "mermaid": "12.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "esbuild": "0.28.2",
+    "eslint": "10.12.0",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2"
+  }
+}

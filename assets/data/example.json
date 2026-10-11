@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "User System Architecture",
+    "description": "Illustrative project for the upgraded specification; not an inventory of a real system."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": { "x": 0, "y": 0 }
+  },
+  "cards": [
+    {
+      "id": "card-user-api",
+      "title": "User API",
+      "summary": "Receives requests to create and read user accounts.",
+      "type": "api",
+      "tags": ["backend", "user"],
+      "position": { "x": 100, "y": 200 },
+      "size": { "width": 260, "height": 140 },
+      "style": {
+        "backgroundColor": "#DBEAFE",
+        "textColor": "#172554",
+        "borderColor": "#2563EB"
+      },
+      "content": "# User API\n\nIllustrative API boundary.\n\n## Endpoints\n\n- `POST /users`\n- `GET /users/{id}`\n\n## Responsibility\n\nValidate request shape and delegate user operations to User Service."
+    },
+    {
+      "id": "card-user-service",
+      "title": "User Service",
+      "summary": "Applies user account rules and coordinates persistence.",
+      "type": "service",
+      "tags": ["backend", "user"],
+      "position": { "x": 460, "y": 200 },
+      "size": { "width": 260, "height": 140 },
+      "style": {
+        "backgroundColor": "#EDE9FE",
+        "textColor": "#2E1065",
+        "borderColor": "#7C3AED"
+      },
+      "content": "# User Service\n\nIllustrative application service.\n\n## Responsibilities\n\n- Apply user account rules.\n- Coordinate reads and writes.\n\n## Request flow\n\n```mermaid\nflowchart LR\n    API[User API] --> Service[User Service]\n    Service --> DB[(Database)]\n```\n\n## Open question\n\nHow should duplicate account requests be handled? The diagram does not establish that rule.",
+      "extensions": {
+        "example:source": {
+          "kind": "illustrative",
+          "note": "Example content only; no source code has been inspected."
+        }
+      }
+    },
+    {
+      "id": "card-database",
+      "title": "Database",
+      "summary": "Stores user records.",
+      "type": "database",
+      "tags": ["backend", "storage"],
+      "position": { "x": 820, "y": 200 },
+      "size": { "width": 260, "height": 140 },
+      "style": {
+        "backgroundColor": "#D1FAE5",
+        "textColor": "#064E3B",
+        "borderColor": "#059669"
+      },
+      "content": "# Database\n\nIllustrative persistence component.\n\nActual tables, constraints and transactions must be documented from the target project's evidence."
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-api-service",
+      "source": "card-user-api",
+      "target": "card-user-service",
+      "label": "calls",
+      "description": "Delegates user operations to the application service.",
+      "type": "calls",
+      "style": { "color": "#64748B", "line": "solid", "arrow": "end" }
+    },
+    {
+      "id": "relation-service-db",
+      "source": "card-user-service",
+      "target": "card-database",
+      "label": "reads / writes",
+      "description": "Reads and persists user records.",
+      "type": "dependency",
+      "style": { "color": "#64748B", "line": "solid", "arrow": "end" }
+    }
+  ]
+}

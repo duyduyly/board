@@ -1,0 +1,39 @@
+export interface Point {
+  x: number;
+  y: number;
+}
+export interface Card {
+  id: string;
+  title: string;
+  summary: string;
+  type: string;
+  tags: string[];
+  content: string;
+  position: Point;
+  size: { width: number; height: number };
+  style: { backgroundColor: string; textColor: string; borderColor: string };
+  extensions?: Record<string, unknown>;
+}
+export interface Relation {
+  id: string;
+  source: string;
+  target: string;
+  label: string;
+  description: string;
+  type: string;
+  style: {
+    color: string;
+    line: 'solid' | 'dashed' | 'dotted';
+    arrow: 'none' | 'start' | 'end' | 'both';
+  };
+  extensions?: Record<string, unknown>;
+}
+export interface Project {
+  version: '1.0';
+  metadata: { title: string; description: string };
+  canvas: { zoom: number; position: Point };
+  cards: Card[];
+  relations: Relation[];
+  extensions?: Record<string, unknown>;
+}
+export type Selection = { kind: 'card' | 'relation'; id: string } | null;

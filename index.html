@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="vi" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Card Atlas — Visual Graph Editor</title>
+    <link rel="icon" href="assets/images/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/app.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="toolbar">
+        <div class="brand"><span class="brand-mark">✳</span> Card Atlas</div>
+        <button id="project-name" class="project-name"></button
+        ><span id="save-state" class="save-state"></span>
+        <div class="toolbar-actions">
+          <button data-action="new" data-i18n="newProject"></button
+          ><button data-action="add" class="with-icon">
+            <span>＋</span><span data-i18n="newCard"></span></button
+          ><button data-action="connect" data-i18n="connect"></button>
+          <div class="history-buttons">
+            <button data-action="undo" data-i18n-title="undo">↶</button
+            ><button data-action="redo" data-i18n-title="redo">↷</button>
+          </div>
+          <button data-action="import" data-i18n="import"></button
+          ><button data-action="export" class="primary with-icon">
+            <span>↑</span><span data-i18n="export"></span></button
+          ><button
+            id="theme-toggle"
+            data-action="theme"
+            data-i18n-title="darkMode"
+            aria-pressed="false"
+          >
+            <span aria-hidden="true">◐</span><span data-i18n="lightTheme"></span></button
+          ><select id="locale" aria-label="Tiếng Việt / English">
+            <option value="vi">Tiếng Việt</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </header>
+      <main class="workspace">
+        <aside class="sidebar">
+          <div class="search-wrap">
+            <span aria-hidden="true">⌕</span
+            ><input
+              id="search"
+              type="search"
+              data-i18n-placeholder="search"
+              data-i18n-title="search"
+            />
+          </div>
+          <div id="card-list" class="card-list"></div>
+          <footer class="sidebar-footer">
+            <div id="counts"></div>
+            <button data-action="format" class="text-button" data-i18n="format"></button>
+            <p class="session-note" data-i18n="session"></p>
+          </footer>
+        </aside>
+        <section id="canvas-region" class="canvas-region">
+          <div id="graph"></div>
+          <div id="cards-layer"></div>
+          <div id="welcome" class="welcome">
+            <div class="welcome-mark" aria-hidden="true">✳</div>
+            <h1 data-i18n="welcome"></h1>
+            <p data-i18n="welcomeBody"></p>
+            <div>
+              <button class="primary" data-action="new" data-i18n="startBlank"></button
+              ><button data-action="example" data-i18n="openExample"></button>
+            </div>
+            <button
+              data-action="english-example"
+              class="text-button"
+              data-i18n="englishExample"
+            ></button>
+            <button data-action="import" class="text-button" data-i18n="importProject"></button>
+          </div>
+          <div id="connect-hint" class="connect-hint" hidden></div>
+          <div class="zoom-controls">
+            <button data-action="zoom-out" data-i18n-title="zoomOut">−</button
+            ><button id="zoom-value" data-action="zoom-reset" data-i18n-title="resetZoom">
+              100%</button
+            ><button data-action="zoom-in" data-i18n-title="zoomIn">＋</button><span></span
+            ><button data-action="fit" class="view-button" data-i18n-title="fit">
+              <span aria-hidden="true">⛶</span><span data-i18n="fitLabel"></span>
+            </button>
+            <button data-action="focus" class="view-button" data-i18n-title="focus" disabled>
+              <span aria-hidden="true">◎</span><span data-i18n="focusLabel"></span>
+            </button>
+          </div>
+          <div class="canvas-hint" data-i18n="hint"></div>
+          <svg id="connection-preview" class="connection-preview" aria-hidden="true">
+            <path></path>
+          </svg>
+        </section>
+        <aside id="detail-panel" class="detail-panel" hidden>
+          <div
+            id="panel-divider"
+            class="panel-divider"
+            role="separator"
+            tabindex="0"
+            aria-orientation="vertical"
+            data-i18n-title="panelResize"
+          ></div>
+          <div class="panel-header">
+            <h2 id="panel-title"></h2>
+            <button data-action="expand" data-i18n-title="expand">⤢</button
+            ><button data-action="close" data-i18n-title="close">×</button>
+          </div>
+          <nav id="panel-tabs" class="panel-tabs"></nav>
+          <div id="panel-body" class="panel-body"></div>
+        </aside>
+      </main>
+      <div class="mobile-notice" data-i18n="desktop"></div>
+      <div id="toast" role="status" class="toast" hidden></div>
+      <input id="file-input" type="file" accept=".json,application/json" hidden />
+      <dialog id="modal"><div id="modal-content"></div></dialog>
+    </div>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

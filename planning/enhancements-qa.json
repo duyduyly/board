@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-11T14:36:14.033Z",
+  "browser": "154.0.8037.98",
+  "identity": {
+    "url": "http://127.0.0.1:4173/",
+    "title": "Card Atlas — Trình biên tập đồ thị",
+    "firstScreen": "Kết nối ý tưởng. Giữ trọn ngữ cảnh."
+  },
+  "errors": [],
+  "warnings": [],
+  "viewports": [
+    "1440x900",
+    "1050x800",
+    "390x844"
+  ],
+  "browserPath": "Browser plugin/skill not available; Playwright fallback",
+  "checks": [
+    "page identity and meaningful content",
+    "light/dark badges and markdown",
+    "dark Mermaid visible text",
+    "Fit after resize",
+    "toolbar has no clipping at 1050px",
+    "desktop-only mobile notice"
+  ],
+  "screenshots": [
+    "english-light.png",
+    "english-dark.png",
+    "english-dark-mermaid.png",
+    "english-dark-1050.png",
+    "english-dark-mobile.png"
+  ]
+}

@@ -1,0 +1,42 @@
+export default [
+  { ignores: ['node_modules/**', 'assets/vendor/**', 'test-results/**'] },
+  {
+    files: ['assets/js/**/*.js', 'scripts/**/*.mjs', 'tests/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2023,
+      sourceType: 'module',
+      globals: Object.fromEntries(
+        [
+          'document',
+          'window',
+          'navigator',
+          'ResizeObserver',
+          'URL',
+          'Blob',
+          'crypto',
+          'structuredClone',
+          'TextEncoder',
+          'fetch',
+          'console',
+          'setTimeout',
+          'clearTimeout',
+          'process',
+          'Buffer',
+          'CSS',
+          'requestAnimationFrame',
+          'performance',
+          'Event',
+          'localStorage',
+          'sessionStorage',
+          'HTMLAnchorElement',
+        ].map((k) => [k, 'readonly']),
+      ),
+    },
+    rules: {
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-constant-condition': ['error', { checkLoops: false }],
+      'no-dupe-keys': 'error',
+    },
+  },
+];

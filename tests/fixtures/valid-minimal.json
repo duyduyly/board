@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "cards": [
+    {
+      "id": "a",
+      "title": "A"
+    }
+  ],
+  "relations": []
+}

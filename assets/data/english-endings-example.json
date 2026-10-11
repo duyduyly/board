@@ -1,0 +1,462 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "English endings — Quy tắc -s/-es và -ed",
+    "description": "Bài học tiếng Anh: công thức, chính tả, phát âm và 10 câu luyện tập có lời giải."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "english-overview",
+      "title": "Đuôi -s/-es và -ed",
+      "summary": "Bản đồ học: cách dùng → cách viết → cách đọc → luyện tập.",
+      "type": "overview",
+      "tags": [
+        "english",
+        "grammar",
+        "overview"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Đuôi -s/-es và -ed\n\nBài học cơ bản: **cách dùng, chính tả và phát âm** là ba câu hỏi khác nhau.\n\n| Nhóm | Khi dùng | Ví dụ |\n|---|---|---|\n| -s/-es | Động từ hiện tại đơn, chủ ngữ he/she/it | She reads. |\n| -s/-es | Danh từ đếm được số nhiều | two books |\n| -ed | V2/V3 của động từ có quy tắc | worked |\n\n**Lộ trình:** mở nhánh -s/-es trước, rồi nhánh -ed, sau đó làm bài tập và xem đáp án.\n\nPhát âm dựa vào **âm cuối của từ gốc**, không chỉ chữ cuối. Nội dung học giữ nguyên khi chuyển ngôn ngữ giao diện.\n\n```mermaid\nflowchart LR\n    A[English endings] --> B[s / es]\n    A --> C[ed]\n    B --> D[Usage and spelling]\n    B --> E[s - z - iz]\n    C --> F[Usage and spelling]\n    C --> G[t - d - id]\n```"
+    },
+    {
+      "id": "english-s-use",
+      "title": "-s/-es · Công thức",
+      "summary": "He/She/It + V-s/es; danh từ số nhiều thường thêm -s/es.",
+      "type": "s-es",
+      "tags": [
+        "english",
+        "grammar",
+        "s-es"
+      ],
+      "position": {
+        "x": 360,
+        "y": -300
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Khi nào dùng -s/-es?\n\n## Hiện tại đơn — động từ thường\n\n- Khẳng định: **He/She/It + V-s/es**.\n- I/You/We/They + V nguyên mẫu.\n- Phủ định: **He/She/It + does not + V nguyên mẫu**.\n- Hỏi: **Does + he/she/it + V nguyên mẫu?**\n\nVí dụ: **She watches films.** → She does not watch films. → Does she watch films?\n\n## Danh từ đếm được số nhiều\n\nThường: **N + s/es**. Ví dụ: one book → two books; one box → three boxes. Danh từ bất quy tắc cần học riêng: child → children.\n\nĐộng từ *be* có dạng riêng: am/is/are.\n\n[Nguồn: Cambridge — Present simple](https://dictionary.cambridge.org/grammar/british-grammar/present-simple)"
+    },
+    {
+      "id": "english-s-spelling",
+      "title": "-s/-es · Cách viết",
+      "summary": "Thêm -s, thêm -es, hoặc đổi phụ âm + y → -ies.",
+      "type": "s-es",
+      "tags": [
+        "english",
+        "grammar",
+        "s-es"
+      ],
+      "position": {
+        "x": 720,
+        "y": -450
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Chính tả -s/-es\n\n| Cuối từ | Quy tắc | Ví dụ |\n|---|---|---|\n| Phần lớn từ | + s | read → reads; book → books |\n| s, ss, sh, ch, x, z (các dạng thường gặp) | + es | pass → passes; wash → washes; box → boxes |\n| Phụ âm + y | y → ies | study → studies; baby → babies |\n| Nguyên âm + y | + s | play → plays; toy → toys |\n\n**Động từ cần nhớ:** go → goes; do → does; have → has.\n\nKhông áp dụng máy móc mọi từ kết thúc bằng o: photo → photos nhưng potato → potatoes. Một số -f/-fe đổi thành -ves (knife → knives), một số thêm -s (roof → roofs). Kiểm tra từ điển khi gặp ngoại lệ.\n\n[Nguồn: Cambridge — Spelling](https://dictionary.cambridge.org/grammar/british-grammar/spelling)"
+    },
+    {
+      "id": "english-s-sounds",
+      "title": "-s/-es · /s/ /z/ /ɪz/",
+      "summary": "Âm cuối từ gốc quyết định cách đọc, không phải cách viết.",
+      "type": "pronunciation",
+      "tags": [
+        "english",
+        "grammar",
+        "pronunciation"
+      ],
+      "position": {
+        "x": 720,
+        "y": -200
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#F1EAFA",
+        "textColor": "#23332D",
+        "borderColor": "#7955A0"
+      },
+      "content": "# Phát âm -s/-es\n\n| Âm cuối từ gốc | Đọc đuôi | Ví dụ |\n|---|---|---|\n| /p/, /t/, /k/, /f/, /θ/ | **/s/** | cups, cats, books, laughs, months |\n| /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/ | **/ɪz/** | buses, roses, washes, garages, watches, judges |\n| Nguyên âm và các phụ âm hữu thanh còn lại | **/z/** | plays, sees, dogs, rooms, loves |\n\nThứ tự xét dễ nhớ: **âm xuýt → /ɪz/; vô thanh còn lại → /s/; còn lại → /z/**. /ɪz/ thêm một âm tiết.\n\nSo sánh: *plays* đọc /z/ dù chữ cuối trước -s là y; *laughs* đọc /s/ vì laugh kết thúc bằng âm /f/.\n\nMột số từ có đổi âm ở từ gốc, như house → houses; nên tra cách đọc cả từ.\n\n[Nguồn: BBC Learning English — Pronouncing -s and -ed endings](https://www.youtube.com/watch?v=hChye-OT2mU)"
+    },
+    {
+      "id": "english-ed-use",
+      "title": "-ed · Công thức",
+      "summary": "Quá khứ đơn: S + V2; động từ có quy tắc dùng V-ed.",
+      "type": "ed",
+      "tags": [
+        "english",
+        "grammar",
+        "ed"
+      ],
+      "position": {
+        "x": 360,
+        "y": 300
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#FFF1DF",
+        "textColor": "#23332D",
+        "borderColor": "#AC7026"
+      },
+      "content": "# Khi nào dùng -ed?\n\n## Quá khứ đơn\n\n- Khẳng định: **S + V2**. Với động từ có quy tắc: V2 = V-ed.\n- Phủ định: **S + did not + V nguyên mẫu**.\n- Hỏi: **Did + S + V nguyên mẫu?**\n\nVí dụ: **They visited Hanoi yesterday.** → They did not visit Hanoi yesterday. → Did they visit Hanoi yesterday?\n\nV2 không đổi theo I/you/he/she/it/we/they. *Be* dùng was/were và cấu trúc riêng.\n\n## Quá khứ phân từ\n\nVới động từ có quy tắc, **V3 = V-ed**: She has finished her work. Không kết luận mọi từ kết thúc bằng -ed đều là câu quá khứ.\n\n[Nguồn: British Council — Regular past simple](https://learnenglishteens.britishcouncil.org/grammar/a1-a2-grammar/past-simple-regular-verbs)"
+    },
+    {
+      "id": "english-ed-spelling",
+      "title": "-ed · Cách viết",
+      "summary": "+ed; tận cùng e +d; phụ âm+y → ied; đôi khi gấp đôi.",
+      "type": "ed",
+      "tags": [
+        "english",
+        "grammar",
+        "ed"
+      ],
+      "position": {
+        "x": 720,
+        "y": 200
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#FFF1DF",
+        "textColor": "#23332D",
+        "borderColor": "#AC7026"
+      },
+      "content": "# Chính tả -ed\n\n| Trường hợp | Quy tắc | Ví dụ |\n|---|---|---|\n| Thông thường | + ed | work → worked |\n| Tận cùng e | + d | live → lived |\n| Phụ âm + y | y → ied | study → studied |\n| Nguyên âm + y | + ed | play → played |\n\n**Gấp đôi phụ âm:** một âm tiết, kết thúc bằng một nguyên âm + một phụ âm: stop → stopped; plan → planned. Với từ nhiều âm tiết, thường gấp đôi khi âm tiết cuối được nhấn: prefer → preferred; nhưng visit → visited.\n\nKhông gấp đôi w/x/y: snow → snowed; fix → fixed; play → played.\n\nNgoại lệ: panic → panicked. Có khác biệt vùng: travel → travelled (Anh), traveled (Mỹ).\n\n[Nguồn: Cambridge — Spelling](https://dictionary.cambridge.org/grammar/british-grammar/spelling)"
+    },
+    {
+      "id": "english-ed-sounds",
+      "title": "-ed · /t/ /d/ /ɪd/",
+      "summary": "/t, d/ → /ɪd/; vô thanh khác → /t/; còn lại → /d/.",
+      "type": "pronunciation",
+      "tags": [
+        "english",
+        "grammar",
+        "pronunciation"
+      ],
+      "position": {
+        "x": 720,
+        "y": 450
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#F1EAFA",
+        "textColor": "#23332D",
+        "borderColor": "#7955A0"
+      },
+      "content": "# Phát âm -ed của động từ\n\n| Âm cuối từ gốc | Đọc đuôi | Ví dụ |\n|---|---|---|\n| /t/ hoặc /d/ | **/ɪd/** | wanted, started, needed, decided |\n| /p/, /k/, /f/, /s/, /ʃ/, /tʃ/, /θ/ | **/t/** | stopped, worked, laughed, missed, washed, watched, earthed |\n| Nguyên âm và phụ âm hữu thanh còn lại (trừ /d/) | **/d/** | played, cleaned, called, loved |\n\nXét **/t/, /d/ trước**. /ɪd/ thêm một âm tiết; /t/ và /d/ thường không thêm âm tiết.\n\n*Like* kết thúc bằng âm /k/, nên *liked* đọc đuôi /t/ dù chữ cuối là e.\n\nQuy tắc này dành cho đuôi động từ; tính từ như *a learned scholar* có thể có cách đọc riêng.\n\n[Nguồn: Cambridge — Past simple pronunciation](https://dictionary.cambridge.org/us/grammar/british-grammar/past-simple-i-worked)"
+    },
+    {
+      "id": "english-mistakes",
+      "title": "Lỗi dễ nhầm",
+      "summary": "Sau does/did dùng động từ nguyên mẫu; bất quy tắc học riêng.",
+      "type": "tips",
+      "tags": [
+        "english",
+        "grammar",
+        "tips"
+      ],
+      "position": {
+        "x": 1080,
+        "y": 100
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#FCEBEC",
+        "textColor": "#23332D",
+        "borderColor": "#AD545F"
+      },
+      "content": "# Kiểm tra trước khi thêm đuôi\n\n| Sai | Đúng | Vì sao |\n|---|---|---|\n| Does she likes tea? | Does she like tea? | Does đã mang dấu hiệu hiện tại ngôi 3. |\n| He did not watched TV. | He did not watch TV. | Sau did dùng nguyên mẫu. |\n| She study every day. | She studies every day. | She + hiện tại đơn; phụ âm + y → ies. |\n| They goed home. | They went home. | Go là động từ bất quy tắc. |\n\nKhông dùng -ed cho mọi động từ: go → went → gone; buy → bought → bought.\n\n**Mẹo học:** xác định ngữ pháp → viết từ đúng → đọc âm cuối từ gốc → chọn cách đọc đuôi.\n\n[Nguồn: Cambridge — Basic verb forms](https://dictionary.cambridge.org/grammar/british-grammar/basic)"
+    },
+    {
+      "id": "english-practice",
+      "title": "Luyện tập · 10 câu",
+      "summary": "Điền dạng đúng và chọn cách đọc đuôi trước khi xem đáp án.",
+      "type": "exercise",
+      "tags": [
+        "english",
+        "grammar",
+        "exercise"
+      ],
+      "position": {
+        "x": 1080,
+        "y": -200
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#E6F3EF",
+        "textColor": "#23332D",
+        "borderColor": "#32836B"
+      },
+      "content": "# Tự luyện\n\n## A. Điền dạng đúng\n\n1. She ___ (study) English every day.\n2. My dad ___ (wash) his car on Sundays.\n3. We ___ (play) chess yesterday.\n4. The bus ___ (stop) here yesterday.\n5. Does he ___ (like) music?\n6. They did not ___ (visit) us last week.\n\n## B. Chọn cách đọc đuôi\n\n7. *books*: /s/, /z/ hay /ɪz/?\n8. *watches*: /s/, /z/ hay /ɪz/?\n9. *played*: /t/, /d/ hay /ɪd/?\n10. *wanted*: /t/, /d/ hay /ɪd/?\n\nGhi câu trả lời trước, sau đó mở card **Đáp án & giải thích**. Bài tập do dự án tự biên soạn."
+    },
+    {
+      "id": "english-answers",
+      "title": "Đáp án & giải thích",
+      "summary": "Đối chiếu công thức, chính tả và âm cuối của từ gốc.",
+      "type": "exercise",
+      "tags": [
+        "english",
+        "grammar",
+        "exercise"
+      ],
+      "position": {
+        "x": 1440,
+        "y": -200
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#E6F3EF",
+        "textColor": "#23332D",
+        "borderColor": "#32836B"
+      },
+      "content": "# Đáp án\n\n1. **studies** — She + hiện tại đơn; phụ âm + y → ies.\n2. **washes** — wash tận cùng sh; thêm es.\n3. **played** — quá khứ; nguyên âm + y giữ y, thêm ed.\n4. **stopped** — stop gấp đôi p trước ed.\n5. **like** — sau Does dùng nguyên mẫu.\n6. **visit** — sau did not dùng nguyên mẫu.\n7. **/s/** — book kết thúc bằng /k/.\n8. **/ɪz/** — watch kết thúc bằng /tʃ/.\n9. **/d/** — play kết thúc bằng nguyên âm.\n10. **/ɪd/** — want kết thúc bằng /t/.\n\nNếu nhầm cách viết, xem card chính tả. Nếu nhầm cách đọc, xem card phát âm. Bài tập và lời giải do dự án tự biên soạn."
+    },
+    {
+      "id": "english-sources",
+      "title": "Nguồn & phạm vi bài học",
+      "summary": "Tài liệu Cambridge, British Council và BBC Learning English.",
+      "type": "reference",
+      "tags": [
+        "english",
+        "grammar",
+        "reference"
+      ],
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "size": {
+        "width": 280,
+        "height": 155
+      },
+      "style": {
+        "backgroundColor": "#EFF1F3",
+        "textColor": "#23332D",
+        "borderColor": "#64748B"
+      },
+      "content": "# Tài liệu tham khảo\n\n- [Cambridge — Present simple](https://dictionary.cambridge.org/grammar/british-grammar/present-simple)\n- [Cambridge — Spelling](https://dictionary.cambridge.org/grammar/british-grammar/spelling)\n- [Cambridge — Basic verb forms](https://dictionary.cambridge.org/grammar/british-grammar/basic)\n- [Cambridge — Past simple](https://dictionary.cambridge.org/us/grammar/british-grammar/past-simple-i-worked)\n- [British Council — Regular past simple](https://learnenglishteens.britishcouncil.org/grammar/a1-a2-grammar/past-simple-regular-verbs)\n- [BBC Learning English — Pronouncing -s and -ed endings](https://www.youtube.com/watch?v=hChye-OT2mU)\n\nGiải thích tiếng Việt được biên soạn cho bài học cơ bản, không sao chép toàn văn nguồn. Ví dụ không bao quát toàn bộ ngoại lệ; khi gặp từ lạ, tra từ điển cả dạng từ và phát âm."
+    }
+  ],
+  "relations": [
+    {
+      "id": "english-relation-1",
+      "source": "english-overview",
+      "target": "english-s-use",
+      "label": "Hiện tại / số nhiều",
+      "description": "Hiện tại / số nhiều",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-2",
+      "source": "english-overview",
+      "target": "english-ed-use",
+      "label": "Quá khứ / V3",
+      "description": "Quá khứ / V3",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-3",
+      "source": "english-overview",
+      "target": "english-sources",
+      "label": "Tham khảo",
+      "description": "Tham khảo",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-4",
+      "source": "english-s-use",
+      "target": "english-s-spelling",
+      "label": "Cách viết",
+      "description": "Cách viết",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-5",
+      "source": "english-s-use",
+      "target": "english-s-sounds",
+      "label": "Cách đọc",
+      "description": "Cách đọc",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-6",
+      "source": "english-ed-use",
+      "target": "english-ed-spelling",
+      "label": "Cách viết",
+      "description": "Cách viết",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-7",
+      "source": "english-ed-use",
+      "target": "english-ed-sounds",
+      "label": "Cách đọc",
+      "description": "Cách đọc",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-8",
+      "source": "english-s-spelling",
+      "target": "english-practice",
+      "label": "Thực hành",
+      "description": "Thực hành",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-9",
+      "source": "english-ed-spelling",
+      "target": "english-mistakes",
+      "label": "Lưu ý",
+      "description": "Lưu ý",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-10",
+      "source": "english-s-sounds",
+      "target": "english-practice",
+      "label": "Thực hành",
+      "description": "Thực hành",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-11",
+      "source": "english-ed-sounds",
+      "target": "english-mistakes",
+      "label": "Lưu ý",
+      "description": "Lưu ý",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-12",
+      "source": "english-mistakes",
+      "target": "english-practice",
+      "label": "Tự kiểm tra",
+      "description": "Tự kiểm tra",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "english-relation-13",
+      "source": "english-practice",
+      "target": "english-answers",
+      "label": "Đối chiếu",
+      "description": "Đối chiếu",
+      "type": "learning-path",
+      "style": {
+        "color": "#8A9A91",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ]
+}
