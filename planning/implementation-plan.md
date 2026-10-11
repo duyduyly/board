@@ -140,10 +140,10 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 
 ## Tiến độ hiện tại
 
-- V1 hoàn tất: 47/47 task V1 và E001–E004 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
+- V1 hoàn tất: 47/47 task V1 và E001–E005 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
 - Entry tại root index.html; CSS/JS, schema/example và vendor bundles local tại assets/.
 - UI Việt/Anh có nút chuyển, giữ nguyên dữ liệu, draft và history khi đổi ngôn ngữ.
-- Build, lint, kiểm tra contract TypeScript và format pass; core 21/21, UI 69/69 trên Chrome/Edge/Firefox, không flaky.
+- Build, lint, kiểm tra contract TypeScript và format pass; core 21/21, UI 75/75 trên Chrome/Edge/Firefox, không flaky.
 - Benchmark 500 cards/2.000 relations: import 626.2 ms, Overview max 106.4 ms, median pan 59.9 FPS; đạt cả ba target trên máy ghi trong evidence.
 - Console QA không có lỗi/cảnh báo. IAB không khả dụng, đã dùng Playwright.
 - README có hướng dẫn chạy/deploy static; chưa publish hosting. Mobile chỉ có thông báo dùng desktop.
@@ -159,3 +159,7 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 - E003: sửa trải nghiệm Dự án mới — nút luôn hiện trên desktop, dialog nhập tên, guard dữ liệu/draft và toast thành công. DONE; nút hiển thị desktop, dialog tên/guards/reset đã pass.
 
 - E004: theo làm rõ của user, lưu ảnh PNG/JPEG/WebP/GIF bên trong JSON dưới namespace card-atlas:images; nút chèn từ máy, Markdown attachment:id, render Detail không request ngoài. Giữ JSON version 1.0 và giới hạn 10 MiB. DONE; ảnh nhúng hiển thị, portable round-trip và draft/history đã pass.
+
+- E005: áp dụng mô tả Card overview của user; action mở Detail Overview, title 2 dòng/summary 3 dòng, tag nhẹ và handle hover; zoom ảnh Detail khi hover bằng preview nổi không bị panel clip. DONE; hover 100% natural size, ảnh lớn cuộn; default card mới 260 × 190, custom size giữ nguyên. 21 core và 75 UI pass; evidence: planning/card-preview-evidence.md.
+
+- E005 nghiệm thu: 52 DONE (47 V1 + 5 bổ sung), 10 BACKLOG; không có task đang dở. README và card-design.md đồng bộ; chưa push remote vì yêu cầu phê duyệt trước đó chưa được trả lời.

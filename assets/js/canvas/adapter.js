@@ -99,10 +99,14 @@ export class GraphAdapter {
         }
       }
       for (const el of this.cards.values()) {
-        const count = el.querySelector('.card-degree');
+        const count = el.querySelector('.card-open');
         if (count) {
-          count.title = t('connectionCount', { count: count.dataset.count });
-          count.setAttribute('aria-label', count.title);
+          count.title =
+            t('openDetail') + ' · ' + t('connectionCount', { count: count.dataset.count });
+          count.setAttribute(
+            'aria-label',
+            t('openDetail') + ': ' + el.querySelector('h3').textContent,
+          );
         }
         const more = el.querySelector('.more-tags');
         if (more) more.title = t('moreTags', { tags: more.dataset.tags });
@@ -145,9 +149,7 @@ export class GraphAdapter {
           this.layer.append(el);
           this.cards.set(c.id, el);
           el.addEventListener('pointerdown', (e) => this.cardStart(e, c.id));
-          el.addEventListener('dblclick', () =>
-            this.callbacks.select({ kind: 'card', id: c.id }, true),
-          );
+          el.addEventListener('dblclick', () => this.callbacks.open({ kind: 'card', id: c.id }));
           el.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
@@ -173,13 +175,21 @@ export class GraphAdapter {
           badge.title = c.type;
           kicker.append(badge);
         }
-        const count = document.createElement('span');
-        count.className = 'card-degree';
-        count.dataset.count = degrees.get(c.id) || 0;
-        count.textContent = '⌁ ' + count.dataset.count;
-        count.title = t('connectionCount', { count: count.dataset.count });
-        count.setAttribute('aria-label', count.title);
-        kicker.append(count);
+        const open = document.createElement('button');
+        open.className = 'card-open';
+        open.type = 'button';
+        open.textContent = '↗';
+        open.dataset.count = degrees.get(c.id) || 0;
+        open.title = t('openDetail') + ' · ' + t('connectionCount', { count: open.dataset.count });
+        open.setAttribute('aria-label', t('openDetail') + ': ' + c.title);
+        open.addEventListener('pointerdown', (event) => event.stopPropagation());
+        open.addEventListener('dblclick', (event) => event.stopPropagation());
+        open.addEventListener('keydown', (event) => event.stopPropagation());
+        open.addEventListener('click', (event) => {
+          event.stopPropagation();
+          this.callbacks.open({ kind: 'card', id: c.id });
+        });
+        kicker.append(open);
         const tags = [...new Set(c.tags)].filter((tag) => tag !== c.type);
         for (const tag of tags.slice(0, 2)) {
           const badge = document.createElement('span');
@@ -312,7 +322,7 @@ export class GraphAdapter {
       .selector('edge')
       .style({
         color: dark ? '#b7c8c0' : '#52645b',
-        'text-background-color': dark ? '#141c19' : '#f5f7f5',
+        'text-background-color': dark ? '#2a342e' : '#f5f7f5',
       })
       .selector('edge.selected')
       .style({
@@ -335,7 +345,7 @@ export class GraphAdapter {
     });
   }
   cardStart(e, id) {
-    if (e.target.closest('.connector') || this.space || e.button !== 0) return;
+    if (e.target.closest('.connector, .card-open') || this.space || e.button !== 0) return;
     if (this.callbacks.locked()) {
       this.callbacks.select({ kind: 'card', id });
       return;

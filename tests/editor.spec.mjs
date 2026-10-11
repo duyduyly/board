@@ -69,6 +69,7 @@ test('drag card one undo, duplicate and cascade deletion', async ({ page }) => {
   const restored = await exportData(page);
   expect(restored.cards).toEqual(before.cards);
   await c.dblclick();
+  await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('#duplicate').click();
   await expect(page.locator('.graph-card')).toHaveCount(4);
   await page.locator('#delete').click();
@@ -435,9 +436,9 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   const baseline = await snapshot();
   await expect(page.locator('.graph-card[data-id="english-s-use"] .type-badge')).toHaveText('s-es');
   await expect(page.locator('.graph-card[data-id="english-s-use"] .tag-badge')).toHaveCount(2);
-  await expect(page.locator('.graph-card[data-id="english-s-use"] .card-degree')).toHaveAttribute(
-    'aria-label',
-    '3 quan hệ',
+  await expect(page.locator('.graph-card[data-id="english-s-use"] .card-open')).toHaveAttribute(
+    'title',
+    'Mở Detail · 3 quan hệ',
   );
   await page.locator('.card-row[data-card-id="english-s-use"]').click();
   await page.locator('[data-action=fit]').click();
@@ -654,4 +655,107 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
   await expect(page.locator('.embedded-image')).toHaveCount(0);
   await page.locator('[data-action=undo]').click();
   await expect(page.locator('.embedded-image')).toBeVisible();
+});
+
+test('Card action opens overview without movement and hover image shows natural 100 percent', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.locator('[data-action=english-example]').click();
+  const snapshot = () =>
+    page.evaluate(async () => {
+      const { store } = await import('/assets/js/app.js');
+      return { project: store.project, undo: store.undoStack.length, dirty: store.dirty };
+    });
+  const before = await snapshot();
+  const open = page.locator('.graph-card[data-id="english-overview"] .card-open');
+  await open.click();
+  await expect(page.locator('#panel-title')).toHaveText('Đuôi -s/-es và -ed');
+  await expect(page.getByRole('button', { name: 'Tổng quan', exact: true })).toHaveClass(/active/);
+  await expect(page.locator('.diagram svg')).toBeVisible();
+  const image = page.locator('.embedded-image');
+  await image.scrollIntoViewIfNeeded();
+  await expect.poll(() => image.evaluate((i) => i.naturalWidth)).toBe(640);
+  await image.hover();
+  const preview = page.locator('.image-preview');
+  await expect(preview).toBeVisible();
+  await expect(page.locator('.image-preview-image')).toHaveCSS('width', '640px');
+  await expect(page.locator('.image-preview-image')).toHaveCSS('height', '280px');
+  await expect(preview).toContainText('100%');
+  const box = await preview.boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(1440);
+  await page.screenshot({ path: 'planning/design/card-image-hover-light.png' });
+  await page.keyboard.press('Escape');
+  await expect(preview).toHaveCount(0);
+  await page.locator('#theme-toggle').click();
+  await expect(page.locator('.diagram svg')).toBeVisible();
+  await page.locator('.embedded-image').scrollIntoViewIfNeeded();
+  const imageBox = await page.locator('.embedded-image').boundingBox();
+  await page.mouse.move(imageBox.x + imageBox.width / 2, imageBox.y + imageBox.height / 2);
+  await expect(preview).toBeVisible();
+  await page.screenshot({ path: 'planning/design/card-image-hover-dark.png' });
+  await page.mouse.move(20, 100);
+  await expect(preview).toHaveCount(0);
+  expect(await snapshot()).toEqual(before);
+  await page.locator('#locale').selectOption('en');
+  await expect(page.locator('.graph-card[data-id="english-overview"] .card-open')).toHaveAttribute(
+    'aria-label',
+    'Open Detail: Đuôi -s/-es và -ed',
+  );
+});
+
+test('Oversized hover image remains at 100 percent and scrolls instead of scaling down', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const imageData = await page.evaluate(() => {
+    const c = document.createElement('canvas');
+    c.width = 1800;
+    c.height = 1200;
+    c.getContext('2d').fillRect(0, 0, 1800, 1200);
+    return c.toDataURL('image/png').split(',')[1];
+  });
+  const project = JSON.parse(example);
+  project.cards[0].title =
+    'Understanding the complete authentication workflow across several services';
+  project.cards[0].summary =
+    'This card describes authentication, authorization and the responsibility of each service in a distributed project.';
+  project.cards[0].content = '![Large](attachment:image-large)';
+  project.cards[0].extensions = {
+    'card-atlas:images': {
+      'image-large': { name: 'large.png', mimeType: 'image/png', data: imageData },
+    },
+  };
+  await page.locator('#file-input').setInputFiles({
+    name: 'large.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(project)),
+  });
+  await page.locator('[data-choice=apply]').click();
+  await page.locator('.card-row[data-card-id="card-user-api"]').click();
+  await expect(page.locator('.graph-card[data-id="card-user-api"] h3')).toHaveCSS(
+    '-webkit-line-clamp',
+    '2',
+  );
+  const imageBox = await page.locator('.embedded-image').boundingBox();
+  await page.mouse.move(imageBox.x + imageBox.width / 2, imageBox.y + imageBox.height / 2);
+  await expect(page.locator('.image-preview-image')).toHaveCSS('width', '1800px');
+  await expect(page.locator('.image-preview-image')).toHaveCSS('height', '1200px');
+  const dimensions = await page.locator('.image-preview-frame').evaluate((e) => ({
+    width: e.clientWidth,
+    height: e.clientHeight,
+    scrollWidth: e.scrollWidth,
+    scrollHeight: e.scrollHeight,
+  }));
+  expect(dimensions.scrollWidth).toBeGreaterThan(dimensions.width);
+  expect(dimensions.scrollHeight).toBeGreaterThan(dimensions.height);
+  await page.locator('.image-preview-frame').evaluate((e) => {
+    e.scrollLeft = 300;
+    e.scrollTop = 200;
+  });
+  await expect(page.locator('.image-preview')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page.locator('.card-row[data-card-id="card-user-service"]').click();
+  await expect(page.locator('.image-preview')).toHaveCount(0);
 });

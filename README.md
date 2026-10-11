@@ -5,7 +5,7 @@
 ## Tính năng
 
 - Tạo, chỉnh sửa, kéo thả, nhân bản và xóa card; nối card bằng quan hệ có nhãn, màu và hướng mũi tên.
-- Card có badge loại, tag và số quan hệ; tag dài được rút gọn và có tooltip.
+- Card có badge loại, nút ↗ mở Detail và tag nhẹ. Title tối đa 2 dòng, summary tối đa 3 dòng; số quan hệ nằm trong tooltip của nút mở.
 - Panel đọc Markdown, bảng, ảnh nhúng và sơ đồ Mermaid; editor có Apply/Cancel để quản lý bản nháp.
 - Chèn ảnh từ máy và lưu dữ liệu ảnh trong JSON; export/import một file vẫn hiển thị ảnh ở Detail.
 - Undo/Redo cho các thao tác dữ liệu; xóa card và các quan hệ được phục hồi cùng nhau.
@@ -39,7 +39,7 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 
 ### Card và quan hệ
 
-1. Bấm **Thẻ mới** để tạo card. Click card để đọc; double click hoặc chọn **Chỉnh sửa** để sửa title, summary, type, tags, màu và nội dung.
+1. Bấm **Thẻ mới** để tạo card. Click card để đọc; double click hoặc bấm **↗** để mở Tổng quan trong Detail. Chọn **Chỉnh sửa** để sửa title, summary, type, tags, màu và nội dung.
 2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi ngôn ngữ/theme giữ nguyên bản nháp.
 3. Kéo card trên canvas để đổi vị trí.
 4. Dùng **Kết nối**, chọn card nguồn rồi card đích; hoặc kéo chấm nối bên cạnh card. Thả vào vùng trống tạo card mới và quan hệ trong một thao tác undo.
@@ -129,3 +129,9 @@ Chạy npm run build rồi phục vụ index.html và toàn bộ assets/ qua sta
 ## Theo dõi phát triển
 
 Agents đọc [AGENTS.md](AGENTS.md), [plan](planning/implementation-plan.md) và [checklist CSV](planning/implementation-checklist.csv) trước khi sửa. Trạng thái DONE phải có kiểm chứng và evidence. Backlog V1.1/V2 chỉ được thực hiện khi người dùng giao tiếp.
+
+### Xem ảnh ở kích thước gốc
+
+Hover ảnh trong Detail để mở preview **100% kích thước gốc** (1 pixel ảnh tương ứng 1 CSS pixel). Ảnh lớn hơn màn hình giữ nguyên kích thước và có thể cuộn ngang/dọc trong preview. Di chuột vào preview để xem, di ra ngoài để đóng; có thể dùng nút × hoặc Escape. Dùng Tab để focus ảnh cũng mở preview. Hỗ trợ ảnh nhúng trong JSON và ảnh URL được người dùng cho phép.
+
+Card mới mặc định 260 × 190 px để đủ chỗ cho overview; kích thước riêng trong JSON đã có vẫn được giữ nguyên.

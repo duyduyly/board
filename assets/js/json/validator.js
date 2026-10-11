@@ -100,7 +100,7 @@ export function normalize(raw) {
       type: 'default',
       tags: [],
       content: '',
-      size: { width: 260, height: 140 },
+      size: { width: 260, height: 190 },
       style: {},
     }))
       fill(c, k, v, base + '.' + k);

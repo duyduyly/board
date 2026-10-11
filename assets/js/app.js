@@ -1,3 +1,4 @@
+import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
 import {
   IMAGE_NAMESPACE,
   IMAGE_MIME_TYPES,
@@ -95,6 +96,16 @@ function change(mutator) {
 }
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   select: (s, edit = false) => select(s, edit),
+  open: async (s) => {
+    if (!(await guardDraft())) return;
+    connectMode = false;
+    connectSource = null;
+    if (!(await select(s))) return;
+    tab = 'overview';
+    draft = null;
+    draftOriginal = null;
+    render();
+  },
   move: (id, position) =>
     change((p) => {
       p.cards.find((c) => c.id === id).position = position;
@@ -258,6 +269,7 @@ function labelField(key, name, value, { textarea = false, color = false, options
   return '<label>' + esc(t(key)) + control + '</label>';
 }
 function renderPanel() {
+  closeImagePreview();
   const version = ++panelVersion,
     panel = $('#detail-panel'),
     body = $('#panel-body'),
@@ -644,7 +656,7 @@ async function connection(source, target, position) {
   let card;
   if (!target) {
     const p = position || adapter.center();
-    card = newCard({ x: p.x - 130, y: p.y - 70 }, t('newCard'));
+    card = newCard({ x: p.x - 130, y: p.y - 95 }, t('newCard'));
     target = card.id;
   }
   const r = newRelation(source, target);
@@ -1027,6 +1039,7 @@ divider.onkeydown = (e) => {
     adapter.cy.resize();
   }
 };
+installImagePreview($('#panel-body'));
 store.subscribe(render);
 setLocale('vi');
 render();

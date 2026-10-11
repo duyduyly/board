@@ -6,7 +6,10 @@
   },
   "canvas": {
     "zoom": 1,
-    "position": { "x": 0, "y": 0 }
+    "position": {
+      "x": 0,
+      "y": 0
+    }
   },
   "cards": [
     {
@@ -14,9 +17,18 @@
       "title": "User API",
       "summary": "Receives requests to create and read user accounts.",
       "type": "api",
-      "tags": ["backend", "user"],
-      "position": { "x": 100, "y": 200 },
-      "size": { "width": 260, "height": 140 },
+      "tags": [
+        "backend",
+        "user"
+      ],
+      "position": {
+        "x": 100,
+        "y": 200
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
       "style": {
         "backgroundColor": "#DBEAFE",
         "textColor": "#172554",
@@ -29,9 +41,18 @@
       "title": "User Service",
       "summary": "Applies user account rules and coordinates persistence.",
       "type": "service",
-      "tags": ["backend", "user"],
-      "position": { "x": 460, "y": 200 },
-      "size": { "width": 260, "height": 140 },
+      "tags": [
+        "backend",
+        "user"
+      ],
+      "position": {
+        "x": 460,
+        "y": 200
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
       "style": {
         "backgroundColor": "#EDE9FE",
         "textColor": "#2E1065",
@@ -50,9 +71,18 @@
       "title": "Database",
       "summary": "Stores user records.",
       "type": "database",
-      "tags": ["backend", "storage"],
-      "position": { "x": 820, "y": 200 },
-      "size": { "width": 260, "height": 140 },
+      "tags": [
+        "backend",
+        "storage"
+      ],
+      "position": {
+        "x": 820,
+        "y": 200
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
       "style": {
         "backgroundColor": "#D1FAE5",
         "textColor": "#064E3B",
@@ -69,7 +99,11 @@
       "label": "calls",
       "description": "Delegates user operations to the application service.",
       "type": "calls",
-      "style": { "color": "#64748B", "line": "solid", "arrow": "end" }
+      "style": {
+        "color": "#64748B",
+        "line": "solid",
+        "arrow": "end"
+      }
     },
     {
       "id": "relation-service-db",
@@ -78,7 +112,11 @@
       "label": "reads / writes",
       "description": "Reads and persists user records.",
       "type": "dependency",
-      "style": { "color": "#64748B", "line": "solid", "arrow": "end" }
+      "style": {
+        "color": "#64748B",
+        "line": "solid",
+        "arrow": "end"
+      }
     }
   ]
 }

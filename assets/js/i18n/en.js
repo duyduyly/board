@@ -1,4 +1,8 @@
 export default {
+  openDetail: 'Open Detail',
+  zoomImage: 'View image at 100%',
+  imagePreview: 'Image at original size',
+  imagePreviewHint: '100% · Scroll to explore large images',
   insertImage: 'Insert image from computer',
   removeImage: 'Remove image',
   embeddedImageHint:

@@ -148,7 +148,7 @@ export function newCard(position, title = 'New Card') {
     tags: [],
     content: '',
     position,
-    size: { width: 260, height: 140 },
+    size: { width: 260, height: 190 },
     style: { backgroundColor: '#FFFFFF', textColor: '#0F172A', borderColor: '#CBD5E1' },
   };
 }

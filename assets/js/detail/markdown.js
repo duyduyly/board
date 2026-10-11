@@ -53,6 +53,11 @@ export async function renderMarkdown(
   });
   if (!isCurrent()) return;
   host.innerHTML = safe;
+  for (const image of host.querySelectorAll('img')) {
+    image.tabIndex = 0;
+    image.classList.add('zoomable-image');
+    image.setAttribute('aria-label', t('zoomImage') + (image.alt ? ': ' + image.alt : ''));
+  }
   for (const a of host.querySelectorAll('a')) {
     const href = a.getAttribute('href') || '';
     if (!/^(https?:|mailto:)/i.test(href)) a.removeAttribute('href');

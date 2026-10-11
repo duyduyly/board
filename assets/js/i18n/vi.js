@@ -1,4 +1,8 @@
 export default {
+  openDetail: 'Mở Detail',
+  zoomImage: 'Xem ảnh 100%',
+  imagePreview: 'Ảnh ở kích thước gốc',
+  imagePreviewHint: '100% · Cuộn để xem ảnh lớn',
   insertImage: 'Chèn ảnh từ máy',
   removeImage: 'Xóa ảnh',
   embeddedImageHint:
