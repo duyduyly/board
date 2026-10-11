@@ -53,3 +53,7 @@ Test phần logic có hậu quả; dùng browser cho interaction/visual QA. Ki�
 Trước tuyên bố hoàn thành V1: mọi task release V1 DONE có evidence, các checks/release gate pass, benchmark được ghi và không có blocker chưa giải quyết. Không tự chuyển BACKLOG thành nhiệm vụ bắt buộc hoặc tự publish.
 
 Báo cáo ngắn cho người dùng: kết quả, task IDs hoàn tất, checks đã chạy, hạn chế/blockers và phần còn lại. Phải phân biệt đã code, đã test và chỉ mới có đề xuất. Nếu tool lỗi thì ghi trạng thái thực và tiếp tục phần có thể làm; không bịa evidence.
+
+## Bổ sung policy E006/E007 theo yêu cầu nâng cấp của user
+
+User đã yêu cầu cải thiện trải nghiệm viết tài liệu sau review. Fulltext search, writing mode, draft preview, TOC, template append và Markdown download được phép. Persistence mặc định vẫn tắt; **recovery opt-in** được phép trong IndexedDB, marker bật trong localStorage, UI giải thích rõ và tắt/xóa. Không upload/backend. Điều này thay thế các câu cấm tuyệt đối local persistence ở phần V1 cũ chỉ trong phạm vi recovery opt-in. Giữ JSON 1.0/giới hạn và commands/history; snapshot khôi phục không gồm history.

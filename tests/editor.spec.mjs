@@ -759,3 +759,134 @@ test('Oversized hover image remains at 100 percent and scrolls instead of scalin
   await page.locator('.card-row[data-card-id="card-user-service"]').click();
   await expect(page.locator('.image-preview')).toHaveCount(0);
 });
+
+test('Writing workspace preserves caret and scroll across theme and locale and previews safely', async ({
+  page,
+}) => {
+  await sample(page);
+  await selectService(page);
+  await page.locator('#panel-tabs button').nth(1).click();
+  const input = page.locator('textarea[name=content]');
+  const text =
+    '# Draft document\n\n## First section\n\nUniqueInsideBodyOnly\n\n## Second section\n\n' +
+    'Long paragraph.\n\n'.repeat(100);
+  await input.fill(text);
+  await input.evaluate(async (e) => {
+    e.selectionStart = 80;
+    e.selectionEnd = 90;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    e.scrollTop = 250;
+  });
+  const before = await page.evaluate(async () => {
+    const { store } = await import('/assets/js/app.js');
+    return { project: store.project, undo: store.undoStack.length };
+  });
+  await page.locator('#theme-toggle').click();
+  expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
+    80, 90, 250,
+  ]);
+  await page.locator('#locale').selectOption('en');
+  expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
+    80, 90, 250,
+  ]);
+  await page.locator('#writing-toggle').click();
+  await expect(page.locator('html')).toHaveClass(/writing-mode/);
+  expect((await input.boundingBox()).width).toBeGreaterThan(700);
+  await page.locator('#draft-preview-toggle').click();
+  await expect(page.locator('.draft-preview')).toContainText('UniqueInsideBodyOnly');
+  await expect(page.locator('.document-contents button')).toHaveCount(3);
+  expect(
+    await page.evaluate(async () => {
+      const { store } = await import('/assets/js/app.js');
+      return { project: store.project, undo: store.undoStack.length };
+    }),
+  ).toEqual(before);
+  await page.screenshot({ path: 'planning/design/writing-preview-dark.png' });
+  await page.locator('#draft-preview-toggle').click();
+  await expect(input).toHaveValue(text);
+  expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd])).toEqual([80, 90]);
+  await page.locator('#template-select').selectOption('guide');
+  await expect(input).toHaveValue(
+    text + '\n\n# Guide\n\n## Goal\n\n## Prerequisites\n\n## Steps\n\n## Verify results\n\n',
+  );
+  await page.locator('#writing-exit').click();
+  await expect(page.locator('html')).not.toHaveClass(/writing-mode/);
+  await page.locator('.editor [type=submit]').click();
+  await page.locator('#search').fill('UniqueInsideBodyOnly');
+  await expect(page.locator('.card-row')).toHaveCount(1);
+  await expect(page.locator('.search-excerpt mark')).toHaveText('UniqueInsideBodyOnly');
+});
+
+test('Markdown export includes draft text and embedded images without changing project', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.locator('[data-action=english-example]').click();
+  await page.locator('.card-row[data-card-id="english-overview"]').click();
+  await page.locator('#panel-tabs button').nth(1).click();
+  const promise = page.waitForEvent('download');
+  await page.locator('#download-markdown').click();
+  const download = await promise;
+  const content = await fs.readFile(await download.path(), 'utf8');
+  expect(download.suggestedFilename()).toMatch(/\.md$/);
+  expect(content).toContain('data:image/png;base64,');
+  expect(content).not.toContain('attachment:');
+});
+
+test('Local recovery is opt-in, restores draft after reload and deletes data when disabled', async ({
+  page,
+}) => {
+  await sample(page);
+  expect(await page.evaluate(() => localStorage.length)).toBe(0);
+  await selectService(page);
+  await page.locator('#panel-tabs button').nth(1).click();
+  await page.locator('textarea[name=content]').fill('# Unapplied recovery draft');
+  await page.locator('[data-action=recovery]').click();
+  await page.locator('[data-choice=enable]').click();
+  await expect(page.locator('#recovery-status')).toContainText('khôi phục');
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const { readRecovery } = await import('/assets/js/store/recovery.js');
+        return (await readRecovery())?.draft?.content;
+      }),
+    )
+    .toBe('# Unapplied recovery draft');
+  page.on('dialog', (dialog) => dialog.accept());
+  await page.reload();
+  await expect(page.locator('[data-choice=restore]')).toBeVisible();
+  await page.locator('[data-choice=restore]').click();
+  await expect(page.locator('textarea[name=content]')).toHaveValue('# Unapplied recovery draft');
+  await expect(page.locator('.graph-card')).toHaveCount(3);
+  await page.locator('#cancel-draft').click();
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const { readRecovery } = await import('/assets/js/store/recovery.js');
+        return (await readRecovery())?.draft?.content;
+      }),
+    )
+    .not.toBe('# Unapplied recovery draft');
+  await page.locator('[data-action=recovery]').click();
+  await page.locator('[data-choice=disable]').click();
+  await expect.poll(() => page.evaluate(() => localStorage.length)).toBe(0);
+  expect(
+    await page.evaluate(async () =>
+      (await window.indexedDB.databases()).some((db) => db.name === 'card-atlas-recovery'),
+    ),
+  ).toBe(false);
+});
+
+test('Recovery failure is visible and export remains available', async ({ page }) => {
+  await sample(page);
+  await page.evaluate(() => {
+    window.indexedDB.open = () => {
+      throw new Error('quota');
+    };
+  });
+  await page.locator('[data-action=recovery]').click();
+  await page.locator('[data-choice=enable]').click();
+  await expect(page.locator('#recovery-status')).toContainText('Không lưu');
+  const data = await exportData(page);
+  expect(data.cards).toHaveLength(3);
+});

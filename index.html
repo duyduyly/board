@@ -58,6 +58,8 @@
             <button data-action="format" class="text-button" data-i18n="format"></button>
             <p class="session-note" data-i18n="session"></p>
           </footer>
+          <button data-action="recovery" class="recovery-button" data-i18n="recovery"></button>
+          <p id="recovery-status" class="muted recovery-status" role="status"></p>
         </aside>
         <section id="canvas-region" class="canvas-region">
           <div id="graph"></div>
@@ -106,6 +108,12 @@
           ></div>
           <div class="panel-header">
             <h2 id="panel-title"></h2>
+            <button
+              id="writing-exit"
+              hidden
+              data-action="writing-exit"
+              data-i18n="exitWriting"
+            ></button>
             <button data-action="expand" data-i18n-title="expand">⤢</button
             ><button data-action="close" data-i18n-title="close">×</button>
           </div>

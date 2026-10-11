@@ -172,6 +172,21 @@ export function remove(p, selection) {
 export function search(cards, query) {
   const q = query.toLocaleLowerCase().trim();
   return cards.filter((c) =>
-    [c.title, c.summary, c.type, ...c.tags].some((s) => s.toLocaleLowerCase().includes(q)),
+    [c.title, c.summary, c.type, ...c.tags, c.content].some((s) =>
+      s.toLocaleLowerCase().includes(q),
+    ),
+  );
+}
+
+export function searchExcerpt(card, query) {
+  const text = (card.content || '').replace(/\s+/g, ' ');
+  const q = query.toLocaleLowerCase().trim();
+  const index = text.toLocaleLowerCase().indexOf(q);
+  if (!q || index < 0) return '';
+  const start = Math.max(0, index - 35);
+  return (
+    (start ? '…' : '') +
+    text.slice(start, index + q.length + 65) +
+    (index + q.length + 65 < text.length ? '…' : '')
   );
 }

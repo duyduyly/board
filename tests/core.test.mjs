@@ -204,11 +204,11 @@ test('filename sanitized and locale does not alter project', () => {
   assert.deepEqual(Object.keys(dictionaries.en).sort(), Object.keys(dictionaries.vi).sort());
   assert.ok(t('errorSchema', { code: 'type' }).includes('type'));
 });
-test('search fields and case, not full Markdown', () => {
+test('search includes full Markdown and case-insensitive fields', () => {
   const p = input();
   assert.equal(search(p.cards, 'USER').length, 3);
   assert.equal(search(p.cards, 'storage').length, 1);
-  assert.equal(search(p.cards, 'actual tables').length, 0);
+  assert.equal(search(p.cards, 'actual tables').length, 1);
 });
 
 test('canonical file size prevents edits that cannot reimport', () => {
@@ -300,4 +300,18 @@ test('invalid embedded images fail closed without accepting SVG or malformed bas
     project.cards[0].extensions = { [IMAGE_NAMESPACE]: { 'image-bad': image } };
     assert.ok(validate(project).errors.some((e) => e.code === 'imageAttachment'));
   }
+});
+
+test('Markdown downloads inline attachment images and bound repeated expansion', async () => {
+  const { markdownDocument } = await import('../assets/js/detail/writing.js');
+  const card = {
+    title: 'Document',
+    summary: 'Overview',
+    content: '![Chart](attachment:image-one)',
+    extensions: { 'card-atlas:images': { 'image-one': { mimeType: 'image/png', data: 'AAA' } } },
+  };
+  assert.ok(markdownDocument(card).includes('![Chart](data:image/png;base64,AAA)'));
+  card.extensions['card-atlas:images']['image-one'].data = 'A'.repeat(6 * 1024 * 1024);
+  card.content += '\n![Chart](attachment:image-one)';
+  assert.throws(() => markdownDocument(card), /size/);
 });

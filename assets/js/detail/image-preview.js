@@ -40,6 +40,8 @@ function show(image) {
   header.append(label, close);
   const frame = document.createElement('div');
   frame.className = 'image-preview-frame';
+  frame.tabIndex = 0;
+  frame.setAttribute('aria-label', t('imagePreviewHint'));
   const copy = image.cloneNode(false);
   copy.className = 'image-preview-image';
   copy.removeAttribute('tabindex');
@@ -102,6 +104,11 @@ export function installImagePreview(host) {
   document.addEventListener(
     'keydown',
     (event) => {
+      if (event.key === 'Enter' && preview && event.target === source) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        preview.querySelector('.image-preview-frame').focus();
+      }
       if (event.key === 'Escape' && preview) {
         event.preventDefault();
         event.stopImmediatePropagation();

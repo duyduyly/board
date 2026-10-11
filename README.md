@@ -9,7 +9,7 @@
 - Panel đọc Markdown, bảng, ảnh nhúng và sơ đồ Mermaid; editor có Apply/Cancel để quản lý bản nháp.
 - Chèn ảnh từ máy và lưu dữ liệu ảnh trong JSON; export/import một file vẫn hiển thị ảnh ở Detail.
 - Undo/Redo cho các thao tác dữ liệu; xóa card và các quan hệ được phục hồi cùng nhau.
-- Tìm theo title, summary, type và tags.
+- Tìm theo title, summary, type, tags và nội dung Markdown; kết quả có đoạn trích và highlight.
 - Pan/zoom; **Fit** toàn bộ sơ đồ; **Focus** đưa card hoặc quan hệ đang chọn vào giữa khung nhìn.
 - Import JSON có validation và preview; export JSON để lưu và tiếp tục ở phiên sau.
 - Format Guide cung cấp schema và hướng dẫn tạo dữ liệu bằng AI.
@@ -46,7 +46,7 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 5. Click đường nối để đọc/sửa relation. Xóa card sẽ xóa các relation liên quan.
 6. Dùng Undo/Redo để quay lại hoặc thực hiện lại thao tác dữ liệu.
 
-Badge phía trên hiển thị type và số quan hệ đi vào/đi ra. Dưới card có tối đa hai tag không trùng type; **+N** hiển thị các tag còn lại qua tooltip.
+Badge phía trên hiển thị type; số quan hệ nằm trong tooltip của nút ↗. Dưới card có tối đa hai tag không trùng type; **+N** hiển thị các tag còn lại qua tooltip.
 
 ### Điều hướng sơ đồ
 
@@ -81,7 +81,7 @@ Ví dụ tiếng Anh đã có một ảnh minh họa được lưu ngay trong JS
 
 ## Dữ liệu và quyền riêng tư
 
-Không backend, tài khoản, auto-save, localStorage/IndexedDB hoặc upload project. **Reload/đóng tab làm mất dữ liệu phiên; hãy export file JSON để lưu.** Trạng thái đã kích hoạt export không xác nhận file đã được lưu thành công trên đĩa. Cảnh báo beforeunload phụ thuộc trình duyệt và không cung cấp recovery.
+Không backend, tài khoản hoặc upload project. Mặc định không lưu project trong trình duyệt. Bạn có thể chủ động bật **Khôi phục cục bộ** để lưu project và bản nháp trong IndexedDB; một marker opt-in được lưu trong localStorage. **Nếu chưa bật khôi phục cục bộ, reload/đóng tab làm mất dữ liệu phiên; hãy export file JSON để lưu.** Trạng thái đã kích hoạt export không xác nhận file đã được lưu thành công trên đĩa. Cảnh báo beforeunload phụ thuộc trình duyệt. Khôi phục cục bộ chỉ hoạt động khi được bật và không thay bản sao JSON.
 
 Markdown HTML được hiển thị như văn bản; Mermaid dùng strict mode và SVG sanitize, chặn cấu hình/style/callback/tài nguyên ngoài trong source trước render. Ảnh ngoài bị chặn mặc định. Nếu bạn bật tải ảnh, host ảnh có thể nhận request. Thư viện được bundle local, không runtime CDN hoặc analytics nội dung.
 
@@ -135,3 +135,19 @@ Agents đọc [AGENTS.md](AGENTS.md), [plan](planning/implementation-plan.md) v�
 Hover ảnh trong Detail để mở preview **100% kích thước gốc** (1 pixel ảnh tương ứng 1 CSS pixel). Ảnh lớn hơn màn hình giữ nguyên kích thước và có thể cuộn ngang/dọc trong preview. Di chuột vào preview để xem, di ra ngoài để đóng; có thể dùng nút × hoặc Escape. Dùng Tab để focus ảnh cũng mở preview. Hỗ trợ ảnh nhúng trong JSON và ảnh URL được người dùng cho phép.
 
 Card mới mặc định 260 × 190 px để đủ chỗ cho overview; kích thước riêng trong JSON đã có vẫn được giữ nguyên.
+
+## Viết tài liệu
+
+Trong tab **Chỉnh sửa**, chọn **Viết tập trung** để mở vùng viết rộng. Thông tin card có thể thu gọn; **Về sơ đồ** quay lại Canvas. Đổi theme/ngôn ngữ giữ vị trí con trỏ, selection và cuộn trong ô viết. **Xem trước bản nháp** render Markdown/Mermaid/ảnh mà chưa thay project; **Viết Markdown** quay lại soạn thảo. Apply/Cancel vẫn quản lý bản nháp; nút Apply ở vùng thao tác cố định khi cuộn.
+
+Mẫu Hướng dẫn/API/Ghi chú được chèn **thêm ở cuối** nội dung, không thay phần đang viết. Mục lục tự tạo khi bài có từ hai heading H1–H3, bấm để đi tới mục tương ứng. Tìm kiếm toàn văn chạy trên nội dung đã Apply; chưa tìm bản nháp và chỉ highlight trong đoạn trích kết quả.
+
+**Tải Markdown** tải nội dung card đang viết, gồm bản nháp và ảnh nhúng chuyển thành data URI. Một số trình đọc Markdown không hỗ trợ data URI hoặc Mermaid; xuất JSON vẫn là cách giữ đầy đủ graph/relations/vị trí. Markdown xuất quá lớn do lặp ảnh sẽ bị chặn ở khoảng 10 MiB.
+
+## Khôi phục cục bộ tùy chọn
+
+Ở sidebar, chọn **Khôi phục cục bộ** → đọc thông tin → **Bật khôi phục cục bộ**. Sau khoảng 500 ms không có thay đổi, ứng dụng lưu project, viewport, selection và bản nháp; có trạng thái xác nhận hoặc báo lỗi. Reload mở lựa chọn khôi phục, không tự thay project. Có thể tiếp tục phiên hiện tại để thay bản khôi phục cũ; Hủy giữ bản cũ và tạm dừng ghi đè cho đến khi bạn chọn. **Tắt và xóa bản khôi phục** xóa dữ liệu lưu cục bộ.
+
+Bản khôi phục chỉ nằm trong cùng origin/hồ sơ trình duyệt trên máy này, không mã hóa và không upload; người dùng cùng hồ sơ có thể truy cập. Trình duyệt có thể xóa dữ liệu hoặc từ chối lưu. Chỉ lưu bản gần nhất, giới hạn 20 MiB gồm project và draft; không khôi phục undo/redo. Thay đổi trong khoảng debounce cuối trước khi tab bị đóng đột ngột có thể chưa được ghi. Khi báo lỗi lưu, hãy Apply và export JSON.
+
+Xuất JSON chỉ xác nhận yêu cầu download đã được gửi; hãy kiểm tra file trong Downloads trước khi đóng tab.

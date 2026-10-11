@@ -2,7 +2,7 @@
 
 Ngày tạo: 2026-10-11. Phạm vi: triển khai V1 theo [đặc tả nâng cấp](../wordspace/docs/json-driven-visual-card-graph-editor-spec-v2.md). Phiên bản tài liệu là v2; định dạng dữ liệu là 1.0.
 
-Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 4 task bổ sung E001–E004 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
+Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 7 task bổ sung E001–E007 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
 
 ## Mục tiêu và giới hạn
 
@@ -140,11 +140,11 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 
 ## Tiến độ hiện tại
 
-- V1 hoàn tất: 47/47 task V1 và E001–E005 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
+- V1 hoàn tất: 47/47 task V1 và E001–E007 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
 - Entry tại root index.html; CSS/JS, schema/example và vendor bundles local tại assets/.
 - UI Việt/Anh có nút chuyển, giữ nguyên dữ liệu, draft và history khi đổi ngôn ngữ.
-- Build, lint, kiểm tra contract TypeScript và format pass; core 21/21, UI 75/75 trên Chrome/Edge/Firefox, không flaky.
-- Benchmark 500 cards/2.000 relations: import 626.2 ms, Overview max 106.4 ms, median pan 59.9 FPS; đạt cả ba target trên máy ghi trong evidence.
+- Build, lint, kiểm tra contract TypeScript và format pass; core 22/22, UI 87/87 trên Chrome/Edge/Firefox, không flaky.
+- Benchmark 500 cards/2.000 relations: import 649 ms, Overview max 79.7 ms, median pan 59.9 FPS; đạt cả ba target trên máy ghi trong evidence.
 - Console QA không có lỗi/cảnh báo. IAB không khả dụng, đã dùng Playwright.
 - README có hướng dẫn chạy/deploy static; chưa publish hosting. Mobile chỉ có thông báo dùng desktop.
 - npm audit còn 2 cảnh báo mức low ở chuỗi Mermaid/KaTeX, được ghi rõ trong evidence; không có mức moderate/high/critical.
@@ -163,3 +163,9 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 - E005: áp dụng mô tả Card overview của user; action mở Detail Overview, title 2 dòng/summary 3 dòng, tag nhẹ và handle hover; zoom ảnh Detail khi hover bằng preview nổi không bị panel clip. DONE; hover 100% natural size, ảnh lớn cuộn; default card mới 260 × 190, custom size giữ nguyên. 21 core và 75 UI pass; evidence: planning/card-preview-evidence.md.
 
 - E005 nghiệm thu: 52 DONE (47 V1 + 5 bổ sung), 10 BACKLOG; không có task đang dở. README và card-design.md đồng bộ; chưa push remote vì yêu cầu phê duyệt trước đó chưa được trả lời.
+
+## Nâng cấp trải nghiệm viết tài liệu — E006/E007
+
+User yêu cầu thực hiện các cải thiện sau review. E006 DONE: giữ selection/cursor/scroll theo card khi render; nút Viết tập trung với metadata gọn và preview draft; tìm toàn văn có snippet; mục lục headings; template append an toàn; export Markdown tự chứa ảnh. E007 DONE: recovery cục bộ **chỉ khi người dùng bật rõ ràng**, dùng IndexedDB và marker opt-in, lưu project và draft theo debounce, restore chủ động và xóa khi tắt. Không backend/upload/cloud; JSON 1.0 và giới hạn không đổi. Chính sách không persistence mặc định vẫn giữ; opt-in recovery là bổ sung được user yêu cầu sau review. Export JSON vẫn cần kiểm tra file tải xuống; recovery không thay bản sao JSON. Backlog khác giữ nguyên.
+
+- E006/E007 nghiệm thu:54 DONE (47 V1 +7 bổ sung),10 BACKLOG; không có task đang dở. Build/lint/typecheck/format pass; core22/22, UI87/87; QA light/dark/1050/mobile notice không console lỗi/cảnh báo; benchmark đạt mục tiêu. Evidence: [writing-upgrade-evidence.md](writing-upgrade-evidence.md). Chưa push remote.

@@ -1141,3 +1141,104 @@ button.primary:hover {
     transition: none;
   }
 }
+
+/* Writing workspace */
+.writing-mode .canvas-region,
+.writing-mode .sidebar {
+  display: none;
+}
+.writing-mode .detail-panel {
+  width: 100%;
+  flex: 1;
+  max-width: none;
+}
+.writing-mode .panel-divider {
+  display: none;
+}
+.writing-mode .panel-body {
+  padding: 22px max(24px, calc((100vw - 1080px) / 2));
+}
+.writing-mode .editor textarea[name='content'] {
+  min-height: 55vh;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.writing-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.writing-tools button,
+.writing-tools select {
+  font-size: 12px;
+  min-height: 34px;
+  width: auto;
+  margin: 0;
+}
+.editor-metadata {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+}
+.editor-metadata summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.editor .editor-actions:has(button[type='submit']) {
+  position: sticky;
+  bottom: -20px;
+  background: var(--surface);
+  padding: 12px 0;
+  z-index: 2;
+}
+.document-contents {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.document-contents summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.document-contents button {
+  display: block;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 6px;
+  font-size: 13px;
+  color: var(--accent);
+}
+.document-contents .heading-h3 {
+  padding-left: 18px;
+}
+.has-excerpt {
+  flex-wrap: wrap;
+}
+.search-excerpt {
+  flex: 0 0 100%;
+  text-align: left;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.search-excerpt mark {
+  background: #e6d681;
+  color: #202923;
+}
+.recovery-button {
+  margin: 0 16px 8px;
+  font-size: 12px;
+}
+.recovery-status {
+  font-size: 11px;
+  margin: 0 16px 12px;
+  line-height: 1.5;
+}
+.card-open {
+  min-width: 24px;
+  min-height: 24px;
+}

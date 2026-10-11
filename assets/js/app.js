@@ -1,3 +1,17 @@
+import {
+  recoveryEnabled,
+  readRecovery,
+  saveRecovery,
+  enableRecovery,
+  disableRecovery,
+} from './store/recovery.js';
+import {
+  captureEditor,
+  restoreEditor,
+  addContents,
+  template,
+  markdownDocument,
+} from './detail/writing.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
 import {
   IMAGE_NAMESPACE,
@@ -12,6 +26,7 @@ import {
   newRelation,
   remove,
   search,
+  searchExcerpt,
 } from './store/project-store.js';
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
 import { t, setLocale, getLocale, issueMessage, number } from './i18n/index.js';
@@ -39,7 +54,14 @@ let selection = null,
   expanded = false,
   lastExport = false,
   theme = 'light',
-  imageUploadPending = false;
+  imageUploadPending = false,
+  writing = false,
+  previewDraft = false,
+  previousPanelKey = null,
+  sourceEditorState = null,
+  recoveryPending = recoveryEnabled(),
+  recoveryTimer = null,
+  recoveredSnapshot = null;
 function entity() {
   if (selection?.kind === 'project') return store.project.metadata;
   return selection
@@ -79,6 +101,7 @@ function updateStatus() {
         : 'clean';
   $('#save-state').textContent = t(key) + (store.viewChanged ? ' · ' + t('viewChanged') : '');
   $('#save-state').classList.toggle('dirty', Boolean(store.dirty || draftDirty()));
+  scheduleRecovery();
 }
 function errorLines(issues) {
   return issues.map((e) => e.path + ': ' + issueMessage(e)).join('\n');
@@ -155,6 +178,7 @@ function render() {
   renderPanel();
   updateStatus();
   translate();
+  scheduleRecovery();
 }
 let listProject = null,
   listQuery = null,
@@ -209,6 +233,19 @@ function renderList() {
     btn.onclick = async () => {
       if (await select({ kind: 'card', id: c.id })) adapter.focus(c.id);
     };
+    const excerpt = query && searchExcerpt(c, query);
+    if (excerpt) {
+      const snippet = document.createElement('small');
+      snippet.className = 'search-excerpt';
+      const q = query.trim();
+      const index = excerpt.toLocaleLowerCase().indexOf(q.toLocaleLowerCase());
+      snippet.append(document.createTextNode(excerpt.slice(0, index)));
+      const mark = document.createElement('mark');
+      mark.textContent = excerpt.slice(index, index + q.length);
+      snippet.append(mark, document.createTextNode(excerpt.slice(index + q.length)));
+      btn.append(snippet);
+      btn.classList.add('has-excerpt');
+    }
     host.append(btn);
   }
 }
@@ -269,6 +306,23 @@ function labelField(key, name, value, { textarea = false, color = false, options
   return '<label>' + esc(t(key)) + control + '</label>';
 }
 function renderPanel() {
+  const body = $('#panel-body');
+  const key = selection?.kind + ':' + selection?.id + ':' + tab;
+  const state = previousPanelKey === key ? captureEditor(body) : null;
+  if (previousPanelKey !== key) {
+    previewDraft = false;
+    sourceEditorState = null;
+  }
+  if (state && body.querySelector('.writing-source[hidden]') && sourceEditorState)
+    state.fields = sourceEditorState.fields;
+  else if (state && body.querySelector('.writing-source')) sourceEditorState = state;
+  previousPanelKey = key;
+  renderPanelContent();
+  restoreEditor(body, state);
+  $('#writing-exit').hidden = !(writing && selection?.kind === 'card');
+  document.documentElement.classList.toggle('writing-mode', writing && selection?.kind === 'card');
+}
+function renderPanelContent() {
   closeImagePreview();
   const version = ++panelVersion,
     panel = $('#detail-panel'),
@@ -324,9 +378,13 @@ function renderPanel() {
         allowImages,
         images: e.extensions?.[IMAGE_NAMESPACE] || {},
         isCurrent: () => version === panelVersion,
-      }).catch(() => {
-        if (version === panelVersion) host.textContent = t('errorDiagram');
-      });
+      })
+        .then(() => {
+          if (version === panelVersion) addContents(host);
+        })
+        .catch(() => {
+          if (version === panelVersion) host.textContent = t('errorDiagram');
+        });
     else host.innerHTML = '<p class="muted">' + esc(t('noContent')) + '</p>';
     body.querySelector('#allow-images').hidden = allowImages;
     body.querySelector('#allow-images').onclick = () => {
@@ -367,6 +425,9 @@ function renderPanel() {
   let fields = '';
   if (selection.kind === 'card') {
     fields +=
+      '<details class="editor-metadata" open><summary>' +
+      esc(t('metadata')) +
+      '</summary>' +
       labelField('title', 'title', d.title) +
       labelField('summary', 'summary', d.summary, { textarea: true }) +
       labelField('type', 'type', d.type) +
@@ -377,7 +438,41 @@ function renderPanel() {
         .map((k) => labelField(k, k, d.style[k], { color: true }))
         .join('') +
       '</div>';
-    fields += labelField('content', 'content', d.content, { textarea: true });
+    fields +=
+      '</details><div class="writing-tools"><button type="button" id="writing-toggle">' +
+      esc(t(writing ? 'exitWriting' : 'writingMode')) +
+      '</button><button type="button" id="draft-preview-toggle" aria-pressed="' +
+      previewDraft +
+      '">' +
+      esc(t(previewDraft ? 'writeDraft' : 'previewDraft')) +
+      '</button><button type="button" id="download-markdown">' +
+      esc(t('downloadMarkdown')) +
+      '</button><select id="template-select" aria-label="' +
+      esc(t('templateLabel')) +
+      '"><option value="">' +
+      esc(t('templateLabel')) +
+      '</option>' +
+      ['guide', 'api', 'note']
+        .map(
+          (k) =>
+            '<option value="' +
+            k +
+            '">' +
+            esc(t('template' + k[0].toUpperCase() + k.slice(1))) +
+            '</option>',
+        )
+        .join('') +
+      '</select></div>';
+    fields +=
+      '<div class="draft-preview"' +
+      (previewDraft ? '' : ' hidden') +
+      '><p class="muted">' +
+      esc(t('draftPreviewHint')) +
+      '</p><div class="markdown"></div></div><div class="writing-source"' +
+      (previewDraft ? ' hidden' : '') +
+      '>' +
+      labelField('content', 'content', d.content, { textarea: true }) +
+      '</div>';
     fields +=
       '<div class="image-tools"><button type="button" id="insert-image"' +
       (imageUploadPending ? ' disabled' : '') +
@@ -457,6 +552,7 @@ function renderPanel() {
       else draft[name] = value;
     }
     updateStatus();
+    scheduleRecovery();
   };
   form.onsubmit = (ev) => {
     ev.preventDefault();
@@ -467,6 +563,51 @@ function renderPanel() {
     renderPanel();
     updateStatus();
   };
+  if ($('#writing-toggle')) {
+    $('#writing-toggle').onclick = () => {
+      writing = !writing;
+      renderPanel();
+      body.querySelector('.editor-metadata').open = !writing;
+      body.scrollTop = 0;
+      adapter.cy.resize();
+    };
+    $('#draft-preview-toggle').onclick = () => {
+      previewDraft = !previewDraft;
+      renderPanel();
+    };
+    $('#download-markdown').onclick = () => {
+      try {
+        download(
+          markdownDocument(draft),
+          filename(draft.title).replace(/\.json$/, '.md'),
+          'text/markdown;charset=utf-8',
+        );
+      } catch {
+        toast('errorExport');
+      }
+    };
+    $('#template-select').onchange = (event) => {
+      if (!event.target.value) return;
+      draft.content += template(event.target.value);
+      renderPanel();
+      updateStatus();
+      scheduleRecovery();
+    };
+    if (previewDraft) {
+      const host = body.querySelector('.draft-preview .markdown');
+      renderMarkdown(host, draft.content, {
+        allowImages,
+        images: draft.extensions?.[IMAGE_NAMESPACE] || {},
+        isCurrent: () => version === panelVersion,
+      })
+        .then(() => {
+          if (version === panelVersion) addContents(host);
+        })
+        .catch(() => {
+          if (version === panelVersion) host.textContent = t('errorDiagram');
+        });
+    }
+  }
   if ($('#insert-image')) {
     $('#insert-image').onclick = () => $('#embedded-image-input').click();
     $('#embedded-image-input').onchange = (event) => {
@@ -677,7 +818,7 @@ async function connection(source, target, position) {
 async function addCard() {
   if (!(await guardDraft())) return;
   const pos = adapter.center(),
-    card = newCard({ x: pos.x - 130, y: pos.y - 70 }, t('newCard'));
+    card = newCard({ x: pos.x - 130, y: pos.y - 95 }, t('newCard'));
   if (!change((p) => p.cards.push(card))) return;
   selection = { kind: 'card', id: card.id };
   tab = 'edit';
@@ -704,6 +845,123 @@ async function deleteSelected() {
   change((p) => remove(p, s));
   render();
 }
+
+function recoverySnapshot() {
+  return {
+    project: clone(store.project),
+    viewport: clone(store.viewport),
+    selection: clone(selection),
+    draft: clone(draft),
+    draftOriginal: clone(draftOriginal),
+    tab,
+    time: Date.now(),
+  };
+}
+function scheduleRecovery() {
+  clearTimeout(recoveryTimer);
+  if (!recoveryEnabled() || recoveryPending) return;
+  recoveryTimer = setTimeout(async () => {
+    try {
+      await saveRecovery(recoverySnapshot());
+      $('#recovery-status').textContent = t('recoverySaved');
+    } catch {
+      $('#recovery-status').textContent = t('recoveryError');
+      toast('recoveryError');
+    }
+  }, 500);
+}
+async function recoveryDialog() {
+  const enabled = recoveryEnabled();
+  const choice = await dialog(
+    'recovery',
+    () =>
+      '<p>' +
+      esc(t('recoveryInfo')) +
+      '</p><p>' +
+      esc(t(enabled ? 'recoveryOn' : 'session')) +
+      '</p>' +
+      (recoveredSnapshot ? '<p>' + esc(t('recoveryReady')) + '</p>' : ''),
+    [
+      ['cancel', 'cancel'],
+      ...(recoveredSnapshot
+        ? [
+            ['restoreRecovery', 'restore'],
+            ['keepSession', 'keep'],
+          ]
+        : []),
+      [enabled ? 'recoveryDisable' : 'recoveryEnable', enabled ? 'disable' : 'enable', true],
+    ],
+  );
+  if (choice === 'cancel') return;
+  try {
+    if (choice === 'disable') {
+      clearTimeout(recoveryTimer);
+      await disableRecovery();
+      recoveredSnapshot = null;
+      recoveryPending = false;
+      $('#recovery-status').textContent = '';
+      toast('recoveryDeleted');
+    }
+    if (choice === 'enable') {
+      enableRecovery();
+      recoveryPending = false;
+      scheduleRecovery();
+    }
+    if (choice === 'restore') await restoreRecovery();
+    if (choice === 'keep') {
+      recoveredSnapshot = null;
+      recoveryPending = false;
+      scheduleRecovery();
+    }
+  } catch {
+    toast('recoveryError');
+  }
+}
+async function restoreRecovery() {
+  if (!recoveredSnapshot) return;
+  const snapshot = recoveredSnapshot;
+  const staged = stage(JSON.stringify(snapshot.project));
+  if (staged.errors.length) {
+    toast('recoveryError');
+    return;
+  }
+  if (!(await replaceProject(staged.project, true))) return;
+  if (snapshot.viewport) store.setView(snapshot.viewport.zoom, snapshot.viewport.position);
+  selection = snapshot.selection;
+  tab = snapshot.tab === 'edit' ? 'edit' : 'overview';
+  draft = snapshot.draft;
+  draftOriginal = snapshot.draftOriginal;
+  if (!entity()) {
+    selection = null;
+    draft = null;
+    draftOriginal = null;
+    tab = 'overview';
+  }
+  lastExport = false;
+  store.adjusted = true;
+  recoveryPending = false;
+  recoveredSnapshot = null;
+  render();
+  adapter.setViewport(store.viewport);
+  toast('recoveryRestored');
+}
+async function initializeRecovery() {
+  if (!recoveryEnabled()) return;
+  recoveryPending = true;
+  try {
+    recoveredSnapshot = await readRecovery();
+    if (recoveredSnapshot) {
+      $('#recovery-status').textContent = t('recoveryReady');
+      await recoveryDialog();
+    } else {
+      recoveryPending = false;
+      scheduleRecovery();
+    }
+  } catch {
+    toast('recoveryError');
+  }
+}
+
 function download(text, name, type = 'application/json') {
   const blob = new Blob([text], { type }),
     url = URL.createObjectURL(blob),
@@ -732,7 +990,7 @@ async function exportProject() {
     download(serialize(store.project, store.viewport), filename(store.project.metadata.title));
     lastExport = true;
     store.exported();
-    toast('exported');
+    toast('exportHint');
     return true;
   } catch {
     toast('errorExport');
@@ -949,6 +1207,12 @@ const actions = {
   example: () => loadExample(),
   'english-example': () => loadExample('assets/data/english-endings-example.json'),
   format: formatGuide,
+  recovery: recoveryDialog,
+  'writing-exit': () => {
+    writing = false;
+    renderPanel();
+    adapter.cy.resize();
+  },
   close: () => select(null),
   expand: () => {
     expanded = !expanded;
@@ -1043,3 +1307,5 @@ installImagePreview($('#panel-body'));
 store.subscribe(render);
 setLocale('vi');
 render();
+
+initializeRecovery();
