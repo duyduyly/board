@@ -29,12 +29,20 @@ await page.locator('.card-row[data-card-id="english-overview"]').click();
 await page.locator('.diagram svg').waitFor();
 assert.ok((await page.locator('.diagram').textContent()).includes('English endings'));
 await page.screenshot({ path: 'planning/design/english-dark-mermaid.png' });
+await page.locator('.embedded-image').scrollIntoViewIfNeeded();
+await page.waitForFunction(() => document.querySelector('.embedded-image')?.naturalWidth === 640);
+await page.screenshot({ path: 'planning/design/english-embedded-image.png' });
 await page.setViewportSize({ width: 1050, height: 800 });
 await page.locator('[data-action=close]').click();
 await page.locator('[data-action=fit]').click();
 assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
 const toolbar = await page.locator('.toolbar').boundingBox();
-for (const selector of ['#theme-toggle', '#locale', '[data-action=export]']) {
+for (const selector of [
+  '#theme-toggle',
+  '#locale',
+  '[data-action=export]',
+  '.toolbar [data-action=new]',
+]) {
   const box = await page.locator(selector).boundingBox();
   assert.ok(
     box.x >= toolbar.x && box.x + box.width <= toolbar.x + toolbar.width,
@@ -42,6 +50,12 @@ for (const selector of ['#theme-toggle', '#locale', '[data-action=export]']) {
   );
 }
 await page.screenshot({ path: 'planning/design/english-dark-1050.png' });
+await page.locator('.toolbar [data-action=new]').click();
+await page.locator('#new-project-title').fill('Bài học của tôi');
+await page.screenshot({ path: 'planning/design/new-project-dialog.png' });
+await page.locator('[data-choice=create]').click();
+assert.equal(await page.locator('#project-name').textContent(), 'Bài học của tôi');
+assert.equal(await page.locator('.graph-card').count(), 0);
 await page.setViewportSize({ width: 390, height: 844 });
 assert.ok(await page.locator('.mobile-notice').isVisible());
 await page.screenshot({ path: 'planning/design/english-dark-mobile.png' });
@@ -62,7 +76,9 @@ await fs.writeFile(
         'page identity and meaningful content',
         'light/dark badges and markdown',
         'dark Mermaid visible text',
+        'embedded PNG in English example decoded without external URL',
         'Fit after resize',
+        'New Project name dialog and creation at 1050px',
         'toolbar has no clipping at 1050px',
         'desktop-only mobile notice',
       ],

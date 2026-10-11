@@ -807,9 +807,6 @@ dialog::backdrop {
   .brand {
     font-size: 17px;
   }
-  .toolbar-actions button[data-action='new'] {
-    display: none;
-  }
   .sidebar {
     width: 185px;
     flex-basis: 185px;
@@ -968,4 +965,86 @@ button.primary:hover {
   #locale {
     margin-left: 0;
   }
+}
+
+.new-project-label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 16px 0;
+}
+.new-project-label input {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  padding: 10px 12px;
+  margin-top: 7px;
+}
+@media (min-width: 801px) and (max-width: 950px) {
+  .toolbar {
+    padding: 0 10px;
+    gap: 8px;
+  }
+  .brand {
+    font-size: 0;
+    gap: 0;
+  }
+  .brand-mark {
+    font-size: 28px;
+  }
+  .project-name {
+    max-width: 80px;
+    padding-left: 8px;
+  }
+  .toolbar-actions button {
+    padding: 6px 7px;
+    font-size: 10px;
+  }
+  #locale {
+    font-size: 11px;
+    padding: 6px 7px;
+  }
+}
+
+.image-tools {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--soft);
+}
+.editor .image-tools input[hidden] {
+  display: none;
+}
+.image-tools .muted {
+  margin-bottom: 0;
+}
+.attachment-list {
+  margin-top: 8px;
+}
+.attachment-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  font-size: 11px;
+}
+.attachment-row > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.attachment-row button {
+  font-size: 10px;
+  padding: 4px 6px;
+}
+.markdown .embedded-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 7px;
+  margin: 14px 0;
 }

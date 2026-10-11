@@ -8,6 +8,9 @@ export default [
       globals: Object.fromEntries(
         [
           'document',
+          'FileReader',
+          'Image',
+          'globalThis',
           'window',
           'navigator',
           'ResizeObserver',

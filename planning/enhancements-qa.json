@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-11T14:36:14.033Z",
+  "date": "2026-10-11T15:03:35.628Z",
   "browser": "154.0.8037.98",
   "identity": {
     "url": "http://127.0.0.1:4173/",
@@ -18,7 +18,9 @@
     "page identity and meaningful content",
     "light/dark badges and markdown",
     "dark Mermaid visible text",
+    "embedded PNG in English example decoded without external URL",
     "Fit after resize",
+    "New Project name dialog and creation at 1050px",
     "toolbar has no clipping at 1050px",
     "desktop-only mobile notice"
   ],

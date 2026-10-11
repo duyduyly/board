@@ -1,3 +1,4 @@
+import { imageAttachmentIssues } from '../detail/attachments.js';
 import Ajv from '../../vendor/ajv-entry.js';
 import schema from './schema.js';
 const check = new Ajv({ allErrors: true, strict: false, strictNumbers: true }).compile(schema);
@@ -49,6 +50,7 @@ export function validate(raw) {
     edgeIds = new Set(),
     duplicates = new Set();
   raw.cards.forEach((c, i) => {
+    errors.push(...imageAttachmentIssues(c, 'cards[' + i + '].extensions.card-atlas:images'));
     if (ids.has(c.id)) errors.push({ path: 'cards[' + i + '].id', code: 'duplicateId' });
     ids.add(c.id);
   });

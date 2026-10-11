@@ -1,4 +1,10 @@
 import {
+  IMAGE_NAMESPACE,
+  IMAGE_MIME_TYPES,
+  validImageAttachment,
+  imageReference,
+} from './detail/attachments.js';
+import {
   ProjectStore,
   newId,
   newCard,
@@ -6,7 +12,7 @@ import {
   remove,
   search,
 } from './store/project-store.js';
-import { blank, stage, validate, serialize, filename } from './json/validator.js';
+import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
 import { t, setLocale, getLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
 import { renderMarkdown } from './detail/markdown.js';
@@ -31,7 +37,8 @@ let selection = null,
   toastTimer = null,
   expanded = false,
   lastExport = false,
-  theme = 'light';
+  theme = 'light',
+  imageUploadPending = false;
 function entity() {
   if (selection?.kind === 'project') return store.project.metadata;
   return selection
@@ -303,6 +310,7 @@ function renderPanel() {
     if (e.content)
       renderMarkdown(host, e.content, {
         allowImages,
+        images: e.extensions?.[IMAGE_NAMESPACE] || {},
         isCurrent: () => version === panelVersion,
       }).catch(() => {
         if (version === panelVersion) host.textContent = t('errorDiagram');
@@ -358,6 +366,29 @@ function renderPanel() {
         .join('') +
       '</div>';
     fields += labelField('content', 'content', d.content, { textarea: true });
+    fields +=
+      '<div class="image-tools"><button type="button" id="insert-image"' +
+      (imageUploadPending ? ' disabled' : '') +
+      '>' +
+      esc(t('insertImage')) +
+      '</button><input type="file" id="embedded-image-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden><p class="muted">' +
+      esc(t('embeddedImageHint')) +
+      '</p><div class="attachment-list">' +
+      Object.entries(d.extensions?.[IMAGE_NAMESPACE] || {})
+        .map(
+          ([id, image]) =>
+            '<div class="attachment-row"><span>' +
+            esc(image.name) +
+            '</span><button type="button" data-remove-image="' +
+            esc(id) +
+            '" aria-label="' +
+            esc(t('removeImage') + ': ' + image.name) +
+            '">' +
+            esc(t('removeImage')) +
+            '</button></div>',
+        )
+        .join('') +
+      '</div></div>';
   } else if (selection.kind === 'relation') {
     for (const field of ['source', 'target'])
       fields += labelField(field, field, d[field], {
@@ -424,8 +455,90 @@ function renderPanel() {
     renderPanel();
     updateStatus();
   };
+  if ($('#insert-image')) {
+    $('#insert-image').onclick = () => $('#embedded-image-input').click();
+    $('#embedded-image-input').onchange = (event) => {
+      const file = event.target.files[0];
+      event.target.value = '';
+      insertImage(file);
+    };
+    for (const button of form.querySelectorAll('[data-remove-image]'))
+      button.onclick = () => {
+        const id = button.dataset.removeImage;
+        const image = draft.extensions?.[IMAGE_NAMESPACE]?.[id];
+        if (!image) return;
+        draft.content = draft.content.split(imageReference(id, image.name)).join('');
+        delete draft.extensions[IMAGE_NAMESPACE][id];
+        if (!Object.keys(draft.extensions[IMAGE_NAMESPACE]).length)
+          delete draft.extensions[IMAGE_NAMESPACE];
+        if (!Object.keys(draft.extensions).length) delete draft.extensions;
+        renderPanel();
+        updateStatus();
+      };
+  }
   if ($('#duplicate')) $('#duplicate').onclick = duplicate;
   if ($('#delete')) $('#delete').onclick = deleteSelected;
+}
+async function insertImage(file) {
+  if (!file || imageUploadPending || selection?.kind !== 'card' || !draft) return;
+  if (!IMAGE_MIME_TYPES.includes(file.type)) {
+    toast('errorImageAttachment');
+    return;
+  }
+  if (file.size > LIMITS.file) {
+    toast('errorFileLimit');
+    return;
+  }
+  const target = draft;
+  const cardId = selection.id;
+  const textarea = $('textarea[name=content]');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const originalContent = target.content;
+  imageUploadPending = true;
+  $('#insert-image').disabled = true;
+  try {
+    const data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result).split(',')[1]);
+      reader.onerror = () => reject(new Error('read'));
+      reader.readAsDataURL(file);
+    });
+    const image = { name: file.name, mimeType: file.type, data };
+    if (!validImageAttachment(image)) throw new Error('image');
+    const decoded = new Image();
+    decoded.src = 'data:' + image.mimeType + ';base64,' + image.data;
+    await decoded.decode();
+    if (draft !== target || selection?.id !== cardId || selection?.kind !== 'card') return;
+    const candidate = clone(target);
+    const id = newId('image');
+    candidate.extensions = {
+      ...candidate.extensions,
+      [IMAGE_NAMESPACE]: { ...candidate.extensions?.[IMAGE_NAMESPACE], [id]: image },
+    };
+    const reference = '\n\n' + imageReference(id, image.name) + '\n\n';
+    candidate.content =
+      target.content === originalContent
+        ? target.content.slice(0, start) + reference + target.content.slice(end)
+        : target.content + reference;
+    const project = clone(store.project);
+    project.cards = project.cards.map((card) => (card.id === cardId ? candidate : card));
+    const result = validate(project);
+    if (result.errors.length) {
+      $('#panel-body .form-errors').textContent = errorLines(result.errors);
+      return;
+    }
+    draft = candidate;
+    renderPanel();
+    updateStatus();
+    toast('imageInserted');
+  } catch {
+    if (draft === target && selection?.id === cardId) toast('errorImageAttachment');
+  } finally {
+    imageUploadPending = false;
+    const button = $('#insert-image');
+    if (button) button.disabled = false;
+  }
 }
 function applyDraft() {
   if (!draft) return true;
@@ -484,7 +597,7 @@ function renderModal() {
   for (const [key, value, primary = false, disabled = false] of buttons) {
     const b = document.createElement('button');
     b.textContent = t(key);
-    b.disabled = disabled;
+    b.disabled = typeof disabled === 'function' ? disabled() : disabled;
     b.className = primary ? 'primary' : '';
     b.dataset.choice = value;
     b.onclick = () => finishDialog(value);
@@ -613,6 +726,46 @@ async function exportProject() {
     toast('errorExport');
     return false;
   }
+}
+async function createProject() {
+  if (!(await guardDraft())) return;
+  let title = t('untitledProject');
+  const body = () => {
+    const container = document.createElement('div');
+    const label = document.createElement('label');
+    label.className = 'new-project-label';
+    label.textContent = t('projectName');
+    const input = document.createElement('input');
+    input.id = 'new-project-title';
+    input.value = title;
+    input.autocomplete = 'off';
+    input.setAttribute('aria-label', t('projectName'));
+    input.oninput = () => {
+      title = input.value;
+      $('[data-choice=create]').disabled = !title.trim();
+    };
+    input.onkeydown = (event) => {
+      if (event.key === 'Enter' && title.trim()) {
+        event.preventDefault();
+        finishDialog('create');
+      }
+    };
+    label.append(input);
+    const hint = document.createElement('p');
+    hint.textContent = t('newProjectHint');
+    container.append(label, hint);
+    return container;
+  };
+  const choice = dialog('newProject', body, [
+    ['cancel', 'cancel'],
+    ['createProject', 'create', true, () => !title.trim()],
+  ]);
+  $('#new-project-title').focus();
+  $('#new-project-title').select();
+  if ((await choice) !== 'create') return;
+  const project = blank();
+  project.metadata.title = title.trim();
+  if (await replaceProject(project)) toast('projectCreated');
 }
 async function replaceProject(p, adjusted = false) {
   if (!(await guardDraft())) return false;
@@ -759,7 +912,7 @@ $('#locale').onchange = (e) => {
   if (modalState) renderModal();
 };
 const actions = {
-  new: () => replaceProject(blank()),
+  new: createProject,
   add: addCard,
   connect: async () => {
     if (!(await guardDraft())) return;

@@ -1,3 +1,4 @@
+import { attachmentDataURL } from './attachments.js';
 import { marked } from '../../vendor/marked-entry.js';
 import DOMPurify from '../../vendor/dompurify-entry.js';
 import { t } from '../i18n/index.js';
@@ -18,21 +19,33 @@ let diagramCounter = 0;
 export async function renderMarkdown(
   host,
   source,
-  { allowImages = false, isCurrent = () => true } = {},
+  { allowImages = false, images = {}, isCurrent = () => true } = {},
 ) {
   const renderer = new marked.Renderer();
   renderer.html = (token) => escape(token.text);
-  renderer.image = (token) =>
-    allowImages && external(token.href)
+  renderer.image = (token) => {
+    if (token.href.startsWith('attachment:')) {
+      const id = token.href.slice('attachment:'.length);
+      const src = Object.hasOwn(images, id) ? attachmentDataURL(images[id]) : null;
+      return src
+        ? '<img class="embedded-image" src="' +
+            src +
+            '" alt="' +
+            escape(token.text) +
+            '" loading="lazy">'
+        : '<span class="blocked-image">' + escape(t('missingImage')) + '</span>';
+    }
+    return allowImages && external(token.href)
       ? '<img src="' +
-        escape(token.href) +
-        '" alt="' +
-        escape(token.text) +
-        '" loading="lazy" referrerpolicy="no-referrer">'
+          escape(token.href) +
+          '" alt="' +
+          escape(token.text) +
+          '" loading="lazy" referrerpolicy="no-referrer">'
       : '<span class="blocked-image">' +
-        escape(external(token.href) ? t('blockedImage') : t('unsupportedImage')) +
-        (token.text ? ' · ' + escape(token.text) : '') +
-        '</span>';
+          escape(external(token.href) ? t('blockedImage') : t('unsupportedImage')) +
+          (token.text ? ' · ' + escape(token.text) : '') +
+          '</span>';
+  };
   const html = marked.parse(source, { renderer, gfm: true });
   const safe = DOMPurify.sanitize(html, {
     FORBID_TAGS: ['style', 'iframe', 'object', 'embed', 'svg', 'math', 'form', 'input'],

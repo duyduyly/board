@@ -491,3 +491,167 @@ test('Focus relation fits both endpoints after panel resize', async ({ page }) =
   await page.locator('[data-action=close]').click();
   await expect(page.locator('[data-action=focus]')).toBeDisabled();
 });
+
+test('New Project names blank projects and preserves work when replacement is cancelled', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.locator('.toolbar [data-action=new]').click();
+  await expect(page.locator('#new-project-title')).toBeFocused();
+  await page.locator('#new-project-title').fill('   ');
+  await expect(page.locator('[data-choice=create]')).toBeDisabled();
+  await page.locator('#modal-locale').selectOption('en');
+  await expect(page.locator('[data-choice=create]')).toBeDisabled();
+  await page.locator('#new-project-title').fill('  English Practice  ');
+  await page.locator('#new-project-title').press('Enter');
+  await expect(page.locator('#project-name')).toHaveText('English Practice');
+  await expect(page.locator('#toast')).toHaveText('New project created');
+  await page.locator('#locale').selectOption('vi');
+  await page.locator('[data-action=example]').click();
+  await page.locator('[data-action=add]').click();
+  await expect(page.locator('.graph-card')).toHaveCount(4);
+  const snapshot = () =>
+    page.evaluate(async () => {
+      const { store } = await import('/assets/js/app.js');
+      return { project: store.project, undo: store.undoStack.length, dirty: store.dirty };
+    });
+  const before = await snapshot();
+  await page.locator('.toolbar [data-action=new]').click();
+  await page.locator('#new-project-title').fill('Next Project');
+  await page.locator('[data-choice=create]').click();
+  await expect(page.locator('#modal')).toContainText('Thay thế dự án hiện tại?');
+  await page.locator('[data-choice=cancel]').click();
+  expect(await snapshot()).toEqual(before);
+  await page.locator('.toolbar [data-action=new]').click();
+  await page.locator('#new-project-title').fill('Next Project');
+  await page.locator('[data-choice=create]').click();
+  await page.locator('[data-choice=replace]').click();
+  await expect(page.locator('#project-name')).toHaveText('Next Project');
+  await expect(page.locator('.graph-card')).toHaveCount(0);
+  await expect(page.locator('[data-action=undo]')).toBeDisabled();
+  await expect(page.locator('#zoom-value')).toHaveText('100%');
+  expect((await snapshot()).dirty).toEqual(false);
+});
+
+test('New Project remains visible and usable at smaller desktop widths', async ({ page }) => {
+  await page.goto('/');
+  for (const width of [1050, 900, 820]) {
+    await page.setViewportSize({ width, height: 800 });
+    const button = page.locator('.toolbar [data-action=new]');
+    await expect(button).toBeVisible();
+    const box = await button.boundingBox();
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(width);
+    const localeBox = await page.locator('#locale').boundingBox();
+    expect(localeBox.x + localeBox.width).toBeLessThanOrEqual(width);
+    await button.click();
+    await expect(page.locator('#new-project-title')).toBeVisible();
+    await page.locator('[data-choice=cancel]').click();
+  }
+  await page.screenshot({ path: 'planning/design/new-project-desktop.png' });
+});
+
+test('embedded image upload is portable in JSON and Detail needs no external request', async ({
+  page,
+}) => {
+  const external = [],
+    errors = [];
+  page.on('request', (request) => {
+    if (/^https?:/.test(request.url()) && !request.url().startsWith('http://127.0.0.1:4173'))
+      external.push(request.url());
+  });
+  page.on('pageerror', (error) => errors.push(error.message));
+  const bytes = await fs.readFile('tests/fixtures/english-endings.png');
+  await sample(page);
+  await selectService(page);
+  await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
+  await page.locator('textarea[name=content]').fill('# Image in JSON');
+  await page
+    .locator('#embedded-image-input')
+    .setInputFiles({ name: 'english-endings.png', mimeType: 'image/png', buffer: bytes });
+  await expect(page.locator('textarea[name=content]')).toContainText('attachment:image-');
+  const beforeApply = await page.evaluate(async () => {
+    const { store } = await import('/assets/js/app.js');
+    return store.project.cards.find((c) => c.id === 'card-user-service').extensions?.[
+      'card-atlas:images'
+    ];
+  });
+  expect(beforeApply).toBeUndefined();
+  await page.locator('#locale').selectOption('en');
+  await page.locator('#theme-toggle').click();
+  await expect(page.locator('.attachment-row')).toContainText('english-endings.png');
+  await page.getByRole('button', { name: 'Apply', exact: true }).click();
+  await page.getByRole('button', { name: 'Overview', exact: true }).click();
+  await expect
+    .poll(() => page.locator('.embedded-image').evaluate((image) => image.naturalWidth))
+    .toBe(640);
+  const exported = await exportData(page);
+  const card = exported.cards.find((c) => c.id === 'card-user-service');
+  const attachments = card.extensions['card-atlas:images'];
+  expect(Object.values(attachments)[0]).toEqual({
+    name: 'english-endings.png',
+    mimeType: 'image/png',
+    data: bytes.toString('base64'),
+  });
+  expect(card.extensions['example:source']).toBeTruthy();
+  await page.reload();
+  await page.locator('#file-input').setInputFiles({
+    name: 'with-image.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(exported)),
+  });
+  await page.locator('[data-choice=apply]').click();
+  await selectService(page);
+  await expect
+    .poll(() => page.locator('.embedded-image').evaluate((image) => image.naturalWidth))
+    .toBe(640);
+  expect(await exportData(page)).toEqual(exported);
+  await page.locator('#theme-toggle').click();
+  await page.screenshot({ path: 'planning/design/embedded-image-detail.png' });
+  expect(external).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('embedded image drafts cancel, removal undoes and SVG upload is rejected', async ({
+  page,
+}) => {
+  const png = await fs.readFile('tests/fixtures/english-endings.png');
+  await sample(page);
+  await selectService(page);
+  await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
+  const original = await page.locator('textarea[name=content]').inputValue();
+  await page.locator('#embedded-image-input').setInputFiles({
+    name: 'bad.svg',
+    mimeType: 'image/svg+xml',
+    buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
+  });
+  await expect(page.locator('#toast')).toContainText('Ảnh không hợp lệ');
+  await expect(page.locator('textarea[name=content]')).toHaveValue(original);
+  await page
+    .locator('#embedded-image-input')
+    .setInputFiles({ name: 'chart.png', mimeType: 'image/png', buffer: png });
+  await expect(page.locator('.attachment-row')).toHaveCount(1);
+  await page.locator('#cancel-draft').click();
+  await expect(page.locator('.attachment-row')).toHaveCount(0);
+  await expect(page.locator('textarea[name=content]')).toHaveValue(original);
+  await page.locator('textarea[name=content]').fill('# Chart');
+  await page
+    .locator('#embedded-image-input')
+    .setInputFiles({ name: 'chart.png', mimeType: 'image/png', buffer: png });
+  await expect(page.locator('.attachment-row')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
+  await expect(page.locator('.embedded-image')).toBeVisible();
+  await page.locator('[data-action=undo]').click();
+  await expect(page.locator('.embedded-image')).toHaveCount(0);
+  await page.locator('[data-action=redo]').click();
+  await expect(page.locator('.embedded-image')).toBeVisible();
+  await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
+  await page.locator('[data-remove-image]').click();
+  await expect(page.locator('textarea[name=content]')).not.toContainText('attachment:');
+  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
+  await expect(page.locator('.embedded-image')).toHaveCount(0);
+  await page.locator('[data-action=undo]').click();
+  await expect(page.locator('.embedded-image')).toBeVisible();
+});

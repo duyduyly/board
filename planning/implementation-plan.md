@@ -2,7 +2,7 @@
 
 Ngày tạo: 2026-10-11. Phạm vi: triển khai V1 theo [đặc tả nâng cấp](../wordspace/docs/json-driven-visual-card-graph-editor-spec-v2.md). Phiên bản tài liệu là v2; định dạng dữ liệu là 1.0.
 
-Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 2 task bổ sung E001/E002 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
+Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 4 task bổ sung E001–E004 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
 
 ## Mục tiêu và giới hạn
 
@@ -140,10 +140,10 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 
 ## Tiến độ hiện tại
 
-- V1 hoàn tất: 47/47 task V1 và E001/E002 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
+- V1 hoàn tất: 47/47 task V1 và E001–E004 DONE có evidence; 10 mục V1.1/V2 giữ BACKLOG.
 - Entry tại root index.html; CSS/JS, schema/example và vendor bundles local tại assets/.
 - UI Việt/Anh có nút chuyển, giữ nguyên dữ liệu, draft và history khi đổi ngôn ngữ.
-- Build, lint, kiểm tra contract TypeScript và format pass; core 19/19, UI 57/57 trên Chrome/Edge/Firefox, không flaky.
+- Build, lint, kiểm tra contract TypeScript và format pass; core 21/21, UI 69/69 trên Chrome/Edge/Firefox, không flaky.
 - Benchmark 500 cards/2.000 relations: import 626.2 ms, Overview max 106.4 ms, median pan 59.9 FPS; đạt cả ba target trên máy ghi trong evidence.
 - Console QA không có lỗi/cảnh báo. IAB không khả dụng, đã dùng Playwright.
 - README có hướng dẫn chạy/deploy static; chưa publish hosting. Mobile chỉ có thông báo dùng desktop.
@@ -155,3 +155,7 @@ AI gọi model trực tiếp, cloud, login, collaboration và recovery local kh�
 - E001: bộ card học quy tắc -s/-es và -ed, giải thích tiếng Việt với ví dụ tiếng Anh; thêm nút mở riêng, giữ ví dụ kiến trúc. DONE; đã kiểm tra hiển thị và round-trip trên Chrome/Edge/Firefox.
 
 - E002: badge type/tags/số quan hệ, theme light/dark trong phiên, nút Fit toàn sơ đồ và Focus camera vào card/quan hệ được chọn; cập nhật README 1.0.0. Không thay dữ liệu JSON hoặc thực hiện chế độ lọc lân cận B103. DONE; 19 core và 57 browser tests pass, QA sáng/tối và benchmark đạt mục tiêu.
+
+- E003: sửa trải nghiệm Dự án mới — nút luôn hiện trên desktop, dialog nhập tên, guard dữ liệu/draft và toast thành công. DONE; nút hiển thị desktop, dialog tên/guards/reset đã pass.
+
+- E004: theo làm rõ của user, lưu ảnh PNG/JPEG/WebP/GIF bên trong JSON dưới namespace card-atlas:images; nút chèn từ máy, Markdown attachment:id, render Detail không request ngoài. Giữ JSON version 1.0 và giới hạn 10 MiB. DONE; ảnh nhúng hiển thị, portable round-trip và draft/history đã pass.

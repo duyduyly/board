@@ -1,4 +1,16 @@
 export default {
+  insertImage: 'Chèn ảnh từ máy',
+  removeImage: 'Xóa ảnh',
+  embeddedImageHint:
+    'PNG, JPEG, WebP hoặc GIF được nhúng vào JSON. Bấm Áp dụng để lưu; toàn bộ project tối đa 10 MiB.',
+  imageInserted: 'Đã chèn ảnh vào bản nháp. Bấm Áp dụng để lưu.',
+  missingImage: 'Không tìm thấy ảnh nhúng. Kiểm tra attachment ID.',
+  errorImageAttachment: 'Ảnh không hợp lệ. Chỉ hỗ trợ PNG, JPEG, WebP hoặc GIF.',
+  untitledProject: 'Dự án chưa đặt tên',
+  projectName: 'Tên dự án',
+  createProject: 'Tạo dự án',
+  projectCreated: 'Đã tạo dự án mới',
+  newProjectHint: 'Tạo một sơ đồ trống. Dữ liệu hiện tại chưa xuất sẽ được hỏi trước khi thay thế.',
   darkMode: 'Chuyển sang chế độ tối',
   lightMode: 'Chuyển sang chế độ sáng',
   lightTheme: 'Sáng',

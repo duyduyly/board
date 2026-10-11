@@ -253,3 +253,51 @@ test('English missing key falls back to Vietnamese without changing content', ()
     setLocale('vi');
   }
 });
+
+test('embedded raster attachments validate and survive export/import and undo', async () => {
+  const { IMAGE_NAMESPACE, validImageAttachment, imageReference } =
+    await import('../assets/js/detail/attachments.js');
+  const image = {
+    name: 'english-endings.png',
+    mimeType: 'image/png',
+    data: (await fs.readFile('tests/fixtures/english-endings.png')).toString('base64'),
+  };
+  assert.ok(validImageAttachment(image));
+  assert.equal(
+    imageReference('image-one', 'a[b].png'),
+    '![' + String.raw`a\[b\].png` + '](attachment:image-one)',
+  );
+  const store = new ProjectStore();
+  store.replace(normalize(example).project);
+  store.commit((p) => {
+    p.cards[0].extensions = { [IMAGE_NAMESPACE]: { 'image-one': image } };
+    p.cards[0].content += '\n\n![Chart](attachment:image-one)';
+  });
+  const serialized = serialize(store.project, store.viewport);
+  const staged = stage(serialized);
+  assert.deepEqual(staged.errors, []);
+  assert.deepEqual(staged.project.cards[0].extensions[IMAGE_NAMESPACE]['image-one'], image);
+  store.undo();
+  assert.equal(store.project.cards[0].extensions, undefined);
+  store.redo();
+  assert.deepEqual(store.project.cards[0].extensions[IMAGE_NAMESPACE]['image-one'], image);
+});
+
+test('invalid embedded images fail closed without accepting SVG or malformed base64', async () => {
+  const { IMAGE_NAMESPACE, validImageAttachment } =
+    await import('../assets/js/detail/attachments.js');
+  for (const image of [
+    { name: 'bad.svg', mimeType: 'image/svg+xml', data: Buffer.from('<svg/>').toString('base64') },
+    {
+      name: 'fake.png',
+      mimeType: 'image/png',
+      data: Buffer.from('<script>alert(1)</script>').toString('base64'),
+    },
+    { name: 'bad.png', mimeType: 'image/png', data: 'not base64' },
+  ]) {
+    assert.equal(validImageAttachment(image), false);
+    const project = normalize(example).project;
+    project.cards[0].extensions = { [IMAGE_NAMESPACE]: { 'image-bad': image } };
+    assert.ok(validate(project).errors.some((e) => e.code === 'imageAttachment'));
+  }
+});

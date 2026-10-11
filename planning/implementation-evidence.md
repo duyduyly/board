@@ -120,3 +120,32 @@ Các screenshot này được giữ để làm evidence của checklist, không 
 - node scripts/benchmark.mjs: PASS với 500 cards/2.000 relations: import 626.2 ms; Overview max 106.4 ms; median pan 59.9 FPS. Máy/phương pháp trong planning/benchmark-results.json; không suy rộng ra mọi thiết bị.
 
 User đã yêu cầu commit phần code sau khi hoàn tất. Giữ các giới hạn và cảnh báo dependency mức low đã ghi ở trên; chưa deploy hosting.
+
+## E003/E004 — Dự án mới và ảnh lưu trong JSON — 2026-10-11
+
+### E003
+
+- Nguyên nhân UX: New trước đây chỉ reset blank, không hỏi tên/không toast nên khi canvas đã trống trông như không phản hồi. CSS max-width 1050px ẩn nút toolbar New.
+- Sửa createProject(): dialog tên vi/en, trim tên, không cho tên trắng kể cả đổi locale trong modal; Enter tạo; Cancel giữ project, guard draft/unexported trước thay. Toast khi tạo thành công; reset viewport và history đúng.
+- Nút New luôn hiện trên desktop; toolbar nhỏ 1050/900/820px không clipping; mobile vẫn desktop-only notice.
+- Browser kiểm tra blank → tên → tạo, tên trắng, modal locale, replacement cancel giữ model/history, replace reset đúng. 63 tests pass trước bổ sung ảnh, report planning/new-project-test-results.json.
+
+### E004
+
+- Theo yêu cầu làm rõ, JSON chứa dữ liệu file ảnh, Detail render ảnh trực tiếp. Nút Chèn ảnh từ máy/Insert image from computer nằm dưới nội dung Markdown trong card editor.
+- PNG/JPEG/WebP/GIF được đọc Base64 vào draft, MIME/header/encoding kiểm tra và browser decode trước chèn. SVG/ảnh hỏng bị từ chối; JSON tổng vẫn tối đa 10 MiB. Canonical size kiểm tra trước đổi draft.
+- Hợp đồng: cards[].extensions["card-atlas:images"] là map ID → {name,mimeType,data}; data Base64 thuần. Markdown ![caption](attachment:image-ID). JSON version giữ 1.0; các namespace producer khác bảo toàn.
+- Renderer chỉ tạo data URI từ attachment raster đã kiểm tra; raw data URI trong Markdown vẫn chặn. Ảnh URL ngoài vẫn opt-in. Ảnh nhúng không cần opt-in/network/storage ngoài.
+- Áp dụng/Hủy/guards/Undo/Redo cùng luồng card. Xóa ảnh gỡ record và tham chiếu do app tạo; caption/link tự sửa có thể phải gỡ thủ công, đã ghi README. Async upload kiểm tra draft/card còn hiện tại trước thay đổi.
+- Ví dụ tiếng Anh có PNG minh họa nhúng trong JSON; tests/fixtures/english-endings.png được tạo bằng canvas qua scripts/make-image-fixture.mjs.
+- Unit kiểm tra valid image, MIME/encoding giả/SVG bị từ chối, round-trip và history. Browser kiểm tra upload → draft → đổi vi/en/theme → Apply → Detail → export → reload → import, ảnh 640px decode đúng, data giữ nguyên, namespace cũ giữ nguyên, không request ngoài; Cancel/remove/undo/redo cũng pass.
+
+### Kiểm chứng cuối
+
+- npm test: 21/21 PASS.
+- npm run check, typecheck, format:check: PASS. Không đổi dependency/vendor, không cần rebuild thư viện cho hai thay đổi app JS này.
+- npm run e2e: 69/69 PASS (23 scenarios × Chrome/Edge/Firefox), 0 unexpected/flaky/skipped. planning/e2e-full-results.json.
+- node scripts/qa-enhancements.mjs: PASS; đúng URL/title/nội dung, không overlay, errors=[]/warnings=[]; dark PNG/Markdown/Mermaid và New dialog; desktop1440/1050, mobile390 notice. Browser plugin/skill không có; dùng Playwright.
+- Screenshot: planning/design/new-project-dialog.png, new-project-desktop.png, english-embedded-image.png, embedded-image-detail.png. Đã xem ảnh để kiểm tra layout, độ đọc và hiển thị thực.
+- README có cách chèn/lưu ảnh trong JSON, Apply/Detail/export/reimport, loại ảnh, giới hạn và thao tác Dự án mới.
+- Commit cục bộ theo ủy quyền trước. Không thử push lại: việc gửi lên remote vẫn chờ xác nhận đã hỏi ở lượt trước.

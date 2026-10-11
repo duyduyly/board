@@ -1,4 +1,16 @@
 export default {
+  insertImage: 'Insert image from computer',
+  removeImage: 'Remove image',
+  embeddedImageHint:
+    'PNG, JPEG, WebP or GIF is embedded in JSON. Apply to save; the entire project is limited to 10 MiB.',
+  imageInserted: 'Image inserted into the draft. Apply to save.',
+  missingImage: 'Embedded image not found. Check the attachment ID.',
+  errorImageAttachment: 'Invalid image. Only PNG, JPEG, WebP or GIF is supported.',
+  untitledProject: 'Untitled Project',
+  projectName: 'Project name',
+  createProject: 'Create project',
+  projectCreated: 'New project created',
+  newProjectHint: 'Create a blank diagram. You will be asked before replacing unexported work.',
   darkMode: 'Switch to dark mode',
   lightMode: 'Switch to light mode',
   lightTheme: 'Light',

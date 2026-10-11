@@ -6,7 +6,8 @@
 
 - Tạo, chỉnh sửa, kéo thả, nhân bản và xóa card; nối card bằng quan hệ có nhãn, màu và hướng mũi tên.
 - Card có badge loại, tag và số quan hệ; tag dài được rút gọn và có tooltip.
-- Panel đọc Markdown, bảng và sơ đồ Mermaid; editor có Apply/Cancel để quản lý bản nháp.
+- Panel đọc Markdown, bảng, ảnh nhúng và sơ đồ Mermaid; editor có Apply/Cancel để quản lý bản nháp.
+- Chèn ảnh từ máy và lưu dữ liệu ảnh trong JSON; export/import một file vẫn hiển thị ảnh ở Detail.
 - Undo/Redo cho các thao tác dữ liệu; xóa card và các quan hệ được phục hồi cùng nhau.
 - Tìm theo title, summary, type và tags.
 - Pan/zoom; **Fit** toàn bộ sơ đồ; **Focus** đưa card hoặc quan hệ đang chọn vào giữa khung nhìn.
@@ -30,7 +31,9 @@ Mở **http://127.0.0.1:4173**. Nếu thư viện local đã được build, cá
 
 ### Bắt đầu
 
-Chọn **Bắt đầu trống**, **Mở ví dụ**, **Ví dụ tiếng Anh: -s/-es và -ed**, hoặc **Nhập project JSON** trên màn hình bắt đầu. Nếu đang có project, dùng Nhập JSON để mở file khác; ứng dụng sẽ cảnh báo khi thay thế dữ liệu chưa export.
+Chọn **Bắt đầu trống**, **Mở ví dụ**, **Ví dụ tiếng Anh: -s/-es và -ed**, hoặc **Nhập project JSON** trên màn hình bắt đầu. Nút **Dự án mới** trên toolbar mở hộp thoại đặt tên; chọn **Tạo dự án** để tạo sơ đồ trống hoặc **Hủy** để giữ project hiện tại. Tên không được để trống. Nếu đang có dữ liệu chưa xuất, ứng dụng hỏi trước khi thay thế.
+
+Nếu đang có project, dùng Nhập JSON để mở file khác; ứng dụng sẽ cảnh báo khi thay thế dữ liệu chưa export.
 
 File bài học có thể tải/import riêng tại [english-endings-example.json](assets/data/english-endings-example.json). Giải thích bằng tiếng Việt với công thức và ví dụ tiếng Anh. Chuyển ngôn ngữ giao diện không dịch nội dung card.
 
@@ -61,6 +64,20 @@ Dùng **Tiếng Việt / English** trên toolbar để đổi ngôn ngữ. Nút 
 ### Lưu và mở lại
 
 Bấm **Xuất dự án** để tải file JSON. Khi có bản nháp, chọn áp dụng rồi xuất hoặc chỉ xuất phần đã áp dụng. Để tiếp tục ở phiên khác, import file JSON đã lưu. Schema dữ liệu nằm tại [project.schema.json](assets/data/project.schema.json).
+
+## Chèn ảnh và lưu cùng JSON
+
+1. Chọn card → **Chỉnh sửa**.
+2. Bấm **Chèn ảnh từ máy** và chọn PNG, JPEG, WebP hoặc GIF.
+3. Ứng dụng đưa ảnh vào bản nháp và chèn dòng Markdown tại vị trí con trỏ.
+4. Bấm **Áp dụng**, rồi chọn **Tổng quan** để xem ảnh ở Detail.
+5. **Xuất dự án** để lưu JSON. Import JSON này trên máy khác vẫn thấy ảnh; không cần file ảnh rời hoặc URL website.
+
+Ảnh được mã hóa Base64 và lưu trong extensions của card dưới namespace **card-atlas:images**, cùng tên file và mimeType. Nội dung Markdown tham chiếu bằng dạng **![Mô tả](attachment:image-ID)**; ứng dụng tự tạo ID và dữ liệu khi upload. Base64 làm file lớn hơn khoảng 33%; toàn bộ JSON vẫn giới hạn 10 MiB.
+
+Ảnh nhúng hiển thị tự động, không cần nút cho phép tải ảnh ngoài và không gửi request ngoài. Ảnh URL qua Markdown vẫn được hỗ trợ nhưng phải bật tải ảnh ngoài. SVG và ảnh hỏng không được chèn. **Hủy** bỏ ảnh chưa áp dụng; **Xóa ảnh** trong editor gỡ file nhúng và tham chiếu do ứng dụng tạo. Nếu bạn đã tự sửa caption/link, hãy xóa dòng tham chiếu đó khỏi Markdown khi gỡ ảnh. Undo/Redo phục hồi thao tác áp dụng/xóa ảnh.
+
+Ví dụ tiếng Anh đã có một ảnh minh họa được lưu ngay trong JSON; mở card **Đuôi -s/-es và -ed** để xem.
 
 ## Dữ liệu và quyền riêng tư
 
