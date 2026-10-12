@@ -189,3 +189,7 @@ Với ≥1.000 đường nối, pan/zoom/drag tạm ẩn đường nối và kh�
 Chọn node → Edit hoặc Format → bật **Nền trong suốt** hoặc **Viền trong suốt** → Apply. Preview hiển thị ngay; bỏ chọn phục hồi màu đã chọn trước đó. Nền trong suốt không có shadow; node đang chọn vẫn có đường bao để nhận biết. Hỗ trợ Card Map/Mind Map và Light/Dark; các tùy chọn lưu trong JSON, Undo/Redo và recovery như appearance khác. Màu chữ vẫn giữ rõ để đọc.
 
 Select a node → Edit or Format → check **Transparent background** / **Transparent border** → Apply. Uncheck to restore the saved color. Transparent backgrounds have no shadow; selected nodes retain a selection outline. Options survive JSON export/import and undo/redo.
+
+## Cấu trúc và phát triển
+
+[Hướng dẫn mở rộng source](docs/development.md) mô tả boundaries, commands, query cache và cách thêm feature. Common primitives nằm trong assets/js/common; UI services trong assets/js/ui; Detail field builder trong assets/js/detail. CSS chia base/theme/workspace và giữ cascade trong app.css. npm run check kiểm tra import cycles/layer boundaries/unused code; npm run typecheck kiểm tra contract và các module JavaScript thuần đã có JSDoc.

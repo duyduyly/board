@@ -17,11 +17,7 @@
       "title": "Đuôi -s/-es và -ed",
       "summary": "Bản đồ học: cách dùng → cách viết → cách đọc → luyện tập.",
       "type": "overview",
-      "tags": [
-        "english",
-        "grammar",
-        "overview"
-      ],
+      "tags": ["english", "grammar", "overview"],
       "position": {
         "x": 0,
         "y": 0
@@ -51,11 +47,7 @@
       "title": "-s/-es · Công thức",
       "summary": "He/She/It + V-s/es; danh từ số nhiều thường thêm -s/es.",
       "type": "s-es",
-      "tags": [
-        "english",
-        "grammar",
-        "s-es"
-      ],
+      "tags": ["english", "grammar", "s-es"],
       "position": {
         "x": 360,
         "y": -300
@@ -76,11 +68,7 @@
       "title": "-s/-es · Cách viết",
       "summary": "Thêm -s, thêm -es, hoặc đổi phụ âm + y → -ies.",
       "type": "s-es",
-      "tags": [
-        "english",
-        "grammar",
-        "s-es"
-      ],
+      "tags": ["english", "grammar", "s-es"],
       "position": {
         "x": 720,
         "y": -450
@@ -101,11 +89,7 @@
       "title": "-s/-es · /s/ /z/ /ɪz/",
       "summary": "Âm cuối từ gốc quyết định cách đọc, không phải cách viết.",
       "type": "pronunciation",
-      "tags": [
-        "english",
-        "grammar",
-        "pronunciation"
-      ],
+      "tags": ["english", "grammar", "pronunciation"],
       "position": {
         "x": 720,
         "y": -200
@@ -126,11 +110,7 @@
       "title": "-ed · Công thức",
       "summary": "Quá khứ đơn: S + V2; động từ có quy tắc dùng V-ed.",
       "type": "ed",
-      "tags": [
-        "english",
-        "grammar",
-        "ed"
-      ],
+      "tags": ["english", "grammar", "ed"],
       "position": {
         "x": 360,
         "y": 300
@@ -151,11 +131,7 @@
       "title": "-ed · Cách viết",
       "summary": "+ed; tận cùng e +d; phụ âm+y → ied; đôi khi gấp đôi.",
       "type": "ed",
-      "tags": [
-        "english",
-        "grammar",
-        "ed"
-      ],
+      "tags": ["english", "grammar", "ed"],
       "position": {
         "x": 720,
         "y": 200
@@ -176,11 +152,7 @@
       "title": "-ed · /t/ /d/ /ɪd/",
       "summary": "/t, d/ → /ɪd/; vô thanh khác → /t/; còn lại → /d/.",
       "type": "pronunciation",
-      "tags": [
-        "english",
-        "grammar",
-        "pronunciation"
-      ],
+      "tags": ["english", "grammar", "pronunciation"],
       "position": {
         "x": 720,
         "y": 450
@@ -201,11 +173,7 @@
       "title": "Lỗi dễ nhầm",
       "summary": "Sau does/did dùng động từ nguyên mẫu; bất quy tắc học riêng.",
       "type": "tips",
-      "tags": [
-        "english",
-        "grammar",
-        "tips"
-      ],
+      "tags": ["english", "grammar", "tips"],
       "position": {
         "x": 1080,
         "y": 100
@@ -226,11 +194,7 @@
       "title": "Luyện tập · 10 câu",
       "summary": "Điền dạng đúng và chọn cách đọc đuôi trước khi xem đáp án.",
       "type": "exercise",
-      "tags": [
-        "english",
-        "grammar",
-        "exercise"
-      ],
+      "tags": ["english", "grammar", "exercise"],
       "position": {
         "x": 1080,
         "y": -200
@@ -251,11 +215,7 @@
       "title": "Đáp án & giải thích",
       "summary": "Đối chiếu công thức, chính tả và âm cuối của từ gốc.",
       "type": "exercise",
-      "tags": [
-        "english",
-        "grammar",
-        "exercise"
-      ],
+      "tags": ["english", "grammar", "exercise"],
       "position": {
         "x": 1440,
         "y": -200
@@ -276,11 +236,7 @@
       "title": "Nguồn & phạm vi bài học",
       "summary": "Tài liệu Cambridge, British Council và BBC Learning English.",
       "type": "reference",
-      "tags": [
-        "english",
-        "grammar",
-        "reference"
-      ],
+      "tags": ["english", "grammar", "reference"],
       "position": {
         "x": 0,
         "y": 300

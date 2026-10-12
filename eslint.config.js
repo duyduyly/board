@@ -37,6 +37,7 @@ export default [
     },
     rules: {
       'no-undef': 'error',
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
       'no-unreachable': 'error',
       'no-constant-condition': ['error', { checkLoops: false }],
       'no-dupe-keys': 'error',

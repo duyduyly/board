@@ -5,6 +5,8 @@ const browser = await chromium.launch({ channel: 'chrome' });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.goto('http://127.0.0.1:4173');
 const requestedView = process.argv[2] || 'mind';
+const reportPrefix = process.argv[3] || 'mind-map-phase2';
+const screenshotPrefix = reportPrefix === 'mind-map-phase2' ? 'radial' : reportPrefix;
 const result = await page.evaluate(async (requestedView) => {
   const { store, adapter } = await import('/assets/js/app.js');
   const { stage } = await import('/assets/js/json/validator.js');
@@ -156,10 +158,12 @@ report.targets = {
   overlap: result.layoutOverlaps === 0,
 };
 await fs.writeFile(
-  'planning/mind-map-phase2-benchmark-' + requestedView + '.json',
+  'planning/' + reportPrefix + '-benchmark-' + requestedView + '.json',
   JSON.stringify(report, null, 2) + '\n',
 );
 console.log(JSON.stringify(report, null, 2));
 await page.waitForTimeout(250);
-await page.screenshot({ path: 'planning/design/radial-benchmark-' + requestedView + '.png' });
+await page.screenshot({
+  path: 'planning/design/' + screenshotPrefix + '-benchmark-' + requestedView + '.png',
+});
 await browser.close();

@@ -1,3 +1,4 @@
+import { projectIndex } from '../graph/project-index.js';
 import { visibility } from '../graph/radial-layout.js';
 import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mind-map.js';
 import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
@@ -106,7 +107,6 @@ export class GraphAdapter {
       this.lastProject = null;
       this.activeView = view;
     }
-    const info = branchInfo(project);
     if (this.lastProject === project) {
       if (this.lastSelection?.kind === 'card') {
         const el = this.cards.get(this.lastSelection.id);
@@ -159,13 +159,11 @@ export class GraphAdapter {
     }
     this.lastSelection = selection;
     this.lastProject = project;
+    const info = branchInfo(project);
+    const index = projectIndex(project);
     const visible = visibility(project, view === 'mind' ? options.collapsed : undefined);
     this.hiddenNodes = view === 'mind' ? visible.hidden : new Set();
-    const degrees = new Map();
-    for (const relation of project.relations) {
-      degrees.set(relation.source, (degrees.get(relation.source) || 0) + 1);
-      degrees.set(relation.target, (degrees.get(relation.target) || 0) + 1);
-    }
+    const { degrees } = index;
     this.cy.batch(() => {
       const desired = new Set([
         ...project.cards.map((c) => cid(c.id)),
@@ -350,9 +348,6 @@ export class GraphAdapter {
         el.style.height = c.size.height + 'px';
         el.style.left = c.position.x + 'px';
         el.style.top = c.position.y + 'px';
-        el.style.setProperty('--card-background', c.style.backgroundColor);
-        el.style.setProperty('--card-ink', c.style.textColor);
-        el.style.setProperty('--card-border', c.style.borderColor);
         el.classList.toggle('selected', selection?.kind === 'card' && selection.id === c.id);
         el.setAttribute('aria-label', c.title);
         el.setAttribute(
@@ -361,7 +356,7 @@ export class GraphAdapter {
         );
       }
       for (const [id, el] of this.cards)
-        if (!project.cards.some((c) => c.id === id)) {
+        if (!index.cards.has(id)) {
           el.remove();
           this.cards.delete(id);
         }

@@ -1,6 +1,6 @@
+import { clone } from '../common/data.js';
 import { VIEWS, MIND } from '../graph/mind-map.js';
 import { blank, validate } from '../json/validator.js';
-const clone = (x) => structuredClone(x);
 const content = (p) => {
   const ext = clone(p.extensions);
   if (ext?.[VIEWS]?.mindMap) delete ext[VIEWS].mindMap.viewport;

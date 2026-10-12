@@ -61,3 +61,7 @@ User đã yêu cầu cải thiện trải nghiệm viết tài liệu sau review
 ## Kế hoạch Illustrated Mind Map và node ảnh
 
 Khi triển khai yêu cầu này, đọc thêm [planning/mind-map-plan.md](planning/mind-map-plan.md) và các task MM001–MM020 trong checklist chính. [planning/mind-map-checklist.csv](planning/mind-map-checklist.csv) là bản trích: cập nhật implementation-checklist.csv trước rồi tái tạo bản trích để tránh lệch trạng thái. Giữ graph/Detail dùng chung và geometry theo view; chốt contract tại MM001 trước code. B104/B201 vẫn BACKLOG ngoài phạm vi đã tách. User đã giao cả đợt 1 và đợt 2 MM001–MM020 ngày 2026-10-12. Tiếp tục theo dependencies và evidence; B104/B201 ngoài phần đã tách vẫn BACKLOG.
+
+## Kiến trúc source sau refactor
+
+Đọc [docs/development.md](docs/development.md) và [planning/refactor-plan.md](planning/refactor-plan.md) trước khi mở rộng. Module thấp không import app;common không import domain/UI. Dùng shared forms/feedback/download vàprojectIndex cho committed snapshot,không mutate cached Maps hoặc dùng cache trong mutator. Canvas/preview dùngapplyAppearance chung;CSS giữ base→theme→workspace. npm run check bắtcycles/upwardimports/unused;typecheck gồmcontract vàtyped common/query modules.

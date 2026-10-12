@@ -1,13 +1,9 @@
+import { escapeHTML as escape } from '../common/html.js';
 import { attachmentDataURL } from './attachments.js';
 import { marked } from '../../vendor/marked-entry.js';
 import DOMPurify from '../../vendor/dompurify-entry.js';
 import { t } from '../i18n/index.js';
 import { isSafeDiagramSource } from './mermaid-policy.js';
-const escape = (s) =>
-  String(s).replace(
-    /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
-  );
 const external = (href) => {
   try {
     return ['https:', 'http:'].includes(new URL(href).protocol);

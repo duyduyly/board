@@ -1,3 +1,4 @@
+import { checkArchitecture } from './architecture.mjs';
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -27,4 +28,5 @@ const lint = spawnSync(
   { stdio: 'inherit' },
 );
 if (lint.status !== 0) process.exit(1);
+await checkArchitecture();
 console.log('Syntax and lint checks passed');

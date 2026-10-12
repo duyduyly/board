@@ -32,6 +32,9 @@ export function appearanceIssues(card, path) {
 }
 export function applyAppearance(el, card) {
   const a = appearance(card);
+  el.style.setProperty('--card-background', card.style.backgroundColor);
+  el.style.setProperty('--card-ink', card.style.textColor);
+  el.style.setProperty('--card-border', card.style.borderColor);
   el.style.borderRadius = a.radius + 'px';
   el.style.borderWidth = a.borderWidth + 'px';
   el.style.setProperty('--title-font-size', a.titleFontSize + 'px');

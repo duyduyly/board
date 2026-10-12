@@ -196,3 +196,7 @@ User yêu cầu thêm lựa chọn trong suốt. Dùng boolean backgroundTranspa
 ## E010 — English example user
 
 Thay assets/data/english-endings-example.json bằng JSON user:12 text nodes,Root,11branch/1reference,Usage/Spelling/Pronunciation/Mistakes/Practice12/Answers. Bỏ ký tự rác sau JSON theo user; không sửa nội dung học hoặc tự tải ảnh URL. E010 DONE;77DONE/10BACKLOG, không blocker/task đang dở. Files: English JSON/README/tests/fixture/planning/spec. Validator/roundtrip,core34/34,UI12/12 Chrome/Edge/Firefox và lint pass. Evidence: [english-example-update-evidence.md](english-example-update-evidence.md). Task tiếp theo chỉ khi user giao scope mới.
+
+## Refactor source — RF001–RF005
+
+User giao audit/plan/optimize/restructure; xem [refactor-plan.md](refactor-plan.md). RF001–RF005 DONE; tổng 82 DONE, 10 BACKLOG, không task đang dở hoặc blocker trong phạm vi được giao. Core 36/36, full UI 153/153 Chrome/Edge/Firefox, lint/architecture/typecheck/format/build và benchmark hai view PASS. Files: common/, ui/, editor-fields, project-index, CSS layers, scripts/architecture.mjs, tests và docs/development.md. Evidence: [refactor-evidence.md](refactor-evidence.md). Task tiếp theo chỉ khi user giao scope mới; giữ BACKLOG.

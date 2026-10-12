@@ -1,3 +1,12 @@
+import { createCardList } from './ui/card-list.js';
+import { projectIndex } from './graph/project-index.js';
+import { query as $ } from './common/dom.js';
+import { escapeHTML as esc } from './common/html.js';
+import { clone } from './common/data.js';
+import { download } from './common/download.js';
+import { editorFields } from './detail/editor-fields.js';
+import { createFormatGuide } from './ui/format-guide.js';
+import { createFeedback } from './ui/feedback.js';
 import { radialLayout, applyLayout, visibility, revealAncestors } from './graph/radial-layout.js';
 import {
   NODE,
@@ -30,26 +39,11 @@ import {
   validImageAttachment,
   imageReference,
 } from './detail/attachments.js';
-import {
-  ProjectStore,
-  newId,
-  newCard,
-  newRelation,
-  remove,
-  search,
-  searchExcerpt,
-} from './store/project-store.js';
+import { ProjectStore, newId, newCard, newRelation, remove } from './store/project-store.js';
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
-import { t, setLocale, getLocale, issueMessage, number } from './i18n/index.js';
+import { t, setLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
 import { renderMarkdown } from './detail/markdown.js';
-const $ = (s) => document.querySelector(s);
-const clone = (x) => structuredClone(x);
-const esc = (s) =>
-  String(s ?? '').replace(
-    /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
-  );
 export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
@@ -61,8 +55,6 @@ let selection = null,
   query = '',
   allowImages = false,
   panelVersion = 0,
-  modalState = null,
-  toastTimer = null,
   expanded = false,
   lastExport = false,
   theme = 'light',
@@ -76,11 +68,14 @@ let selection = null,
   recoveredSnapshot = null,
   draftMindSize = null,
   originalMindSize = null;
+const feedback = createFeedback({ onLocaleChange: () => render() });
+const { toast, dialog, renderModal, finishDialog, showMessage } = feedback;
+const formatGuide = createFormatGuide({ dialog, toast });
 function entity() {
   if (selection?.kind === 'project') return store.project.metadata;
   return selection
-    ? store.project[selection.kind === 'card' ? 'cards' : 'relations'].find(
-        (e) => e.id === selection.id,
+    ? projectIndex(store.project)[selection.kind === 'card' ? 'cards' : 'relations'].get(
+        selection.id,
       )
     : null;
 }
@@ -90,12 +85,6 @@ function draftDirty() {
     (JSON.stringify(draft) !== JSON.stringify(draftOriginal) ||
       JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
   );
-}
-function toast(key) {
-  clearTimeout(toastTimer);
-  $('#toast').textContent = t(key);
-  $('#toast').hidden = false;
-  toastTimer = setTimeout(() => ($('#toast').hidden = true), 5000);
 }
 function translate(root = document) {
   document.title = t('pageTitle');
@@ -158,7 +147,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     updateStatus();
   },
   collapse: (id) => toggleBranch(id),
-  locked: () => Boolean(draftDirty() || modalState || layoutPreview),
+  locked: () => Boolean(draftDirty() || feedback.state || layoutPreview),
 });
 function render() {
   const existing = new Set(store.project.cards.map((c) => c.id));
@@ -228,74 +217,14 @@ function render() {
   translate();
   scheduleRecovery();
 }
-let listProject = null,
-  listQuery = null,
-  listLocale = null,
-  listSelection = null;
+const renderCardList = createCardList({
+  host: $('#card-list'),
+  onSelect: async (id) => {
+    if (await select({ kind: 'card', id })) adapter.focus(id);
+  },
+});
 function renderList() {
-  const host = $('#card-list');
-  if (listProject === store.project && listQuery === query && listLocale === getLocale()) {
-    if (listSelection)
-      host
-        .querySelector('[data-card-id="' + CSS.escape(listSelection) + '"]')
-        ?.classList.remove('active');
-    if (selection?.kind === 'card')
-      host
-        .querySelector('[data-card-id="' + CSS.escape(selection.id) + '"]')
-        ?.classList.add('active');
-    listSelection = selection?.kind === 'card' ? selection.id : null;
-    return;
-  }
-  listProject = store.project;
-  listQuery = query;
-  listLocale = getLocale();
-  listSelection = selection?.kind === 'card' ? selection.id : null;
-  const degrees = new Map();
-  for (const r of store.project.relations) {
-    degrees.set(r.source, (degrees.get(r.source) || 0) + 1);
-    degrees.set(r.target, (degrees.get(r.target) || 0) + 1);
-  }
-  host.replaceChildren();
-  const cards = search(store.project.cards, query);
-  if (!cards.length && query) {
-    const p = document.createElement('p');
-    p.className = 'muted';
-    p.textContent = t('noResults');
-    host.append(p);
-  }
-  for (const c of cards) {
-    const btn = document.createElement('button');
-    btn.className =
-      'card-row' + (selection?.kind === 'card' && selection.id === c.id ? ' active' : '');
-    btn.dataset.cardId = c.id;
-    const dot = document.createElement('span');
-    dot.className = 'dot';
-    dot.style.background = c.style.backgroundColor;
-    const name = document.createElement('span');
-    name.className = 'name';
-    name.textContent = c.title;
-    const degree = document.createElement('span');
-    degree.className = 'degree';
-    degree.textContent = number(degrees.get(c.id) || 0);
-    btn.append(dot, name, degree);
-    btn.onclick = async () => {
-      if (await select({ kind: 'card', id: c.id })) adapter.focus(c.id);
-    };
-    const excerpt = query && searchExcerpt(c, query);
-    if (excerpt) {
-      const snippet = document.createElement('small');
-      snippet.className = 'search-excerpt';
-      const q = query.trim();
-      const index = excerpt.toLocaleLowerCase().indexOf(q.toLocaleLowerCase());
-      snippet.append(document.createTextNode(excerpt.slice(0, index)));
-      const mark = document.createElement('mark');
-      mark.textContent = excerpt.slice(index, index + q.length);
-      snippet.append(mark, document.createTextNode(excerpt.slice(index + q.length)));
-      btn.append(snippet);
-      btn.classList.add('has-excerpt');
-    }
-    host.append(btn);
-  }
+  renderCardList({ project: store.project, query, selection });
 }
 function beginDraft() {
   draft = clone(entity());
@@ -305,7 +234,7 @@ function beginDraft() {
   originalMindSize = clone(draftMindSize);
 }
 async function select(next, edit = false) {
-  if (modalState || layoutPreview) return false;
+  if (feedback.state || layoutPreview) return false;
   if (connectMode && next?.kind === 'card') {
     if (!connectSource) {
       connectSource = next.id;
@@ -324,55 +253,6 @@ async function select(next, edit = false) {
   if (tab === 'edit' && entity()) beginDraft();
   render();
   return true;
-}
-function labelField(key, name, value, { textarea = false, color = false, options = null } = {}) {
-  let control;
-  if (options)
-    control =
-      '<select name="' +
-      name +
-      '">' +
-      options
-        .map(
-          (o) =>
-            '<option value="' +
-            esc(o.value) +
-            '"' +
-            (o.value === value ? ' selected' : '') +
-            '>' +
-            esc(o.label) +
-            '</option>',
-        )
-        .join('') +
-      '</select>';
-  else if (textarea) control = '<textarea name="' + name + '">' + esc(value) + '</textarea>';
-  else
-    control =
-      '<input type="' +
-      (color ? 'color' : 'text') +
-      '" name="' +
-      name +
-      '" value="' +
-      esc(value) +
-      '">';
-  return '<label>' + esc(t(key)) + control + '</label>';
-}
-function cardColorField(card, key) {
-  const flag = key === 'backgroundColor' ? 'backgroundTransparent' : 'borderTransparent';
-  return (
-    '<div>' +
-    labelField(key, key, card.style[key], { color: true }) +
-    (key === 'textColor'
-      ? ''
-      : '<label class="transparency-option"><input type="checkbox" name="appearance-' +
-        flag +
-        '"' +
-        (appearance(card)[flag] ? ' checked' : '') +
-        '>' +
-        esc(t(flag)) +
-        '</label>') +
-    '</div>'
-  );
 }
 function renderPanel() {
   const body = $('#panel-body');
@@ -465,9 +345,7 @@ function renderPanelContent() {
     };
     const list = body.querySelector('#relations-list');
     for (const dir of ['incoming', 'outgoing']) {
-      const edges = store.project.relations.filter(
-        (r) => r[dir === 'incoming' ? 'target' : 'source'] === e.id,
-      );
+      const edges = projectIndex(store.project)[dir].get(e.id) || [];
       const h = document.createElement('h3');
       h.textContent = t(dir) + ' (' + number(edges.length) + ')';
       list.append(h);
@@ -479,7 +357,7 @@ function renderPanelContent() {
       }
       for (const r of edges) {
         const peer = r[dir === 'incoming' ? 'source' : 'target'],
-          c = store.project.cards.find((c) => c.id === peer),
+          c = projectIndex(store.project).cards.get(peer),
           btn = document.createElement('button');
         btn.className = 'relation-link';
         btn.innerHTML =
@@ -494,224 +372,17 @@ function renderPanelContent() {
   }
   if (!draft) beginDraft();
   const d = draft;
-  let fields = '';
-  if (selection.kind === 'card' && tab === 'format') {
-    const a = appearance(d);
-    const config = nodeStyle(d);
-    const activeSize = store.activeView === 'mind' ? draftMindSize : d.size;
-    fields =
-      '<h3>' +
-      esc(t('cardShape')) +
-      '</h3><div class="format-grid">' +
-      ['width', 'height']
-        .map(
-          (k) =>
-            '<label>' +
-            esc(t(k)) +
-            '<input type="number" name="' +
-            k +
-            '" min="1" step="1" value="' +
-            activeSize[k] +
-            '"></label>',
-        )
-        .join('') +
-      '</div>';
-    fields +=
-      labelField('nodeKind', 'node-kind', config.kind, {
-        options: ['card', 'text', 'image', 'image-text'].map((value) => ({
-          value,
-          label: t(
-            {
-              card: 'kindCard',
-              text: 'kindText',
-              image: 'kindImage',
-              'image-text': 'kindImageText',
-            }[value],
-          ),
-        })),
-      }) +
-      labelField('coverImage', 'node-coverImageId', config.coverImageId || '', {
-        options: [
-          { value: '', label: t('noCover') },
-          ...Object.entries(d.extensions?.[IMAGE_NAMESPACE] || {}).map(([value, img]) => ({
-            value,
-            label: img.name,
-          })),
-        ],
-      }) +
-      labelField('imageFit', 'node-imageFit', config.imageFit, {
-        options: ['contain', 'cover'].map((value) => ({ value, label: t(value) })),
-      }) +
-      labelField('imageAlt', 'node-imageAlt', config.imageAlt || '') +
-      '<p class="node-format-hint">' +
-      esc(t('nodeFormatHint')) +
-      '</p><button type="button" id="set-root">' +
-      esc(t('setRoot')) +
-      '</button><button type="button" id="clear-root">' +
-      esc(t('clearRoot')) +
-      '</button>';
-    fields +=
-      '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
-      '</div><div class="format-grid">' +
-      [
-        ['radius', 0, 100],
-        ['borderWidth', 0, 8],
-        ['titleFontSize', 12, 24],
-      ]
-        .map(
-          ([k, min, max]) =>
-            '<label>' +
-            esc(t(k)) +
-            '<input name="appearance-' +
-            k +
-            '" type="number" min="' +
-            min +
-            '" max="' +
-            max +
-            '" step="0.5" value="' +
-            a[k] +
-            '"></label>',
-        )
-        .join('') +
-      '</div>';
-    fields +=
-      labelField('align', 'appearance-align', a.align, {
-        options: ['left', 'center', 'right'].map((value) => ({ value, label: t(value) })),
-      }) +
-      labelField('shadow', 'appearance-shadow', a.shadow, {
-        options: ['none', 'soft'].map((value) => ({ value, label: t(value) })),
-      });
-    fields +=
-      '<div class="shape-presets"><button type="button" data-shape="rectangle">' +
-      esc(t('rectangle')) +
-      '</button><button type="button" data-shape="rounded">' +
-      esc(t('rounded')) +
-      '</button><button type="button" id="reset-appearance">' +
-      esc(t('resetAppearance')) +
-      '</button></div><p class="muted">' +
-      esc(t('formatPreview')) +
-      '</p><div id="format-card-preview" class="format-card-preview"></div>';
-  } else if (selection.kind === 'card') {
-    fields +=
-      '<details class="editor-metadata" open><summary>' +
-      esc(t('metadata')) +
-      '</summary>' +
-      labelField('title', 'title', d.title) +
-      labelField('summary', 'summary', d.summary, { textarea: true }) +
-      labelField('type', 'type', d.type) +
-      labelField('tags', 'tags', d.tags.join(', '));
-    fields +=
-      '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
-      '</div>';
-    fields +=
-      '</details><div class="writing-tools"><button type="button" id="writing-toggle">' +
-      esc(t(writing ? 'exitWriting' : 'writingMode')) +
-      '</button><button type="button" id="draft-preview-toggle" aria-pressed="' +
-      previewDraft +
-      '">' +
-      esc(t(previewDraft ? 'writeDraft' : 'previewDraft')) +
-      '</button><button type="button" id="download-markdown">' +
-      esc(t('downloadMarkdown')) +
-      '</button><select id="template-select" aria-label="' +
-      esc(t('templateLabel')) +
-      '"><option value="">' +
-      esc(t('templateLabel')) +
-      '</option>' +
-      ['guide', 'api', 'note']
-        .map(
-          (k) =>
-            '<option value="' +
-            k +
-            '">' +
-            esc(t('template' + k[0].toUpperCase() + k.slice(1))) +
-            '</option>',
-        )
-        .join('') +
-      '</select></div>';
-    fields +=
-      '<div class="draft-preview"' +
-      (previewDraft ? '' : ' hidden') +
-      '><p class="muted">' +
-      esc(t('draftPreviewHint')) +
-      '</p><div class="markdown"></div></div><div class="writing-source"' +
-      (previewDraft ? ' hidden' : '') +
-      '>' +
-      '<div class="text-format-tools" role="group" aria-label="' +
-      esc(t('formatText')) +
-      '">' +
-      ['bold', 'italic', 'inlineCode']
-        .map(
-          (k) =>
-            '<button type="button" data-text-format="' +
-            k +
-            '" title="' +
-            esc(t(k)) +
-            '" aria-label="' +
-            esc(t(k)) +
-            '">' +
-            { bold: 'B', italic: 'I', inlineCode: '&lt;/&gt;' }[k] +
-            '</button>',
-        )
-        .join('') +
-      '<input type="color" id="inline-text-color" value="#d34f45" aria-label="' +
-      esc(t('textColorInline')) +
-      '"><button type="button" data-text-format="color">' +
-      esc(t('applyTextColor')) +
-      '</button></div>' +
-      labelField('content', 'content', d.content, { textarea: true }) +
-      '</div>';
-    fields +=
-      '<div class="image-tools"><button type="button" id="insert-image"' +
-      (imageUploadPending ? ' disabled' : '') +
-      '>' +
-      esc(t('insertImage')) +
-      '</button><input type="file" id="embedded-image-input" accept="image/png,image/jpeg,image/webp,image/gif" hidden><p class="muted">' +
-      esc(t('embeddedImageHint')) +
-      '</p><div class="attachment-list">' +
-      Object.entries(d.extensions?.[IMAGE_NAMESPACE] || {})
-        .map(
-          ([id, image]) =>
-            '<div class="attachment-row"><span>' +
-            esc(image.name) +
-            '</span><button type="button" data-remove-image="' +
-            esc(id) +
-            '" aria-label="' +
-            esc(t('removeImage') + ': ' + image.name) +
-            '">' +
-            esc(t('removeImage')) +
-            '</button></div>',
-        )
-        .join('') +
-      '</div></div>';
-  } else if (selection.kind === 'relation') {
-    fields += labelField('relationKind', 'mind-kind', relationKind(d), {
-      options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),
-    });
-    fields += labelField('mindColor', 'mind-color', d.extensions?.[MIND]?.color || d.style.color, {
-      color: true,
-    });
-    for (const field of ['source', 'target'])
-      fields += labelField(field, field, d[field], {
-        options: store.project.cards.map((c) => ({ value: c.id, label: c.title })),
-      });
-    fields +=
-      labelField('label', 'label', d.label) +
-      labelField('type', 'type', d.type) +
-      labelField('description', 'description', d.description, { textarea: true }) +
-      labelField('color', 'color', d.style.color, { color: true });
-    for (const [field, values] of [
-      ['line', ['solid', 'dashed', 'dotted']],
-      ['arrow', ['none', 'start', 'end', 'both']],
-    ])
-      fields += labelField(field, field, d.style[field], {
-        options: values.map((v) => ({ value: v, label: t(v) })),
-      });
-  } else
-    fields =
-      labelField('title', 'title', d.title) +
-      labelField('description', 'description', d.description, { textarea: true });
+  const fields = editorFields({
+    draft: d,
+    kind: selection.kind,
+    tab,
+    activeView: store.activeView,
+    mindSize: draftMindSize,
+    cards: store.project.cards,
+    writing,
+    previewDraft,
+    imageUploadPending,
+  });
   body.innerHTML =
     '<form class="editor">' +
     fields +
@@ -828,9 +499,6 @@ function renderPanelContent() {
     card.style.width = Math.min(10000, Math.max(1, previewSize.width)) + 'px';
     card.style.height = Math.min(10000, Math.max(1, previewSize.height)) + 'px';
     applyAppearance(card, draft);
-    card.style.setProperty('--card-background', draft.style.backgroundColor);
-    card.style.setProperty('--card-ink', draft.style.textColor);
-    card.style.setProperty('--card-border', draft.style.borderColor);
   }
   updateFormatPreview();
   if ($('#set-root'))
@@ -1065,57 +733,6 @@ function applyDraft() {
   updateStatus();
   return true;
 }
-function dialog(titleKey, body, buttons) {
-  if (modalState) throw Error('dialog already open');
-  return new Promise((resolve) => {
-    modalState = { titleKey, body, buttons, resolve };
-    renderModal();
-    $('#modal').showModal();
-  });
-}
-function renderModal() {
-  if (!modalState) return;
-  const { titleKey, body, buttons } = modalState;
-  $('#modal-content').innerHTML =
-    '<div class="modal-inner"><h2>' +
-    esc(t(titleKey)) +
-    '</h2><select id="modal-locale" aria-label="Tiếng Việt / English"><option value="vi">Tiếng Việt</option><option value="en">English</option></select><div class="modal-body"></div><div class="modal-actions"></div></div>';
-  $('#modal-locale').value = getLocale();
-  $('#modal-locale').onchange = (e) => {
-    $('#locale').value = e.target.value;
-    setLocale(e.target.value);
-    render();
-    renderModal();
-  };
-  const result = body();
-  const host = $('.modal-body');
-  if (typeof result === 'string') host.innerHTML = result;
-  else host.append(result);
-  for (const [key, value, primary = false, disabled = false] of buttons) {
-    const b = document.createElement('button');
-    b.textContent = t(key);
-    b.disabled = typeof disabled === 'function' ? disabled() : disabled;
-    b.className = primary ? 'primary' : '';
-    b.dataset.choice = value;
-    b.onclick = () => finishDialog(value);
-    $('.modal-actions').append(b);
-  }
-}
-function finishDialog(value) {
-  const state = modalState;
-  if (!state) return;
-  modalState = null;
-  $('#modal').close();
-  state.resolve(value);
-}
-$('#modal').addEventListener('cancel', (e) => {
-  e.preventDefault();
-  finishDialog('cancel');
-});
-async function showMessage(titleKey, message) {
-  if (modalState) return;
-  return dialog(titleKey, () => '<pre>' + esc(message()) + '</pre>', [['close', 'cancel']]);
-}
 async function guardDraft() {
   if (layoutPreview) return false;
   if (!draftDirty()) return true;
@@ -1342,20 +959,6 @@ async function initializeRecovery() {
   }
 }
 
-function download(text, name, type = 'application/json') {
-  const blob = new Blob([text], { type }),
-    url = URL.createObjectURL(blob),
-    link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  document.body.append(link);
-  try {
-    link.click();
-  } finally {
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-  }
-}
 async function exportProject() {
   if (draftDirty()) {
     const choice = await dialog('exportDraftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -1504,66 +1107,6 @@ async function loadExample(path = 'assets/data/example.json') {
     toast('errorRead');
   }
 }
-async function formatGuide() {
-  const body = () => {
-    const div = document.createElement('div');
-    div.innerHTML =
-      '<p>' +
-      esc(t('formatBody')) +
-      '</p><div class="guide-actions"><button id="schema-download">' +
-      esc(t('downloadSchema')) +
-      '</button><button id="example-download">' +
-      esc(t('downloadExample')) +
-      '</button><button id="mind-example-download">' +
-      esc(t('mindExample')) +
-      '</button><button id="copy-ai">' +
-      esc(t('copyInstructions')) +
-      '</button></div><pre>' +
-      esc(t('aiGuide')) +
-      '</pre><p>' +
-      esc(t('mindGuide')) +
-      '</p><p>' +
-      esc(t('radialGuide')) +
-      '</p>';
-    div.querySelector('#mind-example-download').onclick = async () => {
-      try {
-        const res = await fetch('assets/data/mind-map-example.json');
-        if (!res.ok) throw Error();
-        download(await res.text(), 'mind-map-example.json');
-      } catch {
-        toast('errorRead');
-      }
-    };
-    div.querySelector('#schema-download').onclick = async () => {
-      try {
-        const res = await fetch('assets/data/project.schema.json');
-        if (!res.ok) throw Error();
-        download(await res.text(), 'card-atlas.schema.json');
-      } catch {
-        toast('errorRead');
-      }
-    };
-    div.querySelector('#example-download').onclick = async () => {
-      try {
-        const res = await fetch('assets/data/example.json');
-        if (!res.ok) throw Error();
-        download(await res.text(), 'example-project.json');
-      } catch {
-        toast('errorRead');
-      }
-    };
-    div.querySelector('#copy-ai').onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(t('aiGuide'));
-        toast('copied');
-      } catch {
-        toast('copyFailed');
-      }
-    };
-    return div;
-  };
-  await dialog('format', body, [['close', 'cancel']]);
-}
 $('#file-input').onchange = () => {
   const file = $('#file-input').files[0];
   $('#file-input').value = '';
@@ -1575,7 +1118,7 @@ $('#search').oninput = (e) => {
 };
 $('#project-name').onclick = () => select({ kind: 'project', id: 'metadata' }, true);
 $('#map-view').onchange = () => {
-  if (modalState) {
+  if (feedback.state) {
     $('#map-view').value = store.activeView;
     return;
   }
@@ -1592,7 +1135,7 @@ $('#map-view').onchange = () => {
 $('#locale').onchange = (e) => {
   setLocale(e.target.value);
   render();
-  if (modalState) renderModal();
+  if (feedback.state) renderModal();
 };
 function revealSelection(s) {
   if (store.activeView !== 'mind' || !s) return false;
@@ -1612,7 +1155,7 @@ function revealSelection(s) {
   return changed;
 }
 async function toggleBranch(id) {
-  if (layoutPreview || modalState || !(await guardDraft())) return;
+  if (layoutPreview || feedback.state || !(await guardDraft())) return;
   const collapsed = new Set(store.collapsed);
   if (collapsed.has(id)) collapsed.delete(id);
   else collapsed.add(id);
@@ -1631,7 +1174,7 @@ async function toggleBranch(id) {
   render();
 }
 async function startLayout() {
-  if (store.activeView !== 'mind' || modalState || layoutPreview) return;
+  if (store.activeView !== 'mind' || feedback.state || layoutPreview) return;
   if (!store.project.extensions?.[MIND]?.rootId) {
     toast('layoutNeedsRoot');
     return;
@@ -1770,15 +1313,15 @@ const actions = {
 };
 document.addEventListener('click', (e) => {
   const button = e.target.closest('[data-action]');
-  if (button && !button.disabled && !modalState) actions[button.dataset.action]?.();
+  if (button && !button.disabled && !feedback.state) actions[button.dataset.action]?.();
 });
 document.addEventListener('keydown', (e) => {
-  if (layoutPreview && e.key === 'Escape' && !modalState) {
+  if (layoutPreview && e.key === 'Escape' && !feedback.state) {
     e.preventDefault();
     cancelLayout();
     return;
   }
-  if (e.target.closest('input,textarea,select,[contenteditable=true]') || modalState) return;
+  if (e.target.closest('input,textarea,select,[contenteditable=true]') || feedback.state) return;
   if (e.code === 'Space') {
     e.preventDefault();
     adapter.space = true;
