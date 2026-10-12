@@ -1,3 +1,4 @@
+import { visibility } from '../graph/radial-layout.js';
 import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mind-map.js';
 import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { applyAppearance } from '../detail/appearance.js';
@@ -48,6 +49,7 @@ export class GraphAdapter {
             label: 'data(label)',
             'font-family': 'Segoe UI, sans-serif',
             'font-size': 11,
+            'min-zoomed-font-size': 8,
             color: '#52645b',
             'text-background-color': '#f5f7f5',
             'text-background-opacity': 1,
@@ -69,10 +71,12 @@ export class GraphAdapter {
           selector: 'edge.reference-edge',
           style: { 'line-style': 'dashed', opacity: 0.55, width: 1.3 },
         },
+        { selector: 'edge.viewport-moving', style: { visibility: 'hidden' } },
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
       ],
     });
     this.cy.on('pan zoom', () => {
+      this.deferEdges();
       this.view();
       callbacks.viewport(this.cy.zoom(), this.cy.pan());
     });
@@ -91,8 +95,14 @@ export class GraphAdapter {
     });
     this.observer.observe(region);
   }
-  sync(project, selection, view = 'card') {
-    if (this.activeView !== view) {
+  sync(project, selection, view = 'card', options = {}) {
+    if (
+      this.activeView !== view ||
+      this.lastPreview !== options.positions ||
+      this.lastCollapsed !== options.collapsed
+    ) {
+      this.lastPreview = options.positions;
+      this.lastCollapsed = options.collapsed;
       this.lastProject = null;
       this.activeView = view;
     }
@@ -120,6 +130,17 @@ export class GraphAdapter {
         }
       }
       for (const el of this.cards.values()) {
+        const toggle = el.querySelector('.branch-toggle');
+        if (toggle) {
+          toggle.setAttribute(
+            'aria-label',
+            t(toggle.dataset.expanded === 'true' ? 'collapseBranch' : 'expandBranchCount', {
+              count: toggle.dataset.count,
+              title: el.getAttribute('aria-label'),
+            }),
+          );
+          toggle.title = toggle.getAttribute('aria-label');
+        }
         const count = el.querySelector('.card-open');
         if (count) {
           count.title =
@@ -138,6 +159,8 @@ export class GraphAdapter {
     }
     this.lastSelection = selection;
     this.lastProject = project;
+    const visible = visibility(project, view === 'mind' ? options.collapsed : undefined);
+    this.hiddenNodes = view === 'mind' ? visible.hidden : new Set();
     const degrees = new Map();
     for (const relation of project.relations) {
       degrees.set(relation.source, (degrees.get(relation.source) || 0) + 1);
@@ -152,7 +175,12 @@ export class GraphAdapter {
         if (!desired.has(e.id())) e.remove();
       });
       for (const originalCard of project.cards) {
-        const c = { ...originalCard, ...geometry(project, originalCard, view) };
+        const g = geometry(project, originalCard, view);
+        const c = {
+          ...originalCard,
+          ...g,
+          position: options.positions?.[originalCard.id] || g.position,
+        };
         let node = this.cy.getElementById(cid(c.id));
         const data = { id: cid(c.id), appId: c.id, width: c.size.width, height: c.size.height };
         const pos = { x: c.position.x + c.size.width / 2, y: c.position.y + c.size.height / 2 };
@@ -179,6 +207,8 @@ export class GraphAdapter {
             }
           });
         }
+        el.hidden = this.hiddenNodes.has(c.id);
+        node.style('display', el.hidden ? 'none' : 'element');
         el.replaceChildren();
         const title = document.createElement('h3');
         title.textContent = c.title;
@@ -286,6 +316,33 @@ export class GraphAdapter {
             marker.textContent = t(marker.dataset.i18n);
             el.append(marker);
           }
+          const children = visible.children.get(c.id) || [];
+          if (view === 'mind' && children.length) {
+            const collapsed = options.collapsed?.has(c.id),
+              button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'branch-toggle';
+            button.dataset.count = collapsed ? visible.counts.get(c.id) || 0 : 0;
+            button.dataset.expanded = String(!collapsed);
+            button.textContent = collapsed ? '+' + button.dataset.count : '−';
+            button.setAttribute('aria-expanded', String(!collapsed));
+            button.setAttribute(
+              'aria-label',
+              t(collapsed ? 'expandBranchCount' : 'collapseBranch', {
+                count: button.dataset.count,
+                title: c.title,
+              }),
+            );
+            button.title = button.getAttribute('aria-label');
+            button.disabled = Boolean(options.positions);
+            for (const name of ['pointerdown', 'dblclick', 'keydown'])
+              button.addEventListener(name, (e) => e.stopPropagation());
+            button.onclick = (e) => {
+              e.stopPropagation();
+              this.callbacks.collapse?.(c.id);
+            };
+            el.append(button);
+          }
           el.append(connector);
         } else el.append(kicker, title, summary, meta, connector);
         applyAppearance(el, c);
@@ -331,12 +388,25 @@ export class GraphAdapter {
             edge.move({ source: data.source, target: data.target });
           edge.data(data);
         }
+        edge.style(
+          'display',
+          this.hiddenNodes.has(r.source) || this.hiddenNodes.has(r.target) ? 'none' : 'element',
+        );
         edge.toggleClass('mind-edge', view === 'mind');
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
     this.view();
+  }
+  deferEdges() {
+    if (this.cy.edges().length < 1000) return;
+    if (!this.edgeTimer) this.cy.edges().addClass('viewport-moving');
+    clearTimeout(this.edgeTimer);
+    this.edgeTimer = setTimeout(() => {
+      this.edgeTimer = null;
+      this.cy.edges().removeClass('viewport-moving');
+    }, 160);
   }
   view() {
     const p = this.cy.pan(),
@@ -360,7 +430,8 @@ export class GraphAdapter {
     this.view();
   }
   fit() {
-    if (this.cy.nodes().length) this.cy.fit(this.cy.elements(), 65);
+    const visible = this.cy.elements().filter((e) => e.style('display') !== 'none');
+    if (visible.nodes().length) this.cy.fit(visible, 65);
     else this.cy.viewport({ zoom: 1, pan: { x: 0, y: 0 } });
     this.view();
   }
@@ -424,7 +495,8 @@ export class GraphAdapter {
     });
   }
   cardStart(e, id) {
-    if (e.target.closest('.connector, .card-open') || this.space || e.button !== 0) return;
+    if (e.target.closest('.connector, .card-open, .branch-toggle') || this.space || e.button !== 0)
+      return;
     if (this.callbacks.locked()) {
       this.callbacks.select({ kind: 'card', id });
       return;
@@ -445,6 +517,7 @@ export class GraphAdapter {
         dy = p.y - start.y;
       if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
       if (moved) {
+        this.deferEdges();
         n.position({ x: original.x + dx, y: original.y + dy });
         el.style.left = original.x + dx - width / 2 + 'px';
         el.style.top = original.y + dy - height / 2 + 'px';

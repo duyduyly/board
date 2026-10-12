@@ -1357,3 +1357,62 @@ button.primary:hover {
   font-size: 12px;
   z-index: 4;
 }
+
+.graph-card[hidden],
+#mind-map-tools[hidden],
+#layout-preview-bar[hidden] {
+  display: none !important;
+}
+.mind-map-tools {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  z-index: 5;
+  max-width: calc(100% - 36px);
+}
+.mind-map-tools button {
+  font-size: 12px;
+  padding: 7px 10px;
+}
+.layout-preview-bar {
+  position: absolute;
+  top: 62px;
+  left: 18px;
+  width: min(540px, calc(100% - 36px));
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  z-index: 6;
+  box-shadow: 0 4px 18px #00000012;
+}
+.layout-preview-bar p,
+#layout-warnings {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0;
+  color: var(--muted);
+}
+.layout-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.branch-toggle {
+  position: absolute;
+  left: -11px;
+  top: calc(50% - 11px);
+  height: 22px;
+  min-width: 22px;
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 18px;
+  border-radius: 12px;
+  border-color: var(--branch-color);
+  background: var(--surface);
+  cursor: pointer;
+}

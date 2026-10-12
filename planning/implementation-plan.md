@@ -180,11 +180,11 @@ DONE theo user: tab Format riêng gồm width/height, nền/chữ/viền, radius
 
 Plan: [mind-map-plan.md](mind-map-plan.md). Checklist riêng: [mind-map-checklist.csv](mind-map-checklist.csv), tái tạo từ checklist chính mỗi lần cập nhật.
 MM001–MM012 DONE: bốn kiểu node/ảnh độc lập, Card Map và Mind Map thủ công, graph/Detail dùng chung, geometry riêng, Root/branch/reference và đầy đủ thao tác.
-MM013–MM020 TODO: radial layout preview và collapse; user hiện chỉ giao đợt 1. B104/B201 vẫn BACKLOG ngoài scope đã tách.
+MM013–MM020 DONE: đợt 2 đã nghiệm thu radial layout preview và collapse; regression/benchmark pass. B104/B201 vẫn BACKLOG ngoài scope đã tách.
 
 ### Tiến độ hiện tại
 
-67 DONE,8 TODO,10 BACKLOG; không task đang dở hoặc blocker. Files đổi: index.html, assets/js/css/data, README, tests, benchmark script, AGENTS và planning; contract namespace đã đồng bộ spec.
-Core28/28; fullUI117/117 Chrome/Edge/Firefox; targeted matrix24+connector3+Guide3 pass sau polish; lint/typecheck/format/build pass.
-Benchmark500nodes/2000relations hai view: import<1s, Overview<90ms, pan median59.88FPS.
-Evidence: [mind-map-phase1-evidence.md](mind-map-phase1-evidence.md). Task kế tiếp khi được giao đợt 2: MM013. Không tự thực hiện BACKLOG.
+75 DONE,10 BACKLOG; không TODO/IN_PROGRESS/BLOCKED trong phạm vi đã giao. Đợt 2: pure radial layout, preview Apply/Cancel/Reset, atomic undo, collapse session/count/search reveal, vi/en và light/dark; không đổi JSON1.0 hay Card Map geometry.
+Files: index.html; assets/js/graph/radial-layout.js, app, adapter, store, i18n; assets/css; README/AGENTS; core/browser tests; prototype/benchmark scripts và planning evidence.
+Core33/33, lint/typecheck/format/build pass. Benchmark500/2000 hai view pass; Mind preview647ms,0overlap,pan59.88FPS. Full UI147/147 Chrome/Edge/Firefox pass.
+Evidence: [mind-map-phase2-evidence.md](mind-map-phase2-evidence.md). Đợt 2 hoàn tất; task tiếp theo chỉ khi user giao scope mới. Không thực hiện BACKLOG.

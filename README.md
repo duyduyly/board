@@ -162,7 +162,7 @@ Trong tab **Chỉnh sửa**, chọn đoạn chữ trong ô Markdown rồi dùng 
 
 ## Illustrated Mind Map — đợt 1
 
-Chọn Card Map / Mind Map trên toolbar. Hai view dùng chung nội dung và Detail, có vị trí/kích thước riêng. Mind Map hiện bố trí thủ công: kéo node và dùng Fit/Focus; layout radial và collapse thuộc đợt 2.
+Chọn Card Map / Mind Map trên toolbar. Hai view dùng chung nội dung và Detail, có vị trí/kích thước riêng. Mind Map cho phép kéo node thủ công và sắp xếp radial có Preview/Apply/Cancel, thu gọn nhánh; dùng Fit/Focus để đọc từng vùng.
 
 Trong Detail → Format chọn Card, Chữ, Ảnh hoặc Ảnh và chữ. Thêm ảnh PNG/JPEG/WebP/GIF ở Edit rồi chọn làm ảnh đại diện; ảnh nhúng nằm trong JSON, không tải lên server. Contain hiển thị toàn bộ ảnh; Cover lấp đầy khung. Đổi cover hoặc kiểu node trước khi xóa attachment đang dùng. Click node chữ/ảnh hoặc Enter mở Overview; connector vẫn tạo liên kết như card.
 
@@ -170,4 +170,16 @@ Trong Detail → Format chọn Card, Chữ, Ảnh hoặc Ảnh và chữ. Thêm 
 
 Ví dụ: [assets/data/mind-map-example.json](assets/data/mind-map-example.json), mở bằng nút Ví dụ Mind Map. UI hỗ trợ Tiếng Việt/English, light/dark. Export lưu graph và geometry cả hai view; chuyển view không tự sắp xếp hay thêm undo. Recovery vẫn opt-in và giữ draft/view khi bật.
 
-Illustrated Mind Map phase 1: choose a view in the toolbar, select a node style/cover in Detail Format, and assign Root plus Branch/Reference roles. Both views share content with separate geometry. Layout is manual; radial layout and collapse are planned for phase 2. Use Edit to embed raster images, then select their cover in Format. Export JSON to preserve your work.
+Illustrated Mind Map phase 1: choose a view in the toolbar, select a node style/cover in Detail Format, and assign Root plus Branch/Reference roles. Both views share content with separate geometry. Manual dragging, radial layout preview and branch collapse are available. Use Edit to embed raster images, then select their cover in Format. Export JSON to preserve your work.
+
+## Bố trí radial và thu gọn nhánh — đợt 2
+
+Trong Mind Map, đặt Root rồi bấm **Sắp xếp Mind Map**. Preview hiển thị toàn bộ graph; các node ngoài Root nằm ở vùng riêng. Bố trí xét kích thước thực, chỉ dựa vào branch; liên kết tham khảo không đổi hierarchy. **Áp dụng bố trí** lưu vị trí Mind Map trong một undo và giữ Card Map nguyên vẹn. **Hủy**, Escape hoặc đổi view bỏ preview và khôi phục viewport/trạng thái nhánh trước preview. **Đặt lại preview** tính lại từ model hiện tại. Trong preview, chỉnh sửa và export tạm khóa; theme/ngôn ngữ/zoom/Fit vẫn dùng được. Áp dụng lại bố trí không đổi không thêm history.
+
+Nút − bên trái node có con thu gọn descendants; nút +N mở lại và cho biết số node ẩn. **Mở tất cả nhánh** bỏ trạng thái thu gọn. Chỉ branch quyết định descendants; liên kết tham khảo với đầu bị ẩn cũng ẩn. Search, điều hướng và Focus mở các tổ tiên cần thiết. Nếu thu gọn làm selection bị ẩn, Detail chuyển về node cha sau guard draft.
+
+Thu gọn thuộc phiên: không làm dirty/undo, không export hay recovery; export luôn đủ node/relation/ảnh. Layout đã Apply lưu trong JSON và recovery như geometry khác. Graph lớn hoặc node quá lớn có cảnh báo trải rộng; dùng zoom/Focus và chỉnh thủ công. Không cam kết đường cong tránh mọi node.
+
+English: set Root, then Arrange Mind Map to preview. Apply writes only Mind Map positions in one undo step; Cancel/Escape/view switch restores the earlier view. Collapse uses branch descendants and remains session-only. Search/Focus reveals ancestors; export retains the complete graph. Large maps may need zoom, Focus and manual adjustments.
+
+Với ≥1.000 đường nối, pan/zoom/drag tạm ẩn đường nối và khôi phục sau khi dừng khoảng 160 ms để giữ thao tác mượt. Khi zoom nhỏ, nhãn đường nối quá nhỏ được ẩn; zoom vào để đọc. / With ≥1,000 edges, movement temporarily defers edge rendering and restores it after about 160 ms idle; unreadably small edge labels are hidden until zoomed in.

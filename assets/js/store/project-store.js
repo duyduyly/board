@@ -39,6 +39,7 @@ export class ProjectStore {
     this.maxBytes = maxBytes;
     this.project = blank();
     this.activeView = 'card';
+    this.collapsed = new Set();
     this.viewports = { card: clone(this.project.canvas) };
     this.undoStack = [];
     this.redoStack = [];
@@ -73,6 +74,7 @@ export class ProjectStore {
   }
   replace(p, adjusted = false) {
     this.project = clone(p);
+    this.collapsed = new Set();
     this.activeView = 'card';
     this.viewports = { card: clone(p.canvas) };
     if (p.extensions?.[VIEWS]?.mindMap?.viewport)
@@ -80,13 +82,13 @@ export class ProjectStore {
     this.undoStack = [];
     this.redoStack = [];
     this.baseline = content(p);
-    this.viewBaseline = JSON.stringify(this.viewport);
+    this.viewBaseline = JSON.stringify(this.viewports);
     this.adjusted = adjusted;
     this.emit();
   }
   exported() {
     this.baseline = content(this.project);
-    this.viewBaseline = JSON.stringify(this.viewport);
+    this.viewBaseline = JSON.stringify(this.viewports);
     this.adjusted = false;
     this.emit();
   }

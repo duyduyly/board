@@ -84,6 +84,26 @@
             <button data-action="mind-example" class="text-button" data-i18n="mindExample"></button>
             <button data-action="import" class="text-button" data-i18n="importProject"></button>
           </div>
+          <div id="mind-map-tools" class="mind-map-tools" hidden>
+            <button data-action="layout" data-i18n="arrangeMindMap"></button>
+            <button data-action="expand-all" data-i18n="expandAll"></button>
+          </div>
+          <div
+            id="layout-preview-bar"
+            class="layout-preview-bar"
+            role="region"
+            data-i18n-title="layoutPreviewTitle"
+            hidden
+          >
+            <strong data-i18n="layoutPreviewTitle"></strong>
+            <p data-i18n="layoutPreviewHint"></p>
+            <div id="layout-warnings" role="status"></div>
+            <div class="layout-preview-actions">
+              <button data-action="layout-cancel" data-i18n="cancel"></button
+              ><button data-action="layout-reset" data-i18n="resetPreview"></button
+              ><button class="primary" data-action="layout-apply" data-i18n="applyLayout"></button>
+            </div>
+          </div>
           <div id="mind-map-hint" hidden></div>
           <div id="connect-hint" class="connect-hint" hidden></div>
           <div class="zoom-controls">

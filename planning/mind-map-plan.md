@@ -118,9 +118,7 @@ MM012 là gate đợt 1: MM001–MM011 DONE có evidence, checks bắt buộc pa
 
 ## 8. Tiến độ hiện tại
 
-MM001–MM012 DONE; MM013–MM020 TODO. Tổng67 DONE,8 TODO,10 BACKLOG; không IN_PROGRESS/BLOCKED.
-Files: root index.html; assets/js/graph/mind-map.js, schema/validator/store/adapter/app/types/i18n; assets/css; schema/example; README; tests và scripts/benchmark-mind-map.mjs.
-Checks: core28/28; full UI117/117 trên Chrome/Edge/Firefox; sau polish targeted Mind Map24/24, connector3/3, Format Guide3/3; lint/typecheck/format/build pass. Benchmark500/2000 gồm raster ngang/dọc pass cả hai view.
-Evidence: [mind-map-phase1-evidence.md](mind-map-phase1-evidence.md), reports và screenshots được link trong evidence.
-Không blocker. Đợt 1 chỉ layout thủ công; chưa radial preview/collapse. B104/B201 vẫn BACKLOG cho scope rộng cũ.
-Task tiếp theo nếu user giao đợt 2: MM013 prototype radial layout. Không tự bắt đầu đợt 2.
+MM001–MM020 DONE. Tổng75 DONE,10 BACKLOG; không blocker hoặc task đang dở.
+Đợt 2 dùng weighted sectors + bbox depth rings, deterministic ID order và forest packing; preview session độc lập, Apply một command, collapse không export/recovery. Với ≥1.000 edges, tạm hoãn vẽ edges khi pan/zoom/drag và khôi phục sau160ms idle để đạt target; dữ liệu và chọn relation khi dừng giữ nguyên.
+Core33/33, lint/typecheck/format/build pass; benchmark500/2000 pass cả hai view, Mind preview647ms/0overlap/pan59.88FPS. Full UI147/147 Chrome/Edge/Firefox pass; release gate MM020 DONE.
+Evidence: [mind-map-phase2-evidence.md](mind-map-phase2-evidence.md). Đợt 2 hoàn tất, không triển khai BACKLOG.

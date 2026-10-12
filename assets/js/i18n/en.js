@@ -1,4 +1,25 @@
 export default {
+  arrangeMindMap: 'Arrange Mind Map',
+  expandAll: 'Expand all branches',
+  collapseBranch: 'Collapse branch: {title}',
+  expandBranchCount: 'Expand branch: {title} ({count} hidden nodes)',
+  layoutPreviewTitle: 'Radial layout preview',
+  layoutPreviewHint:
+    'Positions are not saved yet. Apply creates one undo step. Switching views or Escape cancels the preview; editing is temporarily locked.',
+  applyLayout: 'Apply layout',
+  resetPreview: 'Reset preview',
+  layoutNeedsRoot: 'Select a node and set it as Root in Format before arranging.',
+  layoutInvalid: 'A valid layout could not be generated. You can still arrange nodes manually.',
+  layoutDetached: '{count} nodes outside Root are placed in a separate area.',
+  layoutOverlap: '{count} node pairs overlap; inspect and adjust them manually.',
+  layoutSpread:
+    'Many branches or large nodes make the map spread out. Use Fit, zoom and Focus to inspect each area.',
+  previewCancelledSwitch: 'Layout preview cancelled when switching views.',
+  layoutApplied: 'Layout applied; one Undo restores the previous positions.',
+  hiddenNodes: '{count} nodes collapsed',
+  layoutBusy: 'Apply or cancel the preview before editing.',
+  radialGuide:
+    'In Mind Map, Arrange opens a radial preview. Apply saves Mind Map positions in one undo; Cancel/Reset or Escape preserve content. Collapse hides branch descendants only for this session, without deleting nodes or exporting collapse state; Search/Focus reveals ancestors when needed.',
   mindGuide:
     'Mind Map shares cards/relations. Node style and cover: extensions.card-atlas:node; embedded images: card-atlas:images. Separate geometry: project.extensions.card-atlas:views.mindMap. Root and branch/reference: card-atlas:mind-map. Branches must be acyclic with at most one parent per node. Download the Mind Map example for the complete structure.',
 

@@ -1,4 +1,25 @@
 export default {
+  arrangeMindMap: 'Sắp xếp Mind Map',
+  expandAll: 'Mở tất cả nhánh',
+  collapseBranch: 'Thu gọn nhánh: {title}',
+  expandBranchCount: 'Mở nhánh: {title} ({count} node ẩn)',
+  layoutPreviewTitle: 'Xem trước bố trí radial',
+  layoutPreviewHint:
+    'Bố trí chưa được lưu. Áp dụng tạo một thao tác undo. Đổi view hoặc Escape sẽ hủy preview; chỉnh sửa tạm khóa.',
+  applyLayout: 'Áp dụng bố trí',
+  resetPreview: 'Đặt lại preview',
+  layoutNeedsRoot: 'Hãy chọn một node và đặt làm Root trong Format trước khi sắp xếp.',
+  layoutInvalid: 'Không thể tạo bố trí hợp lệ. Bạn vẫn có thể bố trí thủ công.',
+  layoutDetached: '{count} node ngoài Root được đặt ở vùng riêng.',
+  layoutOverlap: 'Có {count} cặp node chồng nhau; hãy kiểm tra và chỉnh thủ công.',
+  layoutSpread:
+    'Bản đồ trải rộng do nhiều nhánh hoặc node lớn. Dùng Fit, zoom và Focus để đọc từng vùng.',
+  previewCancelledSwitch: 'Đã hủy preview khi đổi view.',
+  layoutApplied: 'Đã áp dụng bố trí; một Undo sẽ khôi phục vị trí trước đó.',
+  hiddenNodes: '{count} node đang thu gọn',
+  layoutBusy: 'Hãy áp dụng hoặc hủy preview trước khi chỉnh sửa.',
+  radialGuide:
+    'Trong Mind Map, Sắp xếp mở preview radial. Apply lưu vị trí riêng Mind Map trong một undo; Cancel/Reset hoặc Escape không thay nội dung. Thu gọn chỉ ẩn descendants theo branch trong phiên, không xóa hoặc export trạng thái thu gọn; Search/Focus mở tổ tiên khi cần.',
   mindGuide:
     'Mind Map dùng cùng cards/relations. Kiểu node và ảnh đại diện: extensions.card-atlas:node; ảnh nhúng: card-atlas:images. Vị trí/kích thước riêng: project.extensions.card-atlas:views.mindMap. Root và branch/reference: card-atlas:mind-map. Branch không cycle và mỗi node tối đa một parent. Dùng ví dụ Mind Map để xem cấu trúc đầy đủ.',
 

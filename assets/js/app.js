@@ -1,3 +1,4 @@
+import { radialLayout, applyLayout, visibility, revealAncestors } from './graph/radial-layout.js';
 import {
   NODE,
   MIND,
@@ -50,6 +51,7 @@ const esc = (s) =>
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
   );
 export const store = new ProjectStore();
+export let layoutPreview = null;
 let selection = null,
   tab = 'overview',
   draft = null,
@@ -123,6 +125,7 @@ function errorLines(issues) {
   return issues.map((e) => e.path + ': ' + issueMessage(e)).join('\n');
 }
 function change(mutator) {
+  if (layoutPreview) return false;
   try {
     const result = store.commit(mutator);
     lastExport = false;
@@ -154,9 +157,18 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     store.setView(zoom, position);
     updateStatus();
   },
-  locked: () => Boolean(draftDirty() || modalState),
+  collapse: (id) => toggleBranch(id),
+  locked: () => Boolean(draftDirty() || modalState || layoutPreview),
 });
 function render() {
+  const existing = new Set(store.project.cards.map((c) => c.id));
+  if ([...store.collapsed].some((id) => !existing.has(id)))
+    store.collapsed = new Set([...store.collapsed].filter((id) => existing.has(id)));
+  if (layoutPreview && layoutPreview.project !== store.project) {
+    cancelLayout();
+    return;
+  }
+
   const themeButton = $('#theme-toggle');
   themeButton.dataset.i18nTitle = theme === 'dark' ? 'lightMode' : 'darkMode';
   themeButton.querySelector('[data-i18n]').dataset.i18n =
@@ -168,7 +180,22 @@ function render() {
     draft = null;
     draftOriginal = null;
   }
-  adapter.sync(store.project, selection, store.activeView);
+  if (!layoutPreview) revealSelection(selection);
+  adapter.sync(store.project, selection, store.activeView, {
+    positions: layoutPreview?.result.positions,
+    collapsed: store.collapsed,
+  });
+  $('#mind-map-tools').hidden = store.activeView !== 'mind';
+  $('#layout-preview-bar').hidden = !layoutPreview;
+  $('#panel-body').inert = Boolean(layoutPreview);
+  $('#layout-warnings').textContent =
+    layoutPreview?.result.warnings.map((w) => t(w.code, { count: w.count })).join(' ') || '';
+  $('[data-action=layout]').disabled = Boolean(layoutPreview) || !store.project.cards.length;
+  $('[data-action=expand-all]').disabled = Boolean(layoutPreview) || !store.collapsed.size;
+  for (const action of ['new', 'add', 'connect', 'import', 'export', 'recovery'])
+    for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
+      el.disabled = Boolean(layoutPreview);
+
   $('#map-view').value = store.activeView;
   $('#mind-map-hint').hidden =
     store.activeView !== 'mind' || Boolean(store.project.extensions?.[MIND]?.rootId);
@@ -190,7 +217,8 @@ function render() {
     t('relations');
   for (const key of ['undo', 'redo'])
     $('[data-action=' + key + ']').disabled =
-      key === 'undo' ? !store.undoStack.length : !store.redoStack.length;
+      Boolean(layoutPreview) ||
+      (key === 'undo' ? !store.undoStack.length : !store.redoStack.length);
   $('[data-action=connect]').classList.toggle('primary', connectMode);
   $('#connect-hint').hidden = !connectMode;
   $('#connect-hint').textContent = t('chooseTarget');
@@ -277,7 +305,7 @@ function beginDraft() {
   originalMindSize = clone(draftMindSize);
 }
 async function select(next, edit = false) {
-  if (modalState) return false;
+  if (modalState || layoutPreview) return false;
   if (connectMode && next?.kind === 'card') {
     if (!connectSource) {
       connectSource = next.id;
@@ -288,6 +316,7 @@ async function select(next, edit = false) {
   }
   if (JSON.stringify(selection) === JSON.stringify(next) && !edit) return true;
   if (!(await guardDraft())) return false;
+  revealSelection(next);
   selection = next;
   tab = next?.kind === 'relation' || edit || next?.kind === 'project' ? 'edit' : 'overview';
   draft = null;
@@ -1071,6 +1100,7 @@ async function showMessage(titleKey, message) {
   return dialog(titleKey, () => '<pre>' + esc(message()) + '</pre>', [['close', 'cancel']]);
 }
 async function guardDraft() {
+  if (layoutPreview) return false;
   if (!draftDirty()) return true;
   const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
     ['cancel', 'cancel'],
@@ -1184,7 +1214,7 @@ function recoverySnapshot() {
 }
 function scheduleRecovery() {
   clearTimeout(recoveryTimer);
-  if (!recoveryEnabled() || recoveryPending) return;
+  if (!recoveryEnabled() || recoveryPending || layoutPreview) return;
   recoveryTimer = setTimeout(async () => {
     try {
       await saveRecovery(recoverySnapshot());
@@ -1373,6 +1403,7 @@ async function createProject() {
   if (await replaceProject(project)) toast('projectCreated');
 }
 async function replaceProject(p, adjusted = false) {
+  if (layoutPreview) return false;
   if (!(await guardDraft())) return false;
   if (store.dirty) {
     const choice = await dialog('replaceTitle', () => '<p>' + esc(t('replaceBody')) + '</p>', [
@@ -1474,6 +1505,8 @@ async function formatGuide() {
       esc(t('aiGuide')) +
       '</pre><p>' +
       esc(t('mindGuide')) +
+      '</p><p>' +
+      esc(t('radialGuide')) +
       '</p>';
     div.querySelector('#mind-example-download').onclick = async () => {
       try {
@@ -1529,7 +1562,12 @@ $('#map-view').onchange = () => {
     $('#map-view').value = store.activeView;
     return;
   }
-  store.switchView($('#map-view').value);
+  const targetView = $('#map-view').value;
+  if (layoutPreview) {
+    cancelLayout();
+    toast('previewCancelledSwitch');
+  }
+  store.switchView(targetView);
   previousPanelKey = null;
   render();
   adapter.setViewport(store.viewport);
@@ -1539,7 +1577,123 @@ $('#locale').onchange = (e) => {
   render();
   if (modalState) renderModal();
 };
+function revealSelection(s) {
+  if (store.activeView !== 'mind' || !s) return false;
+  const collapsed = new Set(store.collapsed);
+  let changed = false;
+  const ids =
+    s.kind === 'card'
+      ? [s.id]
+      : s.kind === 'relation'
+        ? (() => {
+            const r = store.project.relations.find((r) => r.id === s.id);
+            return r ? [r.source, r.target] : [];
+          })()
+        : [];
+  for (const id of ids) changed = revealAncestors(store.project, id, collapsed) || changed;
+  if (changed) store.collapsed = collapsed;
+  return changed;
+}
+async function toggleBranch(id) {
+  if (layoutPreview || modalState || !(await guardDraft())) return;
+  const collapsed = new Set(store.collapsed);
+  if (collapsed.has(id)) collapsed.delete(id);
+  else collapsed.add(id);
+  const { hidden } = visibility(store.project, collapsed);
+  store.collapsed = collapsed;
+  const r = selection?.kind === 'relation' ? entity() : null;
+  if (
+    (selection?.kind === 'card' && hidden.has(selection.id)) ||
+    (r && (hidden.has(r.source) || hidden.has(r.target)))
+  ) {
+    selection = { kind: 'card', id };
+    tab = 'overview';
+    draft = null;
+    draftOriginal = null;
+  }
+  render();
+}
+async function startLayout() {
+  if (store.activeView !== 'mind' || modalState || layoutPreview) return;
+  if (!store.project.extensions?.[MIND]?.rootId) {
+    toast('layoutNeedsRoot');
+    return;
+  }
+  if (!(await guardDraft())) return;
+  try {
+    const result = radialLayout(store.project);
+    layoutPreview = {
+      result,
+      project: store.project,
+      viewport: clone(store.viewport),
+      collapsed: store.collapsed,
+    };
+    store.collapsed = new Set();
+    connectMode = false;
+    connectSource = null;
+    clearTimeout(recoveryTimer);
+    render();
+    adapter.fit();
+    $('[data-action=layout-cancel]').focus();
+  } catch {
+    toast('layoutInvalid');
+  }
+}
+function cancelLayout() {
+  if (!layoutPreview) return;
+  const previous = layoutPreview;
+  layoutPreview = null;
+  store.collapsed = previous.collapsed;
+  render();
+  adapter.setViewport(previous.viewport);
+  if (store.activeView === 'mind') $('[data-action=layout]').focus();
+}
+function acceptLayout() {
+  if (!layoutPreview) return;
+  const previous = layoutPreview;
+  if (previous.project !== store.project) {
+    cancelLayout();
+    toast('layoutInvalid');
+    return;
+  }
+  layoutPreview = null;
+  store.collapsed = previous.collapsed;
+  const existing = store.project.extensions?.['card-atlas:views']?.mindMap?.positions || {};
+  const unchanged = Object.entries(previous.result.positions).every(
+    ([id, pos]) => JSON.stringify(existing[id]) === JSON.stringify(pos),
+  );
+  if (unchanged || change((p) => applyLayout(p, previous.result))) {
+    render();
+    adapter.fit();
+    toast('layoutApplied');
+  } else {
+    layoutPreview = previous;
+    store.collapsed = new Set();
+    render();
+  }
+}
 const actions = {
+  layout: startLayout,
+  'layout-cancel': cancelLayout,
+  'layout-reset': () => {
+    if (layoutPreview) {
+      try {
+        layoutPreview.result = radialLayout(store.project);
+        render();
+        adapter.fit();
+      } catch {
+        toast('layoutInvalid');
+      }
+    }
+  },
+  'layout-apply': acceptLayout,
+  'expand-all': () => {
+    if (!layoutPreview) {
+      store.collapsed = new Set();
+      render();
+    }
+  },
+
   new: createProject,
   add: addCard,
   connect: async () => {
@@ -1586,6 +1740,7 @@ const actions = {
   'zoom-reset': () => adapter.resetZoom(),
   fit: () => adapter.fit(),
   focus: () => {
+    if (revealSelection(selection)) render();
     if (selection?.kind === 'card') adapter.focus(selection.id);
     if (selection?.kind === 'relation') adapter.focusRelation(selection.id);
   },
@@ -1601,12 +1756,22 @@ document.addEventListener('click', (e) => {
   if (button && !button.disabled && !modalState) actions[button.dataset.action]?.();
 });
 document.addEventListener('keydown', (e) => {
+  if (layoutPreview && e.key === 'Escape' && !modalState) {
+    e.preventDefault();
+    cancelLayout();
+    return;
+  }
   if (e.target.closest('input,textarea,select,[contenteditable=true]') || modalState) return;
   if (e.code === 'Space') {
     e.preventDefault();
     adapter.space = true;
   }
   if (e.key === 'Escape') {
+    if (layoutPreview) {
+      e.preventDefault();
+      cancelLayout();
+      return;
+    }
     connectMode = false;
     connectSource = null;
     render();
