@@ -39,8 +39,8 @@ test('shape geometry prototype: zoom-safe SVG border, safe area and anchors', as
     }
     return host.children.length;
   });
-  expect(result).toBe(8);
-  await page.screenshot({ path: 'planning/design/feedback-03-shape-prototype.png' });
+  expect(result).toBe(14);
+  await page.screenshot({ path: 'planning/design/feedback-04-shape-prototype.png' });
   for (const scale of [0.1, 4]) {
     await page
       .locator('#shape-prototype svg')
@@ -48,6 +48,6 @@ test('shape geometry prototype: zoom-safe SVG border, safe area and anchors', as
         (els, s) => els.forEach((el) => (el.style.transform = 'scale(' + s + ')')),
         scale,
       );
-    await expect(page.locator('#shape-prototype svg polygon')).toHaveCount(8);
+    await expect(page.locator('#shape-prototype svg polygon')).toHaveCount(14);
   }
 });

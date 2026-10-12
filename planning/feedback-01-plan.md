@@ -1,6 +1,6 @@
 # Kế hoạch nâng cấp Feedback 01
 
-Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Đợt 1 FB001–FB010 đã hoàn tất. Phạm vi hiện được giao: đợt 3 FB017–FB023; đợt 1–2 đã hoàn tất, đợt4 chưa được giao.
+Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Đợt 1 FB001–FB010 đã hoàn tất. Phạm vi hiện được giao: đợt4 FB024–FB029 ngày2026-10-13; đợt1–3 đã hoàn tất.
 
 Checklist chính: [implementation-checklist.csv](implementation-checklist.csv). [feedback-01-checklist.csv](feedback-01-checklist.csv) là bản trích FB001–FB029; cập nhật master trước rồi tái tạo bản trích.
 
@@ -46,7 +46,7 @@ Template Gallery mobile dùng được cho browsing; nếu mở editor ở màn 
 | 3 — Shapes cơ bản và kích thước | FB017–FB023 | Prototype geometry, basic shapes, palette/navigation, resize/font/Fit text và gate |
 | 4 — Shapes mở rộng và toàn bộ release | FB024–FB029 | Shapes còn lại, examples/docs, full regression/benchmark và final gate |
 
-Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt3. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
+Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt4. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
 
 ## UX/UI chi tiết
 
@@ -111,3 +111,11 @@ Files: json/node-transfer, detail/markdown-import, ui/document-transfer, app/fee
 User giao FB017–FB023 ngày2026-10-12; FB024–FB029 vẫn chưa giao. Namespace card-atlas:appearance thêm shape optional enum rectangle/rounded/square/circle/ellipse/diamond/triangle/hexagon, sizeMode manual|fit (defaultmanual), titleFontSize12–72. Không shape giữ rendering legacy; không fallback unknown shape. Triangle là tam giác đều, ellipse bao gồm oval. Shape không đổi type/kind; tight shapes chỉ title/cover, summary/tags giữ Detail. Shape shared hai view, geometry độc lập: ratio shape inscribed trong bounds hiện có (không sửa view còn lại); resize/Fit chủ động tạo bounds đúng ratio. Explicit shape edits96×64 đến1200×1000; geometry legacy/import hiện có vẫn giữ, finite positive contract. Registry sinh polygon outline dùng chung SVG/Cytoscape/hit/anchors/safeArea; controls ngoài clip. Rounded dùng radius, các shape khác có góc theo hình học.
 
 Manual pointerresize góc dưới phải, screen threshold3px, preview không mutate model; pointerup1command, Escape/blur/cancel/lostcapture rollback. Resize chuyển sizeMode vềmanual. Fit chỉ overview đã sanitize thànhtext; targetwidth rồiheight, ratio giữ, tối đa limits. Font+size Apply atomic activeview; không resize do render/locale/theme. Image-only Fit dùng khungcover240×180 tối thiểu; thiếu cover validation hiện hữu. Fit không đủ bounds cảnh báo và chặnApply, giữdraft. Navigation sidebarpalette, search drawer, Guide/recovery/count projectmenu; keyboardclick/drop screen→graph, không autoplay layout. Không thêmdependency/storage/network.
+
+## Đợt4 — contract FB024
+
+User giao FB024–FB029 ngày2026-10-13. Thêm enum star/heart/octagon/arrow/isosceles-triangle/right-triangle; triangle vẫn là tam giác đều (alias label, không enum duplicate). Star/heart ratio1; isosceles và right triangle không khóa ratio. Shapes compact chỉ title/cover. Outline concave app-owned polygon, safeArea chữ nhật nằm hoàn toàn trong hình; ray anchor dùng giao điểm gần nhất từ tâm nằm trong hình. SVG/Cytoscape/hit/preview/resize/Fit dùng chung registry, không CSS/path từ JSON. Shape geometry activeview, Undo/guards/limits giữ nguyên. Prototype chứng minh trước mở FB025.
+
+## Tiến độ hiện tại — đợt4 hoàn tất
+
+FB001–FB029 DONE ngày2026-10-13; toàn master111DONE/10BACKLOG, không TODO/IN_PROGRESS/BLOCKED. Shapes14, font12–72, mixedexample và Guide hoàn tất. Core52/52, fullUI234/234 + palette optimization recheck51/51, static/typecheck/format/build PASS. Isolated benchmarks500/2000 bothviews đạt fixedtargets; xem [feedback-01-phase4-evidence.md](feedback-01-phase4-evidence.md). Files: assets sharedregistry/schema/types/i18n/Guide/palette/example, tests/benchmark, README/AGENTS/development/planning. Không blocker; BACKLOG chưa được giao. Commit/push thực hiện theo yêu cầu user trước đó sau gate.

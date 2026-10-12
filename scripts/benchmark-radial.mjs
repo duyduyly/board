@@ -14,6 +14,8 @@ const result = await page.evaluate(
   async ({ requestedView, withShapes }) => {
     const { store, adapter } = await import('/assets/js/app.js');
     const { stage } = await import('/assets/js/json/validator.js');
+    const { shapes } = await import('/assets/js/graph/shape-registry.js');
+    const shapeNames = Object.keys(shapes);
     const cards = Array.from({ length: 500 }, (_, i) => ({
       id: 'bench-' + i,
       title: 'Component ' + i,
@@ -61,17 +63,8 @@ const result = await page.evaluate(
       c.extensions = { 'card-atlas:node': { kind } };
       if (withShapes)
         c.extensions['card-atlas:appearance'] = {
-          shape: [
-            'rectangle',
-            'rounded',
-            'square',
-            'circle',
-            'ellipse',
-            'diamond',
-            'triangle',
-            'hexagon',
-          ][i % 8],
-          titleFontSize: 18,
+          shape: shapeNames[i % shapeNames.length],
+          titleFontSize: [12, 18, 24, 36, 48, 60, 72][i % 7],
           sizeMode: 'manual',
         };
       if (['image', 'image-text'].includes(kind)) {
@@ -167,7 +160,7 @@ const result = await page.evaluate(
 );
 const report = {
   view: requestedView,
-  shapes: withShapes ? '8 basic shapes' : 'legacy',
+  shapes: withShapes ? '14 mixed shapes; fonts12–72' : 'legacy',
   date: new Date().toISOString(),
   browser: await browser.version(),
   os: os.type() + ' ' + os.release(),

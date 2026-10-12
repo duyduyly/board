@@ -77,3 +77,9 @@ User giao Feedback01 đợt2 FB011–FB016 ngày2026-10-12. Đọc contractFB011
 ## Feedback01 đợt3
 
 User giao FB017–FB023 ngày2026-10-12. Contract shape/font/sizeMode trong feedback-01-plan.md; đọc evidence đợt3 trước tiếp tục. Registry shape dùng chung Canvas/Format/Fit/resize/anchors/hit; không nhận CSS/path trong JSON. Overview và image-file được dùng chung, không viết bản sao. Geometry chỉ activeview; shape ratio inscribed legacy bounds. FB024–FB029 giữTODO, không tự bắt đầu đợt4.
+
+## Feedback01 đợt4
+
+User giao FB024–FB029 ngày2026-10-13. Tiếp tục theo contract FB024 và gate đợt4; FB001–FB023 đã hoàn tất. Shapes mở rộng dùng registry chung, không nhân bản renderer/resize/Fit. Kiểm tra full regression và benchmark mixed shapes/font/images cả hai view trước final gate. BACKLOG cũ giữ nguyên.
+
+Đợt4 FB024–FB029 đã hoàn tất; evidence planning/feedback-01-phase4-evidence.md. FB001–FB029 DONE; BACKLOG cũ ngoài phạm vi. Đọc evidence và trạng thái master trước task mới; không tự triển khai BACKLOG.

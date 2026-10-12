@@ -2,11 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Card Atlas Project 1.0",
   "type": "object",
-  "required": [
-    "version",
-    "cards",
-    "relations"
-  ],
+  "required": ["version", "cards", "relations"],
   "additionalProperties": false,
   "properties": {
     "version": {
@@ -74,10 +70,7 @@
     "point": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "x",
-        "y"
-      ],
+      "required": ["x", "y"],
       "properties": {
         "x": {
           "type": "number"
@@ -90,10 +83,7 @@
     "size": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "width",
-        "height"
-      ],
+      "required": ["width", "height"],
       "properties": {
         "width": {
           "type": "number",
@@ -140,10 +130,7 @@
     "card": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title"
-      ],
+      "required": ["id", "title"],
       "properties": {
         "id": {
           "$ref": "#/$defs/id"
@@ -217,17 +204,10 @@
                   "maximum": 72
                 },
                 "align": {
-                  "enum": [
-                    "left",
-                    "center",
-                    "right"
-                  ]
+                  "enum": ["left", "center", "right"]
                 },
                 "shadow": {
-                  "enum": [
-                    "none",
-                    "soft"
-                  ]
+                  "enum": ["none", "soft"]
                 },
                 "backgroundTransparent": {
                   "type": "boolean"
@@ -244,14 +224,17 @@
                     "ellipse",
                     "diamond",
                     "triangle",
-                    "hexagon"
+                    "hexagon",
+                    "star",
+                    "heart",
+                    "octagon",
+                    "arrow",
+                    "isosceles-triangle",
+                    "right-triangle"
                   ]
                 },
                 "sizeMode": {
-                  "enum": [
-                    "manual",
-                    "fit"
-                  ]
+                  "enum": ["manual", "fit"]
                 }
               },
               "required": [],
@@ -264,11 +247,7 @@
     "relation": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "source",
-        "target"
-      ],
+      "required": ["id", "source", "target"],
       "properties": {
         "id": {
           "$ref": "#/$defs/id"
@@ -296,19 +275,10 @@
               "$ref": "#/$defs/color"
             },
             "line": {
-              "enum": [
-                "solid",
-                "dashed",
-                "dotted"
-              ]
+              "enum": ["solid", "dashed", "dotted"]
             },
             "arrow": {
-              "enum": [
-                "none",
-                "start",
-                "end",
-                "both"
-              ]
+              "enum": ["none", "start", "end", "both"]
             }
           }
         },
@@ -322,18 +292,13 @@
               "type": "object",
               "properties": {
                 "kind": {
-                  "enum": [
-                    "branch",
-                    "reference"
-                  ]
+                  "enum": ["branch", "reference"]
                 },
                 "color": {
                   "$ref": "#/$defs/color"
                 }
               },
-              "required": [
-                "kind"
-              ],
+              "required": ["kind"],
               "additionalProperties": false
             }
           }
@@ -344,47 +309,32 @@
       "type": "object",
       "properties": {
         "kind": {
-          "enum": [
-            "card",
-            "text",
-            "image",
-            "image-text"
-          ]
+          "enum": ["card", "text", "image", "image-text"]
         },
         "coverImageId": {
           "type": "string",
           "minLength": 1
         },
         "imageFit": {
-          "enum": [
-            "contain",
-            "cover"
-          ]
+          "enum": ["contain", "cover"]
         },
         "imageAlt": {
           "type": "string"
         }
       },
-      "required": [
-        "kind"
-      ],
+      "required": ["kind"],
       "additionalProperties": false,
       "allOf": [
         {
           "if": {
             "properties": {
               "kind": {
-                "enum": [
-                  "image",
-                  "image-text"
-                ]
+                "enum": ["image", "image-text"]
               }
             }
           },
           "then": {
-            "required": [
-              "coverImageId"
-            ]
+            "required": ["coverImageId"]
           }
         }
       ]
@@ -416,10 +366,7 @@
               "$ref": "#/$defs/point"
             }
           },
-          "required": [
-            "zoom",
-            "position"
-          ],
+          "required": ["zoom", "position"],
           "additionalProperties": false
         }
       },

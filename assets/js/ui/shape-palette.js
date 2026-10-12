@@ -1,5 +1,5 @@
 import { shapes, shapePoints } from '../graph/shape-registry.js';
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
 import { escapeHTML as esc } from '../common/html.js';
 export function createShapePalette({ host, region, onCreate, locked }) {
   const file = document.createElement('input');
@@ -7,7 +7,9 @@ export function createShapePalette({ host, region, onCreate, locked }) {
   file.accept = 'image/png,image/jpeg,image/webp,image/gif';
   file.hidden = true;
   host.after(file);
-  let pending = null;
+  let pending = null,
+    renderedLocale = null,
+    renderedLocked = null;
   const create = (option, point) => {
     if (locked()) return;
     if (['image', 'image-text'].includes(option.kind)) {
@@ -47,6 +49,16 @@ export function createShapePalette({ host, region, onCreate, locked }) {
     }
   });
   function render() {
+    const locale = getLocale(),
+      disabled = locked();
+    if (renderedLocale === locale) {
+      if (renderedLocked !== disabled)
+        for (const button of host.querySelectorAll('button')) button.disabled = disabled;
+      renderedLocked = disabled;
+      return;
+    }
+    renderedLocale = locale;
+    renderedLocked = disabled;
     host.innerHTML =
       '<h2>' +
       esc(t('nodeLibrary')) +

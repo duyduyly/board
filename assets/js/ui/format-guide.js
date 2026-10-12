@@ -28,8 +28,15 @@ export function createFormatGuide({ dialog, toast }) {
         esc(t('transferExample')) +
         '</button><button id="shapes-example-download">' +
         esc(t('basicShapesExample')) +
+        '</button><button id="extended-shapes-example-download">' +
+        esc(t('extendedShapesExample')) +
         '</button></div>';
       for (const [selector, path, name] of [
+        [
+          '#extended-shapes-example-download',
+          'assets/data/mixed-shapes-example.json',
+          'mixed-shapes-example.json',
+        ],
         [
           '#shapes-example-download',
           'assets/data/basic-shapes-example.json',

@@ -1,5 +1,6 @@
 export default {
   basicShapesExample: 'Basic shapes example',
+  extendedShapesExample: 'Mixed shapes example',
   legacyShape: 'Legacy card',
   shapeHint:
     'Shape changes presentation only. Compact shapes show title and cover; full content stays in Detail.',
@@ -9,6 +10,11 @@ export default {
   diamond: 'Diamond',
   triangle: 'Triangle',
   hexagon: 'Hexagon',
+  star: 'Star',
+  heart: 'Heart',
+  octagon: 'Octagon',
+  'isosceles-triangle': 'Isosceles triangle',
+  'right-triangle': 'Right triangle',
   resizeNode: 'Drag to resize; Escape cancels',
   sizeMode: 'Sizing',
   manual: 'Manual',
@@ -342,7 +348,7 @@ export default {
   relation: 'Relation',
   removeConfirm: 'Delete selected item',
   aiGuide:
-    'Generate a JSON project with version "1.0", cards and relations arrays. Each card requires a stable unique id and non-empty title. Each relation requires a unique id, source and target referencing existing cards. No self-loops. Types are arbitrary strings. Position may be omitted for a default grid. Use only fields in the schema; place producer data in namespaced extensions. Maximum canonical JSON export size 10 MiB. Maximum 500 cards, 2000 relations and 100000 Markdown characters/card. Return valid JSON only, without prose or code fences. Appearance extension card-atlas:appearance supports shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft and transparent boolean flags. Shape does not change kind/type. Geometry is per view; ratio outlines inscribed in legacy bounds. Never provide CSS/SVG paths.',
+    'Generate a JSON project with version "1.0", cards and relations arrays. Each card requires a stable unique id and non-empty title. Each relation requires a unique id, source and target referencing existing cards. No self-loops. Types are arbitrary strings. Position may be omitted for a default grid. Use only fields in the schema; place producer data in namespaced extensions. Maximum canonical JSON export size 10 MiB. Maximum 500 cards, 2000 relations and 100000 Markdown characters/card. Return valid JSON only, without prose or code fences. Appearance extension card-atlas:appearance supports shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon|star|heart|octagon|arrow|isosceles-triangle|right-triangle, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft and transparent boolean flags. Shape does not change kind/type. Geometry is per view; ratio outlines inscribed in legacy bounds. Never provide CSS/SVG paths.',
   galleryTitle: 'Templates',
   galleryIntro: 'Choose a starting point for your next map.',
   templateCategories: 'Template categories',

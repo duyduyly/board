@@ -225,3 +225,9 @@ Chọn node rồi kéo **handle vuông góc dưới phải** để resize (handl
 Detail → **Format**: chọn shape, font12–72, Manual hoặc Fit text. Fit đo tổng quan (title, tối đa3 dòng summary, tags/cover tùy kind), không đo Markdown. Hình gọn chỉ title/cover trên Canvas; dữ liệu khác giữ Detail. Fit được tính trong draft và Apply atomic; Edit tiếp nội dung với modeFit sẽ đo lại tạiApply. Nội dung vượt khung tối đa được báo lỗi; rút gọn title hoặc giảm font. Locale/theme/render không tự resize. Camera Fit vẫn chỉ thay góc nhìn. Radius áp dụng shape rounded và card legacy; polygon có góc theo hình học. Fit ảnh thuần dùng khung240×180 trước khi giữ tỷ lệ shape.
 
 Ví dụ: [basic-shapes-example.json](assets/data/basic-shapes-example.json), tải từ Format Guide rồi Import Project. Shape/font/sizeMode lưu trong card-atlas:appearance; JSON1.0, unknown extensions và ảnh portable giữ nguyên. Star/heart/octagon/arrow/các biến thể tam giác thuộc đợt4 FB024–FB029, chưa triển khai.
+
+### Extended shapes (Feedback01 đợt4)
+
+Format và palette hỗ trợ14hình: rectangle/rounded/square/circle/ellipse/diamond/triangle/hexagon/star/heart/octagon/arrow/isosceles-triangle/right-triangle. triangle là tam giác đều; ellipse gồm oval. Shapes compact giữ title/cover, nội dung đầy đủ trong Detail.
+
+Format Guide → Mixed shapes example → Import để thử ảnh/text và cả hai view. Chọn node → Enter → Format → font → Fit text → Apply; Undo khôi phục font/size cùng lúc. Resize dùng handle vuông, connector dùng handle tròn; Escape hủy resize. Manual có thể cắt title; Fit vượt bounds sẽ cảnh báo và giữ draft, hãy rút ngắn overview hoặc giảm font. Camera Fit chỉ thay viewport.

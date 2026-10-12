@@ -1,4 +1,18 @@
 // Normalized app-owned outlines. JSON never supplies CSS, SVG or polygon points.
+const regularStar = () =>
+  Array.from({ length: 10 }, (_, i) => {
+    const a = -Math.PI / 2 + (i * Math.PI) / 5;
+    const r = i % 2 ? 0.22 : 0.5;
+    return [0.5 + r * Math.cos(a), 0.5 + r * Math.sin(a)];
+  });
+const heartOutline = () =>
+  Array.from({ length: 64 }, (_, i) => {
+    const t = (i * Math.PI) / 32;
+    return [
+      0.5 + Math.pow(Math.sin(t), 3) / 2,
+      (13 - (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))) / 30,
+    ];
+  });
 export const shapes = Object.freeze({
   rectangle: { area: [0, 0, 1, 1] },
   rounded: { area: [0, 0, 1, 1] },
@@ -7,6 +21,12 @@ export const shapes = Object.freeze({
   ellipse: { area: [0.15, 0.15, 0.7, 0.7], compact: true },
   diamond: { area: [0.25, 0.25, 0.5, 0.5], compact: true },
   triangle: { area: [0.3, 0.48, 0.4, 0.36], ratio: 2 / Math.sqrt(3), compact: true },
+  star: { area: [0.36, 0.36, 0.28, 0.28], ratio: 1, compact: true },
+  heart: { area: [0.3, 0.35, 0.4, 0.3], ratio: 1, compact: true },
+  octagon: { area: [0.18, 0.18, 0.64, 0.64], compact: true },
+  arrow: { area: [0.08, 0.34, 0.54, 0.32], compact: true },
+  'isosceles-triangle': { area: [0.3, 0.48, 0.4, 0.36], compact: true },
+  'right-triangle': { area: [0.08, 0.6, 0.3, 0.3], compact: true },
   hexagon: { area: [0.25, 0.08, 0.5, 0.84], compact: true },
 });
 export const SHAPE_LIMITS = Object.freeze({
@@ -60,7 +80,36 @@ export function shapePoints(shape, size, radius = 10) {
       [0.5, 1],
       [0, 0.5],
     ];
-  else if (shape === 'triangle')
+  else if (shape === 'star') points = regularStar();
+  else if (shape === 'heart') points = heartOutline();
+  else if (shape === 'octagon')
+    points = [
+      [0.3, 0],
+      [0.7, 0],
+      [1, 0.3],
+      [1, 0.7],
+      [0.7, 1],
+      [0.3, 1],
+      [0, 0.7],
+      [0, 0.3],
+    ];
+  else if (shape === 'arrow')
+    points = [
+      [0, 0.25],
+      [0.65, 0.25],
+      [0.65, 0],
+      [1, 0.5],
+      [0.65, 1],
+      [0.65, 0.75],
+      [0, 0.75],
+    ];
+  else if (shape === 'right-triangle')
+    points = [
+      [0, 0],
+      [1, 1],
+      [0, 1],
+    ];
+  else if (shape === 'triangle' || shape === 'isosceles-triangle')
     points = [
       [0.5, 0],
       [1, 1],
@@ -126,6 +175,11 @@ export function hitShape(points, point) {
   return inside;
 }
 export function shapeAnchor(points, center, direction) {
+  if (!hitShape(points, center))
+    center = points.reduce(
+      (p, v) => ({ x: p.x + v.x / points.length, y: p.y + v.y / points.length }),
+      { x: 0, y: 0 },
+    );
   let best = Infinity;
   const cross = (a, b) => a.x * b.y - a.y * b.x;
   for (let i = 0; i < points.length; i++) {

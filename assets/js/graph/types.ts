@@ -56,7 +56,20 @@ export interface MindMapRelation {
 
 export interface NodeAppearance {
   shape?:
-    'rectangle' | 'rounded' | 'square' | 'circle' | 'ellipse' | 'diamond' | 'triangle' | 'hexagon';
+    | 'rectangle'
+    | 'rounded'
+    | 'square'
+    | 'circle'
+    | 'ellipse'
+    | 'diamond'
+    | 'triangle'
+    | 'hexagon'
+    | 'star'
+    | 'heart'
+    | 'octagon'
+    | 'arrow'
+    | 'isosceles-triangle'
+    | 'right-triangle';
   sizeMode?: 'manual' | 'fit';
   titleFontSize?: number; // 12–72px
   radius?: number;

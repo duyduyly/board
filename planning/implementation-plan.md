@@ -216,3 +216,7 @@ Tiến độ hiện tại:98DONE/13TODO/10BACKLOG, không IN_PROGRESS/BLOCKED. C
 ## Feedback01 — đợt3 hoàn tất
 
 FB017–FB023 DONE ngày2026-10-13: 8 basic shapes, palette/search drawer, shared geometry/overview/image upload, atomic resize, font12–72 và Manual/Fit text. Tiến độ105DONE/6TODO/10BACKLOG; không task đang dở trong đợt3. Core51/51; fullUI231/231 trước sửa wrap, toàn bộ shapes18/18 sau sửa wrap; static/typecheck/format/build PASS. Benchmark smoke500/2000 cả hai view đạt targets, chi tiết trong [feedback-01-phase3-evidence.md](feedback-01-phase3-evidence.md). Files: index, assets CSS/JS/schema/example, tests, benchmark script, README/AGENTS/development và planning. FB024–FB029 chưa triển khai; mở đợt4 đang chờ xác nhận trực tiếp theo automatic approval review. Không thay BACKLOG.
+
+## Feedback01 — đợt4 hoàn tất
+
+FB024–FB029 DONE ngày2026-10-13, toàn master111DONE/10BACKLOG, không task đang dở/blocker. Shapes14 dùng shared registry, mixedexample/Guide/schema/types/docs đồng bộ; palette tránh rebuild khi chỉ đổi selection. Core52/52; fullUI234/234 + affected51/51 sau tối ưu; static/typecheck/format/build PASS. Benchmark500/2000 mixedshapes/fonts12–72/images cả2views đạt fixedtargets. Evidence: [feedback-01-phase4-evidence.md](feedback-01-phase4-evidence.md). Files: assets geometry/schema/types/i18n/Guide/palette/example, tests/benchmark và docs/planning. BACKLOG cũ giữ nguyên; không tựpublish. Tiếp theo commit/push theo yêu cầu user.

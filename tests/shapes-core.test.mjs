@@ -19,11 +19,13 @@ test('basic outlines share hit area, inscribed ratios and edge anchors at all zo
         points = shapePoints(shape, size),
         frame = shapeFrame(shape, size),
         area = safeArea(shape, size);
-      const center = { x: 140, y: 95 };
+      const center = { x: area.x + area.width / 2, y: area.y + area.height / 2 };
       assert.ok(hitShape(points, center), shape);
       assert.ok(!hitShape(points, { x: -1, y: -1 }));
       for (const p of [
         { x: area.x, y: area.y },
+        { x: area.x + area.width, y: area.y },
+        { x: area.x, y: area.y + area.height },
         { x: area.x + area.width, y: area.y + area.height },
       ])
         assert.ok(hitShape(points, p), shape);
@@ -66,7 +68,7 @@ test('typed shape/font/sizeMode rejects unsafe input and round-trips atomic hist
     );
   }
   for (const bad of [
-    { shape: 'star' },
+    { shape: 'equilateral' },
     { shape: 'url(evil)' },
     { shape: null },
     { sizeMode: 'auto' },
@@ -110,4 +112,15 @@ test('ratio resize follows the edited axis, and large rounded corners protect te
     points = shapePoints('rounded', size, 100);
   assert.ok(hitShape(points, { x: area.x, y: area.y }));
   assert.ok(hitShape(points, { x: area.x + area.width, y: area.y + area.height }));
+});
+
+test('mixed shapes example validates every enum and shared image reference', async () => {
+  const fs = await import('node:fs/promises');
+  const p = JSON.parse(await fs.readFile('assets/data/mixed-shapes-example.json', 'utf8'));
+  assert.deepEqual(validate(p).errors, []);
+  assert.deepEqual(
+    new Set(p.cards.map((c) => c.extensions['card-atlas:appearance'].shape)),
+    new Set(Object.keys(shapes)),
+  );
+  assert.deepEqual(stage(serialize(p)).errors, []);
 });
