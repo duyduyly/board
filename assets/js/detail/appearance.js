@@ -5,6 +5,8 @@ export const appearanceDefaults = {
   titleFontSize: 14.5,
   align: 'left',
   shadow: 'soft',
+  backgroundTransparent: false,
+  borderTransparent: false,
 };
 export function appearance(card) {
   return { ...appearanceDefaults, ...card.extensions?.[APPEARANCE] };
@@ -18,11 +20,13 @@ export function appearanceIssues(card, path) {
   const invalid = Object.entries(value).some(([key, v]) =>
     bounds[key]
       ? typeof v !== 'number' || !Number.isFinite(v) || v < bounds[key][0] || v > bounds[key][1]
-      : key === 'align'
-        ? !['left', 'center', 'right'].includes(v)
-        : key === 'shadow'
-          ? !['none', 'soft'].includes(v)
-          : true,
+      : ['backgroundTransparent', 'borderTransparent'].includes(key)
+        ? typeof v !== 'boolean'
+        : key === 'align'
+          ? !['left', 'center', 'right'].includes(v)
+          : key === 'shadow'
+            ? !['none', 'soft'].includes(v)
+            : true,
   );
   return invalid ? [{ path, code: 'appearance' }] : [];
 }
@@ -33,4 +37,6 @@ export function applyAppearance(el, card) {
   el.style.setProperty('--title-font-size', a.titleFontSize + 'px');
   el.style.textAlign = a.align;
   el.classList.toggle('no-card-shadow', a.shadow === 'none');
+  el.classList.toggle('transparent-background', a.backgroundTransparent);
+  el.classList.toggle('transparent-border', a.borderTransparent);
 }

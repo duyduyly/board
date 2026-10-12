@@ -1416,3 +1416,27 @@ button.primary:hover {
   background: var(--surface);
   cursor: pointer;
 }
+
+/* Explicit transparent options override theme tinting and branch borders. */
+.graph-card.transparent-background {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.graph-card.transparent-border {
+  border-color: transparent !important;
+}
+.graph-card.transparent-background.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.transparency-option {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+.transparency-option input[type='checkbox'] {
+  width: auto;
+  margin: 0;
+}

@@ -357,6 +357,23 @@ function labelField(key, name, value, { textarea = false, color = false, options
       '">';
   return '<label>' + esc(t(key)) + control + '</label>';
 }
+function cardColorField(card, key) {
+  const flag = key === 'backgroundColor' ? 'backgroundTransparent' : 'borderTransparent';
+  return (
+    '<div>' +
+    labelField(key, key, card.style[key], { color: true }) +
+    (key === 'textColor'
+      ? ''
+      : '<label class="transparency-option"><input type="checkbox" name="appearance-' +
+        flag +
+        '"' +
+        (appearance(card)[flag] ? ' checked' : '') +
+        '>' +
+        esc(t(flag)) +
+        '</label>') +
+    '</div>'
+  );
+}
 function renderPanel() {
   const body = $('#panel-body');
   const key = selection?.kind + ':' + selection?.id + ':' + tab;
@@ -535,9 +552,7 @@ function renderPanelContent() {
       '</button>';
     fields +=
       '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor']
-        .map((k) => labelField(k, k, d.style[k], { color: true }))
-        .join('') +
+      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
       '</div><div class="format-grid">' +
       [
         ['radius', 0, 100],
@@ -588,9 +603,7 @@ function renderPanelContent() {
       labelField('tags', 'tags', d.tags.join(', '));
     fields +=
       '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor']
-        .map((k) => labelField(k, k, d.style[k], { color: true }))
-        .join('') +
+      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
       '</div>';
     fields +=
       '</details><div class="writing-tools"><button type="button" id="writing-toggle">' +
@@ -721,6 +734,7 @@ function renderPanelContent() {
   form.oninput = (event) => {
     for (const input of form.querySelectorAll('[name]')) {
       const name = input.name;
+      if (input.type === 'checkbox' && event.target !== input) continue;
       if ((name.startsWith('node-') || name.startsWith('mind-')) && event.target !== input)
         continue;
       const value = input.value;
@@ -750,9 +764,12 @@ function renderPanelContent() {
         const key = name.slice(11);
         draft.extensions ||= {};
         draft.extensions[APPEARANCE] ||= {};
-        draft.extensions[APPEARANCE][key] = ['align', 'shadow'].includes(key)
-          ? value
-          : Number(value);
+        draft.extensions[APPEARANCE][key] =
+          input.type === 'checkbox'
+            ? input.checked
+            : ['align', 'shadow'].includes(key)
+              ? value
+              : Number(value);
       } else draft[name] = value;
     }
     updateFormatPreview();

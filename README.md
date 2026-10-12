@@ -183,3 +183,9 @@ Thu gọn thuộc phiên: không làm dirty/undo, không export hay recovery; ex
 English: set Root, then Arrange Mind Map to preview. Apply writes only Mind Map positions in one undo step; Cancel/Escape/view switch restores the earlier view. Collapse uses branch descendants and remains session-only. Search/Focus reveals ancestors; export retains the complete graph. Large maps may need zoom, Focus and manual adjustments.
 
 Với ≥1.000 đường nối, pan/zoom/drag tạm ẩn đường nối và khôi phục sau khi dừng khoảng 160 ms để giữ thao tác mượt. Khi zoom nhỏ, nhãn đường nối quá nhỏ được ẩn; zoom vào để đọc. / With ≥1,000 edges, movement temporarily defers edge rendering and restores it after about 160 ms idle; unreadably small edge labels are hidden until zoomed in.
+
+## Màu trong suốt / Transparent colors
+
+Chọn node → Edit hoặc Format → bật **Nền trong suốt** hoặc **Viền trong suốt** → Apply. Preview hiển thị ngay; bỏ chọn phục hồi màu đã chọn trước đó. Nền trong suốt không có shadow; node đang chọn vẫn có đường bao để nhận biết. Hỗ trợ Card Map/Mind Map và Light/Dark; các tùy chọn lưu trong JSON, Undo/Redo và recovery như appearance khác. Màu chữ vẫn giữ rõ để đọc.
+
+Select a node → Edit or Format → check **Transparent background** / **Transparent border** → Apply. Uncheck to restore the saved color. Transparent backgrounds have no shadow; selected nodes retain a selection outline. Options survive JSON export/import and undo/redo.

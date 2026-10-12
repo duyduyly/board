@@ -1,4 +1,6 @@
 export default {
+  backgroundTransparent: 'Nền trong suốt',
+  borderTransparent: 'Viền trong suốt',
   arrangeMindMap: 'Sắp xếp Mind Map',
   expandAll: 'Mở tất cả nhánh',
   collapseBranch: 'Thu gọn nhánh: {title}',

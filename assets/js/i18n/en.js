@@ -1,4 +1,6 @@
 export default {
+  backgroundTransparent: 'Transparent background',
+  borderTransparent: 'Transparent border',
   arrangeMindMap: 'Arrange Mind Map',
   expandAll: 'Expand all branches',
   collapseBranch: 'Collapse branch: {title}',
