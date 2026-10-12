@@ -2,7 +2,7 @@
 
 Ngày tạo: 2026-10-11. Phạm vi: triển khai V1 theo [đặc tả nâng cấp](../wordspace/docs/json-driven-visual-card-graph-editor-spec-v2.md). Phiên bản tài liệu là v2; định dạng dữ liệu là 1.0.
 
-Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 9 task bổ sung E001–E009, 20 task MM001–MM020 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
+Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 10 task bổ sung E001–E010, 20 task MM001–MM020 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
 
 ## Mục tiêu và giới hạn
 
@@ -192,3 +192,7 @@ Evidence: [mind-map-phase2-evidence.md](mind-map-phase2-evidence.md). Đợt 2 h
 ## E009 — màu trong suốt
 
 User yêu cầu thêm lựa chọn trong suốt. Dùng boolean backgroundTransparent/borderTransparent trong namespace card-atlas:appearance, defaultfalse; style hex giữ nguyên để bỏ chọn phục hồi màu. Format/Edit có checkbox vi/en cho nền và viền; text vẫn đọc được. Áp dụng cả hai view/theme/preview, loại bỏ shadow nền trong suốt. E009 DONE;76DONE/10BACKLOG, không blocker/task đang dở. Core34/34; targeted UI9/9 Chrome/Edge/Firefox; lint/typecheck/format pass. Files: appearance/app/i18n/CSS, README/tests và planning. Evidence: [transparency-evidence.md](transparency-evidence.md). Task tiếp theo chỉ khi user giao scope mới.
+
+## E010 — English example user
+
+Thay assets/data/english-endings-example.json bằng JSON user:12 text nodes,Root,11branch/1reference,Usage/Spelling/Pronunciation/Mistakes/Practice12/Answers. Bỏ ký tự rác sau JSON theo user; không sửa nội dung học hoặc tự tải ảnh URL. E010 DONE;77DONE/10BACKLOG, không blocker/task đang dở. Files: English JSON/README/tests/fixture/planning/spec. Validator/roundtrip,core34/34,UI12/12 Chrome/Edge/Firefox và lint pass. Evidence: [english-example-update-evidence.md](english-example-update-evidence.md). Task tiếp theo chỉ khi user giao scope mới.

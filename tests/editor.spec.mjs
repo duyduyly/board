@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const example = await fs.readFile('assets/data/example.json', 'utf8');
+const legacyEnglish = (
+  await fs.readFile('tests/fixtures/english-endings-legacy.json', 'utf8')
+).trim();
 async function sample(page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Mở ví dụ', exact: true }).click();
@@ -397,15 +400,15 @@ test('English endings example opens, renders and round-trips in both locales', a
   await page.goto('/');
   await page.locator('#locale').selectOption('en');
   await page.getByRole('button', { name: 'English example: -s/-es and -ed', exact: true }).click();
-  await expect(page.locator('.graph-card')).toHaveCount(11);
+  await expect(page.locator('.graph-card')).toHaveCount(12);
   await page.locator('.card-row[data-card-id="english-overview"]').click();
-  await expect(page.locator('.diagram svg')).toBeVisible();
+  await expect(page.locator('#panel-body')).toContainText('Lộ trình học');
   await page.locator('#locale').selectOption('vi');
   await page.locator('.card-row[data-card-id="english-ed-sounds"]').click();
   await expect(page.locator('#panel-body')).toContainText('/ɪd/');
   const exported = await exportData(page);
-  expect(exported.cards).toHaveLength(11);
-  expect(exported.relations).toHaveLength(13);
+  expect(exported.cards).toHaveLength(12);
+  expect(exported.relations).toHaveLength(12);
   await page.locator('#file-input').setInputFiles({
     name: 'lesson.json',
     mimeType: 'application/json',
@@ -417,11 +420,22 @@ test('English endings example opens, renders and round-trips in both locales', a
   expect({ ...reexported, canvas: exported.canvas }).toEqual(exported);
   await page.locator('.card-row[data-card-id="english-s-sounds"]').click();
   await expect(page.locator('#panel-body')).toContainText('/ɪz/');
+  await page.locator('#map-view').selectOption('mind');
+  await expect(page.locator('.graph-card[data-node-kind=text]')).toHaveCount(12);
+  expect(exported.extensions['card-atlas:mind-map'].rootId).toBe('english-overview');
+  expect(
+    exported.relations.filter((r) => r.extensions['card-atlas:mind-map'].kind === 'branch'),
+  ).toHaveLength(11);
+  await page.locator('.card-row[data-card-id=english-practice]').click();
+  await expect(page.locator('#panel-body ol li')).toHaveCount(12);
   await page.screenshot({ path: 'planning/design/english-endings-example.png' });
   expect(errors).toEqual([]);
 });
 
 test('Badges, theme and Fit/Focus preserve project, history and drafts', async ({ page }) => {
+  await page.route('**/assets/data/english-endings-example.json', (route) =>
+    route.fulfill({ contentType: 'application/json', body: legacyEnglish }),
+  );
   await page.goto('/');
   await expect(page.locator('[data-action=focus]')).toBeDisabled();
   await page.locator('[data-action=english-example]').click();
@@ -662,6 +676,9 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
 test('Card action opens overview without movement and hover image shows natural 100 percent', async ({
   page,
 }) => {
+  await page.route('**/assets/data/english-endings-example.json', (route) =>
+    route.fulfill({ contentType: 'application/json', body: legacyEnglish }),
+  );
   await page.goto('/');
   await page.locator('[data-action=english-example]').click();
   const snapshot = () =>
@@ -822,6 +839,9 @@ test('Writing workspace preserves caret and scroll across theme and locale and p
 test('Markdown export includes draft text and embedded images without changing project', async ({
   page,
 }) => {
+  await page.route('**/assets/data/english-endings-example.json', (route) =>
+    route.fulfill({ contentType: 'application/json', body: legacyEnglish }),
+  );
   await page.goto('/');
   await page.locator('[data-action=english-example]').click();
   await page.locator('.card-row[data-card-id="english-overview"]').click();

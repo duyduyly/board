@@ -13,7 +13,7 @@
 - Pan/zoom; **Fit** toàn bộ sơ đồ; **Focus** đưa card hoặc quan hệ đang chọn vào giữa khung nhìn.
 - Import JSON có validation và preview; export JSON để lưu và tiếp tục ở phiên sau.
 - Format Guide cung cấp schema và hướng dẫn tạo dữ liệu bằng AI.
-- Hai ví dụ: kiến trúc hệ thống và bài học **-s/-es, -ed** gồm 11 card, 13 quan hệ và 10 câu luyện tập có đáp án.
+- Hai ví dụ: kiến trúc hệ thống và bài học **-s/-es, -ed** gồm 12 node, 11 nhánh và một liên kết tham khảo, 12 câu luyện tập có đáp án; hỗ trợ Mind Map với Root định sẵn.
 
 ## Chạy local
 

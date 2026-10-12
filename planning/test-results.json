@@ -4,10 +4,9 @@
       "D:\\program\\nodejs\\node.exe",
       "D:\\work-space\\Git\\board-project\\board\\node_modules\\@playwright\\test\\cli.js",
       "test",
-      "tests/transparency.spec.mjs",
       "tests/editor.spec.mjs",
       "--grep",
-      "transparent|Format shares draft"
+      "English endings|Badges, theme|Card action opens|Markdown export includes"
     ],
     "configFile": "D:\\work-space\\Git\\board-project\\board\\playwright.config.js",
     "rootDir": "D:/work-space/Git/board-project/board/tests",
@@ -195,7 +194,7 @@
       "line": 0,
       "specs": [
         {
-          "title": "Format shares draft, previews appearance and applies one undo with portable JSON",
+          "title": "English endings example opens, renders and round-trips in both locales",
           "ok": true,
           "tags": [],
           "tests": [
@@ -210,12 +209,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1892,
+                  "duration": 1662,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:24.565Z",
+                  "startTime": "2026-10-12T07:10:28.473Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -223,89 +222,13 @@
               "status": "expected"
             }
           ],
-          "id": "3c4243f16f26f48720e0-fff8c8514085d286c7fe",
+          "id": "3c4243f16f26f48720e0-01b47fe4e33861c55b89",
           "file": "editor.spec.mjs",
-          "line": 896,
+          "line": 397,
           "column": 1
         },
         {
-          "title": "Format shares draft, previews appearance and applies one undo with portable JSON",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "edge",
-              "projectName": "edge",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2237,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-12T06:12:30.050Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "3c4243f16f26f48720e0-52a49a27572939d330ba",
-          "file": "editor.spec.mjs",
-          "line": 896,
-          "column": 1
-        },
-        {
-          "title": "Format shares draft, previews appearance and applies one undo with portable JSON",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "firefox",
-              "projectName": "firefox",
-              "results": [
-                {
-                  "workerIndex": 2,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 3382,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-12T06:12:35.799Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "3c4243f16f26f48720e0-4fd10b16b4dc3a266cb9",
-          "file": "editor.spec.mjs",
-          "line": 896,
-          "column": 1
-        }
-      ]
-    },
-    {
-      "title": "transparency.spec.mjs",
-      "file": "transparency.spec.mjs",
-      "column": 0,
-      "line": 0,
-      "specs": [
-        {
-          "title": "transparent background/border preview, themes, views, undo and portable export",
+          "title": "Badges, theme and Fit/Focus preserve project, history and drafts",
           "ok": true,
           "tags": [],
           "tests": [
@@ -320,12 +243,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1839,
+                  "duration": 1273,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:26.697Z",
+                  "startTime": "2026-10-12T07:10:30.347Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -333,13 +256,13 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-093197505615848c8950",
-          "file": "transparency.spec.mjs",
-          "line": 4,
+          "id": "3c4243f16f26f48720e0-28b7a987835e92d6a012",
+          "file": "editor.spec.mjs",
+          "line": 435,
           "column": 1
         },
         {
-          "title": "Cancel and reset transparent draft keep applied colors",
+          "title": "Card action opens overview without movement and hover image shows natural 100 percent",
           "ok": true,
           "tags": [],
           "tests": [
@@ -354,12 +277,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 909,
+                  "duration": 2044,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:28.550Z",
+                  "startTime": "2026-10-12T07:10:31.636Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -367,13 +290,47 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-14a7f3936b4a9f2ae9db",
-          "file": "transparency.spec.mjs",
-          "line": 72,
+          "id": "3c4243f16f26f48720e0-2ed4d4f62c92435dd218",
+          "file": "editor.spec.mjs",
+          "line": 676,
           "column": 1
         },
         {
-          "title": "transparent background/border preview, themes, views, undo and portable export",
+          "title": "Markdown export includes draft text and embedded images without changing project",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1115,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T07:10:33.702Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c4243f16f26f48720e0-db012db5be0582583351",
+          "file": "editor.spec.mjs",
+          "line": 839,
+          "column": 1
+        },
+        {
+          "title": "English endings example opens, renders and round-trips in both locales",
           "ok": true,
           "tags": [],
           "tests": [
@@ -388,12 +345,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1736,
+                  "duration": 1882,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:32.547Z",
+                  "startTime": "2026-10-12T07:10:35.491Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -401,13 +358,13 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-41a7111aa1a300021448",
-          "file": "transparency.spec.mjs",
-          "line": 4,
+          "id": "3c4243f16f26f48720e0-38180ac508184a856694",
+          "file": "editor.spec.mjs",
+          "line": 397,
           "column": 1
         },
         {
-          "title": "Cancel and reset transparent draft keep applied colors",
+          "title": "Badges, theme and Fit/Focus preserve project, history and drafts",
           "ok": true,
           "tags": [],
           "tests": [
@@ -422,12 +379,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 775,
+                  "duration": 1336,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:34.302Z",
+                  "startTime": "2026-10-12T07:10:37.636Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -435,13 +392,81 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-70aa78728239962e76b1",
-          "file": "transparency.spec.mjs",
-          "line": 72,
+          "id": "3c4243f16f26f48720e0-3a9d15771c45ee0c6895",
+          "file": "editor.spec.mjs",
+          "line": 435,
           "column": 1
         },
         {
-          "title": "transparent background/border preview, themes, views, undo and portable export",
+          "title": "Card action opens overview without movement and hover image shows natural 100 percent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "edge",
+              "projectName": "edge",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1871,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T07:10:38.988Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c4243f16f26f48720e0-a5b7e8f8bc4c091f2fd1",
+          "file": "editor.spec.mjs",
+          "line": 676,
+          "column": 1
+        },
+        {
+          "title": "Markdown export includes draft text and embedded images without changing project",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "edge",
+              "projectName": "edge",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 930,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T07:10:40.878Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c4243f16f26f48720e0-8d2aabcd14503ff65b06",
+          "file": "editor.spec.mjs",
+          "line": 839,
+          "column": 1
+        },
+        {
+          "title": "English endings example opens, renders and round-trips in both locales",
           "ok": true,
           "tags": [],
           "tests": [
@@ -456,12 +481,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2090,
+                  "duration": 3089,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:39.717Z",
+                  "startTime": "2026-10-12T07:10:42.548Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -469,13 +494,13 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-eba81aade6b111016269",
-          "file": "transparency.spec.mjs",
-          "line": 4,
+          "id": "3c4243f16f26f48720e0-aa59d1efba288c0c1d55",
+          "file": "editor.spec.mjs",
+          "line": 397,
           "column": 1
         },
         {
-          "title": "Cancel and reset transparent draft keep applied colors",
+          "title": "Badges, theme and Fit/Focus preserve project, history and drafts",
           "ok": true,
           "tags": [],
           "tests": [
@@ -490,12 +515,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 972,
+                  "duration": 1642,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-12T06:12:41.821Z",
+                  "startTime": "2026-10-12T07:10:46.170Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -503,9 +528,77 @@
               "status": "expected"
             }
           ],
-          "id": "522fc6986787bbd80606-ef23f1d81019ad2f542c",
-          "file": "transparency.spec.mjs",
-          "line": 72,
+          "id": "3c4243f16f26f48720e0-81b61dde54b5d49b9f82",
+          "file": "editor.spec.mjs",
+          "line": 435,
+          "column": 1
+        },
+        {
+          "title": "Card action opens overview without movement and hover image shows natural 100 percent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2344,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T07:10:47.828Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c4243f16f26f48720e0-6e014d88373f7dff1dff",
+          "file": "editor.spec.mjs",
+          "line": 676,
+          "column": 1
+        },
+        {
+          "title": "Markdown export includes draft text and embedded images without changing project",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1011,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T07:10:50.188Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3c4243f16f26f48720e0-ea00042c01783ecdf02c",
+          "file": "editor.spec.mjs",
+          "line": 839,
           "column": 1
         }
       ]
@@ -513,9 +606,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-12T06:12:23.956Z",
-    "duration": 19211.833,
-    "expected": 9,
+    "startTime": "2026-10-12T07:10:27.857Z",
+    "duration": 23747.197,
+    "expected": 12,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
