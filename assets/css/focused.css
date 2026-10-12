@@ -132,6 +132,7 @@ dialog.detail-panel[open] {
 dialog.detail-panel::backdrop,
 .image-preview::backdrop {
   background: rgb(10 18 14 / 58%);
+  backdrop-filter: none;
 }
 dialog.detail-panel.detail-full {
   width: 100vw;
@@ -341,4 +342,103 @@ dialog.detail-panel.detail-full {
 /* Pan the node overlay as a composited layer instead of repainting every card. */
 #cards-layer {
   will-change: transform;
+}
+
+.node-transfer-tools {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.node-transfer-tools summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+}
+.node-transfer-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.transfer-option {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.transfer-option input {
+  flex: none;
+  width: auto;
+}
+.transfer-option select {
+  margin-left: auto;
+  max-width: 65%;
+}
+.transfer-warning {
+  border-left: 3px solid var(--accent);
+  padding: 4px 12px;
+  background: var(--soft);
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.transfer-preview {
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 8px;
+  max-height: 38vh;
+  overflow: auto;
+}
+.transfer-preview img {
+  max-height: 240px;
+  object-fit: contain;
+}
+.transfer-result {
+  margin-top: 18px;
+  overflow-wrap: anywhere;
+}
+.transfer-result table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.transfer-result td,
+.transfer-result th {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Keep preview decisions visible while long imported documents scroll. */
+#modal:has(.transfer-result) {
+  width: min(780px, 90vw);
+  overflow: hidden;
+}
+#modal:has(.transfer-result) .modal-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  box-sizing: border-box;
+}
+#modal:has(.transfer-result) h2,
+#modal:has(.transfer-result) #modal-locale,
+#modal:has(.transfer-result) .modal-actions {
+  flex: none;
+}
+#modal:has(.transfer-result) #modal-locale {
+  align-self: flex-start;
+  width: auto;
+}
+#modal:has(.transfer-result) .modal-body {
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  margin-top: 12px;
+}
+#modal:has(.transfer-result) .modal-actions {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 16px;
 }

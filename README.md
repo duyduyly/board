@@ -202,4 +202,16 @@ Click một lần chọn node; double click, nút Open hoặc Enter mở Detail 
 
 Ảnh Detail giữ vừa vùng đọc; click/Enter/Space để phóng ảnh. Viewer mặc định Fit trong75% viewport; chọn100% để xem kích thước gốc có cuộn. Escape đóng ảnh trước, rồi mới đóng Detail. Hover không tự phóng.
 
-Gallery responsive; editor vẫn yêu cầu desktop. Không đổi JSON1.0, không tự lưu hoặc upload. Sidebar hình dạng và import Markdown/node JSON thuộc đợt sau. Plan: planning/feedback-01-plan.md; checklist: planning/feedback-01-checklist.csv.
+Gallery responsive; editor vẫn yêu cầu desktop. Không đổi JSON1.0, không tự lưu hoặc upload. Import Markdown/node JSON đã có trong đợt 2 bên dưới; sidebar hình dạng thuộc đợt sau. Plan: planning/feedback-01-plan.md; checklist: planning/feedback-01-checklist.csv.
+
+## Feedback 01 — đợt 2: tài liệu và node offline
+
+Trong Detail mở **Tài liệu & node**:
+
+- **Nhập Markdown**: chọn .md UTF-8, xem preview, chọn Thay nội dung/Nối vào cuối. Chỉ đổi draft content; Apply để lưu, Cancel để bỏ. Metadata/relations/format giữ nguyên. Giới hạn content100.000 ký tự và project10MiB. Đường dẫn ảnh relative được liệt kê để chèn từ máy; không đọc/fetch ngầm. Data URI raster PNG/JPEG/WebP/GIF trong .md được chuyển thành attachment sau validation/decode, kể cả file Markdown do app export.
+- **Xuất node JSON**: mặc định bản đã Apply; có thể chọn draft rõ ràng mà không Apply. File là projectJSON1.0 đúng một card, không có relation. Mặc định kèm mọi attachment; bỏ chọn để chỉ kèm ảnh content/cover. Extension card giữ nguyên; projectRoot/views lọc theo node. Unknown project extensions chỉ loại bỏ sau khi xác nhận; export không đánh dấu toàn project đã lưu.
+- **Nhập node JSON**: preview rồi Update hiện tại hoặc Add mới. Update đưa metadata/content/ảnh vào draft, mặc định giữ ID/relations/position/style/kind/size. Lấy format là tùy chọn, size chỉ active view. Apply/Undo atomic. Add tạo ID mới ở giữa viewport, không tự Root/branch; guard draft trước commit, một Undo bỏ cả node.
+
+Ảnh incoming trùng ID khác record được remap deterministic, giữ cover cũ khi không lấy format. Unknown card extension absent giữ nguyên; xung đột mặc định giữ existing, có lựa chọn thay bằng incoming. Unknown namespace có thể chứa reference riêng mà app không hiểu: không tự remap nội dung của chúng; kiểm tra trước khi dùng Add. Unknown project namespace bị loại trừ có xác nhận. File nhiều card/có relation phải dùng Import Project, không Import Node. Sai UTF8/JSON/dangling image/size không thay dữ liệu đang mở. ZIP ảnh rời, crop ảnh và shapes mới chưa thuộc đợt2.
+
+Ví dụ: [node-transfer-example.json](assets/data/node-transfer-example.json); Format Guide có nút tải cùng hướng dẫn. Evidence: [feedback-01-phase2-evidence.md](planning/feedback-01-phase2-evidence.md).

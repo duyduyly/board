@@ -21,6 +21,7 @@ export function createFeedback({ onLocaleChange }) {
   function renderModal() {
     if (!modalState) return;
     const { titleKey, body, buttons } = modalState;
+    $('#modal').setAttribute('aria-label', t(titleKey));
     $('#modal-content').innerHTML =
       '<div class="modal-inner"><h2>' +
       esc(t(titleKey)) +

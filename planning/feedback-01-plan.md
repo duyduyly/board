@@ -1,6 +1,6 @@
 # Kế hoạch nâng cấp Feedback 01
 
-Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Phạm vi hiện được giao: triển khai đợt 1 FB001–FB010; đợt 2–4 chưa được giao.
+Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Đợt 1 FB001–FB010 đã hoàn tất. Phạm vi hiện được giao: đợt 2 FB011–FB016; đợt 3–4 chưa được giao.
 
 Checklist chính: [implementation-checklist.csv](implementation-checklist.csv). [feedback-01-checklist.csv](feedback-01-checklist.csv) là bản trích FB001–FB029; cập nhật master trước rồi tái tạo bản trích.
 
@@ -46,7 +46,7 @@ Template Gallery mobile dùng được cho browsing; nếu mở editor ở màn 
 | 3 — Shapes cơ bản và kích thước | FB017–FB023 | Prototype geometry, basic shapes, palette/navigation, resize/font/Fit text và gate |
 | 4 — Shapes mở rộng và toàn bộ release | FB024–FB029 | Shapes còn lại, examples/docs, full regression/benchmark và final gate |
 
-Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt 1. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
+Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt 2. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
 
 ## UX/UI chi tiết
 
@@ -90,4 +90,18 @@ npm test/check/typecheck/format:check/build; static architecture gate không cyc
 
 Đợt 1 FB001–FB010 DONE. Đã code Gallery6template/categories/Home/Continue, native Detail75%/Full, single select/Open, click viewerFit/100% và common dialog lifecycle. Core37/37, lint/architecture29modules/typecheck/format/build PASS; benchmark500nodes/2000relations hai view đạt targets sau tối ưu offscreen paint. Final browser matrix180/180 + portrait/GIF3/3 PASS Chrome/Edge/Firefox. Gate đợt1 PASS, evidence: [feedback-01-phase1-evidence.md](feedback-01-phase1-evidence.md). Master92DONE/19TODO/10BACKLOG; không IN_PROGRESS/BLOCKED.
 
-Files: index.html, assets/css/focused.css, ui/template-gallery/dialog-surface, app/adapter/detail/image-preview/i18n, catalog/templates/previews, tests/UI driver, benchmark script, README/AGENTS/development và planning evidence. Không thay JSON1.0/dependencies. Không blocker. Đợt2–4 FB011–FB029 và BACKLOG cũ không triển khai. Task tiếp theo: FB011 khi user giao đợt2; không tự triển khai.
+Files: index.html, assets/css/focused.css, ui/template-gallery/dialog-surface, app/adapter/detail/image-preview/i18n, catalog/templates/previews, tests/UI driver, benchmark script, README/AGENTS/development và planning evidence. Không thay JSON1.0/dependencies. Không blocker. Đợt 2 FB011–FB016 đã hoàn tất ở cập nhật bên dưới. Đợt3–4 FB017–FB029 và BACKLOG cũ chưa được giao code.
+
+## Feedback01 đợt2 — contract FB011
+
+2026-10-12 user giao FB011–FB016. Portable node là normalized Project1.0 đúng một card, relations rỗng; validate toàn file trước dùng. Export default committed, draft explicit không Apply; include-all attachments mặc định, bỏ unused chỉ khi chủ động. Dangling attachment token/cover từ chối. Root chỉ giữ nếu card chính làRoot; mindMap positions/sizes lọc card ID, giữ viewport; unknown project namespaces loại bỏ chỉ sau checkbox xác nhận, liệt kê tên. Unknown card namespaces giữ nguyên.
+
+Update import dùng draft hiện có, thay title/summary/type/tags/content và merge attachments, không commit ngầm. Apply một command/Undo cả thay đổi. Giữ ID/relations/position/size/style/appearance/node kind mặc định; option lấy format nhận style/appearance/kind và size chỉ active view, không lấy position. Incoming attachment ID collision khác record đổi sang id-import-N deterministic; rewrite attachment tokens và incoming cover; giữ cover/attachments hiện có. Unknown card extension merge giữ keys absent, conflict default giữ existing và option explicit lấy incoming. Unknown project namespace không merge vào project đích, bắt buộc acknowledge exclusion. Add ID mới, đặt ở viewport, geometry active view, không tự Root/branch; chỉ sau preview mới chạy draft guard rồi commit atomic. Cancel/error không đổi project/draft.
+
+Markdown chỉUTF8 .md, decode fatal, source≤10MiB, kết quảcontent≤100k và canonical project≤10MiB. Replace/Append vào draftcontent, giữ metadata. Data URI PNG/JPEG/WebP/GIF do Markdown export tạo được stage thành attachment validated và decode browser trước nhận; HTMLdata/SVG/unsafeURI giữ source và render policy chặn. Relative/protocol-relative/unsupported image sources liệt kê để người dùng chèn ảnh từ máy; không đọc/fetch file ngầm. Remotehttps theo external opt-in phiên. Preview luôn sanitizeMarkdown/Mermaid và chặnảnhngoài; không thêmnetwork/upload/storage. Attachment:ID tokens được giữ/remap kể cả code tham chiếu để tránh dangling; unknown extension refs không tự suy đoán/remap.
+
+### Đợt2 đã hoàn tất
+
+FB011–FB016 DONE; master98DONE/13TODO/10BACKLOG, không IN_PROGRESS/BLOCKED. Core46/46, fullUI210/210 Chrome/Edge/Firefox + transfer27/27 hardening recheck + surface9/9 PASS. Typecheck/lint/architecture32modules/format/build và benchmark hai view đạt targets. Evidence: [feedback-01-phase2-evidence.md](feedback-01-phase2-evidence.md).
+
+Files: json/node-transfer, detail/markdown-import, ui/document-transfer, app/feedback/i18n/FormatGuide/CSS, portableexample, tests, README/AGENTS/development và planning. JSON1.0/dependencies/storage mặc định giữ nguyên; spec contract FB011 đồng bộ. Không blocker/task đang dở. Đợt3–4 FB017–FB029 chưa triển khai; tiếp theo FB017 khi user giao đợt3. Không tự code BACKLOG/publish.

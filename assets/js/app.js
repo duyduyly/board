@@ -1,5 +1,7 @@
 import { dialogSurface } from './ui/dialog-surface.js';
 import { createTemplateGallery } from './ui/template-gallery.js';
+import { createDocumentTransfer } from './ui/document-transfer.js';
+import { addNodeProject } from './json/node-transfer.js';
 import { createCardList } from './ui/card-list.js';
 import { projectIndex } from './graph/project-index.js';
 import { query as $ } from './common/dom.js';
@@ -95,6 +97,74 @@ const gallery = createTemplateGallery({
   onOpen: (path) => loadExample(path),
   onError: () => toast('errorRead'),
 });
+const documentTransfer = createDocumentTransfer({
+  context: transferContext,
+  isCurrent: (ctx) =>
+    selection?.kind === 'card' &&
+    selection.id === ctx.id &&
+    store.project === ctx.snapshot &&
+    JSON.stringify(draft || entity()) === ctx.revision,
+  useDraft: (card, formatSource) => {
+    if (!draft) beginDraft();
+    draft = clone(card);
+    if (formatSource) {
+      const size = geometry(formatSource, formatSource.cards[0], store.activeView).size;
+      if (store.activeView === 'mind') draftMindSize = clone(size);
+      else draft.size = clone(size);
+    }
+    tab = 'edit';
+    renderPanel();
+    $('textarea[name=content]')?.focus({ preventScroll: true });
+    updateStatus();
+    scheduleRecovery();
+  },
+  addNode: async (source) => {
+    if (!(await guardDraft())) return;
+    const size = geometry(source, source.cards[0], store.activeView).size;
+    const rect = $('#canvas-region').getBoundingClientRect();
+    const center = adapter.graphPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    const id = newId('card');
+    const next = addNodeProject(store.project, source, id, store.activeView, {
+      x: center.x - size.width / 2,
+      y: center.y - size.height / 2,
+    });
+    if (
+      !change((p) => {
+        p.cards = next.cards;
+        if (next.extensions) p.extensions = next.extensions;
+      })
+    )
+      return;
+    selection = { kind: 'card', id };
+    detailOpen = true;
+    tab = 'overview';
+    draft = null;
+    draftOriginal = null;
+    render();
+    $('#panel-title').focus({ preventScroll: true });
+    toast('transferNodeAdded');
+  },
+  dialog,
+  toast,
+});
+function transferContext() {
+  if (selection?.kind !== 'card' || !entity() || layoutPreview || feedback.state) return null;
+  const project = JSON.parse(serialize(store.project, store.viewport, store.viewports));
+  const draftProject = clone(project);
+  const current = clone(draft || entity());
+  draftProject.cards = draftProject.cards.map((c) => (c.id === selection.id ? current : c));
+  if (draft && JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
+    setGeometry(draftProject, selection.id, 'mind', 'size', draftMindSize);
+  return {
+    id: selection.id,
+    project,
+    draftProject,
+    current,
+    view: store.activeView,
+    snapshot: store.project,
+    revision: JSON.stringify(draft || entity()),
+  };
+}
 
 function entity() {
   if (selection?.kind === 'project') return store.project.metadata;
@@ -304,6 +374,7 @@ function renderPanel() {
   const body = $('#panel-body');
   const key = selection?.kind + ':' + selection?.id + ':' + tab;
   const state = previousPanelKey === key ? captureEditor(body) : null;
+  const transferToolsOpen = Boolean(state && body.querySelector('.node-transfer-tools')?.open);
   if (previousPanelKey !== key) {
     previewDraft = false;
     sourceEditorState = null;
@@ -313,6 +384,9 @@ function renderPanel() {
   else if (state && body.querySelector('.writing-source')) sourceEditorState = state;
   previousPanelKey = key;
   renderPanelContent();
+  if (detailOpen && !home && selection?.kind === 'card' && entity()) documentTransfer.mount(body);
+  if (body.querySelector('.node-transfer-tools'))
+    body.querySelector('.node-transfer-tools').open = transferToolsOpen;
   restoreEditor(body, state);
   $('#writing-exit').hidden = !(writing && selection?.kind === 'card');
   document.documentElement.classList.toggle(

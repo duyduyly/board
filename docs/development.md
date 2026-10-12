@@ -47,3 +47,7 @@ Nguồn chính thức: [MDN JavaScript modules](https://developer.mozilla.org/en
 ui/template-gallery sở hữu catalog/category/loading và nhận callback onOpen, không giữ project model. ui/dialog-surface dùng native dialog top layer, capture trigger, Escape/backdrop và requestClose có khóa chống double-submit. Detail gọi guardDraft ở app; image viewer đóng không mutate draft. Project tools trong Detail đi qua cùng actions/commands, không có controller thứ hai.
 
 home/detailOpen/expanded/image viewer thuộc session. Thay project thành công chuyển vào editor, lỗi/cancel giữ Home/project trước đó. Single click của mọi node chỉ select; double/action/Enter open. Test driver chỉ thao tác controls hiển thị, không bypass inert. Khi viết benchmark phải vào editor trước đo; close Detail trước pan canvas.
+
+## Document/node transfer
+
+json/node-transfer giữ transforms thuần: one-card serializer/staging, reference checks, namespace filtering, conflict/attachment merge, Add/Update geometry. detail/markdown-import decodeUTF8 fatal và stageMarkdown/dataURI→attachments, không DOM/fetch. ui/document-transfer sở hữu file/preview/options và nhận ports context/isCurrent/useDraft/addNode/dialog/toast; không import app/store. app chỉ nối draft/geometry/guards/command. Preview render sau khi dialog mount, isCurrent loại kết quả async cũ. File size kiểm trước arrayBuffer; candidate validate trước use/commit. Update không Apply ngầm; export không gọi store.exported.
