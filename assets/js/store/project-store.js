@@ -1,13 +1,17 @@
+import { VIEWS, MIND } from '../graph/mind-map.js';
 import { blank, validate } from '../json/validator.js';
 const clone = (x) => structuredClone(x);
-const content = (p) =>
-  JSON.stringify({
+const content = (p) => {
+  const ext = clone(p.extensions);
+  if (ext?.[VIEWS]?.mindMap) delete ext[VIEWS].mindMap.viewport;
+  return JSON.stringify({
     version: p.version,
     metadata: p.metadata,
     cards: p.cards,
     relations: p.relations,
-    ...(p.extensions ? { extensions: p.extensions } : {}),
+    ...(ext ? { extensions: ext } : {}),
   });
+};
 const diff = (a, b) => {
   const changes = [];
   for (const key of ['metadata', 'extensions'])
@@ -34,14 +38,25 @@ export class ProjectStore {
     this.maxHistory = maxHistory;
     this.maxBytes = maxBytes;
     this.project = blank();
-    this.viewport = clone(this.project.canvas);
+    this.activeView = 'card';
+    this.viewports = { card: clone(this.project.canvas) };
     this.undoStack = [];
     this.redoStack = [];
     this.baseline = content(this.project);
-    this.viewBaseline = JSON.stringify(this.viewport);
+    this.viewBaseline = JSON.stringify(this.viewports);
     this.adjusted = false;
     this.notice = false;
     this.listeners = new Set();
+  }
+  get viewport() {
+    return this.viewports[this.activeView];
+  }
+  switchView(view) {
+    if (!['card', 'mind'].includes(view)) return;
+    this.activeView = view;
+    this.viewports[view] ||= clone(
+      this.project.extensions?.[VIEWS]?.mindMap?.viewport || { zoom: 1, position: { x: 0, y: 0 } },
+    );
   }
   subscribe(fn) {
     this.listeners.add(fn);
@@ -54,11 +69,14 @@ export class ProjectStore {
     return this.adjusted || content(this.project) !== this.baseline;
   }
   get viewChanged() {
-    return JSON.stringify(this.viewport) !== this.viewBaseline;
+    return JSON.stringify(this.viewports) !== this.viewBaseline;
   }
   replace(p, adjusted = false) {
     this.project = clone(p);
-    this.viewport = clone(p.canvas);
+    this.activeView = 'card';
+    this.viewports = { card: clone(p.canvas) };
+    if (p.extensions?.[VIEWS]?.mindMap?.viewport)
+      this.viewports.mind = clone(p.extensions[VIEWS].mindMap.viewport);
     this.undoStack = [];
     this.redoStack = [];
     this.baseline = content(p);
@@ -135,7 +153,7 @@ export class ProjectStore {
     }
   }
   setView(zoom, position) {
-    this.viewport = { zoom, position: clone(position) };
+    this.viewports[this.activeView] = { zoom, position: clone(position) };
   }
 }
 export const newId = (kind) => kind + '-' + crypto.randomUUID();
@@ -166,6 +184,12 @@ export function newRelation(source, target) {
 export function remove(p, selection) {
   if (selection.kind === 'card') {
     p.cards = p.cards.filter((c) => c.id !== selection.id);
+    const m = p.extensions?.[VIEWS]?.mindMap;
+    if (m) {
+      delete m.positions?.[selection.id];
+      delete m.sizes?.[selection.id];
+    }
+    if (p.extensions?.[MIND]?.rootId === selection.id) delete p.extensions[MIND].rootId;
     p.relations = p.relations.filter((r) => r.source !== selection.id && r.target !== selection.id);
   } else p.relations = p.relations.filter((r) => r.id !== selection.id);
 }

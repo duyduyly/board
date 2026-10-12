@@ -1,3 +1,5 @@
+import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mind-map.js';
+import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { applyAppearance } from '../detail/appearance.js';
 import cytoscape from '../../vendor/cytoscape-entry.js';
 import { t } from '../i18n/index.js';
@@ -54,6 +56,19 @@ export class GraphAdapter {
             'arrow-scale': 0.8,
           },
         },
+        {
+          selector: 'edge.mind-edge',
+          style: {
+            'curve-style': 'unbundled-bezier',
+            'control-point-distances': 55,
+            'control-point-weights': 0.5,
+            width: 2.5,
+          },
+        },
+        {
+          selector: 'edge.reference-edge',
+          style: { 'line-style': 'dashed', opacity: 0.55, width: 1.3 },
+        },
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
       ],
     });
@@ -76,7 +91,12 @@ export class GraphAdapter {
     });
     this.observer.observe(region);
   }
-  sync(project, selection) {
+  sync(project, selection, view = 'card') {
+    if (this.activeView !== view) {
+      this.lastProject = null;
+      this.activeView = view;
+    }
+    const info = branchInfo(project);
     if (this.lastProject === project) {
       if (this.lastSelection?.kind === 'card') {
         const el = this.cards.get(this.lastSelection.id);
@@ -131,7 +151,8 @@ export class GraphAdapter {
       this.cy.elements().forEach((e) => {
         if (!desired.has(e.id())) e.remove();
       });
-      for (const c of project.cards) {
+      for (const originalCard of project.cards) {
+        const c = { ...originalCard, ...geometry(project, originalCard, view) };
         let node = this.cy.getElementById(cid(c.id));
         const data = { id: cid(c.id), appId: c.id, width: c.size.width, height: c.size.height };
         const pos = { x: c.position.x + c.size.width / 2, y: c.position.y + c.size.height / 2 };
@@ -154,7 +175,7 @@ export class GraphAdapter {
           el.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
-              this.callbacks.select({ kind: 'card', id: c.id });
+              this.callbacks.open({ kind: 'card', id: c.id });
             }
           });
         }
@@ -215,7 +236,58 @@ export class GraphAdapter {
           e.stopPropagation();
           this.connectorStart(e, c.id);
         });
-        el.append(kicker, title, summary, meta, connector);
+        const config = nodeStyle(c),
+          simple = view === 'mind' || config.kind !== 'card';
+        el.classList.toggle('simple-node', simple);
+        el.classList.toggle('image-only', config.kind === 'image');
+        el.classList.toggle(
+          'root-node',
+          view === 'mind' && project.extensions?.[MIND]?.rootId === c.id,
+        );
+        el.classList.toggle('detached-node', view === 'mind' && !info.get(c.id)?.connected);
+        el.dataset.nodeKind = config.kind;
+        el.style.setProperty(
+          '--branch-color',
+          view === 'mind' ? info.get(c.id)?.color || '#347d68' : c.style.borderColor,
+        );
+        if (simple) {
+          if (['image', 'image-text'].includes(config.kind)) {
+            const frame = document.createElement('div');
+            frame.className = 'node-image-frame';
+            const status = document.createElement('span');
+            status.className = 'node-image-status';
+            status.textContent = t('imageLoading');
+            const image = document.createElement('img');
+            image.alt = config.imageAlt || c.title;
+            image.draggable = false;
+            image.style.objectFit = config.imageFit;
+            image.onload = () => {
+              status.hidden = true;
+            };
+            image.onerror = () => {
+              status.hidden = false;
+              status.textContent = t('imageFailed');
+            };
+            frame.append(image, status);
+            el.append(frame);
+            image.src =
+              attachmentDataURL(c.extensions?.[IMAGE_NAMESPACE]?.[config.coverImageId]) || '';
+          }
+          if (config.kind !== 'image') el.append(title);
+          if (view === 'mind') {
+            const marker = document.createElement('span');
+            marker.className = 'node-hierarchy-marker';
+            marker.dataset.i18n =
+              project.extensions?.[MIND]?.rootId === c.id
+                ? 'rootNode'
+                : info.get(c.id)?.connected
+                  ? 'branchNode'
+                  : 'detachedNode';
+            marker.textContent = t(marker.dataset.i18n);
+            el.append(marker);
+          }
+          el.append(connector);
+        } else el.append(kicker, title, summary, meta, connector);
         applyAppearance(el, c);
         el.style.width = c.size.width + 'px';
         el.style.height = c.size.height + 'px';
@@ -244,7 +316,10 @@ export class GraphAdapter {
           source: cid(r.source),
           target: cid(r.target),
           label: r.label,
-          color: r.style.color,
+          color:
+            view === 'mind'
+              ? r.extensions?.[MIND]?.color || info.get(r.target)?.color || r.style.color
+              : r.style.color,
           line:
             r.style.line === 'solid' ? 'solid' : r.style.line === 'dashed' ? 'dashed' : 'dotted',
           startArrow: ['start', 'both'].includes(r.style.arrow) ? 'triangle' : 'none',
@@ -256,6 +331,8 @@ export class GraphAdapter {
             edge.move({ source: data.source, target: data.target });
           edge.data(data);
         }
+        edge.toggleClass('mind-edge', view === 'mind');
+        edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
@@ -383,6 +460,8 @@ export class GraphAdapter {
           x: n.position('x') - width / 2,
           y: n.position('y') - height / 2,
         });
+      else if (this.activeView === 'mind' || el.dataset.nodeKind !== 'card')
+        this.callbacks.open({ kind: 'card', id });
       else this.callbacks.select({ kind: 'card', id });
     };
     const cancel = () => {

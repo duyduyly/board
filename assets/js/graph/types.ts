@@ -37,3 +37,19 @@ export interface Project {
   extensions?: Record<string, unknown>;
 }
 export type Selection = { kind: 'card' | 'relation'; id: string } | null;
+
+export interface NodePresentation {
+  kind: 'card' | 'text' | 'image' | 'image-text';
+  coverImageId?: string;
+  imageFit?: 'contain' | 'cover';
+  imageAlt?: string;
+}
+export interface MindMapView {
+  positions?: Record<string, Point>;
+  sizes?: Record<string, { width: number; height: number }>;
+  viewport?: { zoom: number; position: Point };
+}
+export interface MindMapRelation {
+  kind: 'branch' | 'reference';
+  color?: string;
+}

@@ -1,3 +1,4 @@
+import { mindIssues, VIEWS } from '../graph/mind-map.js';
 import { appearanceIssues } from '../detail/appearance.js';
 import { imageAttachmentIssues } from '../detail/attachments.js';
 import Ajv from '../../vendor/ajv-entry.js';
@@ -73,6 +74,7 @@ export function validate(raw) {
       warnings.push({ path: 'relations[' + i + ']', code: 'duplicateRelation' });
     duplicates.add(key);
   });
+  errors.push(...mindIssues(raw));
   return { errors, warnings };
 }
 export function normalize(raw) {
@@ -155,8 +157,16 @@ export function stage(text, bytes = new TextEncoder().encode(text).length) {
   if (final.errors.length) return { ...final, adjustments: normalized.adjustments };
   return { ...result, ...normalized };
 }
-export function serialize(project, viewport = project.canvas) {
-  return JSON.stringify({ ...project, canvas: copy(viewport) }, null, 2) + '\n';
+export function serialize(project, viewport = project.canvas, viewports = null) {
+  const output = copy(project);
+  output.canvas = copy(viewports?.card || viewport);
+  if (viewports?.mind) {
+    output.extensions ||= {};
+    output.extensions[VIEWS] ||= {};
+    output.extensions[VIEWS].mindMap ||= {};
+    output.extensions[VIEWS].mindMap.viewport = copy(viewports.mind);
+  }
+  return JSON.stringify(output, null, 2) + '\n';
 }
 export function filename(title) {
   const name = title

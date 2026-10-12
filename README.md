@@ -159,3 +159,15 @@ Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu ch�
 Tab **Chỉnh sửa** và **Format** chia sẻ cùng bản nháp; đổi giữa hai tab không cần Apply, chuyển sang Tổng quan/card khác vẫn hỏi khi có thay đổi. Kích thước lưu trong size, các thuộc tính hình dạng lưu dưới extensions.card-atlas:appearance, giữ JSON version1.0. Dark mode điều chỉnh màu card để dễ đọc như trước; Light mode hiển thị màu đã chọn trực tiếp. Kích thước quá nhỏ có thể che overview; hãy tăng kích thước nếu title/tags bị cắt.
 
 Trong tab **Chỉnh sửa**, chọn đoạn chữ trong ô Markdown rồi dùng **B**, **I**, **Code** hoặc chọn màu và bấm **Tô màu chữ đã chọn**. Màu dùng cú pháp: `[Nội dung nổi bật]{color:#d34f45}`. Dùng **Xem trước bản nháp** để kiểm tra trước Apply. Cú pháp màu áp dụng cho đoạn text một dòng; có thể bọc bên ngoài bằng Markdown đậm/nghiêng: `**[Nội dung]{color:#d34f45}**`. Nội dung HTML tùy ý vẫn được hiển thị như text; chỉ màu hex6 được nhận, không nhận CSS tùy ý. Cú pháp màu là phần mở rộng của Card Atlas; trình đọc Markdown khác có thể hiển thị nguyên cú pháp.
+
+## Illustrated Mind Map — đợt 1
+
+Chọn Card Map / Mind Map trên toolbar. Hai view dùng chung nội dung và Detail, có vị trí/kích thước riêng. Mind Map hiện bố trí thủ công: kéo node và dùng Fit/Focus; layout radial và collapse thuộc đợt 2.
+
+Trong Detail → Format chọn Card, Chữ, Ảnh hoặc Ảnh và chữ. Thêm ảnh PNG/JPEG/WebP/GIF ở Edit rồi chọn làm ảnh đại diện; ảnh nhúng nằm trong JSON, không tải lên server. Contain hiển thị toàn bộ ảnh; Cover lấp đầy khung. Đổi cover hoặc kiểu node trước khi xóa attachment đang dùng. Click node chữ/ảnh hoặc Enter mở Overview; connector vẫn tạo liên kết như card.
+
+Đặt Root trong Format; chỉnh relation → Vai trò Mind Map → Nhánh cha → con hoặc Liên kết tham khảo. Branch không cycle và mỗi node tối đa một parent. Đổi Root có parent yêu cầu xác nhận chuyển liên kết đi vào sang tham khảo. Node ngoài Root có viền đứt và nhãn riêng. Màu Mind Map không thay màu liên kết Card Map.
+
+Ví dụ: [assets/data/mind-map-example.json](assets/data/mind-map-example.json), mở bằng nút Ví dụ Mind Map. UI hỗ trợ Tiếng Việt/English, light/dark. Export lưu graph và geometry cả hai view; chuyển view không tự sắp xếp hay thêm undo. Recovery vẫn opt-in và giữ draft/view khi bật.
+
+Illustrated Mind Map phase 1: choose a view in the toolbar, select a node style/cover in Detail Format, and assign Root plus Branch/Reference roles. Both views share content with separate geometry. Layout is manual; radial layout and collapse are planned for phase 2. Use Edit to embed raster images, then select their cover in Format. Export JSON to preserve your work.

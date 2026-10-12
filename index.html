@@ -21,6 +21,10 @@
           ><button data-action="add" class="with-icon">
             <span>＋</span><span data-i18n="newCard"></span></button
           ><button data-action="connect" data-i18n="connect"></button>
+          <select id="map-view" data-i18n-title="mapView">
+            <option value="card" data-i18n="cardMap"></option>
+            <option value="mind" data-i18n="mindMap"></option>
+          </select>
           <div class="history-buttons">
             <button data-action="undo" data-i18n-title="undo">↶</button
             ><button data-action="redo" data-i18n-title="redo">↷</button>
@@ -77,8 +81,10 @@
               class="text-button"
               data-i18n="englishExample"
             ></button>
+            <button data-action="mind-example" class="text-button" data-i18n="mindExample"></button>
             <button data-action="import" class="text-button" data-i18n="importProject"></button>
           </div>
+          <div id="mind-map-hint" hidden></div>
           <div id="connect-hint" class="connect-hint" hidden></div>
           <div class="zoom-controls">
             <button data-action="zoom-out" data-i18n-title="zoomOut">−</button

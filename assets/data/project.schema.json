@@ -33,7 +33,32 @@
       }
     },
     "extensions": {
-      "$ref": "#/$defs/extensions"
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
+      },
+      "properties": {
+        "card-atlas:views": {
+          "type": "object",
+          "properties": {
+            "mindMap": {
+              "$ref": "#/$defs/mindView"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "card-atlas:mind-map": {
+          "type": "object",
+          "properties": {
+            "rootId": {
+              "$ref": "#/$defs/id"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
     }
   },
   "$defs": {
@@ -165,7 +190,15 @@
           }
         },
         "extensions": {
-          "$ref": "#/$defs/extensions"
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
+          },
+          "properties": {
+            "card-atlas:node": {
+              "$ref": "#/$defs/nodePresentation"
+            }
+          }
         }
       }
     },
@@ -221,9 +254,118 @@
           }
         },
         "extensions": {
-          "$ref": "#/$defs/extensions"
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
+          },
+          "properties": {
+            "card-atlas:mind-map": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "branch",
+                    "reference"
+                  ]
+                },
+                "color": {
+                  "$ref": "#/$defs/color"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "additionalProperties": false
+            }
+          }
         }
       }
+    },
+    "nodePresentation": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "card",
+            "text",
+            "image",
+            "image-text"
+          ]
+        },
+        "coverImageId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "imageFit": {
+          "enum": [
+            "contain",
+            "cover"
+          ]
+        },
+        "imageAlt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "image",
+                  "image-text"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "coverImageId"
+            ]
+          }
+        }
+      ]
+    },
+    "mindView": {
+      "type": "object",
+      "properties": {
+        "positions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/point"
+          }
+        },
+        "sizes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/size"
+          }
+        },
+        "viewport": {
+          "type": "object",
+          "properties": {
+            "zoom": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 4
+            },
+            "position": {
+              "$ref": "#/$defs/point"
+            }
+          },
+          "required": [
+            "zoom",
+            "position"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
     }
   }
 }

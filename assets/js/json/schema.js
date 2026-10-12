@@ -1,4 +1,4 @@
-export default {
+const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'Card Atlas Project 1.0',
   type: 'object',
@@ -201,3 +201,48 @@ export default {
     },
   },
 };
+
+const object = (properties, required = []) => ({
+  type: 'object',
+  properties,
+  required,
+  additionalProperties: false,
+});
+schema.$defs.nodePresentation = object(
+  {
+    kind: { enum: ['card', 'text', 'image', 'image-text'] },
+    coverImageId: { type: 'string', minLength: 1 },
+    imageFit: { enum: ['contain', 'cover'] },
+    imageAlt: { type: 'string' },
+  },
+  ['kind'],
+);
+schema.$defs.nodePresentation.allOf = [
+  {
+    if: { properties: { kind: { enum: ['image', 'image-text'] } } },
+    then: { required: ['coverImageId'] },
+  },
+];
+schema.$defs.mindView = object({
+  positions: { type: 'object', additionalProperties: { $ref: '#/$defs/point' } },
+  sizes: { type: 'object', additionalProperties: { $ref: '#/$defs/size' } },
+  viewport: object(
+    { zoom: { type: 'number', minimum: 0.1, maximum: 4 }, position: { $ref: '#/$defs/point' } },
+    ['zoom', 'position'],
+  ),
+});
+const extensions = (properties) => ({ ...schema.$defs.extensions, properties });
+schema.properties.extensions = extensions({
+  'card-atlas:views': object({ mindMap: { $ref: '#/$defs/mindView' } }),
+  'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
+});
+schema.$defs.card.properties.extensions = extensions({
+  'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
+});
+schema.$defs.relation.properties.extensions = extensions({
+  'card-atlas:mind-map': object(
+    { kind: { enum: ['branch', 'reference'] }, color: { $ref: '#/$defs/color' } },
+    ['kind'],
+  ),
+});
+export default schema;

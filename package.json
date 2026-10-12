@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/core.test.mjs",
+    "test": "node --test tests/*-core.test.mjs tests/core.test.mjs",
     "check": "node scripts/check.mjs",
     "typecheck": "tsc --noEmit",
     "e2e": "playwright test",

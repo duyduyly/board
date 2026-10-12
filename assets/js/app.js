@@ -1,3 +1,12 @@
+import {
+  NODE,
+  MIND,
+  nodeStyle,
+  geometry,
+  setGeometry,
+  setRoot,
+  relationKind,
+} from './graph/mind-map.js';
 import { APPEARANCE, appearance, applyAppearance } from './detail/appearance.js';
 import {
   recoveryEnabled,
@@ -62,7 +71,9 @@ let selection = null,
   sourceEditorState = null,
   recoveryPending = recoveryEnabled(),
   recoveryTimer = null,
-  recoveredSnapshot = null;
+  recoveredSnapshot = null,
+  draftMindSize = null,
+  originalMindSize = null;
 function entity() {
   if (selection?.kind === 'project') return store.project.metadata;
   return selection
@@ -72,7 +83,11 @@ function entity() {
     : null;
 }
 function draftDirty() {
-  return draft && JSON.stringify(draft) !== JSON.stringify(draftOriginal);
+  return (
+    draft &&
+    (JSON.stringify(draft) !== JSON.stringify(draftOriginal) ||
+      JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
+  );
 }
 function toast(key) {
   clearTimeout(toastTimer);
@@ -132,7 +147,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   },
   move: (id, position) =>
     change((p) => {
-      p.cards.find((c) => c.id === id).position = position;
+      setGeometry(p, id, store.activeView, 'position', position);
     }),
   connection: (source, target, pos) => connection(source, target, pos),
   viewport: (zoom, position) => {
@@ -153,7 +168,11 @@ function render() {
     draft = null;
     draftOriginal = null;
   }
-  adapter.sync(store.project, selection);
+  adapter.sync(store.project, selection, store.activeView);
+  $('#map-view').value = store.activeView;
+  $('#mind-map-hint').hidden =
+    store.activeView !== 'mind' || Boolean(store.project.extensions?.[MIND]?.rootId);
+  $('#mind-map-hint').textContent = t('mindHint');
   $('#project-name').textContent = store.project.metadata.title;
   $('#project-name').title = t('projectSettings');
   $('#project-name').setAttribute(
@@ -253,6 +272,9 @@ function renderList() {
 function beginDraft() {
   draft = clone(entity());
   draftOriginal = clone(draft);
+  draftMindSize =
+    selection?.kind === 'card' ? clone(geometry(store.project, entity(), 'mind').size) : null;
+  originalMindSize = clone(draftMindSize);
 }
 async function select(next, edit = false) {
   if (modalState) return false;
@@ -429,6 +451,8 @@ function renderPanelContent() {
   let fields = '';
   if (selection.kind === 'card' && tab === 'format') {
     const a = appearance(d);
+    const config = nodeStyle(d);
+    const activeSize = store.activeView === 'mind' ? draftMindSize : d.size;
     fields =
       '<h3>' +
       esc(t('cardShape')) +
@@ -441,11 +465,45 @@ function renderPanelContent() {
             '<input type="number" name="' +
             k +
             '" min="1" step="1" value="' +
-            d.size[k] +
+            activeSize[k] +
             '"></label>',
         )
         .join('') +
       '</div>';
+    fields +=
+      labelField('nodeKind', 'node-kind', config.kind, {
+        options: ['card', 'text', 'image', 'image-text'].map((value) => ({
+          value,
+          label: t(
+            {
+              card: 'kindCard',
+              text: 'kindText',
+              image: 'kindImage',
+              'image-text': 'kindImageText',
+            }[value],
+          ),
+        })),
+      }) +
+      labelField('coverImage', 'node-coverImageId', config.coverImageId || '', {
+        options: [
+          { value: '', label: t('noCover') },
+          ...Object.entries(d.extensions?.[IMAGE_NAMESPACE] || {}).map(([value, img]) => ({
+            value,
+            label: img.name,
+          })),
+        ],
+      }) +
+      labelField('imageFit', 'node-imageFit', config.imageFit, {
+        options: ['contain', 'cover'].map((value) => ({ value, label: t(value) })),
+      }) +
+      labelField('imageAlt', 'node-imageAlt', config.imageAlt || '') +
+      '<p class="node-format-hint">' +
+      esc(t('nodeFormatHint')) +
+      '</p><button type="button" id="set-root">' +
+      esc(t('setRoot')) +
+      '</button><button type="button" id="clear-root">' +
+      esc(t('clearRoot')) +
+      '</button>';
     fields +=
       '<div class="colors">' +
       ['backgroundColor', 'textColor', 'borderColor']
@@ -586,6 +644,12 @@ function renderPanelContent() {
         .join('') +
       '</div></div>';
   } else if (selection.kind === 'relation') {
+    fields += labelField('relationKind', 'mind-kind', relationKind(d), {
+      options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),
+    });
+    fields += labelField('mindColor', 'mind-color', d.extensions?.[MIND]?.color || d.style.color, {
+      color: true,
+    });
     for (const field of ['source', 'target'])
       fields += labelField(field, field, d[field], {
         options: store.project.cards.map((c) => ({ value: c.id, label: c.title })),
@@ -625,9 +689,11 @@ function renderPanelContent() {
         '</button></div>') +
     '</form>';
   const form = body.querySelector('form');
-  form.oninput = () => {
+  form.oninput = (event) => {
     for (const input of form.querySelectorAll('[name]')) {
       const name = input.name;
+      if ((name.startsWith('node-') || name.startsWith('mind-')) && event.target !== input)
+        continue;
       const value = input.value;
       if (name === 'tags')
         draft.tags = value
@@ -638,8 +704,20 @@ function renderPanelContent() {
         ['backgroundColor', 'textColor', 'borderColor', 'color', 'line', 'arrow'].includes(name)
       )
         draft.style[name] = value;
-      else if (['width', 'height'].includes(name)) draft.size[name] = Number(value);
-      else if (name.startsWith('appearance-')) {
+      else if (['width', 'height'].includes(name)) {
+        if (store.activeView === 'mind') draftMindSize[name] = Number(value);
+        else draft.size[name] = Number(value);
+      } else if (name.startsWith('node-')) {
+        const key = name.slice(5);
+        draft.extensions ||= {};
+        draft.extensions[NODE] ||= { ...nodeStyle(draft) };
+        if (key === 'coverImageId' && !value) delete draft.extensions[NODE][key];
+        else draft.extensions[NODE][key] = value;
+      } else if (name.startsWith('mind-')) {
+        draft.extensions ||= {};
+        draft.extensions[MIND] ||= { kind: 'reference' };
+        draft.extensions[MIND][name.slice(5)] = value;
+      } else if (name.startsWith('appearance-')) {
         const key = name.slice(11);
         draft.extensions ||= {};
         draft.extensions[APPEARANCE] ||= {};
@@ -678,14 +756,61 @@ function renderPanelContent() {
         .join('') +
       '</div></article>';
     const card = host.firstElementChild;
-    card.style.width = Math.min(10000, Math.max(1, draft.size.width)) + 'px';
-    card.style.height = Math.min(10000, Math.max(1, draft.size.height)) + 'px';
+    const config = nodeStyle(draft),
+      simple = store.activeView === 'mind' || config.kind !== 'card';
+    if (simple) {
+      card.replaceChildren();
+      card.classList.add('simple-node');
+      if (['image', 'image-text'].includes(config.kind)) {
+        const frame = document.createElement('div');
+        frame.className = 'node-image-frame';
+        const img = document.createElement('img');
+        img.alt = config.imageAlt || draft.title;
+        img.style.objectFit = config.imageFit;
+        const attachment = draft.extensions?.[IMAGE_NAMESPACE]?.[config.coverImageId];
+        if (attachment) img.src = 'data:' + attachment.mimeType + ';base64,' + attachment.data;
+        frame.append(img);
+        card.append(frame);
+      }
+      if (config.kind !== 'image') {
+        const title = document.createElement('h3');
+        title.textContent = draft.title;
+        card.append(title);
+      }
+    }
+    const previewSize = store.activeView === 'mind' ? draftMindSize : draft.size;
+    card.style.width = Math.min(10000, Math.max(1, previewSize.width)) + 'px';
+    card.style.height = Math.min(10000, Math.max(1, previewSize.height)) + 'px';
     applyAppearance(card, draft);
     card.style.setProperty('--card-background', draft.style.backgroundColor);
     card.style.setProperty('--card-ink', draft.style.textColor);
     card.style.setProperty('--card-border', draft.style.borderColor);
   }
   updateFormatPreview();
+  if ($('#set-root'))
+    $('#set-root').onclick = async () => {
+      if (!(await guardDraft())) return;
+      const id = selection?.id;
+      if (!id) return;
+      const hasParent = store.project.relations.some(
+        (r) => relationKind(r) === 'branch' && r.target === id,
+      );
+      if (
+        hasParent &&
+        (await dialog('rootDetachTitle', () => '<p>' + esc(t('rootDetachBody')) + '</p>', [
+          ['cancel', 'cancel'],
+          ['detachRoot', 'detach', true],
+        ])) !== 'detach'
+      )
+        return;
+      change((p) => setRoot(p, id, true));
+    };
+  if ($('#clear-root')) {
+    $('#clear-root').disabled = !store.project.extensions?.[MIND]?.rootId;
+    $('#clear-root').onclick = async () => {
+      if (await guardDraft()) change((p) => setRoot(p, null));
+    };
+  }
   if ($('#reset-appearance')) {
     $('#reset-appearance').onclick = () => {
       if (draft.extensions) delete draft.extensions[APPEARANCE];
@@ -782,6 +907,10 @@ function renderPanelContent() {
         const id = button.dataset.removeImage;
         const image = draft.extensions?.[IMAGE_NAMESPACE]?.[id];
         if (!image) return;
+        if (nodeStyle(draft).coverImageId === id) {
+          toast('coverDeleteGuard');
+          return;
+        }
         draft.content = draft.content.split(imageReference(id, image.name)).join('');
         delete draft.extensions[IMAGE_NAMESPACE][id];
         if (!Object.keys(draft.extensions[IMAGE_NAMESPACE]).length)
@@ -863,6 +992,11 @@ function applyDraft() {
     const kind = selection.kind === 'card' ? 'cards' : 'relations';
     p[kind] = p[kind].map((e) => (e.id === selection.id ? clone(draft) : e));
   }
+  if (
+    selection.kind === 'card' &&
+    JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize)
+  )
+    setGeometry(p, selection.id, 'mind', 'size', draftMindSize);
   const result = validate(p);
   if (result.errors.length) {
     $('#panel-body .form-errors').textContent = errorLines(result.errors);
@@ -876,6 +1010,8 @@ function applyDraft() {
     else {
       const kind = s.kind === 'card' ? 'cards' : 'relations';
       project[kind] = project[kind].map((e) => (e.id === s.id ? d : e));
+      if (s.kind === 'card' && JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
+        setGeometry(project, s.id, 'mind', 'size', draftMindSize);
     }
   });
   beginDraft();
@@ -965,7 +1101,10 @@ async function connection(source, target, position) {
   const r = newRelation(source, target);
   if (
     !change((p) => {
-      if (card) p.cards.push(card);
+      if (card) {
+        p.cards.push(card);
+        if (store.activeView === 'mind') setGeometry(p, card.id, 'mind', 'position', card.position);
+      }
       p.relations.push(r);
     })
   )
@@ -981,7 +1120,13 @@ async function addCard() {
   if (!(await guardDraft())) return;
   const pos = adapter.center(),
     card = newCard({ x: pos.x - 130, y: pos.y - 95 }, t('newCard'));
-  if (!change((p) => p.cards.push(card))) return;
+  if (
+    !change((p) => {
+      p.cards.push(card);
+      if (store.activeView === 'mind') setGeometry(p, card.id, 'mind', 'position', card.position);
+    })
+  )
+    return;
   selection = { kind: 'card', id: card.id };
   tab = 'edit';
   beginDraft();
@@ -989,10 +1134,24 @@ async function addCard() {
 }
 async function duplicate() {
   if (selection?.kind !== 'card' || !(await guardDraft())) return;
-  const card = clone(entity());
+  const original = entity();
+  const card = clone(original);
   card.id = newId('card');
   card.position = { x: card.position.x + 36, y: card.position.y + 36 };
-  if (!change((p) => p.cards.push(card))) return;
+  if (
+    !change((p) => {
+      p.cards.push(card);
+      const mind = geometry(p, original, 'mind');
+      if (store.activeView === 'mind' || p.extensions?.['card-atlas:views']?.mindMap) {
+        setGeometry(p, card.id, 'mind', 'position', {
+          x: mind.position.x + 36,
+          y: mind.position.y + 36,
+        });
+        setGeometry(p, card.id, 'mind', 'size', mind.size);
+      }
+    })
+  )
+    return;
   selection = { kind: 'card', id: card.id };
   tab = 'edit';
   beginDraft();
@@ -1012,6 +1171,10 @@ function recoverySnapshot() {
   return {
     project: clone(store.project),
     viewport: clone(store.viewport),
+    activeView: store.activeView,
+    viewports: clone(store.viewports),
+    draftMindSize: clone(draftMindSize),
+    originalMindSize: clone(originalMindSize),
     selection: clone(selection),
     draft: clone(draft),
     draftOriginal: clone(draftOriginal),
@@ -1088,11 +1251,19 @@ async function restoreRecovery() {
     return;
   }
   if (!(await replaceProject(staged.project, true))) return;
+  if (snapshot.viewports) store.viewports = clone(snapshot.viewports);
+  store.switchView(snapshot.activeView === 'mind' ? 'mind' : 'card');
   if (snapshot.viewport) store.setView(snapshot.viewport.zoom, snapshot.viewport.position);
   selection = snapshot.selection;
   tab = ['edit', 'format'].includes(snapshot.tab) ? snapshot.tab : 'overview';
   draft = snapshot.draft;
   draftOriginal = snapshot.draftOriginal;
+  draftMindSize =
+    snapshot.draftMindSize ||
+    (selection?.kind === 'card' && entity()
+      ? clone(geometry(store.project, entity(), 'mind').size)
+      : null);
+  originalMindSize = snapshot.originalMindSize || clone(draftMindSize);
   if (!entity()) {
     selection = null;
     draft = null;
@@ -1149,7 +1320,9 @@ async function exportProject() {
     if (choice === 'apply' && !applyDraft()) return false;
   }
   try {
-    download(serialize(store.project, store.viewport), filename(store.project.metadata.title));
+    const text = serialize(store.project, store.viewport, store.viewports);
+    if (new TextEncoder().encode(text).length > LIMITS.file) throw Error('fileLimit');
+    download(text, filename(store.project.metadata.title));
     lastExport = true;
     store.exported();
     toast('exportHint');
@@ -1293,11 +1466,24 @@ async function formatGuide() {
       esc(t('downloadSchema')) +
       '</button><button id="example-download">' +
       esc(t('downloadExample')) +
+      '</button><button id="mind-example-download">' +
+      esc(t('mindExample')) +
       '</button><button id="copy-ai">' +
       esc(t('copyInstructions')) +
       '</button></div><pre>' +
       esc(t('aiGuide')) +
-      '</pre>';
+      '</pre><p>' +
+      esc(t('mindGuide')) +
+      '</p>';
+    div.querySelector('#mind-example-download').onclick = async () => {
+      try {
+        const res = await fetch('assets/data/mind-map-example.json');
+        if (!res.ok) throw Error();
+        download(await res.text(), 'mind-map-example.json');
+      } catch {
+        toast('errorRead');
+      }
+    };
     div.querySelector('#schema-download').onclick = async () => {
       try {
         const res = await fetch('assets/data/project.schema.json');
@@ -1338,6 +1524,16 @@ $('#search').oninput = (e) => {
   renderList();
 };
 $('#project-name').onclick = () => select({ kind: 'project', id: 'metadata' }, true);
+$('#map-view').onchange = () => {
+  if (modalState) {
+    $('#map-view').value = store.activeView;
+    return;
+  }
+  store.switchView($('#map-view').value);
+  previousPanelKey = null;
+  render();
+  adapter.setViewport(store.viewport);
+};
 $('#locale').onchange = (e) => {
   setLocale(e.target.value);
   render();
@@ -1367,6 +1563,7 @@ const actions = {
   import: () => $('#file-input').click(),
   export: exportProject,
   example: () => loadExample(),
+  'mind-example': () => loadExample('assets/data/mind-map-example.json'),
   'english-example': () => loadExample('assets/data/english-endings-example.json'),
   format: formatGuide,
   recovery: recoveryDialog,

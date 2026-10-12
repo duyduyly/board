@@ -2,7 +2,7 @@
 
 Ngày tạo: 2026-10-11. Phạm vi: triển khai V1 theo [đặc tả nâng cấp](../wordspace/docs/json-driven-visual-card-graph-editor-spec-v2.md). Phiên bản tài liệu là v2; định dạng dữ liệu là 1.0.
 
-Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 8 task bổ sung E001–E008 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
+Checklist thực hiện: [implementation-checklist.csv](implementation-checklist.csv). Có 47 công việc V1, 8 task bổ sung E001–E008, 20 task MM001–MM020 theo yêu cầu và 10 công việc backlog V1.1/V2. Trạng thái thực được cập nhật trong CSV; evidence ở implementation-evidence.md.
 
 ## Mục tiêu và giới hạn
 
@@ -175,3 +175,16 @@ User yêu cầu thực hiện các cải thiện sau review. E006 DONE: giữ se
 DONE theo user: tab Format riêng gồm width/height, nền/chữ/viền, radius0–100px, borderWidth0–8px, titleFontSize12–24px, alignment left/center/right, shadow none/soft; presets rectangle/rounded. Size dùng contract hiện có; appearance trong extensions card-atlas:appearance có validate typed/bounds, không nhận CSS tùy ý. Edit/Format dùng chung draft; Apply/Cancel/guard/undo/JSON roundtrip. Toolbar content bold/italic/inline code và color cú pháp [text]{color:#RRGGBB}; tokenizer riêng, render text escaped và chỉ set color hex sau sanitize, HTML tùy ý vẫn bị escape. UI vi/en, preview hình dạng trong Format trước Apply.
 
 - E008 nghiệm thu:55 DONE (47V1+8 bổ sung),10 BACKLOG; không task đang dở. Core23/23, fullUI93/93 + targeted6/6 sau polish preview; lint/typecheck/format pass. Console QA sạch, desktop1440/1050 và mobile notice390. Evidence: [detail-format-evidence.md](detail-format-evidence.md). README hướng dẫn Format/text colors; chưa push remote.
+
+## Illustrated Mind Map và node ảnh — 2026-10-12
+
+Plan: [mind-map-plan.md](mind-map-plan.md). Checklist riêng: [mind-map-checklist.csv](mind-map-checklist.csv), tái tạo từ checklist chính mỗi lần cập nhật.
+MM001–MM012 DONE: bốn kiểu node/ảnh độc lập, Card Map và Mind Map thủ công, graph/Detail dùng chung, geometry riêng, Root/branch/reference và đầy đủ thao tác.
+MM013–MM020 TODO: radial layout preview và collapse; user hiện chỉ giao đợt 1. B104/B201 vẫn BACKLOG ngoài scope đã tách.
+
+### Tiến độ hiện tại
+
+67 DONE,8 TODO,10 BACKLOG; không task đang dở hoặc blocker. Files đổi: index.html, assets/js/css/data, README, tests, benchmark script, AGENTS và planning; contract namespace đã đồng bộ spec.
+Core28/28; fullUI117/117 Chrome/Edge/Firefox; targeted matrix24+connector3+Guide3 pass sau polish; lint/typecheck/format/build pass.
+Benchmark500nodes/2000relations hai view: import<1s, Overview<90ms, pan median59.88FPS.
+Evidence: [mind-map-phase1-evidence.md](mind-map-phase1-evidence.md). Task kế tiếp khi được giao đợt 2: MM013. Không tự thực hiện BACKLOG.

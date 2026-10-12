@@ -57,3 +57,7 @@ Báo cáo ngắn cho người dùng: kết quả, task IDs hoàn tất, checks �
 ## Bổ sung policy E006/E007 theo yêu cầu nâng cấp của user
 
 User đã yêu cầu cải thiện trải nghiệm viết tài liệu sau review. Fulltext search, writing mode, draft preview, TOC, template append và Markdown download được phép. Persistence mặc định vẫn tắt; **recovery opt-in** được phép trong IndexedDB, marker bật trong localStorage, UI giải thích rõ và tắt/xóa. Không upload/backend. Điều này thay thế các câu cấm tuyệt đối local persistence ở phần V1 cũ chỉ trong phạm vi recovery opt-in. Giữ JSON 1.0/giới hạn và commands/history; snapshot khôi phục không gồm history.
+
+## Kế hoạch Illustrated Mind Map và node ảnh
+
+Khi triển khai yêu cầu này, đọc thêm [planning/mind-map-plan.md](planning/mind-map-plan.md) và các task MM001–MM020 trong checklist chính. [planning/mind-map-checklist.csv](planning/mind-map-checklist.csv) là bản trích: cập nhật implementation-checklist.csv trước rồi tái tạo bản trích để tránh lệch trạng thái. Giữ graph/Detail dùng chung và geometry theo view; chốt contract tại MM001 trước code. B104/B201 vẫn BACKLOG ngoài phạm vi đã tách. User đã giao triển khai đợt 1 MM001–MM012 ngày 2026-10-12. Đợt 2 MM013–MM020 vẫn TODO; chỉ triển khai khi được giao thêm.

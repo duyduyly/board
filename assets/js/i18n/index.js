@@ -22,6 +22,7 @@ export function t(key, params = {}) {
 export function issueMessage(issue) {
   const key = {
     syntax: 'errorSyntax',
+    mindMap: 'errorMindMap',
     imageAttachment: 'errorImageAttachment',
     appearance: 'errorAppearance',
     fileLimit: 'errorFileLimit',

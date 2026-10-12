@@ -1,0 +1,30 @@
+{
+  "view": "mind",
+  "date": "2026-10-12T05:25:55.335Z",
+  "browser": "154.0.8037.98",
+  "os": "Windows_NT 10.0.26200",
+  "cpu": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+  "memoryGiB": 32,
+  "viewport": "1440x900",
+  "measurement": "Warm loaded app; JSON parse+validate+normalize+replace+two animation frames. Overview measured on five cards; canvas pan animates for 10s. No human preview/dialog time.",
+  "cards": 500,
+  "relations": 2000,
+  "bytes": 2497883,
+  "importMs": 903.5,
+  "overviewMs": 85.5,
+  "overviewSamplesMs": [
+    85.5,
+    58.40000000037253,
+    60,
+    48.90000000037253,
+    57.40000000037253
+  ],
+  "panMedianFps": 59.88023952095874,
+  "panDurationMs": 10044.099999999627,
+  "frames": 475,
+  "targets": {
+    "import": true,
+    "overview": true,
+    "pan": true
+  }
+}
