@@ -200,3 +200,9 @@ Thay assets/data/english-endings-example.json bằng JSON user:12 text nodes,Roo
 ## Refactor source — RF001–RF005
 
 User giao audit/plan/optimize/restructure; xem [refactor-plan.md](refactor-plan.md). RF001–RF005 DONE; tổng 82 DONE, 10 BACKLOG, không task đang dở hoặc blocker trong phạm vi được giao. Core 36/36, full UI 153/153 Chrome/Edge/Firefox, lint/architecture/typecheck/format/build và benchmark hai view PASS. Files: common/, ui/, editor-fields, project-index, CSS layers, scripts/architecture.mjs, tests và docs/development.md. Evidence: [refactor-evidence.md](refactor-evidence.md). Task tiếp theo chỉ khi user giao scope mới; giữ BACKLOG.
+
+## Feedback 01 — đợt 1
+
+User giao implement FB001–FB010 ngày2026-10-12, đã DONE. [feedback-01-plan.md](feedback-01-plan.md) và master/checklist trích đồng bộ. Gallery6template local/Home/Continue/categories, Detail native75%/Full, single select/Open và click viewerFit/100% đã triển khai; guards/history/JSON1.0/recovery opt-in giữ nguyên. Tái sử dụng dialog lifecycle; offscreen paint trên graph lớn tối ưu để pan đạt60FPS.
+
+Tiến độ hiện tại:92DONE/19TODO/10BACKLOG; không IN_PROGRESS/BLOCKED. Core37/37; fullUI180/180 + portrait/GIF3/3 Chrome/Edge/Firefox; lint/architecture29modules/typecheck/format/build PASS. Benchmark500/2000 hai view PASS, không đổi targets. Files: index.html, assets/css/js/catalog/templates/previews, tests/ui-driver, benchmark script, README/AGENTS/development và planning. Evidence: [feedback-01-phase1-evidence.md](feedback-01-phase1-evidence.md). Không blocker. FB011–FB029 chưa được giao code; bước tiếp FB011 khi user giao đợt2. BACKLOG cũ giữ nguyên; không push remote.

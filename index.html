@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="assets/css/app.css" />
   </head>
   <body>
-    <div id="app">
+    <div id="app" class="home-mode">
       <header class="toolbar">
-        <div class="brand" aria-label="Card Atlas">
+        <button class="brand" data-action="home" aria-label="Card Atlas — Home">
           <span class="brand-mark">✳</span> Card Atlas
-        </div>
+        </button>
         <button id="project-name" class="project-name"></button
         ><span id="save-state" class="save-state"></span>
         <div class="toolbar-actions">
@@ -45,6 +45,12 @@
           </select>
         </div>
       </header>
+      <section id="home-page" class="home-page">
+        <div class="home-resume">
+          <button data-action="continue" data-i18n="continueProject" hidden></button>
+        </div>
+        <div id="template-gallery"></div>
+      </section>
       <main class="workspace">
         <aside class="sidebar">
           <div class="search-wrap">
@@ -69,20 +75,8 @@
           <div id="graph"></div>
           <div id="cards-layer"></div>
           <div id="welcome" class="welcome">
-            <div class="welcome-mark" aria-hidden="true">✳</div>
             <h1 data-i18n="welcome"></h1>
             <p data-i18n="welcomeBody"></p>
-            <div>
-              <button class="primary" data-action="new" data-i18n="startBlank"></button
-              ><button data-action="example" data-i18n="openExample"></button>
-            </div>
-            <button
-              data-action="english-example"
-              class="text-button"
-              data-i18n="englishExample"
-            ></button>
-            <button data-action="mind-example" class="text-button" data-i18n="mindExample"></button>
-            <button data-action="import" class="text-button" data-i18n="importProject"></button>
           </div>
           <div id="mind-map-tools" class="mind-map-tools" hidden>
             <button data-action="layout" data-i18n="arrangeMindMap"></button>
@@ -123,29 +117,45 @@
             <path></path>
           </svg>
         </section>
-        <aside id="detail-panel" class="detail-panel" hidden>
-          <div
-            id="panel-divider"
-            class="panel-divider"
-            role="separator"
-            tabindex="0"
-            aria-orientation="vertical"
-            data-i18n-title="panelResize"
-          ></div>
+        <dialog id="detail-panel" class="detail-panel" aria-labelledby="panel-title">
           <div class="panel-header">
-            <h2 id="panel-title"></h2>
+            <h2 id="panel-title" tabindex="-1"></h2>
+            <select id="detail-locale" aria-label="Tiếng Việt / English">
+              <option value="vi">Tiếng Việt</option>
+              <option value="en">English</option></select
+            ><button data-action="detail-theme" data-i18n-title="darkMode" id="detail-theme">
+              ◐
+            </button>
             <button
               id="writing-exit"
               hidden
               data-action="writing-exit"
               data-i18n="exitWriting"
             ></button>
-            <button data-action="expand" data-i18n-title="expand">⤢</button
+            <button data-action="expand" data-i18n-title="fullDetail">⤢</button
             ><button data-action="close" data-i18n-title="close">×</button>
           </div>
           <nav id="panel-tabs" class="panel-tabs"></nav>
           <div id="panel-body" class="panel-body"></div>
-        </aside>
+          <details id="detail-tools" class="detail-tools">
+            <summary data-i18n="projectTools"></summary>
+            <div class="detail-tool-actions">
+              <select id="detail-map-view" data-i18n-title="mapView">
+                <option value="card" data-i18n="cardMap"></option>
+                <option value="mind" data-i18n="mindMap"></option>
+              </select>
+              <button data-panel-action="undo" data-i18n="undo"></button
+              ><button data-panel-action="redo" data-i18n="redo"></button>
+              <button data-panel-action="export" data-i18n="export"></button
+              ><button data-panel-action="new" data-i18n="newProject"></button>
+              <button data-panel-action="format" data-i18n="format"></button
+              ><button data-panel-action="recovery" data-i18n="recovery"></button>
+              <button data-panel-action="layout" data-i18n="arrangeMindMap"></button
+              ><button data-panel-action="focus" data-i18n="focusLabel"></button
+              ><button data-panel-action="fit" data-i18n="fitLabel"></button>
+            </div>
+          </details>
+        </dialog>
       </main>
       <div class="mobile-notice" data-i18n="desktop"></div>
       <div id="toast" role="status" class="toast" hidden></div>

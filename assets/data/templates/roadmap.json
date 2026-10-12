@@ -1,0 +1,149 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Project roadmap",
+    "description": "Starter map — replace the sample notes with your own."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "roadmap-0",
+      "title": "Goal",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "roadmap"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Goal\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "roadmap-1",
+      "title": "Plan",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "roadmap"
+      ],
+      "position": {
+        "x": 380,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Plan\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "roadmap-2",
+      "title": "Build",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "roadmap"
+      ],
+      "position": {
+        "x": 0,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Build\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "roadmap-3",
+      "title": "Review",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "roadmap"
+      ],
+      "position": {
+        "x": 380,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Review\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    }
+  ],
+  "relations": [
+    {
+      "id": "roadmap-r0",
+      "source": "roadmap-0",
+      "target": "roadmap-1",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "roadmap-r1",
+      "source": "roadmap-1",
+      "target": "roadmap-2",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "roadmap-r2",
+      "source": "roadmap-2",
+      "target": "roadmap-3",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ]
+}

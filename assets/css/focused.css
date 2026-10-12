@@ -1,0 +1,344 @@
+/* Gallery and native top-layer Detail surfaces. */
+.brand {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+#app.home-mode {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+.home-mode .toolbar {
+  flex: none;
+}
+.home-mode #project-name,
+.home-mode #save-state,
+.home-mode .toolbar-actions > [data-action='add'],
+.home-mode .toolbar-actions > [data-action='connect'],
+.home-mode #map-view,
+.home-mode .history-buttons,
+.home-mode .toolbar-actions > [data-action='export'] {
+  display: none;
+}
+.home-page {
+  overflow: auto;
+  flex: 1;
+  background: var(--canvas);
+  padding: 40px max(24px, calc((100vw - 1280px) / 2));
+}
+.home-page h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  letter-spacing: -0.6px;
+}
+.gallery-intro {
+  color: var(--muted);
+  font-size: 16px;
+  margin: 0 0 28px;
+}
+.home-resume {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.home-resume:has([hidden]) {
+  display: none;
+}
+.gallery-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+.gallery-categories button {
+  background: transparent;
+  border-color: transparent;
+}
+.gallery-categories [aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+.template-tile {
+  border: 0;
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  min-width: 0;
+}
+.template-tile img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  object-fit: contain;
+  background: #f5f7f5;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.template-tile span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+.template-tile:hover {
+  background: transparent;
+}
+.template-tile:hover img,
+.template-tile:focus-visible img {
+  border-color: var(--accent);
+  box-shadow: 0 3px 10px #15271c12;
+}
+.template-skeleton {
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  background: var(--soft);
+}
+dialog.detail-panel {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 75vw;
+  max-width: 1120px;
+  height: 90vh;
+  max-height: 90vh;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 16px 64px #0003;
+}
+dialog.detail-panel:not([open]) {
+  display: none;
+}
+dialog.detail-panel[open] {
+  display: flex;
+  flex-direction: column;
+}
+dialog.detail-panel::backdrop,
+.image-preview::backdrop {
+  background: rgb(10 18 14 / 58%);
+}
+dialog.detail-panel.detail-full {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+}
+.detail-panel .panel-header {
+  flex: none;
+  padding: 18px 24px;
+  gap: 10px;
+}
+.detail-panel .panel-header h2 {
+  font-size: 20px;
+  line-height: 1.35;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.detail-panel .panel-tabs {
+  flex: none;
+  padding: 0 24px;
+}
+.detail-panel .panel-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 24px;
+}
+.detail-panel .panel-body > .markdown,
+.detail-panel .panel-body > .summary,
+.detail-panel .panel-body > .type-tags,
+.detail-panel .panel-body > .image-opt,
+.detail-panel .panel-body > .relations-section {
+  max-width: 80ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.detail-panel .markdown {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.detail-panel .markdown img {
+  max-height: 360px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+.writing-mode .workspace {
+  grid-template-columns: 234px minmax(0, 1fr);
+}
+.writing-mode dialog.detail-panel {
+  width: 75vw;
+  max-width: 1120px;
+}
+.writing-mode dialog.detail-panel.detail-full {
+  width: 100vw;
+  max-width: 100vw;
+}
+.image-preview {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  padding: 0;
+  max-width: calc(75vw + 2px);
+  width: max-content;
+  max-height: calc(75vh + 60px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: 0 16px 64px #0003;
+}
+.image-preview[open] {
+  display: flex;
+  flex-direction: column;
+}
+.image-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  flex: none;
+}
+.image-preview-header span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.image-preview-frame {
+  max-width: 75vw;
+  max-height: 75vh;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  min-height: 0;
+}
+.image-preview-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 75vw;
+  max-height: 75vh;
+  object-fit: contain;
+}
+.image-preview.actual-size .image-preview-image {
+  width: initial;
+  height: initial;
+  max-width: none;
+  max-height: none;
+}
+.image-preview-header [aria-pressed='true'] {
+  color: var(--accent);
+  background: var(--soft);
+}
+@media (min-width: 1700px) {
+  .template-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1100px) {
+  .template-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .template-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .home-page {
+    padding: 28px 20px;
+  }
+  .home-mode .mobile-notice {
+    display: none;
+  }
+  .home-mode .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    padding: 16px;
+    gap: 12px;
+  }
+  .home-mode .toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  dialog.detail-panel {
+    width: 95vw;
+  }
+}
+@media (max-width: 420px) {
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .template-tile img {
+    transition: none;
+  }
+}
+
+#home-page[hidden],
+.workspace[hidden] {
+  display: none !important;
+}
+
+.detail-tools {
+  flex: none;
+  border-top: 1px solid var(--border);
+  padding: 10px 24px;
+  background: var(--surface);
+}
+.detail-tools summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+}
+.detail-tool-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+.detail-tool-actions button,
+.detail-tool-actions select {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+.detail-panel .summary {
+  text-align: left;
+}
+
+.image-preview-header button {
+  font-size: 12px;
+  line-height: 24px;
+  padding: 4px 8px;
+}
+.image-preview-header button:last-child {
+  font-size: 20px;
+}
+
+/* Pan the node overlay as a composited layer instead of repainting every card. */
+#cards-layer {
+  will-change: transform;
+}

@@ -1,3 +1,4 @@
+import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const example = await fs.readFile('assets/data/example.json', 'utf8');
@@ -6,16 +7,16 @@ const legacyEnglish = (
 ).trim();
 async function sample(page) {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Mở ví dụ', exact: true }).click();
+  await page.locator('[data-action=example]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
 }
 async function selectService(page) {
-  await page.locator('.card-row[data-card-id="card-user-service"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="card-user-service"]'));
   await expect(page.locator('#panel-title')).toHaveText('User Service');
 }
 async function exportData(page) {
   const downloadPromise = page.waitForEvent('download');
-  await page.locator('[data-action=export]').click();
+  await projectAction(page, 'export');
   const d = await downloadPromise;
   return JSON.parse(await fs.readFile(await d.path(), 'utf8'));
 }
@@ -29,7 +30,7 @@ test('primary screen, documentation and vi/en without content changes', async ({
   await expect(page.locator('.diagram')).toContainText('User Service');
   await expect(page.locator('#relations-list')).toContainText('Quan hệ đi vào');
   const a = await exportData(page);
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.getByRole('button', { name: 'Overview', exact: true })).toBeVisible();
   const b = await exportData(page);
@@ -43,9 +44,9 @@ test('editor draft survives locale switch, guard cancel/discard and Apply', asyn
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('input[name=title]').fill('Changed Service');
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   await expect(page.locator('input[name=title]')).toHaveValue('Changed Service');
-  await page.locator('.card-row[data-card-id="card-database"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="card-database"]'));
   await expect(page.locator('#modal')).toBeVisible();
   await page.locator('#modal-locale').selectOption('vi');
   await expect(page.locator('#modal')).toContainText('Giữ các chỉnh sửa?');
@@ -53,7 +54,7 @@ test('editor draft survives locale switch, guard cancel/discard and Apply', asyn
   await expect(page.locator('input[name=title]')).toHaveValue('Changed Service');
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await expect(page.locator('#panel-title')).toHaveText('Changed Service');
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('#panel-title')).toHaveText('User Service');
 });
 
@@ -68,7 +69,7 @@ test('drag card one undo, duplicate and cascade deletion', async ({ page }) => {
   await page.mouse.up();
   const moved = await exportData(page);
   expect(moved.cards[0].position).not.toEqual(before.cards[0].position);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   const restored = await exportData(page);
   expect(restored.cards).toEqual(before.cards);
   await c.dblclick();
@@ -77,13 +78,14 @@ test('drag card one undo, duplicate and cascade deletion', async ({ page }) => {
   await expect(page.locator('.graph-card')).toHaveCount(4);
   await page.locator('#delete').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('.graph-card')).toHaveCount(4);
 });
 
 test('connector empty drop creates card and relation atomically', async ({ page }) => {
   await sample(page);
   await selectService(page);
+  await page.locator('[data-action=close]').click();
   const connector = page.locator('.graph-card[data-id="card-user-service"] .connector');
   const box = await connector.boundingBox();
   const canvas = await page.locator('#canvas-region').boundingBox();
@@ -94,7 +96,7 @@ test('connector empty drop creates card and relation atomically', async ({ page 
   await expect(page.locator('.graph-card')).toHaveCount(4);
   const p = await exportData(page);
   expect(p.relations).toHaveLength(3);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('.graph-card')).toHaveCount(3);
   const restored = await exportData(page);
   expect(restored.relations).toHaveLength(2);
@@ -128,15 +130,15 @@ test('applied export keeps draft; replacement cancel retains work', async ({ pag
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('textarea[name=content]').fill('# Unsaved Draft');
   const dl = page.waitForEvent('download');
-  await page.locator('[data-action=export]').click();
+  await projectAction(page, 'export');
   await page.locator('[data-choice=applied]').click();
   await dl;
   await expect(page.locator('textarea[name=content]')).toHaveValue('# Unsaved Draft');
-  await page.locator('.toolbar [data-action=new]').click();
+  await projectAction(page, 'new');
   await page.locator('[data-choice=cancel]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
-  await page.locator('.toolbar [data-action=new]').click();
+  await projectAction(page, 'new');
   await page.locator('[data-choice=cancel]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
 });
@@ -176,18 +178,14 @@ test('search, keyboard input isolation, panel resize, desktop notice', async ({ 
   await sample(page);
   await page.locator('#search').fill('storage');
   await expect(page.locator('.card-row')).toHaveCount(1);
-  await page.locator('.card-row').click();
+  await openRow(page, page.locator('.card-row'));
   await expect(page.locator('#panel-title')).toHaveText('Database');
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('input[name=title]').focus();
   await page.keyboard.press('Delete');
   await expect(page.locator('.graph-card')).toHaveCount(3);
-  const divider = await page.locator('#panel-divider').boundingBox();
-  await page.mouse.move(divider.x + 4, divider.y + 40);
-  await page.mouse.down();
-  await page.mouse.move(divider.x - 120, divider.y + 40);
-  await page.mouse.up();
-  expect((await page.locator('#detail-panel').boundingBox()).width).toBeGreaterThan(400);
+  await page.locator('[data-action=expand]').click();
+  expect((await page.locator('#detail-panel').boundingBox()).width).toBe(1440);
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator('.mobile-notice')).toBeVisible();
 });
@@ -198,7 +196,7 @@ test('Format Guide example/schema downloads keep dirty state', async ({ page }) 
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('input[name=title]').fill('changed');
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
-  await page.locator('[data-action=format]').click();
+  await projectAction(page, 'format');
   const d = page.waitForEvent('download');
   await page.locator('#schema-download').click();
   const schema = JSON.parse(await fs.readFile(await (await d).path(), 'utf8'));
@@ -210,11 +208,11 @@ test('Format Guide example/schema downloads keep dirty state', async ({ page }) 
 test('Connect mode, relation editor endpoints and style, self-loop rejected', async ({ page }) => {
   await sample(page);
   await selectService(page);
-  await page.locator('[data-action=connect]').click();
+  await projectAction(page, 'connect');
   await page.locator('.graph-card[data-id="card-database"]').click();
   const data = await exportData(page);
   expect(data.relations).toHaveLength(3);
-  await page.locator('[data-action=fit]').click();
+  await projectAction(page, 'fit');
   const edgePoint = await page.evaluate(async () => {
     const { adapter } = await import('/assets/js/app.js');
     const edge = adapter.cy.edges().last();
@@ -260,7 +258,7 @@ test('image opt-in only after click and fresh session resets it', async ({ page 
   await expect.poll(() => requests).toBe(1);
   page.once('dialog', (d) => d.accept());
   await page.reload();
-  await page.getByRole('button', { name: 'Mở ví dụ', exact: true }).click();
+  await page.locator('[data-action=example]').click();
   await selectService(page);
   await expect(page.locator('#allow-images')).toBeVisible();
 });
@@ -299,7 +297,7 @@ test('normalization warning, dirty state and beforeunload only for content', asy
 
 test('English workflow import, edit, search and export guards', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   await page.locator('#file-input').setInputFiles({
     name: 'example.json',
     mimeType: 'application/json',
@@ -308,13 +306,13 @@ test('English workflow import, edit, search and export guards', async ({ page })
   await expect(page.locator('#modal')).toContainText('Import preview');
   await page.getByRole('button', { name: 'Apply import', exact: true }).click();
   await page.locator('#search').fill('storage');
-  await page.locator('.card-row').click();
+  await openRow(page, page.locator('.card-row'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await page.locator('input[name=title]').fill('Database Updated');
   await page.getByRole('button', { name: 'Apply', exact: true }).click();
   await expect(page.locator('#save-state')).toContainText('Unsaved changes');
   await page.locator('textarea[name=content]').fill('# New English Draft');
-  await page.locator('[data-action=export]').click();
+  await projectAction(page, 'export');
   await expect(page.locator('#modal')).toContainText('Export with unapplied edits?');
   await page.locator('#modal').getByRole('button', { name: 'Cancel', exact: true }).click();
   await expect(page.locator('textarea[name=content]')).toHaveValue('# New English Draft');
@@ -355,7 +353,7 @@ test('failed export preserves dirty and Escape cancels connector creation', asyn
       throw Error('simulated download failure');
     };
   });
-  await page.locator('[data-action=export]').click();
+  await projectAction(page, 'export');
   await expect(page.locator('#toast')).toContainText('Xuất file thất bại');
   await expect(page.locator('#save-state')).toContainText('Chưa xuất');
   await page.evaluate(() => (HTMLAnchorElement.prototype.click = window.originalAnchorClick));
@@ -398,13 +396,13 @@ test('English endings example opens, renders and round-trips in both locales', a
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  await page.locator('#locale').selectOption('en');
-  await page.getByRole('button', { name: 'English example: -s/-es and -ed', exact: true }).click();
+  await locale(page, 'en');
+  await page.locator('[data-action=english-example]').click();
   await expect(page.locator('.graph-card')).toHaveCount(12);
-  await page.locator('.card-row[data-card-id="english-overview"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="english-overview"]'));
   await expect(page.locator('#panel-body')).toContainText('Lộ trình học');
-  await page.locator('#locale').selectOption('vi');
-  await page.locator('.card-row[data-card-id="english-ed-sounds"]').click();
+  await locale(page, 'vi');
+  await openRow(page, page.locator('.card-row[data-card-id="english-ed-sounds"]'));
   await expect(page.locator('#panel-body')).toContainText('/ɪd/');
   const exported = await exportData(page);
   expect(exported.cards).toHaveLength(12);
@@ -418,15 +416,15 @@ test('English endings example opens, renders and round-trips in both locales', a
   const reexported = await exportData(page);
   // Sidebar selection intentionally focuses the node; viewport is session state.
   expect({ ...reexported, canvas: exported.canvas }).toEqual(exported);
-  await page.locator('.card-row[data-card-id="english-s-sounds"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="english-s-sounds"]'));
   await expect(page.locator('#panel-body')).toContainText('/ɪz/');
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await expect(page.locator('.graph-card[data-node-kind=text]')).toHaveCount(12);
   expect(exported.extensions['card-atlas:mind-map'].rootId).toBe('english-overview');
   expect(
     exported.relations.filter((r) => r.extensions['card-atlas:mind-map'].kind === 'branch'),
   ).toHaveLength(11);
-  await page.locator('.card-row[data-card-id=english-practice]').click();
+  await openRow(page, page.locator('.card-row[data-card-id=english-practice]'));
   await expect(page.locator('#panel-body ol li')).toHaveCount(12);
   await page.screenshot({ path: 'planning/design/english-endings-example.png' });
   expect(errors).toEqual([]);
@@ -456,10 +454,10 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
     'title',
     'Mở Detail · 3 quan hệ',
   );
-  await page.locator('.card-row[data-card-id="english-s-use"]').click();
-  await page.locator('[data-action=fit]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="english-s-use"]'));
+  await projectAction(page, 'fit');
   const fitZoom = await page.locator('#zoom-value').textContent();
-  await page.locator('[data-action=focus]').click();
+  await projectAction(page, 'focus');
   expect(await page.locator('#zoom-value').textContent()).not.toEqual(fitZoom);
   const cardBox = await page.locator('.graph-card[data-id="english-s-use"]').boundingBox();
   const frame = await page.locator('#canvas-region').boundingBox();
@@ -467,16 +465,16 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   expect(Math.abs(cardBox.y + cardBox.height / 2 - frame.y - frame.height / 2)).toBeLessThan(3);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('input[name=title]').fill('Unsaved grammar draft');
-  await page.locator('#theme-toggle').click();
+  await theme(page);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('input[name=title]')).toHaveValue('Unsaved grammar draft');
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-label', 'Switch to light mode');
   await expect(page.locator('input[name=title]')).toHaveValue('Unsaved grammar draft');
-  await page.locator('[data-action=fit]').click();
+  await projectAction(page, 'fit');
   expect(await snapshot()).toEqual(baseline);
-  await page.locator('#theme-toggle').click();
+  await theme(page);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   expect(await snapshot()).toEqual(baseline);
   await page.locator('#cancel-draft').click();
@@ -487,7 +485,7 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
 
 test('Focus relation fits both endpoints after panel resize', async ({ page }) => {
   await sample(page);
-  await page.locator('[data-action=fit]').click();
+  await projectAction(page, 'fit');
   const point = await page.evaluate(async () => {
     const { adapter } = await import('/assets/js/app.js');
     return adapter.cy.edges().first().renderedMidpoint();
@@ -496,7 +494,7 @@ test('Focus relation fits both endpoints after panel resize', async ({ page }) =
   await page.mouse.click(initialFrame.x + point.x, initialFrame.y + point.y);
   await expect(page.locator('input[name=label]')).toBeVisible();
   await page.locator('[data-action=expand]').click();
-  await page.locator('[data-action=focus]').click();
+  await projectAction(page, 'focus');
   const frame = await page.locator('#canvas-region').boundingBox();
   for (const id of ['card-user-api', 'card-user-service']) {
     const box = await page.locator('.graph-card[data-id="' + id + '"]').boundingBox();
@@ -506,14 +504,14 @@ test('Focus relation fits both endpoints after panel resize', async ({ page }) =
     expect(box.y + box.height).toBeLessThanOrEqual(frame.y + frame.height);
   }
   await page.locator('[data-action=close]').click();
-  await expect(page.locator('[data-action=focus]')).toBeDisabled();
+  await expect(page.locator('[data-action=focus]')).toBeEnabled();
 });
 
 test('New Project names blank projects and preserves work when replacement is cancelled', async ({
   page,
 }) => {
   await page.goto('/');
-  await page.locator('.toolbar [data-action=new]').click();
+  await projectAction(page, 'new');
   await expect(page.locator('#new-project-title')).toBeFocused();
   await page.locator('#new-project-title').fill('   ');
   await expect(page.locator('[data-choice=create]')).toBeDisabled();
@@ -523,7 +521,8 @@ test('New Project names blank projects and preserves work when replacement is ca
   await page.locator('#new-project-title').press('Enter');
   await expect(page.locator('#project-name')).toHaveText('English Practice');
   await expect(page.locator('#toast')).toHaveText('New project created');
-  await page.locator('#locale').selectOption('vi');
+  await locale(page, 'vi');
+  await projectAction(page, 'home');
   await page.locator('[data-action=example]').click();
   await page.locator('[data-action=add]').click();
   await expect(page.locator('.graph-card')).toHaveCount(4);
@@ -533,13 +532,13 @@ test('New Project names blank projects and preserves work when replacement is ca
       return { project: store.project, undo: store.undoStack.length, dirty: store.dirty };
     });
   const before = await snapshot();
-  await page.locator('.toolbar [data-action=new]').click();
+  await projectAction(page, 'new');
   await page.locator('#new-project-title').fill('Next Project');
   await page.locator('[data-choice=create]').click();
   await expect(page.locator('#modal')).toContainText('Thay thế dự án hiện tại?');
   await page.locator('[data-choice=cancel]').click();
   expect(await snapshot()).toEqual(before);
-  await page.locator('.toolbar [data-action=new]').click();
+  await projectAction(page, 'new');
   await page.locator('#new-project-title').fill('Next Project');
   await page.locator('[data-choice=create]').click();
   await page.locator('[data-choice=replace]').click();
@@ -594,8 +593,8 @@ test('embedded image upload is portable in JSON and Detail needs no external req
     ];
   });
   expect(beforeApply).toBeUndefined();
-  await page.locator('#locale').selectOption('en');
-  await page.locator('#theme-toggle').click();
+  await locale(page, 'en');
+  await theme(page);
   await expect(page.locator('.attachment-row')).toContainText('english-endings.png');
   await page.getByRole('button', { name: 'Apply', exact: true }).click();
   await page.getByRole('button', { name: 'Overview', exact: true }).click();
@@ -623,7 +622,7 @@ test('embedded image upload is portable in JSON and Detail needs no external req
     .poll(() => page.locator('.embedded-image').evaluate((image) => image.naturalWidth))
     .toBe(640);
   expect(await exportData(page)).toEqual(exported);
-  await page.locator('#theme-toggle').click();
+  await theme(page);
   await page.screenshot({ path: 'planning/design/embedded-image-detail.png' });
   expect(external).toEqual([]);
   expect(errors).toEqual([]);
@@ -659,9 +658,9 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.embedded-image')).toBeVisible();
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('.embedded-image')).toHaveCount(0);
-  await page.locator('[data-action=redo]').click();
+  await projectAction(page, 'redo');
   await expect(page.locator('.embedded-image')).toBeVisible();
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('[data-remove-image]').click();
@@ -669,11 +668,11 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.embedded-image')).toHaveCount(0);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('.embedded-image')).toBeVisible();
 });
 
-test('Card action opens overview without movement and hover image shows natural 100 percent', async ({
+test('Card action opens overview without movement and click image fits naturally', async ({
   page,
 }) => {
   await page.route('**/assets/data/english-endings-example.json', (route) =>
@@ -696,6 +695,8 @@ test('Card action opens overview without movement and hover image shows natural 
   await image.scrollIntoViewIfNeeded();
   await expect.poll(() => image.evaluate((i) => i.naturalWidth)).toBe(640);
   await image.hover();
+  await expect(page.locator('.image-preview')).toHaveCount(0);
+  await image.click();
   const preview = page.locator('.image-preview');
   await expect(preview).toBeVisible();
   await expect(page.locator('.image-preview-image')).toHaveCSS('width', '640px');
@@ -707,26 +708,25 @@ test('Card action opens overview without movement and hover image shows natural 
   await page.screenshot({ path: 'planning/design/card-image-hover-light.png' });
   await page.keyboard.press('Escape');
   await expect(preview).toHaveCount(0);
-  await page.locator('#theme-toggle').click();
+  await theme(page);
   await expect(page.locator('.diagram svg')).toBeVisible();
   await page.locator('.embedded-image').scrollIntoViewIfNeeded();
   const imageBox = await page.locator('.embedded-image').boundingBox();
   await page.mouse.move(imageBox.x + imageBox.width / 2, imageBox.y + imageBox.height / 2);
+  await page.locator('.embedded-image').click();
   await expect(preview).toBeVisible();
   await page.screenshot({ path: 'planning/design/card-image-hover-dark.png' });
-  await page.mouse.move(20, 100);
+  await page.keyboard.press('Escape');
   await expect(preview).toHaveCount(0);
   expect(await snapshot()).toEqual(before);
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   await expect(page.locator('.graph-card[data-id="english-overview"] .card-open')).toHaveAttribute(
     'aria-label',
     'Open Detail: Đuôi -s/-es và -ed',
   );
 });
 
-test('Oversized hover image remains at 100 percent and scrolls instead of scaling down', async ({
-  page,
-}) => {
+test('Oversized click image defaults Fit and explicit 100 percent scrolls', async ({ page }) => {
   await page.goto('/');
   const imageData = await page.evaluate(() => {
     const c = document.createElement('canvas');
@@ -752,13 +752,18 @@ test('Oversized hover image remains at 100 percent and scrolls instead of scalin
     buffer: Buffer.from(JSON.stringify(project)),
   });
   await page.locator('[data-choice=apply]').click();
-  await page.locator('.card-row[data-card-id="card-user-api"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="card-user-api"]'));
   await expect(page.locator('.graph-card[data-id="card-user-api"] h3')).toHaveCSS(
     '-webkit-line-clamp',
     '2',
   );
   const imageBox = await page.locator('.embedded-image').boundingBox();
   await page.mouse.move(imageBox.x + imageBox.width / 2, imageBox.y + imageBox.height / 2);
+  await page.locator('.embedded-image').click();
+  const fitBox = await page.locator('.image-preview-image').boundingBox();
+  expect(fitBox.width).toBeLessThanOrEqual(1080);
+  expect(fitBox.height).toBeLessThanOrEqual(675);
+  await page.locator('.image-preview-header button').nth(1).click();
   await expect(page.locator('.image-preview-image')).toHaveCSS('width', '1800px');
   await expect(page.locator('.image-preview-image')).toHaveCSS('height', '1200px');
   const dimensions = await page.locator('.image-preview-frame').evaluate((e) => ({
@@ -775,7 +780,7 @@ test('Oversized hover image remains at 100 percent and scrolls instead of scalin
   });
   await expect(page.locator('.image-preview')).toBeVisible();
   await page.keyboard.press('Escape');
-  await page.locator('.card-row[data-card-id="card-user-service"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="card-user-service"]'));
   await expect(page.locator('.image-preview')).toHaveCount(0);
 });
 
@@ -800,11 +805,11 @@ test('Writing workspace preserves caret and scroll across theme and locale and p
     const { store } = await import('/assets/js/app.js');
     return { project: store.project, undo: store.undoStack.length };
   });
-  await page.locator('#theme-toggle').click();
+  await theme(page);
   expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
     80, 90, 250,
   ]);
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
   expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
     80, 90, 250,
   ]);
@@ -831,6 +836,7 @@ test('Writing workspace preserves caret and scroll across theme and locale and p
   await page.locator('#writing-exit').click();
   await expect(page.locator('html')).not.toHaveClass(/writing-mode/);
   await page.locator('.editor [type=submit]').click();
+  await page.locator('[data-action=close]').click();
   await page.locator('#search').fill('UniqueInsideBodyOnly');
   await expect(page.locator('.card-row')).toHaveCount(1);
   await expect(page.locator('.search-excerpt mark')).toHaveText('UniqueInsideBodyOnly');
@@ -844,7 +850,7 @@ test('Markdown export includes draft text and embedded images without changing p
   );
   await page.goto('/');
   await page.locator('[data-action=english-example]').click();
-  await page.locator('.card-row[data-card-id="english-overview"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="english-overview"]'));
   await page.locator('#panel-tabs button').nth(1).click();
   const promise = page.waitForEvent('download');
   await page.locator('#download-markdown').click();
@@ -863,7 +869,7 @@ test('Local recovery is opt-in, restores draft after reload and deletes data whe
   await selectService(page);
   await page.locator('#panel-tabs button').nth(1).click();
   await page.locator('textarea[name=content]').fill('# Unapplied recovery draft');
-  await page.locator('[data-action=recovery]').click();
+  await projectAction(page, 'recovery');
   await page.locator('[data-choice=enable]').click();
   await expect(page.locator('#recovery-status')).toContainText('khôi phục');
   await expect
@@ -889,7 +895,7 @@ test('Local recovery is opt-in, restores draft after reload and deletes data whe
       }),
     )
     .not.toBe('# Unapplied recovery draft');
-  await page.locator('[data-action=recovery]').click();
+  await projectAction(page, 'recovery');
   await page.locator('[data-choice=disable]').click();
   await expect.poll(() => page.evaluate(() => localStorage.length)).toBe(0);
   expect(
@@ -906,7 +912,7 @@ test('Recovery failure is visible and export remains available', async ({ page }
       throw new Error('quota');
     };
   });
-  await page.locator('[data-action=recovery]').click();
+  await projectAction(page, 'recovery');
   await page.locator('[data-choice=enable]').click();
   await expect(page.locator('#recovery-status')).toContainText('Không lưu');
   const data = await exportData(page);
@@ -940,10 +946,10 @@ test('Format shares draft, previews appearance and applies one undo with portabl
   await expect(card).toHaveCSS('width', '360px');
   await expect(card).toHaveCSS('border-radius', '24px');
   await expect(card.locator('h3')).toHaveCSS('font-size', '18px');
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(card).toHaveCSS('width', '260px');
   await expect(card.locator('h3')).toHaveText('User Service');
-  await page.locator('[data-action=redo]').click();
+  await projectAction(page, 'redo');
   const data = await exportData(page);
   expect(
     data.cards.find((c) => c.id === 'card-user-service').extensions['card-atlas:appearance'].radius,
@@ -952,8 +958,8 @@ test('Format shares draft, previews appearance and applies one undo with portabl
   await page.locator('[name=appearance-radius]').fill('40');
   await page.locator('#cancel-draft').click();
   await expect(page.locator('[name=appearance-radius]')).toHaveValue('24');
-  await page.locator('#locale').selectOption('en');
-  await page.locator('#theme-toggle').click();
+  await locale(page, 'en');
+  await theme(page);
   await page.screenshot({ path: 'planning/design/detail-format-dark.png' });
   await expect(page.locator('#panel-tabs button').nth(2)).toHaveText('Format');
 });

@@ -41,3 +41,9 @@ npm run typecheck kiểm tra contract TypeScript và checkJs cho common/html, co
 app.js vẫn giữ workflow Edit/Apply/import/recovery/layout vì chúng chia sẻ guards và session. Khi thêm workflow lớn, tách controller với ports/callbacks cụ thể; tránh chuyển nguyên khối sang một controller lớn khác. Chưa cần plugin registry hoặc framework mới khi chưa có use case được giao.
 
 Nguồn chính thức: [MDN JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), [Cytoscape batch](https://js.cytoscape.org/#cy.batch). Cấu trúc và boundaries trên là quyết định của dự án.
+
+## Gallery và Detail modal
+
+ui/template-gallery sở hữu catalog/category/loading và nhận callback onOpen, không giữ project model. ui/dialog-surface dùng native dialog top layer, capture trigger, Escape/backdrop và requestClose có khóa chống double-submit. Detail gọi guardDraft ở app; image viewer đóng không mutate draft. Project tools trong Detail đi qua cùng actions/commands, không có controller thứ hai.
+
+home/detailOpen/expanded/image viewer thuộc session. Thay project thành công chuyển vào editor, lỗi/cancel giữ Home/project trước đó. Single click của mọi node chỉ select; double/action/Enter open. Test driver chỉ thao tác controls hiển thị, không bypass inert. Khi viết benchmark phải vào editor trước đo; close Detail trước pan canvas.

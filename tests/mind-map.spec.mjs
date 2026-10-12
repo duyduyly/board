@@ -1,6 +1,9 @@
+import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 test('renderer prototype single curved edge and text bounds', async ({ page }) => {
   await page.goto('/');
+  await projectAction(page, 'new');
+  await page.locator('[data-choice=create]').click();
   await page.evaluate(async () => {
     const { store, adapter } = await import('/assets/js/app.js');
     const { newCard, newRelation } = await import('/assets/js/store/project-store.js');
@@ -33,7 +36,7 @@ async function sample(page) {
   await page.goto('/');
   await page.locator('[data-action=mind-example]').click();
   await expect(page.locator('#card-list .card-row')).toHaveCount(12);
-  await page.locator('#locale').selectOption('en');
+  await locale(page, 'en');
 }
 async function data(page) {
   return page.evaluate(async () => {
@@ -48,7 +51,7 @@ async function data(page) {
   });
 }
 async function format(page, id = 'illustration') {
-  await page.locator('.card-row[data-card-id="' + id + '"]').click();
+  await openRow(page, page.locator('.card-row[data-card-id="' + id + '"]'));
   await page.getByRole('button', { name: 'Format', exact: true }).click();
 }
 test('mixed nodes, image decode, Detail click and curves in both themes', async ({ page }) => {
@@ -64,22 +67,23 @@ test('mixed nodes, image decode, Detail click and curves in both themes', async 
     'src',
     new RegExp('^data:image/png;base64,'),
   );
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await expect(page.locator('.simple-node')).toHaveCount(12);
   await expect(page.locator('.root-node')).toHaveCount(1);
   await expect(page.locator('.detached-node')).toHaveCount(1);
-  await page.locator('.card-row[data-card-id=illustration]').click();
-  await page.locator('[data-action=focus]').click();
+  await openRow(page, page.locator('.card-row[data-card-id=illustration]'));
+  await projectAction(page, 'focus');
   const img = page.locator('.graph-card[data-id=illustration] img');
   await expect.poll(() => img.evaluate((i) => i.naturalWidth)).toBeGreaterThan(0);
   await page.locator('[data-action=close]').click();
-  await img.click();
+  await img.dblclick();
+  await expect(page.locator('#detail-panel')).toBeVisible();
   await expect(page.locator('#panel-title')).toHaveText('Minh họa đuôi từ');
-  await page.locator('[data-action=theme]').click();
+  await theme(page);
   await page.screenshot({ path: 'planning/design/mind-map-dark.png' });
-  await page.locator('[data-action=theme]').click();
+  await theme(page);
   await page.screenshot({ path: 'planning/design/mind-map-light.png' });
-  await page.locator('#locale').selectOption('vi');
+  await locale(page, 'vi');
   await expect(page.locator('#map-view')).toHaveAttribute('aria-label', 'Kiểu bản đồ');
   expect(errors).toEqual([]);
   expect(external).toEqual([]);
@@ -89,12 +93,12 @@ test('switch preserves draft, geometry resize isolation and atomic undo', async 
   const before = await data(page);
   await format(page, 'english-overview');
   await page.locator('input[name=width]').fill('300');
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await expect(page.locator('input[name=width]')).toHaveValue('260');
   await page.locator('input[name=width]').fill('340');
-  await page.locator('#map-view').selectOption('card');
+  await view(page, 'card');
   await expect(page.locator('input[name=width]')).toHaveValue('300');
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await expect(page.locator('input[name=width]')).toHaveValue('340');
   await page.locator('.editor button[type=submit]').click();
   const after = await data(page);
@@ -103,7 +107,7 @@ test('switch preserves draft, geometry resize isolation and atomic undo', async 
     340,
   );
   expect(after.history).toBe(before.history + 1);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   expect((await data(page)).project).toEqual(before.project);
 });
 test('view switch alone leaves model and history unchanged; export retains both viewport sets', async ({
@@ -111,9 +115,9 @@ test('view switch alone leaves model and history unchanged; export retains both 
 }) => {
   await sample(page);
   const before = await data(page);
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await page.locator('[data-action=zoom-in]').click();
-  await page.locator('#map-view').selectOption('card');
+  await view(page, 'card');
   const after = await data(page);
   expect(after.project).toEqual(before.project);
   expect(after.history).toBe(before.history);
@@ -172,18 +176,19 @@ test('Root detach explicit atomic, relation invariants and delete undo', async (
   let state = await data(page);
   expect(state.project.extensions['card-atlas:mind-map'].rootId).toBe('english-s-use');
   expect(state.history).toBe(before.history + 1);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   expect((await data(page)).project).toEqual(before.project);
   await page.locator('#delete').click();
   expect((await data(page)).project.cards.length).toBe(11);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   expect((await data(page)).project).toEqual(before.project);
 });
 test('Mind Map drag duplicate delete and Focus remain atomic', async ({ page }) => {
   await sample(page);
-  await page.locator('#map-view').selectOption('mind');
-  await page.locator('.card-row[data-card-id=illustration]').click();
-  await page.locator('[data-action=focus]').click();
+  await view(page, 'mind');
+  await openRow(page, page.locator('.card-row[data-card-id=illustration]'));
+  await projectAction(page, 'focus');
+  await page.locator('[data-action=close]').click();
   const before = await data(page),
     box = await page.locator('.graph-card[data-id=illustration]').boundingBox();
   await page.mouse.move(box.x + 40, box.y + 50);
@@ -195,7 +200,8 @@ test('Mind Map drag duplicate delete and Focus remain atomic', async ({ page }) 
   expect(moved.project.extensions['card-atlas:views'].mindMap.positions.illustration).not.toEqual(
     before.project.extensions['card-atlas:views'].mindMap.positions.illustration,
   );
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
+  await openRow(page, page.locator('.card-row[data-card-id=illustration]'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await page.locator('#duplicate').click();
   await expect(page.locator('.graph-card')).toHaveCount(13);
@@ -211,16 +217,16 @@ test('Mind Map drag duplicate delete and Focus remain atomic', async ({ page }) 
   });
   await page.locator('#delete').click();
   await expect(page.locator('.graph-card')).toHaveCount(12);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   await expect(page.locator('.graph-card')).toHaveCount(13);
 });
 test('opt-in recovery restores Mind Map draft and geometry; disable removes storage', async ({
   page,
 }) => {
   await sample(page);
-  await page.locator('[data-action=recovery]').click();
+  await projectAction(page, 'recovery');
   await page.locator('[data-choice=enable]').click();
-  await page.locator('#map-view').selectOption('mind');
+  await view(page, 'mind');
   await format(page);
   await page.locator('input[name=width]').fill('360');
   await expect(page.locator('#save-state')).toContainText('Unapplied changes');
@@ -231,7 +237,7 @@ test('opt-in recovery restores Mind Map draft and geometry; disable removes stor
   await expect(page.locator('#map-view')).toHaveValue('mind');
   await expect(page.locator('input[name=width]')).toHaveValue('360');
   await page.locator('#cancel-draft').click();
-  await page.locator('[data-action=recovery]').click();
+  await projectAction(page, 'recovery');
   await page.locator('[data-choice=disable]').click();
   expect(await page.evaluate(() => localStorage.length)).toBe(0);
 });
@@ -253,9 +259,10 @@ test('relation branch validation rejects second parent; image connector stays at
     ].kind,
   ).toBe('reference');
   await page.locator('#cancel-draft').click();
-  await page.locator('.card-row[data-card-id=illustration]').click();
-  await page.locator('[data-action=focus]').click();
+  await openRow(page, page.locator('.card-row[data-card-id=illustration]'));
+  await projectAction(page, 'focus');
   const before = await data(page);
+  await page.locator('[data-action=close]').click();
   const handle = await page.locator('.graph-card[data-id=illustration] .connector').boundingBox();
   await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
   await page.mouse.down();
@@ -274,6 +281,6 @@ test('relation branch validation rejects second parent; image connector stays at
   const after = await data(page);
   expect(after.history).toBe(before.history + 1);
   expect(after.project.relations.length).toBe(before.project.relations.length + 1);
-  await page.locator('[data-action=undo]').click();
+  await projectAction(page, 'undo');
   expect((await data(page)).project).toEqual(before.project);
 });

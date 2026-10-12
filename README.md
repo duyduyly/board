@@ -39,7 +39,7 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 
 ### Card và quan hệ
 
-1. Bấm **Thẻ mới** để tạo card. Click card để đọc; double click hoặc bấm **↗** để mở Tổng quan trong Detail. Chọn **Chỉnh sửa** để sửa title, summary, type, tags, màu và nội dung.
+1. Bấm **Thẻ mới** để tạo card. Click card để chọn; double click hoặc bấm **↗** để mở Tổng quan trong Detail. Chọn **Chỉnh sửa** để sửa title, summary, type, tags, màu và nội dung.
 2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi ngôn ngữ/theme giữ nguyên bản nháp.
 3. Kéo card trên canvas để đổi vị trí.
 4. Dùng **Kết nối**, chọn card nguồn rồi card đích; hoặc kéo chấm nối bên cạnh card. Thả vào vùng trống tạo card mới và quan hệ trong một thao tác undo.
@@ -52,10 +52,10 @@ Badge phía trên hiển thị type; số quan hệ nằm trong tooltip của n�
 
 - Cuộn chuột trên canvas để zoom; dùng **− / +** để phóng thu và nút phần trăm để reset zoom.
 - Giữ **Space** hoặc nút chuột giữa rồi kéo để pan. Cuộn trong panel chỉ cuộn nội dung panel.
-- **Fit**: tự căn pan/zoom để toàn bộ sơ đồ vừa vùng canvas hiện tại, kể cả sau khi thay đổi độ rộng panel. Nút này không sắp xếp lại card.
+- **Fit**: tự căn pan/zoom để toàn bộ sơ đồ vừa vùng canvas hiện tại, theo kích thước viewport hiện tại. Nút này không sắp xếp lại card.
 - **Focus**: chọn một card rồi bấm Focus để xem card ở giữa với mức zoom dễ đọc. Nếu chọn relation, Focus căn hai đầu nối và đường quan hệ vào khung. Nút bị vô hiệu khi chưa chọn card/relation.
 - Fit/Focus chỉ thay khung nhìn, giữ nguyên vị trí và nội dung card. Focus camera không lọc/ẩn các card khác.
-- Kéo đường phân cách panel hoặc dùng nút mở rộng để thay kích thước vùng đọc.
+- Detail mở giữa màn hình; dùng nút Full để đọc toàn màn hình. Đóng Detail trước khi kéo hoặc nối card trên Canvas.
 
 ### Ngôn ngữ và giao diện
 
@@ -193,3 +193,13 @@ Select a node → Edit or Format → check **Transparent background** / **Transp
 ## Cấu trúc và phát triển
 
 [Hướng dẫn mở rộng source](docs/development.md) mô tả boundaries, commands, query cache và cách thêm feature. Common primitives nằm trong assets/js/common; UI services trong assets/js/ui; Detail field builder trong assets/js/detail. CSS chia base/theme/workspace và giữ cascade trong app.css. npm run check kiểm tra import cycles/layer boundaries/unused code; npm run typecheck kiểm tra contract và các module JavaScript thuần đã có JSDoc.
+
+## Feedback 01 — đợt 1
+
+Home mới là thư viện sáu template local, lọc Cá nhân/Học tập/Công việc/Dự án. Click tile mở bản project độc lập; logo đưa về Home, nút Tiếp tục giữ project trong phiên. Gallery không phải nơi tự lưu project.
+
+Click một lần chọn node; double click, nút Open hoặc Enter mở Detail ở giữa. Detail có Tổng quan/Chỉnh sửa/Format, cỡ75% và Full. X, Escape hoặc click nền dùng guard khi có draft. Menu “Thao tác dự án” trong Detail giữ undo/redo, export, recovery, Guide, view và Fit/Focus. Đóng Detail vẫn giữ selection.
+
+Ảnh Detail giữ vừa vùng đọc; click/Enter/Space để phóng ảnh. Viewer mặc định Fit trong75% viewport; chọn100% để xem kích thước gốc có cuộn. Escape đóng ảnh trước, rồi mới đóng Detail. Hover không tự phóng.
+
+Gallery responsive; editor vẫn yêu cầu desktop. Không đổi JSON1.0, không tự lưu hoặc upload. Sidebar hình dạng và import Markdown/node JSON thuộc đợt sau. Plan: planning/feedback-01-plan.md; checklist: planning/feedback-01-checklist.csv.

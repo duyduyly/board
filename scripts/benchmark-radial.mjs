@@ -4,6 +4,8 @@ import os from 'node:os';
 const browser = await chromium.launch({ channel: 'chrome' });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.goto('http://127.0.0.1:4173');
+await page.locator('.toolbar [data-action=new]').click();
+await page.locator('[data-choice=create]').click();
 const requestedView = process.argv[2] || 'mind';
 const reportPrefix = process.argv[3] || 'mind-map-phase2';
 const screenshotPrefix = reportPrefix === 'mind-map-phase2' ? 'radial' : reportPrefix;
@@ -102,11 +104,15 @@ const result = await page.evaluate(async (requestedView) => {
   const layoutApplyMs = performance.now() - layoutStart - layoutPreviewMs;
   const selections = [];
   for (let i = 2; i < 7; i++) {
+    document.querySelector('[data-action=close]').click();
+    await Promise.resolve();
     const t = performance.now();
     document.querySelector('.card-row[data-card-id="bench-' + i + '"]').click();
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     selections.push(performance.now() - t);
   }
+  document.querySelector('[data-action=close]').click();
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
   const fps = [];
   const startPan = performance.now();
   let previous = startPan;

@@ -1,0 +1,149 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Personal notes",
+    "description": "Starter map — replace the sample notes with your own."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "personal-0",
+      "title": "Inbox",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "personal"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Inbox\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "personal-1",
+      "title": "Ideas",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "personal"
+      ],
+      "position": {
+        "x": 380,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Ideas\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "personal-2",
+      "title": "Tasks",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "personal"
+      ],
+      "position": {
+        "x": 0,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Tasks\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "personal-3",
+      "title": "References",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "personal"
+      ],
+      "position": {
+        "x": 380,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# References\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    }
+  ],
+  "relations": [
+    {
+      "id": "personal-r0",
+      "source": "personal-0",
+      "target": "personal-1",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "personal-r1",
+      "source": "personal-1",
+      "target": "personal-2",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "personal-r2",
+      "source": "personal-2",
+      "target": "personal-3",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ]
+}

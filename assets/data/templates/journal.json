@@ -1,0 +1,149 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Learning journal",
+    "description": "Starter map — replace the sample notes with your own."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "journal-0",
+      "title": "Topics",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "journal"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Topics\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "journal-1",
+      "title": "Resources",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "journal"
+      ],
+      "position": {
+        "x": 380,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Resources\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "journal-2",
+      "title": "Practice",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "journal"
+      ],
+      "position": {
+        "x": 0,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#28594B"
+      },
+      "content": "# Practice\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    },
+    {
+      "id": "journal-3",
+      "title": "Reflection",
+      "summary": "Start with one clear idea.",
+      "type": "note",
+      "tags": [
+        "journal"
+      ],
+      "position": {
+        "x": 380,
+        "y": 260
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#4268A4"
+      },
+      "content": "# Reflection\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+    }
+  ],
+  "relations": [
+    {
+      "id": "journal-r0",
+      "source": "journal-0",
+      "target": "journal-1",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "journal-r1",
+      "source": "journal-1",
+      "target": "journal-2",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "journal-r2",
+      "source": "journal-2",
+      "target": "journal-3",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ]
+}

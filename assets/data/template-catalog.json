@@ -1,0 +1,44 @@
+[
+  {
+    "id": "personal",
+    "category": "personal",
+    "titleKey": "templatePersonal",
+    "path": "assets/data/templates/personal.json",
+    "preview": "assets/images/templates/personal.svg"
+  },
+  {
+    "id": "english",
+    "category": "learning",
+    "titleKey": "templateEnglish",
+    "path": "assets/data/english-endings-example.json",
+    "preview": "assets/images/templates/english.svg"
+  },
+  {
+    "id": "mind",
+    "category": "personal",
+    "titleKey": "templateMind",
+    "path": "assets/data/mind-map-example.json",
+    "preview": "assets/images/templates/mind.svg"
+  },
+  {
+    "id": "architecture",
+    "category": "work",
+    "titleKey": "templateArchitecture",
+    "path": "assets/data/example.json",
+    "preview": "assets/images/templates/architecture.svg"
+  },
+  {
+    "id": "roadmap",
+    "category": "project",
+    "titleKey": "templateRoadmap",
+    "path": "assets/data/templates/roadmap.json",
+    "preview": "assets/images/templates/roadmap.svg"
+  },
+  {
+    "id": "journal",
+    "category": "learning",
+    "titleKey": "templateJournal",
+    "path": "assets/data/templates/journal.json",
+    "preview": "assets/images/templates/journal.svg"
+  }
+]

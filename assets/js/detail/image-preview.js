@@ -1,129 +1,87 @@
 import { t } from '../i18n/index.js';
+import { dialogSurface } from '../ui/dialog-surface.js';
 let preview = null,
   source = null,
-  timer = null,
-  dismissed = null,
-  pointer = { x: 0, y: 0 },
-  dismissedAt = null;
+  surface = null;
 export function closeImagePreview() {
-  clearTimeout(timer);
+  surface?.close();
   preview?.remove();
   preview = null;
   source = null;
-}
-function dismiss() {
-  dismissed = source;
-  dismissedAt = { ...pointer };
-  closeImagePreview();
-}
-function deferClose() {
-  clearTimeout(timer);
-  timer = setTimeout(closeImagePreview, 180);
+  surface = null;
 }
 function show(image) {
-  if (!image.complete || !image.naturalWidth || source === image || dismissed === image) return;
+  if (!image.complete || !image.naturalWidth || !image.currentSrc) return;
+  if (source === image) return;
   closeImagePreview();
   source = image;
-  preview = document.createElement('section');
+  preview = document.createElement('dialog');
   preview.className = 'image-preview';
-  preview.setAttribute('role', 'region');
   preview.setAttribute('aria-label', t('imagePreview'));
   const header = document.createElement('div');
   header.className = 'image-preview-header';
   const label = document.createElement('span');
-  label.textContent = t('imagePreviewHint');
+  label.textContent = image.alt || t('imagePreview');
+  const fit = document.createElement('button');
+  fit.textContent = t('imageFitView');
+  const actual = document.createElement('button');
+  actual.textContent = '100%';
+  actual.setAttribute('aria-label', t('imageActualSize'));
   const close = document.createElement('button');
-  close.type = 'button';
   close.textContent = '×';
   close.setAttribute('aria-label', t('close'));
-  close.onclick = dismiss;
-  header.append(label, close);
   const frame = document.createElement('div');
   frame.className = 'image-preview-frame';
   frame.tabIndex = 0;
-  frame.setAttribute('aria-label', t('imagePreviewHint'));
-  const copy = image.cloneNode(false);
+  frame.setAttribute('aria-label', t('imagePreview'));
+  const copy = document.createElement('img');
   copy.className = 'image-preview-image';
-  copy.removeAttribute('tabindex');
-  copy.removeAttribute('aria-label');
-  copy.loading = 'eager';
-  copy.style.width = image.naturalWidth + 'px';
-  copy.style.height = image.naturalHeight + 'px';
+  copy.alt = image.alt;
+  copy.src = image.currentSrc;
+  copy.width = image.naturalWidth;
+  copy.height = image.naturalHeight;
+  const mode = (full) => {
+    preview.classList.toggle('actual-size', full);
+    fit.setAttribute('aria-pressed', String(!full));
+    actual.setAttribute('aria-pressed', String(full));
+    frame.scrollTop = 0;
+    frame.scrollLeft = 0;
+  };
+  fit.onclick = () => mode(false);
+  actual.onclick = () => mode(true);
+  close.onclick = closeImagePreview;
+  copy.onerror = () => {
+    frame.textContent = t('errorImageAttachment');
+  };
   frame.append(copy);
+  header.append(label, fit, actual, close);
   preview.append(header, frame);
   document.body.append(preview);
-  const width = Math.min(image.naturalWidth, window.innerWidth - 40);
-  const height = Math.min(image.naturalHeight, window.innerHeight - 110);
-  frame.style.width = width + 'px';
-  frame.style.height = height + 'px';
-  const rect = image.getBoundingClientRect();
-  preview.style.left = Math.max(16, rect.left - width - 18) + 'px';
-  preview.style.top = Math.max(16, Math.min(rect.top, window.innerHeight - height - 72)) + 'px';
-  preview.onpointerenter = () => clearTimeout(timer);
-  preview.onpointerleave = deferClose;
+  surface = dialogSurface(preview, {
+    onRequestClose: closeImagePreview,
+    fallback: () => document.querySelector('#panel-title'),
+  });
+  mode(false);
+  surface.show(close);
 }
 export function installImagePreview(host) {
-  host.addEventListener(
-    'load',
-    (event) => {
-      const image = event.target;
-      if (
-        image.matches?.('.markdown img') &&
-        (image.matches(':hover') || document.activeElement === image)
-      )
-        show(image);
-    },
-    true,
-  );
-  document.addEventListener('pointermove', (event) => {
-    pointer = { x: event.clientX, y: event.clientY };
-    if (
-      dismissed &&
-      dismissedAt &&
-      Math.hypot(pointer.x - dismissedAt.x, pointer.y - dismissedAt.y) > 4 &&
-      event.target !== dismissed
-    )
-      dismissed = null;
+  const enhance = () => {
+    for (const image of host.querySelectorAll('.markdown img')) {
+      image.tabIndex = 0;
+      image.setAttribute('role', 'button');
+      image.setAttribute('aria-label', t('openImage') + ': ' + (image.alt || t('imagePreview')));
+    }
+  };
+  new window.MutationObserver(enhance).observe(host, { childList: true, subtree: true });
+  host.addEventListener('click', (e) => {
+    const image = e.target.closest('.markdown img');
+    if (image) show(image);
   });
-  host.addEventListener('pointerover', (event) => {
-    const image = event.target.closest('.markdown img');
-    if (image) {
-      clearTimeout(timer);
-      show(image);
+  host.addEventListener('keydown', (e) => {
+    if (e.target.matches('.markdown img') && ['Enter', ' '].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+      show(e.target);
     }
   });
-  host.addEventListener('pointerout', (event) => {
-    if (event.target === source && !preview?.contains(event.relatedTarget)) deferClose();
-  });
-  host.addEventListener('focusin', (event) => {
-    if (event.target.matches('.markdown img')) show(event.target);
-  });
-  host.addEventListener('focusout', (event) => {
-    if (event.target === source && !preview?.contains(event.relatedTarget)) deferClose();
-  });
-  document.addEventListener(
-    'keydown',
-    (event) => {
-      if (event.key === 'Enter' && preview && event.target === source) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        preview.querySelector('.image-preview-frame').focus();
-      }
-      if (event.key === 'Escape' && preview) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        dismiss();
-      }
-    },
-    true,
-  );
-  document.addEventListener(
-    'scroll',
-    (event) => {
-      if (preview && event.target !== preview && !preview.contains(event.target))
-        closeImagePreview();
-    },
-    true,
-  );
-  window.addEventListener('resize', closeImagePreview);
 }

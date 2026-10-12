@@ -407,6 +407,27 @@ export class GraphAdapter {
     const p = this.cy.pan(),
       z = this.cy.zoom();
     this.layer.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) scale(' + z + ')';
+    // Keep the full graph model; skip rasterizing offscreen DOM cards in large maps.
+    const large = this.cards.size >= 200;
+    const width = this.region.clientWidth,
+      height = this.region.clientHeight;
+    for (const node of this.cy.nodes()) {
+      const el = this.cards.get(node.data('appId'));
+      if (!el) continue;
+      const pos = node.position();
+      const halfWidth = (node.data('width') * z) / 2,
+        halfHeight = (node.data('height') * z) / 2;
+      const x = pos.x * z + p.x,
+        y = pos.y * z + p.y;
+      const outside =
+        x + halfWidth < -120 ||
+        y + halfHeight < -120 ||
+        x - halfWidth > width + 120 ||
+        y - halfHeight > height + 120;
+      const visible = !large || !outside || el.contains(document.activeElement);
+      const value = visible ? '' : 'hidden';
+      if (el.style.visibility !== value) el.style.visibility = value;
+    }
     const button = document.querySelector('#zoom-value');
     button.textContent = Math.round(z * 100) + '%';
   }
@@ -528,8 +549,6 @@ export class GraphAdapter {
           x: n.position('x') - width / 2,
           y: n.position('y') - height / 2,
         });
-      else if (this.activeView === 'mind' || el.dataset.nodeKind !== 'card')
-        this.callbacks.open({ kind: 'card', id });
       else this.callbacks.select({ kind: 'card', id });
     };
     const cancel = () => {

@@ -65,3 +65,9 @@ Khi triển khai yêu cầu này, đọc thêm [planning/mind-map-plan.md](plann
 ## Kiến trúc source sau refactor
 
 Đọc [docs/development.md](docs/development.md) và [planning/refactor-plan.md](planning/refactor-plan.md) trước khi mở rộng. Module thấp không import app;common không import domain/UI. Dùng shared forms/feedback/download vàprojectIndex cho committed snapshot,không mutate cached Maps hoặc dùng cache trong mutator. Canvas/preview dùngapplyAppearance chung;CSS giữ base→theme→workspace. npm run check bắtcycles/upwardimports/unused;typecheck gồmcontract vàtyped common/query modules.
+
+## Kế hoạch nâng cấp Feedback 01
+
+Đọc planning/feedback-01-plan.md và FB001–FB029 trong implementation-checklist.csv khi triển khai Gallery, modal Detail, click image viewer, offline node exchange, shapes hoặc resize/font. planning/feedback-01-checklist.csv là bản trích: cập nhật master trước rồi tái tạo. User đã giao đợt 1 ngày 2026-10-12; chỉ implement các đợt được giao, không tự code từ TODO của đợt sau. Khi được giao từng đợt, tuân thủ contract/prototype/gates, giữ root index.html + assets và các guards/history/vi-en. Existing BACKLOG ngoài scope giữ nguyên.
+
+User giao Feedback01 đợt1 FB001–FB010 ngày2026-10-12. Đợt2–4 FB011–FB029 chưa được giao implement. Khi kiểm tra UI, Home Gallery và native Detail modal thay welcome/right-panel cũ; dùng visible controls/project tools, đóng Detail trước drag/connector/collapse trên Canvas. Evidence đợt1: planning/feedback-01-phase1-evidence.md.
