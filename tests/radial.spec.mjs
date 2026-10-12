@@ -1,3 +1,4 @@
+import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -157,6 +158,7 @@ test('collapse hides only branch descendants and incident references; search rev
   expect(JSON.stringify(p)).not.toContain('collapsed');
   if (await page.locator('#detail-panel').isVisible())
     await page.locator('[data-action=close]').click();
+  await openSearch(page);
   await page.locator('#search').fill('/s/ /z/');
   await openRow(page, page.locator('.card-row[data-card-id=english-s-sounds]'));
   await expect(page.locator('.graph-card[data-id=english-s-sounds]')).toBeVisible();

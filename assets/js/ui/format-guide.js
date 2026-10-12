@@ -26,8 +26,15 @@ export function createFormatGuide({ dialog, toast }) {
         esc(t('transferGuide')) +
         '</p><div class="guide-actions"><button id="node-example-download">' +
         esc(t('transferExample')) +
+        '</button><button id="shapes-example-download">' +
+        esc(t('basicShapesExample')) +
         '</button></div>';
       for (const [selector, path, name] of [
+        [
+          '#shapes-example-download',
+          'assets/data/basic-shapes-example.json',
+          'basic-shapes-example.json',
+        ],
         ['#node-example-download', 'assets/data/node-transfer-example.json', 'example.node.json'],
         ['#mind-example-download', 'assets/data/mind-map-example.json', 'mind-map-example.json'],
         ['#schema-download', 'assets/data/project.schema.json', 'card-atlas.schema.json'],

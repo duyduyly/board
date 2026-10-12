@@ -25,6 +25,6 @@ test('transparent flags preserve colors, round-trip and undo; reject non-boolean
   for (const invalid of ['true', 1, null, 'url(x)']) {
     const copy = structuredClone(store.project);
     copy.cards[0].extensions[APPEARANCE].backgroundTransparent = invalid;
-    assert.ok(validate(copy).errors.some((e) => e.code === 'appearance'));
+    assert.ok(validate(copy).errors.some((e) => e.path.includes('card-atlas:appearance')));
   }
 });

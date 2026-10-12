@@ -238,6 +238,28 @@ schema.properties.extensions = extensions({
 });
 schema.$defs.card.properties.extensions = extensions({
   'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
+  'card-atlas:appearance': object({
+    radius: { type: 'number', minimum: 0, maximum: 100 },
+    borderWidth: { type: 'number', minimum: 0, maximum: 8 },
+    titleFontSize: { type: 'number', minimum: 12, maximum: 72 },
+    align: { enum: ['left', 'center', 'right'] },
+    shadow: { enum: ['none', 'soft'] },
+    backgroundTransparent: { type: 'boolean' },
+    borderTransparent: { type: 'boolean' },
+    shape: {
+      enum: [
+        'rectangle',
+        'rounded',
+        'square',
+        'circle',
+        'ellipse',
+        'diamond',
+        'triangle',
+        'hexagon',
+      ],
+    },
+    sizeMode: { enum: ['manual', 'fit'] },
+  }),
 });
 schema.$defs.relation.properties.extensions = extensions({
   'card-atlas:mind-map': object(

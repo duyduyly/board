@@ -1,6 +1,6 @@
 # Kế hoạch nâng cấp Feedback 01
 
-Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Đợt 1 FB001–FB010 đã hoàn tất. Phạm vi hiện được giao: đợt 2 FB011–FB016; đợt 3–4 chưa được giao.
+Ngày 2026-10-12. Nguồn: [feedback gốc](../wordspace/tasks/01-feedback/feedback-01.md), [đánh giá UX/UI](../project-context/business/feedback-01/feedback-01-analysis.md). Đợt 1 FB001–FB010 đã hoàn tất. Phạm vi hiện được giao: đợt 3 FB017–FB023; đợt 1–2 đã hoàn tất, đợt4 chưa được giao.
 
 Checklist chính: [implementation-checklist.csv](implementation-checklist.csv). [feedback-01-checklist.csv](feedback-01-checklist.csv) là bản trích FB001–FB029; cập nhật master trước rồi tái tạo bản trích.
 
@@ -46,7 +46,7 @@ Template Gallery mobile dùng được cho browsing; nếu mở editor ở màn 
 | 3 — Shapes cơ bản và kích thước | FB017–FB023 | Prototype geometry, basic shapes, palette/navigation, resize/font/Fit text và gate |
 | 4 — Shapes mở rộng và toàn bộ release | FB024–FB029 | Shapes còn lại, examples/docs, full regression/benchmark và final gate |
 
-Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt 2. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
+Không bắt đầu đợt sau chỉ vì có TODO: user hiện giao đợt3. Khi user giao một đợt, ghi owner/IN_PROGRESS, chạy verification và evidence trước DONE. Gate từng đợt không thay final gate; bugs ở đợt trước phải mở lại đúng task nếu acceptance không đạt.
 
 ## UX/UI chi tiết
 
@@ -105,3 +105,9 @@ Markdown chỉUTF8 .md, decode fatal, source≤10MiB, kết quảcontent≤100k 
 FB011–FB016 DONE; master98DONE/13TODO/10BACKLOG, không IN_PROGRESS/BLOCKED. Core46/46, fullUI210/210 Chrome/Edge/Firefox + transfer27/27 hardening recheck + surface9/9 PASS. Typecheck/lint/architecture32modules/format/build và benchmark hai view đạt targets. Evidence: [feedback-01-phase2-evidence.md](feedback-01-phase2-evidence.md).
 
 Files: json/node-transfer, detail/markdown-import, ui/document-transfer, app/feedback/i18n/FormatGuide/CSS, portableexample, tests, README/AGENTS/development và planning. JSON1.0/dependencies/storage mặc định giữ nguyên; spec contract FB011 đồng bộ. Không blocker/task đang dở. Đợt3–4 FB017–FB029 chưa triển khai; tiếp theo FB017 khi user giao đợt3. Không tự code BACKLOG/publish.
+
+## Feedback01 đợt3 — contract FB017
+
+User giao FB017–FB023 ngày2026-10-12; FB024–FB029 vẫn chưa giao. Namespace card-atlas:appearance thêm shape optional enum rectangle/rounded/square/circle/ellipse/diamond/triangle/hexagon, sizeMode manual|fit (defaultmanual), titleFontSize12–72. Không shape giữ rendering legacy; không fallback unknown shape. Triangle là tam giác đều, ellipse bao gồm oval. Shape không đổi type/kind; tight shapes chỉ title/cover, summary/tags giữ Detail. Shape shared hai view, geometry độc lập: ratio shape inscribed trong bounds hiện có (không sửa view còn lại); resize/Fit chủ động tạo bounds đúng ratio. Explicit shape edits96×64 đến1200×1000; geometry legacy/import hiện có vẫn giữ, finite positive contract. Registry sinh polygon outline dùng chung SVG/Cytoscape/hit/anchors/safeArea; controls ngoài clip. Rounded dùng radius, các shape khác có góc theo hình học.
+
+Manual pointerresize góc dưới phải, screen threshold3px, preview không mutate model; pointerup1command, Escape/blur/cancel/lostcapture rollback. Resize chuyển sizeMode vềmanual. Fit chỉ overview đã sanitize thànhtext; targetwidth rồiheight, ratio giữ, tối đa limits. Font+size Apply atomic activeview; không resize do render/locale/theme. Image-only Fit dùng khungcover240×180 tối thiểu; thiếu cover validation hiện hữu. Fit không đủ bounds cảnh báo và chặnApply, giữdraft. Navigation sidebarpalette, search drawer, Guide/recovery/count projectmenu; keyboardclick/drop screen→graph, không autoplay layout. Không thêmdependency/storage/network.

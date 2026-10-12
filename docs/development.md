@@ -51,3 +51,9 @@ home/detailOpen/expanded/image viewer thuộc session. Thay project thành công
 ## Document/node transfer
 
 json/node-transfer giữ transforms thuần: one-card serializer/staging, reference checks, namespace filtering, conflict/attachment merge, Add/Update geometry. detail/markdown-import decodeUTF8 fatal và stageMarkdown/dataURI→attachments, không DOM/fetch. ui/document-transfer sở hữu file/preview/options và nhận ports context/isCurrent/useDraft/addNode/dialog/toast; không import app/store. app chỉ nối draft/geometry/guards/command. Preview render sau khi dialog mount, isCurrent loại kết quả async cũ. File size kiểm trước arrayBuffer; candidate validate trước use/commit. Update không Apply ngầm; export không gọi store.exported.
+
+## Shapes và đo tổng quan
+
+graph/shape-registry là nguồn outline/safeArea/ratio/hit/anchor/minmax; graph/fit-text là thuật toán fit thuần, nhận callbackmeasure. canvas/overview dựng nội dung dùng chung Canvas/Format/measurement; shape-view dùng registry cho SVG và normalized Cytoscape polygon. Controls nằm ngoài safe-content, không bị clip. canvas/text-measure clone overview ẩn và cache width trong một phép đo; không đọc Markdown/body, không ghi model. canvas/resize-node giữ pointer preview ngoài ProjectStore, cleanup trên cancel/lostcapture/blur/Escape; callback một command saupointerup. Sync/locale/theme hủy resizeđangdở; guards khóa history/view trong pointer transaction.
+
+ui/shape-palette nhận onCreate/locked; app nối file stage+guards+atomic command, geometry activeview. detail/image-file dùng chung upload/palette; validate/decode raster offline trước mutation và từ chối kết quả stale. Không thêm framework/CDN/storage. BasicShapes demo là project1.0, FormatGuide tải cùngschema. NodeAppearance typed trong graph/types.ts/schema và appearance runtime.

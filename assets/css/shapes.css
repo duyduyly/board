@@ -1,0 +1,292 @@
+.graph-card.shaped-node {
+  padding: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  pointer-events: none;
+}
+.shape-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.shape-outline polygon {
+  fill: var(--card-background);
+  stroke: var(--branch-color, var(--card-border));
+  pointer-events: all;
+  stroke-linejoin: round;
+}
+.shaped-node:hover .shape-outline polygon {
+  filter: brightness(0.98);
+}
+.shaped-node.selected .shape-outline polygon,
+.shaped-node:focus-visible .shape-outline polygon {
+  stroke: var(--accent);
+  stroke-width: 3px !important;
+}
+:root[data-theme='dark'] .shape-outline polygon {
+  fill: color-mix(in srgb, var(--card-background) 3%, #232d27);
+  stroke: color-mix(in srgb, var(--branch-color, var(--card-border)) 38%, #526258);
+}
+.shaped-node.transparent-background .shape-outline polygon {
+  fill: transparent;
+}
+.shaped-node.transparent-border:not(.selected):not(:focus-visible) .shape-outline polygon {
+  stroke: transparent;
+}
+.shape-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+}
+.shaped-node .card-open {
+  position: absolute;
+  top: 0;
+  right: 0;
+  pointer-events: auto;
+}
+.shaped-node .connector,
+.shaped-node .branch-toggle {
+  pointer-events: auto;
+}
+.shaped-node .node-hierarchy-marker {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.shaped-node .node-image-frame {
+  min-height: 0;
+  flex: 1;
+  width: 100%;
+}
+.shape-content h3 {
+  max-height: 100%;
+}
+.shaped-node[data-shape='circle'] .shape-content,
+.shaped-node[data-shape='ellipse'] .shape-content,
+.shaped-node[data-shape='diamond'] .shape-content,
+.shaped-node[data-shape='triangle'] .shape-content,
+.shaped-node[data-shape='hexagon'] .shape-content {
+  justify-content: center;
+}
+.resize-handle {
+  display: none;
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 2px solid var(--surface);
+  border-radius: 3px;
+  background: var(--accent);
+  cursor: nwse-resize;
+  pointer-events: auto;
+}
+.graph-card.selected .resize-handle {
+  display: block;
+}
+.graph-card.resizing {
+  user-select: none;
+}
+
+.overview-measure h3,
+.graph-card[data-size-mode='fit'] h3 {
+  display: block;
+  -webkit-line-clamp: unset;
+  max-height: none;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+.overview-measure .node-image-frame {
+  height: 140px;
+  flex: none;
+}
+.overview-measure .card-summary {
+  flex: none;
+  max-height: 46.2px;
+}
+
+.workspace {
+  position: relative;
+}
+.sidebar {
+  width: 220px;
+  flex-basis: 220px;
+  overflow: auto;
+  gap: 16px;
+}
+#shape-library h2,
+.drawer-header h2 {
+  font-size: 15px;
+  margin: 0;
+}
+#shape-library h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 24px 0 10px;
+}
+.library-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 10px 0;
+}
+.kind-palette {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.kind-palette button {
+  font-size: 11px;
+  padding: 10px 6px;
+}
+.shape-palette {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.shape-palette button {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 5px;
+  font-size: 11px;
+  background: var(--surface);
+}
+.shape-palette button svg {
+  width: 42px;
+  height: 36px;
+}
+.shape-palette polygon {
+  fill: var(--soft);
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+.shape-palette button:hover polygon,
+.shape-palette button:focus-visible polygon {
+  stroke: var(--accent);
+  fill: var(--active-background);
+}
+.search-drawer {
+  position: absolute;
+  z-index: 8;
+  left: 220px;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  box-shadow: 6px 0 20px #0001;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+}
+.search-drawer[hidden] {
+  display: none;
+}
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.drawer-header button {
+  padding: 3px 9px;
+  font-size: 20px;
+}
+.project-menu {
+  position: relative;
+  font-size: 12px;
+}
+.project-menu summary {
+  cursor: pointer;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+.project-menu[open] .project-menu-body {
+  display: block;
+}
+.project-menu-body {
+  position: absolute;
+  z-index: 12;
+  top: 40px;
+  right: 0;
+  width: 260px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 25px #0002;
+}
+.home-mode #project-menu {
+  display: none;
+}
+#project-menu:not([open]) .recovery-button,
+#project-menu:not([open]) .recovery-status {
+  display: none;
+}
+@media (min-width: 801px) and (max-width: 1150px) {
+  .sidebar {
+    width: 190px;
+    flex-basis: 190px;
+    padding: 18px 12px;
+  }
+  .search-drawer {
+    left: 190px;
+  }
+  .toolbar-actions {
+    gap: 4px;
+  }
+  .toolbar-actions button {
+    padding: 7px 6px;
+  }
+  .project-menu summary {
+    font-size: 11px;
+    padding: 7px 6px;
+  }
+  .project-name {
+    padding-left: 10px;
+    max-width: 85px;
+  }
+}
+
+#project-menu .recovery-button,
+#project-menu .recovery-status {
+  position: static;
+  width: 100%;
+  margin: 10px 0 0;
+}
+
+.project-menu summary {
+  list-style: none;
+  font-size: 16px;
+  line-height: 18px;
+}
+.project-menu summary::-webkit-details-marker {
+  display: none;
+}
+.project-menu-body .save-state {
+  max-width: none;
+  display: block;
+}
+
+.shaped-node.root-node .shape-outline polygon {
+  stroke-width: 2px;
+}
+.shaped-node.detached-node .shape-outline polygon {
+  stroke-dasharray: 5 4;
+}

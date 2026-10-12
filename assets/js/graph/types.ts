@@ -53,3 +53,16 @@ export interface MindMapRelation {
   kind: 'branch' | 'reference';
   color?: string;
 }
+
+export interface NodeAppearance {
+  shape?:
+    'rectangle' | 'rounded' | 'square' | 'circle' | 'ellipse' | 'diamond' | 'triangle' | 'hexagon';
+  sizeMode?: 'manual' | 'fit';
+  titleFontSize?: number; // 12–72px
+  radius?: number;
+  borderWidth?: number;
+  align?: 'left' | 'center' | 'right';
+  shadow?: 'none' | 'soft';
+  backgroundTransparent?: boolean;
+  borderTransparent?: boolean;
+}

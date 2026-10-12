@@ -1,3 +1,4 @@
+import { shapes } from '../graph/shape-registry.js';
 import { escapeHTML as esc } from '../common/html.js';
 import { t } from '../i18n/index.js';
 import { labelField, cardColorField } from '../ui/forms.js';
@@ -31,12 +32,22 @@ export function editorFields({
             esc(t(k)) +
             '<input type="number" name="' +
             k +
-            '" min="1" step="1" value="' +
+            '" min="1" step="any" value="' +
             activeSize[k] +
             '"></label>',
         )
         .join('') +
       '</div>';
+    fields +=
+      labelField('cardShape', 'appearance-shape', a.shape || '', {
+        options: [
+          { value: '', label: t('legacyShape') },
+          ...Object.keys(shapes).map((value) => ({ value, label: t(value) })),
+        ],
+      }) +
+      '<p class="muted">' +
+      esc(t('shapeHint')) +
+      '</p>';
     fields +=
       labelField('nodeKind', 'node-kind', config.kind, {
         options: ['card', 'text', 'image', 'image-text'].map((value) => ({
@@ -78,7 +89,7 @@ export function editorFields({
       [
         ['radius', 0, 100],
         ['borderWidth', 0, 8],
-        ['titleFontSize', 12, 24],
+        ['titleFontSize', 12, 72],
       ]
         .map(
           ([k, min, max]) =>
@@ -96,6 +107,16 @@ export function editorFields({
         )
         .join('') +
       '</div>';
+    fields +=
+      labelField('sizeMode', 'appearance-sizeMode', a.sizeMode, {
+        options: ['manual', 'fit'].map((value) => ({
+          value,
+          label: t(value === 'fit' ? 'fitSizing' : value),
+        })),
+      }) +
+      '<button type="button" id="fit-text">' +
+      esc(t('fitText')) +
+      '</button><p id="fit-warning" class="form-errors" role="status"></p>';
     fields +=
       labelField('align', 'appearance-align', a.align, {
         options: ['left', 'center', 'right'].map((value) => ({ value, label: t(value) })),

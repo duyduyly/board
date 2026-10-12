@@ -1,0 +1,412 @@
+{
+  "config": {
+    "argv": [
+      "D:\\program\\nodejs\\node.exe",
+      "D:\\work-space\\Git\\board-project\\board\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/shapes.spec.mjs",
+      "--grep",
+      "bundled shapes|font72"
+    ],
+    "configFile": "D:\\work-space\\Git\\board-project\\board\\playwright.config.js",
+    "rootDir": "D:/work-space/Git/board-project/board/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/work-space/Git/board-project/board/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "D:/work-space/Git/board-project/board/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/work-space/Git/board-project/board/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "edge",
+        "name": "edge",
+        "testDir": "D:/work-space/Git/board-project/board/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/work-space/Git/board-project/board/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "D:/work-space/Git/board-project/board/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.mjs"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\work-space\\Git\\board-project\\board\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chrome",
+        "testDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "snapshotDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "testIgnore": [],
+        "testMatch": "**/*.spec.mjs",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "headless": true,
+          "browserName": "chromium",
+          "channel": "chrome"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chrome"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\work-space\\Git\\board-project\\board\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "edge",
+        "testDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "snapshotDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "testIgnore": [],
+        "testMatch": "**/*.spec.mjs",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "headless": true,
+          "browserName": "chromium",
+          "channel": "msedge"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "edge"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "D:\\work-space\\Git\\board-project\\board\\test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "firefox",
+        "testDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "snapshotDir": "D:\\work-space\\Git\\board-project\\board\\tests",
+        "testIgnore": [],
+        "testMatch": "**/*.spec.mjs",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "headless": true,
+          "browserName": "firefox"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "firefox"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "planning/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "shapes.spec.mjs",
+      "file": "shapes.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "font72 Fit text is atomic, survives locale/theme and round-trip; overflow blocks Apply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1634,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:14.869Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-d2a56e3fd3332c3448be",
+          "file": "shapes.spec.mjs",
+          "line": 229,
+          "column": 1
+        },
+        {
+          "title": "bundled shapes import, polygon edges and corner hit areas match; Mind Fit leaves Card geometry intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1216,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:16.745Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-1f598e7ff20485f227c6",
+          "file": "shapes.spec.mjs",
+          "line": 280,
+          "column": 1
+        },
+        {
+          "title": "font72 Fit text is atomic, survives locale/theme and round-trip; overflow blocks Apply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "edge",
+              "projectName": "edge",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1725,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:18.531Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-1fff21e158e532fc9b52",
+          "file": "shapes.spec.mjs",
+          "line": 229,
+          "column": 1
+        },
+        {
+          "title": "bundled shapes import, polygon edges and corner hit areas match; Mind Fit leaves Card geometry intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "edge",
+              "projectName": "edge",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1095,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:20.513Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-a781b92f45c3e6a776d1",
+          "file": "shapes.spec.mjs",
+          "line": 280,
+          "column": 1
+        },
+        {
+          "title": "font72 Fit text is atomic, survives locale/theme and round-trip; overflow blocks Apply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:22.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-58ba0a2523224d3af062",
+          "file": "shapes.spec.mjs",
+          "line": 229,
+          "column": 1
+        },
+        {
+          "title": "bundled shapes import, polygon edges and corner hit areas match; Mind Fit leaves Card geometry intact",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1588,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-12T17:46:27.308Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "423285c4977b9c6e0b23-3d2e9253b0816f2a60f3",
+          "file": "shapes.spec.mjs",
+          "line": 280,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-12T17:46:14.385Z",
+    "duration": 14894.89,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

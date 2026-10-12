@@ -1,3 +1,4 @@
+import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -176,6 +177,7 @@ test('Markdown safety, blocked images, invalid Mermaid and no external requests'
 
 test('search, keyboard input isolation, panel resize, desktop notice', async ({ page }) => {
   await sample(page);
+  await openSearch(page);
   await page.locator('#search').fill('storage');
   await expect(page.locator('.card-row')).toHaveCount(1);
   await openRow(page, page.locator('.card-row'));
@@ -305,6 +307,7 @@ test('English workflow import, edit, search and export guards', async ({ page })
   });
   await expect(page.locator('#modal')).toContainText('Import preview');
   await page.getByRole('button', { name: 'Apply import', exact: true }).click();
+  await openSearch(page);
   await page.locator('#search').fill('storage');
   await openRow(page, page.locator('.card-row'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
@@ -837,6 +840,7 @@ test('Writing workspace preserves caret and scroll across theme and locale and p
   await expect(page.locator('html')).not.toHaveClass(/writing-mode/);
   await page.locator('.editor [type=submit]').click();
   await page.locator('[data-action=close]').click();
+  await openSearch(page);
   await page.locator('#search').fill('UniqueInsideBodyOnly');
   await expect(page.locator('.card-row')).toHaveCount(1);
   await expect(page.locator('.search-excerpt mark')).toHaveText('UniqueInsideBodyOnly');

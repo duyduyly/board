@@ -3,3 +3,5 @@
 @import url('./theme.css');
 @import url('./workspace.css');
 @import url('./focused.css');
+
+@import './shapes.css';

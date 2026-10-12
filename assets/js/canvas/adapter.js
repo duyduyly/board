@@ -1,10 +1,13 @@
+import { overviewElement } from './overview.js';
+import { installResize } from './resize-node.js';
+import { applyShape } from './shape-view.js';
+import { appearance } from '../detail/appearance.js';
 import { projectIndex } from '../graph/project-index.js';
 import { visibility } from '../graph/radial-layout.js';
 import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mind-map.js';
-import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { applyAppearance } from '../detail/appearance.js';
 import cytoscape from '../../vendor/cytoscape-entry.js';
-import { t } from '../i18n/index.js';
+import { t, getLocale } from '../i18n/index.js';
 const cid = (id) => 'c:' + id,
   rid = (id) => 'r:' + id;
 export class GraphAdapter {
@@ -28,7 +31,8 @@ export class GraphAdapter {
         {
           selector: 'node',
           style: {
-            shape: 'round-rectangle',
+            shape: 'data(nodeShape)',
+            'shape-polygon-points': 'data(polygon)',
             width: 'data(width)',
             height: 'data(height)',
             'background-opacity': 0,
@@ -97,6 +101,7 @@ export class GraphAdapter {
     this.observer.observe(region);
   }
   sync(project, selection, view = 'card', options = {}) {
+    this.cancelResize?.();
     if (
       this.activeView !== view ||
       this.lastPreview !== options.positions ||
@@ -122,36 +127,44 @@ export class GraphAdapter {
         this.cy.getElementById(rid(this.lastSelection.id)).removeClass('selected');
       if (selection?.kind === 'relation')
         this.cy.getElementById(rid(selection.id)).addClass('selected');
-      for (const el of this.cards.values()) {
-        const b = el.querySelector('.connector');
-        if (b.title !== t('dragConnector')) {
-          b.title = t('dragConnector');
-          b.setAttribute('aria-label', t('dragConnector'));
+      if (this.lastLocale !== getLocale()) {
+        for (const el of this.cards.values()) {
+          const b = el.querySelector('.connector');
+          if (b.title !== t('dragConnector')) {
+            b.title = t('dragConnector');
+            b.setAttribute('aria-label', t('dragConnector'));
+          }
         }
-      }
-      for (const el of this.cards.values()) {
-        const toggle = el.querySelector('.branch-toggle');
-        if (toggle) {
-          toggle.setAttribute(
-            'aria-label',
-            t(toggle.dataset.expanded === 'true' ? 'collapseBranch' : 'expandBranchCount', {
-              count: toggle.dataset.count,
-              title: el.getAttribute('aria-label'),
-            }),
-          );
-          toggle.title = toggle.getAttribute('aria-label');
+        for (const el of this.cards.values()) {
+          const resize = el.querySelector('.resize-handle');
+          if (resize) {
+            resize.title = t('resizeNode');
+            resize.setAttribute('aria-label', t('resizeNode'));
+          }
+          const toggle = el.querySelector('.branch-toggle');
+          if (toggle) {
+            toggle.setAttribute(
+              'aria-label',
+              t(toggle.dataset.expanded === 'true' ? 'collapseBranch' : 'expandBranchCount', {
+                count: toggle.dataset.count,
+                title: el.getAttribute('aria-label'),
+              }),
+            );
+            toggle.title = toggle.getAttribute('aria-label');
+          }
+          const count = el.querySelector('.card-open');
+          if (count) {
+            count.title =
+              t('openDetail') + ' · ' + t('connectionCount', { count: count.dataset.count });
+            count.setAttribute(
+              'aria-label',
+              t('openDetail') + ': ' + el.getAttribute('aria-label'),
+            );
+          }
+          const more = el.querySelector('.more-tags');
+          if (more) more.title = t('moreTags', { tags: more.dataset.tags });
         }
-        const count = el.querySelector('.card-open');
-        if (count) {
-          count.title =
-            t('openDetail') + ' · ' + t('connectionCount', { count: count.dataset.count });
-          count.setAttribute(
-            'aria-label',
-            t('openDetail') + ': ' + el.querySelector('h3').textContent,
-          );
-        }
-        const more = el.querySelector('.more-tags');
-        if (more) more.title = t('moreTags', { tags: more.dataset.tags });
+        this.lastLocale = getLocale();
       }
       this.lastSelection = selection;
       this.view();
@@ -180,7 +193,14 @@ export class GraphAdapter {
           position: options.positions?.[originalCard.id] || g.position,
         };
         let node = this.cy.getElementById(cid(c.id));
-        const data = { id: cid(c.id), appId: c.id, width: c.size.width, height: c.size.height };
+        const data = {
+          id: cid(c.id),
+          appId: c.id,
+          width: c.size.width,
+          height: c.size.height,
+          nodeShape: appearance(c).shape ? 'polygon' : 'round-rectangle',
+          polygon: [-1, -1, 1, -1, 1, 1, -1, 1],
+        };
         const pos = { x: c.position.x + c.size.width / 2, y: c.position.y + c.size.height / 2 };
         if (node.empty()) node = this.cy.add({ group: 'nodes', data, position: pos });
         else {
@@ -208,23 +228,8 @@ export class GraphAdapter {
         el.hidden = this.hiddenNodes.has(c.id);
         node.style('display', el.hidden ? 'none' : 'element');
         el.replaceChildren();
-        const title = document.createElement('h3');
-        title.textContent = c.title;
-        title.title = c.title;
-        const summary = document.createElement('p');
-        summary.className = 'card-summary';
-        summary.textContent = c.summary;
-        const meta = document.createElement('div');
-        meta.className = 'card-meta';
-        const kicker = document.createElement('div');
-        kicker.className = 'card-kicker';
-        if (c.type) {
-          const badge = document.createElement('span');
-          badge.className = 'card-badge type-badge';
-          badge.textContent = c.type;
-          badge.title = c.type;
-          kicker.append(badge);
-        }
+        const overview = overviewElement(c, view, c.size, false);
+        el.append(...overview.children);
         const open = document.createElement('button');
         open.className = 'card-open';
         open.type = 'button';
@@ -239,23 +244,9 @@ export class GraphAdapter {
           event.stopPropagation();
           this.callbacks.open({ kind: 'card', id: c.id });
         });
-        kicker.append(open);
-        const tags = [...new Set(c.tags)].filter((tag) => tag !== c.type);
-        for (const tag of tags.slice(0, 2)) {
-          const badge = document.createElement('span');
-          badge.className = 'card-badge tag-badge';
-          badge.textContent = tag;
-          badge.title = tag;
-          meta.append(badge);
-        }
-        if (tags.length > 2) {
-          const more = document.createElement('span');
-          more.className = 'card-badge more-tags';
-          more.dataset.tags = tags.slice(2).join(', ');
-          more.textContent = '+' + (tags.length - 2);
-          more.title = t('moreTags', { tags: more.dataset.tags });
-          meta.append(more);
-        }
+        const kicker = el.querySelector('.card-kicker');
+        if (kicker) kicker.append(open);
+        else el.append(open);
         const connector = document.createElement('button');
         connector.className = 'connector';
         connector.title = t('dragConnector');
@@ -278,76 +269,58 @@ export class GraphAdapter {
           '--branch-color',
           view === 'mind' ? info.get(c.id)?.color || '#347d68' : c.style.borderColor,
         );
-        if (simple) {
-          if (['image', 'image-text'].includes(config.kind)) {
-            const frame = document.createElement('div');
-            frame.className = 'node-image-frame';
-            const status = document.createElement('span');
-            status.className = 'node-image-status';
-            status.textContent = t('imageLoading');
-            const image = document.createElement('img');
-            image.alt = config.imageAlt || c.title;
-            image.draggable = false;
-            image.style.objectFit = config.imageFit;
-            image.onload = () => {
-              status.hidden = true;
-            };
-            image.onerror = () => {
-              status.hidden = false;
-              status.textContent = t('imageFailed');
-            };
-            frame.append(image, status);
-            el.append(frame);
-            image.src =
-              attachmentDataURL(c.extensions?.[IMAGE_NAMESPACE]?.[config.coverImageId]) || '';
-          }
-          if (config.kind !== 'image') el.append(title);
-          if (view === 'mind') {
-            const marker = document.createElement('span');
-            marker.className = 'node-hierarchy-marker';
-            marker.dataset.i18n =
-              project.extensions?.[MIND]?.rootId === c.id
-                ? 'rootNode'
-                : info.get(c.id)?.connected
-                  ? 'branchNode'
-                  : 'detachedNode';
-            marker.textContent = t(marker.dataset.i18n);
-            el.append(marker);
-          }
-          const children = visible.children.get(c.id) || [];
-          if (view === 'mind' && children.length) {
-            const collapsed = options.collapsed?.has(c.id),
-              button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'branch-toggle';
-            button.dataset.count = collapsed ? visible.counts.get(c.id) || 0 : 0;
-            button.dataset.expanded = String(!collapsed);
-            button.textContent = collapsed ? '+' + button.dataset.count : '−';
-            button.setAttribute('aria-expanded', String(!collapsed));
-            button.setAttribute(
-              'aria-label',
-              t(collapsed ? 'expandBranchCount' : 'collapseBranch', {
-                count: button.dataset.count,
-                title: c.title,
-              }),
-            );
-            button.title = button.getAttribute('aria-label');
-            button.disabled = Boolean(options.positions);
-            for (const name of ['pointerdown', 'dblclick', 'keydown'])
-              button.addEventListener(name, (e) => e.stopPropagation());
-            button.onclick = (e) => {
-              e.stopPropagation();
-              this.callbacks.collapse?.(c.id);
-            };
-            el.append(button);
-          }
-          el.append(connector);
-        } else el.append(kicker, title, summary, meta, connector);
+        if (view === 'mind') {
+          const marker = document.createElement('span');
+          marker.className = 'node-hierarchy-marker';
+          marker.dataset.i18n =
+            project.extensions?.[MIND]?.rootId === c.id
+              ? 'rootNode'
+              : info.get(c.id)?.connected
+                ? 'branchNode'
+                : 'detachedNode';
+          marker.textContent = t(marker.dataset.i18n);
+          el.append(marker);
+        }
+        const children = visible.children.get(c.id) || [];
+        if (view === 'mind' && children.length) {
+          const collapsed = options.collapsed?.has(c.id),
+            button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'branch-toggle';
+          button.dataset.count = collapsed ? visible.counts.get(c.id) || 0 : 0;
+          button.dataset.expanded = String(!collapsed);
+          button.textContent = collapsed ? '+' + button.dataset.count : '−';
+          button.setAttribute('aria-expanded', String(!collapsed));
+          button.setAttribute(
+            'aria-label',
+            t(collapsed ? 'expandBranchCount' : 'collapseBranch', {
+              count: button.dataset.count,
+              title: c.title,
+            }),
+          );
+          button.title = button.getAttribute('aria-label');
+          button.disabled = Boolean(options.positions);
+          for (const name of ['pointerdown', 'dblclick', 'keydown'])
+            button.addEventListener(name, (e) => e.stopPropagation());
+          button.onclick = (e) => {
+            e.stopPropagation();
+            this.callbacks.collapse?.(c.id);
+          };
+          el.append(button);
+        }
+        el.append(connector);
         applyAppearance(el, c);
         el.style.width = c.size.width + 'px';
         el.style.height = c.size.height + 'px';
         el.style.left = c.position.x + 'px';
         el.style.top = c.position.y + 'px';
+        const points = applyShape(el, c, c.size);
+        if (points)
+          node.data(
+            'polygon',
+            points.flatMap((p) => [(p.x / c.size.width) * 2 - 1, (p.y / c.size.height) * 2 - 1]),
+          );
+        installResize(this, el, c, c.size);
         el.classList.toggle('selected', selection?.kind === 'card' && selection.id === c.id);
         el.setAttribute('aria-label', c.title);
         el.setAttribute(
@@ -392,6 +365,7 @@ export class GraphAdapter {
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
+    this.lastLocale = getLocale();
     this.view();
   }
   deferEdges() {
@@ -511,7 +485,11 @@ export class GraphAdapter {
     });
   }
   cardStart(e, id) {
-    if (e.target.closest('.connector, .card-open, .branch-toggle') || this.space || e.button !== 0)
+    if (
+      e.target.closest('.connector, .card-open, .branch-toggle, .resize-handle') ||
+      this.space ||
+      e.button !== 0
+    )
       return;
     if (this.callbacks.locked()) {
       this.callbacks.select({ kind: 'card', id });

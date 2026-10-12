@@ -10,6 +10,11 @@ export async function projectAction(page, action) {
     }
     await page.locator('[data-action=close]').click();
   }
+  if (
+    ['format', 'recovery'].includes(action) &&
+    !(await page.locator('#project-menu').evaluate((e) => e.open))
+  )
+    await page.locator('#project-menu summary').click();
   await page
     .locator('[data-action="' + action + '"]')
     .first()
@@ -37,5 +42,11 @@ export async function openRow(page, row) {
     await page.locator('[data-action=close]').click();
     if (await page.locator('#modal').isVisible()) return;
   }
+  await openSearch(page);
   await row.click();
+}
+
+export async function openSearch(page) {
+  if (!(await page.locator('#search-drawer').isVisible()))
+    await page.locator('[data-action=search]').click();
 }

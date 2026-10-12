@@ -350,6 +350,6 @@ test('Appearance is bounded, portable and restored atomically with card size', (
     { css: 'position:fixed' },
   ]) {
     p.cards[0].extensions['card-atlas:appearance'] = bad;
-    assert.ok(validate(p).errors.some((e) => e.code === 'appearance'));
+    assert.ok(validate(p).errors.some((e) => e.path.includes('card-atlas:appearance')));
   }
 });

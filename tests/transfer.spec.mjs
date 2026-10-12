@@ -1,3 +1,4 @@
+import { openSearch } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 import { projectAction, theme, view } from './ui-driver.mjs';
@@ -22,6 +23,7 @@ async function start(page, fixture = null) {
     await page.locator('[data-choice=apply]').click();
   } else await page.locator('[data-template=architecture]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
+  await openSearch(page);
   await page.locator('.card-row[data-card-id=card-user-service]').click();
 }
 async function tools(page) {

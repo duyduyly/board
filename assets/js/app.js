@@ -1,3 +1,8 @@
+import { overviewElement } from './canvas/overview.js';
+import { createShapePalette } from './ui/shape-palette.js';
+import { readImageFile } from './detail/image-file.js';
+import { measureOverview } from './canvas/text-measure.js';
+import { resizeShape } from './graph/shape-registry.js';
 import { dialogSurface } from './ui/dialog-surface.js';
 import { createTemplateGallery } from './ui/template-gallery.js';
 import { createDocumentTransfer } from './ui/document-transfer.js';
@@ -21,7 +26,7 @@ import {
   setRoot,
   relationKind,
 } from './graph/mind-map.js';
-import { APPEARANCE, appearance, applyAppearance } from './detail/appearance.js';
+import { APPEARANCE, appearance } from './detail/appearance.js';
 import {
   recoveryEnabled,
   readRecovery,
@@ -37,12 +42,7 @@ import {
   markdownDocument,
 } from './detail/writing.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
-import {
-  IMAGE_NAMESPACE,
-  IMAGE_MIME_TYPES,
-  validImageAttachment,
-  imageReference,
-} from './detail/attachments.js';
+import { IMAGE_NAMESPACE, IMAGE_MIME_TYPES, imageReference } from './detail/attachments.js';
 import { ProjectStore, newId, newCard, newRelation, remove } from './store/project-store.js';
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
 import { t, setLocale, issueMessage, number } from './i18n/index.js';
@@ -96,6 +96,12 @@ const gallery = createTemplateGallery({
   host: $('#template-gallery'),
   onOpen: (path) => loadExample(path),
   onError: () => toast('errorRead'),
+});
+const palette = createShapePalette({
+  host: $('#shape-library'),
+  region: $('#canvas-region'),
+  onCreate: createPaletteNode,
+  locked: () => Boolean(home || detailOpen || layoutPreview || feedback.state),
 });
 const documentTransfer = createDocumentTransfer({
   context: transferContext,
@@ -236,6 +242,13 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     change((p) => {
       setGeometry(p, id, store.activeView, 'position', position);
     }),
+  resize: (id, size) =>
+    change((p) => {
+      setGeometry(p, id, store.activeView, 'size', size);
+      const card = p.cards.find((c) => c.id === id);
+      card.extensions ||= {};
+      card.extensions[APPEARANCE] = { ...appearance(card), sizeMode: 'manual' };
+    }),
   connection: (source, target, pos) => connection(source, target, pos),
   viewport: (zoom, position) => {
     store.setView(zoom, position);
@@ -302,6 +315,7 @@ function render() {
     t('projectSettings') + ': ' + store.project.metadata.title,
   );
   $('#welcome').hidden = store.project.cards.length > 0;
+  $('#project-menu summary').setAttribute('aria-label', t('projectMenu'));
   $('#counts').textContent =
     number(store.project.cards.length) +
     ' ' +
@@ -320,6 +334,7 @@ function render() {
   $('[data-action=connect]').classList.toggle('primary', connectMode);
   $('#connect-hint').hidden = !connectMode;
   $('#connect-hint').textContent = t('chooseTarget');
+  palette.render();
   renderList();
   renderPanel();
   updateStatus();
@@ -329,7 +344,10 @@ function render() {
 const renderCardList = createCardList({
   host: $('#card-list'),
   onSelect: async (id) => {
-    if (await select({ kind: 'card', id }, false, true)) adapter.focus(id);
+    if (await select({ kind: 'card', id }, false, true)) {
+      closeSearch();
+      adapter.focus(id);
+    }
   },
 });
 function renderList() {
@@ -560,20 +578,50 @@ function renderPanelContent() {
         const key = name.slice(11);
         draft.extensions ||= {};
         draft.extensions[APPEARANCE] ||= {};
+        if (key === 'shape' && !value) {
+          delete draft.extensions[APPEARANCE].shape;
+          continue;
+        }
         draft.extensions[APPEARANCE][key] =
           input.type === 'checkbox'
             ? input.checked
-            : ['align', 'shadow'].includes(key)
+            : ['align', 'shadow', 'shape', 'sizeMode'].includes(key)
               ? value
               : Number(value);
       } else draft[name] = value;
     }
+    if (
+      ['appearance-shape', 'width', 'height'].includes(event.target.name) &&
+      (appearance(draft).shape || event.target.name === 'appearance-shape')
+    ) {
+      const size = store.activeView === 'mind' ? draftMindSize : draft.size;
+      const next = resizeShape(appearance(draft).shape, size.width, size.height, event.target.name);
+      if (['width', 'height'].includes(event.target.name)) {
+        draft.extensions ||= {};
+        draft.extensions[APPEARANCE] = { ...appearance(draft), sizeMode: 'manual' };
+        if (form.elements['appearance-sizeMode'])
+          form.elements['appearance-sizeMode'].value = 'manual';
+      }
+      if (store.activeView === 'mind') draftMindSize = next;
+      else draft.size = next;
+      form.elements.width.value = next.width;
+      form.elements.height.value = next.height;
+    }
     updateFormatPreview();
+    if (selection.kind === 'card' && appearance(draft).sizeMode === 'fit' && $('#fit-text'))
+      fitDraftSize();
     updateStatus();
     scheduleRecovery();
   };
   form.onsubmit = (ev) => {
     ev.preventDefault();
+    if (
+      selection.kind === 'card' &&
+      appearance(draft).sizeMode === 'fit' &&
+      $('#fit-text') &&
+      !fitDraftSize()
+    )
+      return;
     applyDraft();
   };
   $('#cancel-draft').onclick = () => {
@@ -581,49 +629,37 @@ function renderPanelContent() {
     renderPanel();
     updateStatus();
   };
+  function fitDraftSize() {
+    const host = $('#format-card-preview .graph-card');
+    if (!host) return true;
+    const next = measureOverview(draft, host, store.activeView);
+    if (!next) {
+      $('#fit-warning').textContent = t('fitOverflow');
+      return false;
+    }
+    if (store.activeView === 'mind') draftMindSize = next;
+    else draft.size = next;
+    form.elements.width.value = next.width;
+    form.elements.height.value = next.height;
+    $('#fit-warning').textContent = '';
+    updateFormatPreview();
+    return true;
+  }
+  if ($('#fit-text'))
+    $('#fit-text').onclick = () => {
+      draft.extensions ||= {};
+      draft.extensions[APPEARANCE] = { ...appearance(draft), sizeMode: 'fit' };
+      form.elements['appearance-sizeMode'].value = 'fit';
+      updateFormatPreview();
+      fitDraftSize();
+      updateStatus();
+      scheduleRecovery();
+    };
   function updateFormatPreview() {
     const host = $('#format-card-preview');
     if (!host) return;
-    host.innerHTML =
-      '<article class="graph-card"><div class="card-kicker"><span class="card-badge type-badge">' +
-      esc(draft.type) +
-      '</span></div><h3>' +
-      esc(draft.title) +
-      '</h3><p class="card-summary">' +
-      esc(draft.summary) +
-      '</p><div class="card-meta">' +
-      draft.tags
-        .slice(0, 2)
-        .map((tag) => '<span class="card-badge tag-badge">' + esc(tag) + '</span>')
-        .join('') +
-      '</div></article>';
-    const card = host.firstElementChild;
-    const config = nodeStyle(draft),
-      simple = store.activeView === 'mind' || config.kind !== 'card';
-    if (simple) {
-      card.replaceChildren();
-      card.classList.add('simple-node');
-      if (['image', 'image-text'].includes(config.kind)) {
-        const frame = document.createElement('div');
-        frame.className = 'node-image-frame';
-        const img = document.createElement('img');
-        img.alt = config.imageAlt || draft.title;
-        img.style.objectFit = config.imageFit;
-        const attachment = draft.extensions?.[IMAGE_NAMESPACE]?.[config.coverImageId];
-        if (attachment) img.src = 'data:' + attachment.mimeType + ';base64,' + attachment.data;
-        frame.append(img);
-        card.append(frame);
-      }
-      if (config.kind !== 'image') {
-        const title = document.createElement('h3');
-        title.textContent = draft.title;
-        card.append(title);
-      }
-    }
     const previewSize = store.activeView === 'mind' ? draftMindSize : draft.size;
-    card.style.width = Math.min(10000, Math.max(1, previewSize.width)) + 'px';
-    card.style.height = Math.min(10000, Math.max(1, previewSize.height)) + 'px';
-    applyAppearance(card, draft);
+    host.replaceChildren(overviewElement(draft, store.activeView, previewSize));
   }
   updateFormatPreview();
   if ($('#set-root'))
@@ -661,6 +697,7 @@ function renderPanelContent() {
         draft.extensions ||= {};
         draft.extensions[APPEARANCE] = {
           ...appearance(draft),
+          shape: button.dataset.shape,
           radius: button.dataset.shape === 'rectangle' ? 0 : 24,
         };
         renderPanel();
@@ -781,17 +818,7 @@ async function insertImage(file) {
   imageUploadPending = true;
   $('#insert-image').disabled = true;
   try {
-    const data = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result).split(',')[1]);
-      reader.onerror = () => reject(new Error('read'));
-      reader.readAsDataURL(file);
-    });
-    const image = { name: file.name, mimeType: file.type, data };
-    if (!validImageAttachment(image)) throw new Error('image');
-    const decoded = new Image();
-    decoded.src = 'data:' + image.mimeType + ';base64,' + image.data;
-    await decoded.decode();
+    const image = await readImageFile(file, LIMITS.file);
     if (draft !== target || selection?.id !== cardId || selection?.kind !== 'card') return;
     const candidate = clone(target);
     const id = newId('image');
@@ -825,6 +852,15 @@ async function insertImage(file) {
 }
 function applyDraft() {
   if (!draft) return true;
+  if (selection.kind === 'card' && appearance(draft).sizeMode === 'fit') {
+    const next = measureOverview(draft, null, store.activeView);
+    if (!next) {
+      $('#panel-body .form-errors').textContent = t('fitOverflow');
+      return false;
+    }
+    if (store.activeView === 'mind') draftMindSize = next;
+    else draft.size = next;
+  }
   const p = clone(store.project);
   if (selection.kind === 'project') p.metadata = clone(draft);
   else {
@@ -859,6 +895,7 @@ function applyDraft() {
   return true;
 }
 async function guardDraft() {
+  if (adapter.resizing) return false;
   if (layoutPreview) return false;
   if (!draftDirty()) return true;
   const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -906,6 +943,78 @@ async function connection(source, target, position) {
   }
   render();
 }
+
+function openSearch() {
+  if (detailOpen || home) return;
+  $('#search-drawer').hidden = false;
+  $('[data-action=search]').setAttribute('aria-expanded', 'true');
+  $('#search').focus();
+}
+function closeSearch() {
+  const wasOpen = !$('#search-drawer').hidden;
+  $('#search-drawer').hidden = true;
+  $('[data-action=search]').setAttribute('aria-expanded', 'false');
+  if (wasOpen && !detailOpen) $('[data-action=search]').focus();
+}
+async function createPaletteNode(option, point, file) {
+  if (detailOpen || home || layoutPreview || feedback.state || !(await guardDraft())) return;
+  const snapshot = store.project,
+    view = store.activeView;
+  const size = option.shape
+    ? resizeShape(option.shape, 240, 160)
+    : { width: 260, height: option.kind === 'text' ? 80 : 190 };
+  const center = point ? adapter.graphPoint(point.x, point.y) : adapter.center();
+  const card = newCard(
+    { x: center.x - size.width / 2, y: center.y - size.height / 2 },
+    t(
+      option.shape ||
+        { card: 'newCard', text: 'kindText', image: 'kindImage', 'image-text': 'kindImageText' }[
+          option.kind
+        ],
+    ),
+  );
+  card.size = size;
+  card.extensions = { [NODE]: { kind: option.kind } };
+  if (option.shape) card.extensions[APPEARANCE] = { shape: option.shape, sizeMode: 'manual' };
+  if (file) {
+    try {
+      const image = await readImageFile(file, LIMITS.file);
+      if (
+        home ||
+        store.project !== snapshot ||
+        store.activeView !== view ||
+        detailOpen ||
+        layoutPreview ||
+        feedback.state
+      )
+        return;
+      const id = newId('image');
+      card.extensions[IMAGE_NAMESPACE] = { [id]: image };
+      card.extensions[NODE].coverImageId = id;
+      card.extensions[NODE].imageFit = 'contain';
+      card.content = imageReference(id, image.name);
+    } catch {
+      toast('errorImageAttachment');
+      return;
+    }
+  }
+  if (
+    !change((p) => {
+      p.cards.push(card);
+      if (view === 'mind') {
+        setGeometry(p, card.id, view, 'position', card.position);
+        setGeometry(p, card.id, view, 'size', size);
+      }
+    })
+  )
+    return;
+  selection = { kind: 'card', id: card.id };
+  draft = null;
+  draftOriginal = null;
+  render();
+  adapter.cards.get(card.id)?.focus();
+}
+
 async function addCard() {
   if (!(await guardDraft())) return;
   const pos = adapter.center(),
@@ -1418,6 +1527,8 @@ const actions = {
     }
   },
 
+  search: openSearch,
+  'search-close': closeSearch,
   new: createProject,
   add: addCard,
   connect: async () => {
@@ -1478,8 +1589,20 @@ document.addEventListener('click', (e) => {
   const button = e.target.closest('[data-action],[data-panel-action]');
   if (button && !button.disabled && !feedback.state)
     actions[button.dataset.action || button.dataset.panelAction]?.();
+  if (!e.target.closest('#project-menu') || button) $('#project-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !detailOpen && !feedback.state && !$('#search-drawer').hidden) {
+    e.preventDefault();
+    closeSearch();
+    return;
+  }
+  if (e.key === 'Escape' && !detailOpen && !feedback.state && $('#project-menu').open) {
+    e.preventDefault();
+    $('#project-menu').open = false;
+    $('#project-menu summary').focus();
+    return;
+  }
   if (layoutPreview && e.key === 'Escape' && !feedback.state) {
     e.preventDefault();
     cancelLayout();
@@ -1514,7 +1637,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (!detailOpen && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
     e.preventDefault();
-    $('#search').focus();
+    openSearch();
   }
   if (e.key === 'Delete' || e.key === 'Backspace') {
     e.preventDefault();

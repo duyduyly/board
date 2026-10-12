@@ -154,7 +154,7 @@ Xuất JSON chỉ xác nhận yêu cầu download đã được gửi; hãy ki�
 
 ## Detail: Format và hình dạng card
 
-Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu chữ, màu viền, bo góc (0–100px), độ dày viền (0–8px), cỡ chữ tiêu đề (12–24px), căn trái/giữa/phải và bóng nhẹ/không bóng. Có preset **Góc vuông**, **Bo tròn** và **Đặt lại hình dạng**. Khung xem trước phản ánh bản nháp; **Áp dụng** cập nhật card và relations trên Canvas, **Hủy** khôi phục dữ liệu đã Apply. Undo/Redo phục hồi thay đổi nguyên khối. Đặt lại hình dạng không xóa nội dung, kích thước hoặc màu đã chọn.
+Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu chữ, màu viền, bo góc (0–100px), độ dày viền (0–8px), cỡ chữ tiêu đề (12–72px), căn trái/giữa/phải và bóng nhẹ/không bóng. Có preset **Góc vuông**, **Bo tròn** và **Đặt lại hình dạng**. Khung xem trước phản ánh bản nháp; **Áp dụng** cập nhật card và relations trên Canvas, **Hủy** khôi phục dữ liệu đã Apply. Undo/Redo phục hồi thay đổi nguyên khối. Đặt lại hình dạng không xóa nội dung, kích thước hoặc màu đã chọn.
 
 Tab **Chỉnh sửa** và **Format** chia sẻ cùng bản nháp; đổi giữa hai tab không cần Apply, chuyển sang Tổng quan/card khác vẫn hỏi khi có thay đổi. Kích thước lưu trong size, các thuộc tính hình dạng lưu dưới extensions.card-atlas:appearance, giữ JSON version1.0. Dark mode điều chỉnh màu card để dễ đọc như trước; Light mode hiển thị màu đã chọn trực tiếp. Kích thước quá nhỏ có thể che overview; hãy tăng kích thước nếu title/tags bị cắt.
 
@@ -202,7 +202,7 @@ Click một lần chọn node; double click, nút Open hoặc Enter mở Detail 
 
 Ảnh Detail giữ vừa vùng đọc; click/Enter/Space để phóng ảnh. Viewer mặc định Fit trong75% viewport; chọn100% để xem kích thước gốc có cuộn. Escape đóng ảnh trước, rồi mới đóng Detail. Hover không tự phóng.
 
-Gallery responsive; editor vẫn yêu cầu desktop. Không đổi JSON1.0, không tự lưu hoặc upload. Import Markdown/node JSON đã có trong đợt 2 bên dưới; sidebar hình dạng thuộc đợt sau. Plan: planning/feedback-01-plan.md; checklist: planning/feedback-01-checklist.csv.
+Gallery responsive; editor vẫn yêu cầu desktop. Không đổi JSON1.0, không tự lưu hoặc upload. Import Markdown/node JSON đã có trong đợt 2 bên dưới; sidebar hình dạng đã có ở đợt3. Plan: planning/feedback-01-plan.md; checklist: planning/feedback-01-checklist.csv.
 
 ## Feedback 01 — đợt 2: tài liệu và node offline
 
@@ -215,3 +215,13 @@ Trong Detail mở **Tài liệu & node**:
 Ảnh incoming trùng ID khác record được remap deterministic, giữ cover cũ khi không lấy format. Unknown card extension absent giữ nguyên; xung đột mặc định giữ existing, có lựa chọn thay bằng incoming. Unknown namespace có thể chứa reference riêng mà app không hiểu: không tự remap nội dung của chúng; kiểm tra trước khi dùng Add. Unknown project namespace bị loại trừ có xác nhận. File nhiều card/có relation phải dùng Import Project, không Import Node. Sai UTF8/JSON/dangling image/size không thay dữ liệu đang mở. ZIP ảnh rời, crop ảnh và shapes mới chưa thuộc đợt2.
 
 Ví dụ: [node-transfer-example.json](assets/data/node-transfer-example.json); Format Guide có nút tải cùng hướng dẫn. Evidence: [feedback-01-phase2-evidence.md](planning/feedback-01-phase2-evidence.md).
+
+## Feedback01 — đợt3: shapes, palette và kích thước
+
+Sidebar có Card/Chữ/Ảnh/Ảnh+chữ và 8 shapes: chữ nhật, bo tròn, vuông, tròn, elip, thoi, tam giác đều và lục giác. Bấm hoặc Enter tạo ở giữa viewport; kéo thả để chọn vị trí. Ảnh yêu cầu chọn file PNG/JPEG/WebP/GIF; cancel không tạo node rỗng. Shape là presentation, không đổi type/kind. Tìm node/fulltext qua **Tìm node** hoặc Ctrl/Cmd+F; Guide, recovery và trạng thái/counts trong menu ☰.
+
+Chọn node rồi kéo **handle vuông góc dưới phải** để resize (handle tròn là nối relation). Escape/blur/cancel hủy preview; thả chuột tạo một Undo. Resize chỉ view đang mở, giới hạn96×64–1200×1000; hình vuông/tròn/tam giác giữ tỷ lệ. Hình cố định tỷ lệ nằm trong bounds cũ khi import/đổi view, không tự sửa geometry view còn lại.
+
+Detail → **Format**: chọn shape, font12–72, Manual hoặc Fit text. Fit đo tổng quan (title, tối đa3 dòng summary, tags/cover tùy kind), không đo Markdown. Hình gọn chỉ title/cover trên Canvas; dữ liệu khác giữ Detail. Fit được tính trong draft và Apply atomic; Edit tiếp nội dung với modeFit sẽ đo lại tạiApply. Nội dung vượt khung tối đa được báo lỗi; rút gọn title hoặc giảm font. Locale/theme/render không tự resize. Camera Fit vẫn chỉ thay góc nhìn. Radius áp dụng shape rounded và card legacy; polygon có góc theo hình học. Fit ảnh thuần dùng khung240×180 trước khi giữ tỷ lệ shape.
+
+Ví dụ: [basic-shapes-example.json](assets/data/basic-shapes-example.json), tải từ Format Guide rồi Import Project. Shape/font/sizeMode lưu trong card-atlas:appearance; JSON1.0, unknown extensions và ảnh portable giữ nguyên. Star/heart/octagon/arrow/các biến thể tam giác thuộc đợt4 FB024–FB029, chưa triển khai.

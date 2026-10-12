@@ -1,3 +1,4 @@
+import { shapes } from '../graph/shape-registry.js';
 export const APPEARANCE = 'card-atlas:appearance';
 export const appearanceDefaults = {
   radius: 10,
@@ -7,6 +8,7 @@ export const appearanceDefaults = {
   shadow: 'soft',
   backgroundTransparent: false,
   borderTransparent: false,
+  sizeMode: 'manual',
 };
 export function appearance(card) {
   return { ...appearanceDefaults, ...card.extensions?.[APPEARANCE] };
@@ -14,7 +16,7 @@ export function appearance(card) {
 export function appearanceIssues(card, path) {
   const value = card.extensions?.[APPEARANCE];
   if (value === undefined) return [];
-  const bounds = { radius: [0, 100], borderWidth: [0, 8], titleFontSize: [12, 24] };
+  const bounds = { radius: [0, 100], borderWidth: [0, 8], titleFontSize: [12, 72] };
   if (!value || typeof value !== 'object' || Array.isArray(value))
     return [{ path, code: 'appearance' }];
   const invalid = Object.entries(value).some(([key, v]) =>
@@ -22,11 +24,15 @@ export function appearanceIssues(card, path) {
       ? typeof v !== 'number' || !Number.isFinite(v) || v < bounds[key][0] || v > bounds[key][1]
       : ['backgroundTransparent', 'borderTransparent'].includes(key)
         ? typeof v !== 'boolean'
-        : key === 'align'
-          ? !['left', 'center', 'right'].includes(v)
-          : key === 'shadow'
-            ? !['none', 'soft'].includes(v)
-            : true,
+        : key === 'shape'
+          ? !Object.hasOwn(shapes, v)
+          : key === 'sizeMode'
+            ? !['manual', 'fit'].includes(v)
+            : key === 'align'
+              ? !['left', 'center', 'right'].includes(v)
+              : key === 'shadow'
+                ? !['none', 'soft'].includes(v)
+                : true,
   );
   return invalid ? [{ path, code: 'appearance' }] : [];
 }
@@ -39,6 +45,7 @@ export function applyAppearance(el, card) {
   el.style.borderWidth = a.borderWidth + 'px';
   el.style.setProperty('--title-font-size', a.titleFontSize + 'px');
   el.style.textAlign = a.align;
+  el.dataset.sizeMode = a.sizeMode;
   el.classList.toggle('no-card-shadow', a.shadow === 'none');
   el.classList.toggle('transparent-background', a.backgroundTransparent);
   el.classList.toggle('transparent-border', a.borderTransparent);

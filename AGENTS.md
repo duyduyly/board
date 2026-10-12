@@ -73,3 +73,7 @@ Khi triển khai yêu cầu này, đọc thêm [planning/mind-map-plan.md](plann
 User giao Feedback01 đợt1 FB001–FB010 ngày2026-10-12. Đợt 1 đã hoàn tất; đợt 2 FB011–FB016 được giao ở phần bổ sung dưới, đợt 3–4 chưa được giao. Khi kiểm tra UI, Home Gallery và native Detail modal thay welcome/right-panel cũ; dùng visible controls/project tools, đóng Detail trước drag/connector/collapse trên Canvas. Evidence đợt1: planning/feedback-01-phase1-evidence.md.
 
 User giao Feedback01 đợt2 FB011–FB016 ngày2026-10-12. Đọc contractFB011 trong feedback-01-plan; document-transfer ports và pure node-transfer/markdown-import giữ model/session boundaries. Update vào draft rồi Apply; Add một command sau preview/guard. Giữ unknown extension policies, UTF8/limits/ảnh và active-view geometry. Đợt3–4 chưa được giao. Evidence đợt2: planning/feedback-01-phase2-evidence.md.
+
+## Feedback01 đợt3
+
+User giao FB017–FB023 ngày2026-10-12. Contract shape/font/sizeMode trong feedback-01-plan.md; đọc evidence đợt3 trước tiếp tục. Registry shape dùng chung Canvas/Format/Fit/resize/anchors/hit; không nhận CSS/path trong JSON. Overview và image-file được dùng chung, không viết bản sao. Geometry chỉ activeview; shape ratio inscribed legacy bounds. FB024–FB029 giữTODO, không tự bắt đầu đợt4.

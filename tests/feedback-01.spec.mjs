@@ -1,3 +1,4 @@
+import { openSearch } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const openArchitecture = async (page) => {
@@ -6,6 +7,7 @@ const openArchitecture = async (page) => {
   await expect(page.locator('.graph-card')).toHaveCount(3);
 };
 const openDetail = async (page, id = 'card-user-service') => {
+  await openSearch(page);
   await page.locator('.card-row[data-card-id="' + id + '"]').click();
   await expect(page.locator('#detail-panel')).toHaveAttribute('open', '');
 };

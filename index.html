@@ -14,9 +14,22 @@
         <button class="brand" data-action="home" aria-label="Card Atlas — Home">
           <span class="brand-mark">✳</span> Card Atlas
         </button>
-        <button id="project-name" class="project-name"></button
-        ><span id="save-state" class="save-state"></span>
+        <button id="project-name" class="project-name"></button>
         <div class="toolbar-actions">
+          <details id="project-menu" class="project-menu">
+            <summary data-i18n-title="projectMenu" aria-label="Menu dự án">
+              <span aria-hidden="true">☰</span>
+            </summary>
+            <div class="project-menu-body">
+              <div id="counts"></div>
+              <p id="save-state" class="save-state"></p>
+              <button data-action="format" class="text-button" data-i18n="format"></button>
+              <p class="session-note" data-i18n="session"></p>
+
+              <button data-action="recovery" class="recovery-button" data-i18n="recovery"></button>
+              <p id="recovery-status" class="muted recovery-status" role="status"></p>
+            </div>
+          </details>
           <button data-action="new" data-i18n="newProject"></button
           ><button data-action="add" class="with-icon">
             <span>＋</span><span data-i18n="newCard"></span></button
@@ -53,6 +66,22 @@
       </section>
       <main class="workspace">
         <aside class="sidebar">
+          <div id="shape-library"></div>
+          <button
+            type="button"
+            data-action="search"
+            data-i18n="searchNodes"
+            aria-controls="search-drawer"
+            aria-expanded="false"
+          ></button>
+        </aside>
+        <aside id="search-drawer" class="search-drawer" hidden>
+          <div class="drawer-header">
+            <h2 data-i18n="searchNodes"></h2>
+            <button type="button" data-action="search-close" data-i18n-title="closeSearch">
+              ×
+            </button>
+          </div>
           <div class="search-wrap">
             <span aria-hidden="true">⌕</span
             ><input
@@ -63,13 +92,6 @@
             />
           </div>
           <div id="card-list" class="card-list"></div>
-          <footer class="sidebar-footer">
-            <div id="counts"></div>
-            <button data-action="format" class="text-button" data-i18n="format"></button>
-            <p class="session-note" data-i18n="session"></p>
-          </footer>
-          <button data-action="recovery" class="recovery-button" data-i18n="recovery"></button>
-          <p id="recovery-status" class="muted recovery-status" role="status"></p>
         </aside>
         <section id="canvas-region" class="canvas-region">
           <div id="graph"></div>
