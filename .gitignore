@@ -1,8 +1,32 @@
-.idea
-.agents
-wordspace
-node_modules/
-test-results/
-playwright-report/
-planning
-code
+# Local IDE and agent files
+/.idea/
+/.vscode/
+/.agents/
+/.codex/
+
+# Local planning, research and workspace copies
+/planning/
+/project-context/
+/wordspace/
+/code/
+
+# Dependencies and generated build intermediates
+/node_modules/
+/scripts/vendor-src/
+/dist/
+/coverage/
+
+# Test output
+/test-results/
+/playwright-report/
+/blob-report/
+
+# Local secrets and logs
+.env
+.env.*
+!.env.example
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db

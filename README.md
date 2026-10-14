@@ -241,3 +241,5 @@ Giao diện giấy note theo reference .agents/idea/note-paper.png: bóng nhẹ,
 ### Nhập ngày trên Canvas
 
 Bấm badge ngày ở góc trên trái card để mở ô nhập/chọn ngày. Chọn **Áp dụng** để lưu hoặc **Hủy/Escape** để bỏ thay đổi. Xóa ngày nhập để trở lại ngày tạo tự động (card cũ chưa có timestamp sẽ hiển thị chưa có ngày). Ngày nhập lưu trong `card-atlas:metadata.createdDate` theo `YYYY-MM-DD`, giữ nguyên `createdAt` gốc và hỗ trợ Undo/Redo ở cả Card Map và Mind Map.
+
+Tài liệu nội bộ trong planning/, project-context/ và wordspace/ được giữ local, không nằm trong bản clone GitHub. Khi làm việc với agents trên máy khác, sao chép riêng các folder này để có plan/checklist/spec. scripts/vendor-src/ được tạo lại khi chạy npm run build; assets/vendor/ vẫn nằm trong repo để ứng dụng chạy offline.
