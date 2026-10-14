@@ -79,3 +79,9 @@ export interface NodeAppearance {
   backgroundTransparent?: boolean;
   borderTransparent?: boolean;
 }
+
+export interface CardMetadata {
+  createdDate?: string;
+  pinned?: boolean;
+  createdAt?: string;
+}

@@ -1,4 +1,16 @@
 export default {
+  cardDate: 'Ngày trên card',
+  editCardDate: 'Sửa ngày trên card: {date}',
+  originalCreatedAt: 'Ngày tạo gốc',
+  dateLanguage: 'Ngôn ngữ',
+  dateHelp: 'Nhập hoặc chọn ngày. Xóa để dùng ngày tạo ban đầu.',
+  dateApplyFailed: 'Chưa thể cập nhật ngày. Hãy thử lại.',
+
+  pinCard: 'Ghim card quan trọng',
+  unpinCard: 'Bỏ ghim card',
+  createdAt: 'Ngày tạo',
+  creationUnknown: 'Chưa có ngày tạo',
+
   basicShapesExample: 'Ví dụ 8 hình cơ bản',
   extendedShapesExample: 'Ví dụ tất cả hình dạng',
   legacyShape: 'Card hiện tại',
@@ -344,7 +356,7 @@ export default {
   relation: 'Quan hệ',
   removeConfirm: 'Xóa đối tượng đã chọn',
   aiGuide:
-    'Tạo project JSON với version "1.0", mảng cards và relations. Mỗi card cần id ổn định duy nhất và title không rỗng. Mỗi relation cần id duy nhất, source và target tham chiếu card tồn tại. Không nối thẻ với chính nó. Type là chuỗi tùy ý. Có thể bỏ position để bố trí grid. Chỉ dùng trường trong schema; dữ liệu producer đặt trong extensions có key namespace. JSON export chuẩn hóa tối đa 10 MiB. Tối đa 500 cards, 2000 relations và 100000 ký tự Markdown/card. Chỉ trả JSON hợp lệ, không văn bản giải thích hoặc code fence. Extension card-atlas:appearance hỗ trợ shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon|star|heart|octagon|arrow|isosceles-triangle|right-triangle, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft và các boolean trong suốt. Shape không đổi kind/type. Geometry riêng từng view; hình cố định tỷ lệ nằm trong bounds cũ. Không truyền CSS/SVG path.',
+    'Tạo project JSON với version "1.0", mảng cards và relations. Mỗi card cần id ổn định duy nhất và title không rỗng. Mỗi relation cần id duy nhất, source và target tham chiếu card tồn tại. Không nối thẻ với chính nó. Type là chuỗi tùy ý. Có thể bỏ position để bố trí grid. Chỉ dùng trường trong schema; dữ liệu producer đặt trong extensions có key namespace. JSON export chuẩn hóa tối đa 10 MiB. Tối đa 500 cards, 2000 relations và 100000 ký tự Markdown/card. Chỉ trả JSON hợp lệ, không văn bản giải thích hoặc code fence. Extension card-atlas:appearance hỗ trợ shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon|star|heart|octagon|arrow|isosceles-triangle|right-triangle, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft và các boolean trong suốt. Shape không đổi kind/type. Geometry riêng từng view; hình cố định tỷ lệ nằm trong bounds cũ. Không truyền CSS/SVG path. Metadata card-atlas:metadata hỗ trợ pinned boolean và createdAt UTC ISO yyyy-MM-ddTHH:mm:ss.SSSZ và createdDate YYYY-MM-DD; bỏ ngày khi chưa biết.',
   galleryTitle: 'Thư viện mẫu',
   galleryIntro: 'Chọn một mẫu để bắt đầu sơ đồ của bạn.',
   templateCategories: 'Nhóm mẫu',

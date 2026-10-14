@@ -231,3 +231,13 @@ Ví dụ: [basic-shapes-example.json](assets/data/basic-shapes-example.json), t�
 Format và palette hỗ trợ14hình: rectangle/rounded/square/circle/ellipse/diamond/triangle/hexagon/star/heart/octagon/arrow/isosceles-triangle/right-triangle. triangle là tam giác đều; ellipse gồm oval. Shapes compact giữ title/cover, nội dung đầy đủ trong Detail.
 
 Format Guide → Mixed shapes example → Import để thử ảnh/text và cả hai view. Chọn node → Enter → Format → font → Fit text → Apply; Undo khôi phục font/size cùng lúc. Resize dùng handle vuông, connector dùng handle tròn; Escape hủy resize. Manual có thể cắt title; Fit vượt bounds sẽ cảnh báo và giữ draft, hãy rút ngắn overview hoặc giảm font. Camera Fit chỉ thay viewport.
+
+### Ghim và ngày tạo card
+
+Nhấn icon ghim ở đầu card để đánh dấu quan trọng; nhấn lại để bỏ ghim. Có Undo/Redo; ghim không khóa vị trí hoặc tự sắp xếp graph. Ngày tạo nằm ở góc đầu card, lưu UTC trong extensions.card-atlas:metadata.createdAt và giữ nguyên khi sửa. Card cũ không có dữ liệu ngày hiển thị chưa có ngày tạo; không gán ngày giả. Card mới/nhân bản có ngày mới, import giữ ngày nguồn. Pin và ngày đi cùng JSON project/node offline.
+
+Giao diện giấy note theo reference .agents/idea/note-paper.png: bóng nhẹ, ghim đỏ, badge ngày góc trái. Màu nền tùy chỉnh được giữ; node hình khác giữ outline. Mẫu5màu: assets/data/note-paper-example.json (Import JSON). Không dùng ảnh watermark làm tài nguyên.
+
+### Nhập ngày trên Canvas
+
+Bấm badge ngày ở góc trên trái card để mở ô nhập/chọn ngày. Chọn **Áp dụng** để lưu hoặc **Hủy/Escape** để bỏ thay đổi. Xóa ngày nhập để trở lại ngày tạo tự động (card cũ chưa có timestamp sẽ hiển thị chưa có ngày). Ngày nhập lưu trong `card-atlas:metadata.createdDate` theo `YYYY-MM-DD`, giữ nguyên `createdAt` gốc và hỗ trợ Undo/Redo ở cả Card Map và Mind Map.

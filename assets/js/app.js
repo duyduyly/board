@@ -1,3 +1,11 @@
+import { createCardDateEditor } from './ui/card-date-editor.js';
+import {
+  stampCreated,
+  togglePinned,
+  setCreatedDate,
+  cardDateValue,
+  cardMetadata,
+} from './graph/card-metadata.js';
 import { overviewElement } from './canvas/overview.js';
 import { createShapePalette } from './ui/shape-palette.js';
 import { readImageFile } from './detail/image-file.js';
@@ -226,8 +234,29 @@ function change(mutator) {
     return false;
   }
 }
+const dateEditor = createCardDateEditor({
+  current: (id) => projectIndex(store.project).cards.get(id),
+  fallback: (id) => adapter.cards.get(id)?.querySelector('.card-created-date'),
+  onLocale: (locale) => {
+    setLocale(locale);
+    render();
+  },
+  onApply: (id, value) => {
+    if (detailOpen || draftDirty() || feedback.state || layoutPreview) return false;
+    const c = projectIndex(store.project).cards.get(id);
+    if (!c) return false;
+    if (value === cardDateValue(c) || (!value && !cardMetadata(c).createdDate)) return true;
+    return change((p) =>
+      setCreatedDate(
+        p.cards.find((c) => c.id === id),
+        value,
+      ),
+    );
+  },
+});
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   select: (s, edit = false) => select(s, edit),
+  date: (id, anchor) => dateEditor.show(id, anchor),
   open: async (s) => {
     if (!(await guardDraft())) return;
     connectMode = false;
@@ -237,6 +266,10 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     draft = null;
     draftOriginal = null;
     render();
+  },
+  pin: (id) => {
+    if (detailOpen || draftDirty() || feedback.state || layoutPreview) return;
+    change((p) => togglePinned(p.cards.find((c) => c.id === id)));
   },
   move: (id, position) =>
     change((p) => {
@@ -255,7 +288,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     updateStatus();
   },
   collapse: (id) => toggleBranch(id),
-  locked: () => Boolean(detailOpen || draftDirty() || feedback.state || layoutPreview),
+  locked: () =>
+    Boolean(detailOpen || draftDirty() || feedback.state || layoutPreview || dateEditor.open),
 });
 function render() {
   $('#app').classList.toggle('home-mode', home);
@@ -339,6 +373,7 @@ function render() {
   renderPanel();
   updateStatus();
   translate();
+  dateEditor.syncLocale();
   scheduleRecovery();
 }
 const renderCardList = createCardList({
@@ -430,7 +465,7 @@ function renderPanelContent() {
       : selection.kind === 'card'
         ? e.title
         : t('relation');
-  detailSurface.show($('#panel-title'));
+  if (!(tab === 'overview' && selection.kind === 'card')) detailSurface.show($('#panel-title'));
   const tabs = $('#panel-tabs');
   tabs.replaceChildren();
   if (selection.kind === 'card')
@@ -511,6 +546,7 @@ function renderPanelContent() {
         list.append(btn);
       }
     }
+    detailSurface.show($('#panel-title'));
     return;
   }
   if (!draft) beginDraft();
@@ -974,7 +1010,7 @@ async function createPaletteNode(option, point, file) {
     ),
   );
   card.size = size;
-  card.extensions = { [NODE]: { kind: option.kind } };
+  card.extensions = { ...card.extensions, [NODE]: { kind: option.kind } };
   if (option.shape) card.extensions[APPEARANCE] = { shape: option.shape, sizeMode: 'manual' };
   if (file) {
     try {
@@ -1037,6 +1073,7 @@ async function duplicate() {
   const original = entity();
   const card = clone(original);
   card.id = newId('card');
+  stampCreated(card);
   card.position = { x: card.position.x + 36, y: card.position.y + 36 };
   if (
     !change((p) => {
@@ -1592,6 +1629,7 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#project-menu') || button) $('#project-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
+  if (dateEditor.open) return;
   if (e.key === 'Escape' && !detailOpen && !feedback.state && !$('#search-drawer').hidden) {
     e.preventDefault();
     closeSearch();
@@ -1649,7 +1687,7 @@ document.addEventListener('keyup', (e) => {
 });
 window.addEventListener('blur', () => (adapter.space = false));
 window.addEventListener('beforeunload', (e) => {
-  if (store.dirty || draftDirty()) {
+  if (store.dirty || draftDirty() || dateEditor.dirty) {
     e.preventDefault();
     e.returnValue = '';
   }

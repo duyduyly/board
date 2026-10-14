@@ -1,4 +1,4 @@
-import { overviewElement } from './overview.js';
+import { overviewElement, updateCardMetadata } from './overview.js';
 import { installResize } from './resize-node.js';
 import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
@@ -80,7 +80,7 @@ export class GraphAdapter {
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
       ],
     });
-    this.cy.on('pan zoom', () => {
+    this.cy.on('viewport', () => {
       this.deferEdges();
       this.view();
       callbacks.viewport(this.cy.zoom(), this.cy.pan());
@@ -164,6 +164,8 @@ export class GraphAdapter {
           const more = el.querySelector('.more-tags');
           if (more) more.title = t('moreTags', { tags: more.dataset.tags });
         }
+        for (const [id, el] of this.cards)
+          updateCardMetadata(el, projectIndex(project).cards.get(id));
         this.lastLocale = getLocale();
       }
       this.lastSelection = selection;
@@ -229,7 +231,41 @@ export class GraphAdapter {
         node.style('display', el.hidden ? 'none' : 'element');
         el.replaceChildren();
         const overview = overviewElement(c, view, c.size, false);
+        el.classList.toggle('paper-note', overview.classList.contains('paper-note'));
         el.append(...overview.children);
+        const date = el.querySelector('.card-created-date');
+        date.tabIndex = 0;
+        date.setAttribute('aria-disabled', 'false');
+        updateCardMetadata(el, c);
+        date.onpointerdown = (e) => e.stopPropagation();
+        date.ondblclick = (e) => e.stopPropagation();
+        const openDate = () => {
+          if (!this.callbacks.locked()) this.callbacks.date(c.id, date);
+        };
+        date.onclick = openDate;
+        date.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            openDate();
+          }
+        };
+        const pin = el.querySelector('.card-pin');
+        pin.disabled = false;
+        for (const event of ['pointerdown', 'dblclick'])
+          pin.addEventListener(event, (e) => e.stopPropagation());
+        pin.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') e.stopPropagation();
+        });
+        pin.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!this.callbacks.locked()) {
+            const focused = document.activeElement === pin;
+            this.callbacks.pin(c.id);
+            if (focused)
+              this.cards.get(c.id)?.querySelector('.card-pin')?.focus({ preventScroll: true });
+          }
+        });
         const open = document.createElement('button');
         open.className = 'card-open';
         open.type = 'button';
@@ -428,19 +464,24 @@ export class GraphAdapter {
   focus(id) {
     const n = this.cy.getElementById(cid(id));
     if (!n.empty()) {
-      this.cy.zoom(
-        Math.min(
-          1.1,
-          Math.max(
-            0.3,
-            Math.min(
-              (this.region.clientWidth - 100) / n.data('width'),
-              (this.region.clientHeight - 140) / n.data('height'),
-            ),
+      const zoom = Math.min(
+        1.1,
+        Math.max(
+          0.3,
+          Math.min(
+            (this.region.clientWidth - 100) / n.data('width'),
+            (this.region.clientHeight - 140) / n.data('height'),
           ),
         ),
       );
-      this.cy.center(n);
+      const center = n.position();
+      this.cy.viewport({
+        zoom,
+        pan: {
+          x: this.region.clientWidth / 2 - center.x * zoom,
+          y: this.region.clientHeight / 2 - center.y * zoom,
+        },
+      });
       this.view();
     }
   }
@@ -486,7 +527,9 @@ export class GraphAdapter {
   }
   cardStart(e, id) {
     if (
-      e.target.closest('.connector, .card-open, .branch-toggle, .resize-handle') ||
+      e.target.closest(
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date',
+      ) ||
       this.space ||
       e.button !== 0
     )

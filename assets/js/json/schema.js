@@ -237,6 +237,14 @@ schema.properties.extensions = extensions({
   'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
 });
 schema.$defs.card.properties.extensions = extensions({
+  'card-atlas:metadata': object({
+    createdDate: { type: 'string', pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' },
+    pinned: { type: 'boolean' },
+    createdAt: {
+      type: 'string',
+      pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]{3}Z$',
+    },
+  }),
   'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
   'card-atlas:appearance': object({
     radius: { type: 'number', minimum: 0, maximum: 100 },

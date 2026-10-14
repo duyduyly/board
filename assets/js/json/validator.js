@@ -1,3 +1,4 @@
+import { metadataIssues } from '../graph/card-metadata.js';
 import { mindIssues, VIEWS } from '../graph/mind-map.js';
 import { appearanceIssues } from '../detail/appearance.js';
 import { imageAttachmentIssues } from '../detail/attachments.js';
@@ -52,6 +53,7 @@ export function validate(raw) {
     edgeIds = new Set(),
     duplicates = new Set();
   raw.cards.forEach((c, i) => {
+    errors.push(...metadataIssues(c, 'cards[' + i + '].extensions.card-atlas:metadata'));
     errors.push(...appearanceIssues(c, 'cards[' + i + '].extensions.card-atlas:appearance'));
     errors.push(...imageAttachmentIssues(c, 'cards[' + i + '].extensions.card-atlas:images'));
     if (ids.has(c.id)) errors.push({ path: 'cards[' + i + '].id', code: 'duplicateId' });

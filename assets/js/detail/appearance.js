@@ -11,7 +11,10 @@ export const appearanceDefaults = {
   sizeMode: 'manual',
 };
 export function appearance(card) {
-  return { ...appearanceDefaults, ...card.extensions?.[APPEARANCE] };
+  const value = card.extensions?.[APPEARANCE];
+  const radius =
+    !value?.shape || ['rectangle', 'square'].includes(value.shape) ? 2 : appearanceDefaults.radius;
+  return { ...appearanceDefaults, radius, ...value };
 }
 export function appearanceIssues(card, path) {
   const value = card.extensions?.[APPEARANCE];

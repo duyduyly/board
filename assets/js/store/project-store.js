@@ -1,3 +1,4 @@
+import { stampCreated } from '../graph/card-metadata.js';
 import { clone } from '../common/data.js';
 import { VIEWS, MIND } from '../graph/mind-map.js';
 import { blank, validate } from '../json/validator.js';
@@ -43,7 +44,7 @@ export class ProjectStore {
     this.viewports = { card: clone(this.project.canvas) };
     this.undoStack = [];
     this.redoStack = [];
-    this.baseline = content(this.project);
+    this.baseline = this.contentSignature;
     this.viewBaseline = JSON.stringify(this.viewports);
     this.adjusted = false;
     this.notice = false;
@@ -66,8 +67,16 @@ export class ProjectStore {
   emit() {
     for (const fn of this.listeners) fn();
   }
+  // Cache only the committed snapshot; commands and replay replace its identity.
+  get contentSignature() {
+    if (this.signatureProject !== this.project) {
+      this.signatureProject = this.project;
+      this.signatureValue = content(this.project);
+    }
+    return this.signatureValue;
+  }
   get dirty() {
-    return this.adjusted || content(this.project) !== this.baseline;
+    return this.adjusted || this.contentSignature !== this.baseline;
   }
   get viewChanged() {
     return JSON.stringify(this.viewports) !== this.viewBaseline;
@@ -81,7 +90,7 @@ export class ProjectStore {
       this.viewports.mind = clone(p.extensions[VIEWS].mindMap.viewport);
     this.undoStack = [];
     this.redoStack = [];
-    this.baseline = content(p);
+    this.baseline = this.contentSignature;
     this.viewBaseline = JSON.stringify(this.viewports);
     this.adjusted = adjusted;
     this.emit();
@@ -160,7 +169,7 @@ export class ProjectStore {
 }
 export const newId = (kind) => kind + '-' + crypto.randomUUID();
 export function newCard(position, title = 'New Card') {
-  return {
+  return stampCreated({
     id: newId('card'),
     title,
     summary: '',
@@ -170,7 +179,7 @@ export function newCard(position, title = 'New Card') {
     position,
     size: { width: 260, height: 190 },
     style: { backgroundColor: '#FFFFFF', textColor: '#0F172A', borderColor: '#CBD5E1' },
-  };
+  });
 }
 export function newRelation(source, target) {
   return {

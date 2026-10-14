@@ -1,0 +1,162 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Paper Notes",
+    "description": "Ghim các ghi chú quan trọng; ngày tạo được giữ cùng JSON."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 60,
+      "y": 160
+    }
+  },
+  "cards": [
+    {
+      "id": "paper-0",
+      "title": "Ý tưởng",
+      "summary": "Ghi nhanh ý tưởng và kết nối với các chủ đề liên quan.",
+      "type": "NOTE",
+      "tags": [
+        "notes"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#FAFAF7",
+        "textColor": "#263329",
+        "borderColor": "#FAFAF7"
+      },
+      "content": "# Ý tưởng\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "extensions": {
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-14T08:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "paper-1",
+      "title": "Học tập",
+      "summary": "Tóm tắt kiến thức; mở Detail để đọc ghi chú đầy đủ.",
+      "type": "NOTE",
+      "tags": [
+        "notes"
+      ],
+      "position": {
+        "x": 290,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#B6EAA4",
+        "textColor": "#263329",
+        "borderColor": "#B6EAA4"
+      },
+      "content": "# Học tập\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "extensions": {
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-14T08:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "paper-2",
+      "title": "Việc tiếp theo",
+      "summary": "Chọn một bước nhỏ để bắt đầu và ghi lại tiến độ.",
+      "type": "NOTE",
+      "tags": [
+        "notes"
+      ],
+      "position": {
+        "x": 580,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#FFF183",
+        "textColor": "#263329",
+        "borderColor": "#FFF183"
+      },
+      "content": "# Việc tiếp theo\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "extensions": {
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-14T08:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "paper-3",
+      "title": "Nghiên cứu",
+      "summary": "Tập hợp thông tin, nguồn tham khảo và câu hỏi cần làm rõ.",
+      "type": "NOTE",
+      "tags": [
+        "notes"
+      ],
+      "position": {
+        "x": 870,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#A6D6ED",
+        "textColor": "#263329",
+        "borderColor": "#A6D6ED"
+      },
+      "content": "# Nghiên cứu\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "extensions": {
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-14T08:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "paper-4",
+      "title": "Ghi nhớ",
+      "summary": "Đánh dấu điều quan trọng để quay lại sau.",
+      "type": "NOTE",
+      "tags": [
+        "notes"
+      ],
+      "position": {
+        "x": 1160,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#F8ADB9",
+        "textColor": "#263329",
+        "borderColor": "#F8ADB9"
+      },
+      "content": "# Ghi nhớ\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "extensions": {
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-14T08:00:00.000Z"
+        }
+      }
+    }
+  ],
+  "relations": []
+}

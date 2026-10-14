@@ -12,7 +12,8 @@ export function measureOverview(card, preview, view) {
   if (content) {
     clone.replaceChildren(...content.children);
   }
-  for (const c of clone.querySelectorAll('svg,button,.node-hierarchy-marker')) c.remove();
+  for (const c of clone.querySelectorAll('svg,button,.node-hierarchy-marker,.card-status-strip'))
+    c.remove();
   clone.style.cssText =
     preview.style.cssText +
     ';position:fixed;left:-10000px;top:0;height:auto;padding:0;border:0;visibility:hidden;pointer-events:none';
@@ -24,7 +25,10 @@ export function measureOverview(card, preview, view) {
       (width) => {
         if (cache.has(width)) return cache.get(width);
         clone.style.width = width + 'px';
-        const result = { width: clone.scrollWidth, height: clone.scrollHeight };
+        const result = {
+          width: clone.scrollWidth,
+          height: clone.scrollHeight + (clone.classList.contains('paper-note') ? 24 : 0),
+        };
         cache.set(width, result);
         return result;
       },

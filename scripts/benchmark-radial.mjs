@@ -62,6 +62,11 @@ const result = await page.evaluate(
       const kind = ['card', 'text', 'image', 'image-text'][i % 4];
       c.extensions = { 'card-atlas:node': { kind } };
       if (withShapes)
+        c.extensions['card-atlas:metadata'] = {
+          createdAt: '2026-10-14T00:00:00.000Z',
+          pinned: i % 5 === 0,
+        };
+      if (withShapes)
         c.extensions['card-atlas:appearance'] = {
           shape: shapeNames[i % shapeNames.length],
           titleFontSize: [12, 18, 24, 36, 48, 60, 72][i % 7],
@@ -160,7 +165,7 @@ const result = await page.evaluate(
 );
 const report = {
   view: requestedView,
-  shapes: withShapes ? '14 mixed shapes; fonts12–72' : 'legacy',
+  shapes: withShapes ? '14 mixed shapes; fonts12–72; dates/pins' : 'legacy',
   date: new Date().toISOString(),
   browser: await browser.version(),
   os: os.type() + ' ' + os.release(),

@@ -59,3 +59,9 @@ graph/shape-registry là nguồn outline/safeArea/ratio/hit/anchor/minmax; graph
 ui/shape-palette nhận onCreate/locked; app nối file stage+guards+atomic command, geometry activeview. detail/image-file dùng chung upload/palette; validate/decode raster offline trước mutation và từ chối kết quả stale. Không thêm framework/CDN/storage. BasicShapes demo là project1.0, FormatGuide tải cùngschema. NodeAppearance typed trong graph/types.ts/schema và appearance runtime.
 
 Extended shapes cùng registry và typed contract; triangle là equilateral alias, không enum duplicate. Concave safeArea được test cả4góc; anchors lấy ray intersection gần nhất từ tâm nội bộ. Right triangle chuyển bounds center trên cạnh sang polygon centroid. Mỗi shape mới phải cập nhật schema/types/i18n/examples và test SafeArea/anchor/resize/Fit tại12–72; không nhận polygon từ JSON.
+
+Pin/date: graph/card-metadata giữ contract và pure mutation helpers; overview metadata strip dùng chung Canvas/Format, header ngoài text measurement trừ24px cho paper. Pushpin SVG app-owned local làm CSS background, không tạo SVG subtree cho từngnode. Paper default radius2 cho legacy/rectangle/square, rounded10 và explicitradius giữ nguyên; Format và Canvas lấy cùng appearance(). ProjectStore.contentSignature cache chỉ snapshot committed theoidentity, không dùng cho mutator; dirty/Undo/Redo/Replace/export giữ cùng semantics, không serialize lại vì selection/viewport.
+
+### Ngày card và editor Canvas
+
+`graph/card-metadata.js` là nguồn chung cho pin, UTC `createdAt` và ngày lịch optional `createdDate`. Không ghi đè timestamp gốc khi sửa ngày; duplicate dùng stampCreated và bỏ override. `ui/card-date-editor.js` dùng dialogSurface, draft local, port onApply/current/onLocale; command nằm trong app/store. Canvas badge là control bàn phím, preview readonly. Không tạo input cho từng node: một editor dùng chung giúp giữ DOM nhỏ. Locale sync cache theo locale, không reset draft.

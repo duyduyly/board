@@ -1,3 +1,4 @@
+import { CARD_META } from '../graph/card-metadata.js';
 import { clone } from '../common/data.js';
 import { validate, stage, serialize } from './validator.js';
 import { NODE, MIND, VIEWS, geometry, setGeometry } from '../graph/mind-map.js';
@@ -5,7 +6,7 @@ import { APPEARANCE } from '../detail/appearance.js';
 import { IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { marked } from '../../vendor/marked-entry.js';
 
-const known = new Set([NODE, APPEARANCE, IMAGE_NAMESPACE]);
+const known = new Set([CARD_META, NODE, APPEARANCE, IMAGE_NAMESPACE]);
 export function transferError(code, issues = []) {
   const error = new Error(code);
   error.issues = issues;

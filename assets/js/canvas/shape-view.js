@@ -17,12 +17,20 @@ export function applyShape(el, card, size) {
   el.dataset.shape = shape;
   const points = shapePoints(shape, size, a.radius),
     area = safeArea(shape, size, 16, a.radius);
+  if (el.classList.contains('paper-note')) {
+    area.y += 24;
+    area.height = Math.max(1, area.height - 24);
+  }
   const content = document.createElement('div');
   content.className = 'shape-content';
   for (const child of [...el.children]) {
     const open = child.querySelector?.('.card-open');
     if (open) el.append(open);
-    if (child.matches('.connector,.card-open,.branch-toggle,.node-hierarchy-marker,.resize-handle'))
+    if (
+      child.matches(
+        '.connector,.card-open,.branch-toggle,.node-hierarchy-marker,.resize-handle,.card-status-strip',
+      )
+    )
       continue;
     if (shapes[shape].compact && child.matches('.card-kicker,.card-summary,.card-meta')) {
       child.remove();
