@@ -1,10 +1,9 @@
-import { shapes } from '../graph/shape-registry.js';
+import { cardFormatFields } from './card-format-fields.js';
 import { escapeHTML as esc } from '../common/html.js';
 import { t } from '../i18n/index.js';
-import { labelField, cardColorField } from '../ui/forms.js';
-import { appearance } from './appearance.js';
+import { labelField } from '../ui/forms.js';
 import { IMAGE_NAMESPACE } from './attachments.js';
-import { nodeStyle, relationKind, MIND } from '../graph/mind-map.js';
+import { relationKind, MIND } from '../graph/mind-map.js';
 export function editorFields({
   draft: d,
   kind,
@@ -18,137 +17,16 @@ export function editorFields({
 }) {
   let fields = '';
   if (kind === 'card' && tab === 'format') {
-    const a = appearance(d);
-    const config = nodeStyle(d);
-    const activeSize = activeView === 'mind' ? mindSize : d.size;
-    fields =
-      '<h3>' +
-      esc(t('cardShape')) +
-      '</h3><div class="format-grid">' +
-      ['width', 'height']
-        .map(
-          (k) =>
-            '<label>' +
-            esc(t(k)) +
-            '<input type="number" name="' +
-            k +
-            '" min="1" step="any" value="' +
-            activeSize[k] +
-            '"></label>',
-        )
-        .join('') +
-      '</div>';
-    fields +=
-      labelField('cardShape', 'appearance-shape', a.shape || '', {
-        options: [
-          { value: '', label: t('legacyShape') },
-          ...Object.keys(shapes).map((value) => ({ value, label: t(value) })),
-        ],
-      }) +
-      '<p class="muted">' +
-      esc(t('shapeHint')) +
-      '</p>';
-    fields +=
-      labelField('nodeKind', 'node-kind', config.kind, {
-        options: ['card', 'text', 'image', 'image-text'].map((value) => ({
-          value,
-          label: t(
-            {
-              card: 'kindCard',
-              text: 'kindText',
-              image: 'kindImage',
-              'image-text': 'kindImageText',
-            }[value],
-          ),
-        })),
-      }) +
-      labelField('coverImage', 'node-coverImageId', config.coverImageId || '', {
-        options: [
-          { value: '', label: t('noCover') },
-          ...Object.entries(d.extensions?.[IMAGE_NAMESPACE] || {}).map(([value, img]) => ({
-            value,
-            label: img.name,
-          })),
-        ],
-      }) +
-      labelField('imageFit', 'node-imageFit', config.imageFit, {
-        options: ['contain', 'cover'].map((value) => ({ value, label: t(value) })),
-      }) +
-      labelField('imageAlt', 'node-imageAlt', config.imageAlt || '') +
-      '<p class="node-format-hint">' +
-      esc(t('nodeFormatHint')) +
-      '</p><button type="button" id="set-root">' +
-      esc(t('setRoot')) +
-      '</button><button type="button" id="clear-root">' +
-      esc(t('clearRoot')) +
-      '</button>';
-    fields +=
-      '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
-      '</div><div class="format-grid">' +
-      [
-        ['radius', 0, 100],
-        ['borderWidth', 0, 8],
-        ['titleFontSize', 12, 72],
-      ]
-        .map(
-          ([k, min, max]) =>
-            '<label>' +
-            esc(t(k)) +
-            '<input name="appearance-' +
-            k +
-            '" type="number" min="' +
-            min +
-            '" max="' +
-            max +
-            '" step="0.5" value="' +
-            a[k] +
-            '"></label>',
-        )
-        .join('') +
-      '</div>';
-    fields +=
-      labelField('sizeMode', 'appearance-sizeMode', a.sizeMode, {
-        options: ['manual', 'fit'].map((value) => ({
-          value,
-          label: t(value === 'fit' ? 'fitSizing' : value),
-        })),
-      }) +
-      '<button type="button" id="fit-text">' +
-      esc(t('fitText')) +
-      '</button><p id="fit-warning" class="form-errors" role="status"></p>';
-    fields +=
-      labelField('align', 'appearance-align', a.align, {
-        options: ['left', 'center', 'right'].map((value) => ({ value, label: t(value) })),
-      }) +
-      labelField('shadow', 'appearance-shadow', a.shadow, {
-        options: ['none', 'soft'].map((value) => ({ value, label: t(value) })),
-      });
-    fields +=
-      '<div class="shape-presets"><button type="button" data-shape="rectangle">' +
-      esc(t('rectangle')) +
-      '</button><button type="button" data-shape="rounded">' +
-      esc(t('rounded')) +
-      '</button><button type="button" id="reset-appearance">' +
-      esc(t('resetAppearance')) +
-      '</button></div><p class="muted">' +
-      esc(t('formatPreview')) +
-      '</p><div id="format-card-preview" class="format-card-preview"></div>';
+    fields = cardFormatFields(d, activeView, mindSize);
   } else if (kind === 'card') {
     fields +=
-      '<details class="editor-metadata" open><summary>' +
-      esc(t('metadata')) +
-      '</summary>' +
-      labelField('title', 'title', d.title) +
-      labelField('summary', 'summary', d.summary, { textarea: true }) +
-      labelField('type', 'type', d.type) +
-      labelField('tags', 'tags', d.tags.join(', '));
+      '<button type="button" id="edit-card-overview">' +
+      esc(t('editCardOverview')) +
+      '</button><p class="muted">' +
+      esc(t('overviewHint')) +
+      '</p>';
     fields +=
-      '<div class="colors">' +
-      ['backgroundColor', 'textColor', 'borderColor'].map((k) => cardColorField(d, k)).join('') +
-      '</div>';
-    fields +=
-      '</details><div class="writing-tools"><button type="button" id="writing-toggle">' +
+      '<div class="writing-tools"><button type="button" id="writing-toggle">' +
       esc(t(writing ? 'exitWriting' : 'writingMode')) +
       '</button><button type="button" id="draft-preview-toggle" aria-pressed="' +
       previewDraft +
@@ -205,7 +83,11 @@ export function editorFields({
       labelField('content', 'content', d.content, { textarea: true }) +
       '</div>';
     fields +=
-      '<div class="image-tools"><button type="button" id="insert-image"' +
+      '<details class="image-tools"' +
+      (Object.keys(d.extensions?.[IMAGE_NAMESPACE] || {}).length ? ' open' : '') +
+      '><summary>' +
+      esc(t('imageSettings')) +
+      '</summary><button type="button" id="insert-image"' +
       (imageUploadPending ? ' disabled' : '') +
       '>' +
       esc(t('insertImage')) +
@@ -226,7 +108,7 @@ export function editorFields({
             '</button></div>',
         )
         .join('') +
-      '</div></div>';
+      '</div></details>';
   } else if (kind === 'relation') {
     fields += labelField('relationKind', 'mind-kind', relationKind(d), {
       options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),

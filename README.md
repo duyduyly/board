@@ -39,7 +39,7 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 
 ### Card và quan hệ
 
-1. Bấm **Thẻ mới** để tạo card. Click card để chọn; double click hoặc bấm **↗** để mở Tổng quan trong Detail. Chọn **Chỉnh sửa** để sửa title, summary, type, tags, màu và nội dung.
+1. Bấm **Thẻ mới** để tạo card. Click vùng trống card để chọn/kéo; bấm tiêu đề, tóm tắt hoặc loại để sửa trong popup riêng. Bấm **↗** để mở Detail; **Chỉnh sửa** tập trung nội dung Markdown, **Format** quản lý khung/màu nền/hình dạng; Tags nằm trong popup thông tin.
 2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi ngôn ngữ/theme giữ nguyên bản nháp.
 3. Kéo card trên canvas để đổi vị trí.
 4. Dùng **Kết nối**, chọn card nguồn rồi card đích; hoặc kéo chấm nối bên cạnh card. Thả vào vùng trống tạo card mới và quan hệ trong một thao tác undo.
@@ -154,7 +154,7 @@ Xuất JSON chỉ xác nhận yêu cầu download đã được gửi; hãy ki�
 
 ## Detail: Format và hình dạng card
 
-Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu chữ, màu viền, bo góc (0–100px), độ dày viền (0–8px), cỡ chữ tiêu đề (12–72px), căn trái/giữa/phải và bóng nhẹ/không bóng. Có preset **Góc vuông**, **Bo tròn** và **Đặt lại hình dạng**. Khung xem trước phản ánh bản nháp; **Áp dụng** cập nhật card và relations trên Canvas, **Hủy** khôi phục dữ liệu đã Apply. Undo/Redo phục hồi thay đổi nguyên khối. Đặt lại hình dạng không xóa nội dung, kích thước hoặc màu đã chọn.
+Chọn card → tab **Format** để chỉnh chiều rộng/cao, nền, màu viền, bo góc (0–100px), độ dày viền (0–8px), căn trái/giữa/phải và bóng nhẹ/không bóng. Chọn **Góc vuông** hoặc **Bo tròn** ngay trong danh sách hình dạng; **Đặt lại khung card** giữ font cũ và style chữ riêng. Khung xem trước phản ánh bản nháp; **Áp dụng** cập nhật card và relations trên Canvas, **Hủy** khôi phục dữ liệu đã Apply. Undo/Redo phục hồi thay đổi nguyên khối. Đặt lại hình dạng không xóa nội dung, kích thước hoặc màu đã chọn.
 
 Tab **Chỉnh sửa** và **Format** chia sẻ cùng bản nháp; đổi giữa hai tab không cần Apply, chuyển sang Tổng quan/card khác vẫn hỏi khi có thay đổi. Kích thước lưu trong size, các thuộc tính hình dạng lưu dưới extensions.card-atlas:appearance, giữ JSON version1.0. Dark mode điều chỉnh màu card để dễ đọc như trước; Light mode hiển thị màu đã chọn trực tiếp. Kích thước quá nhỏ có thể che overview; hãy tăng kích thước nếu title/tags bị cắt.
 
@@ -164,7 +164,7 @@ Trong tab **Chỉnh sửa**, chọn đoạn chữ trong ô Markdown rồi dùng 
 
 Chọn Card Map / Mind Map trên toolbar. Hai view dùng chung nội dung và Detail, có vị trí/kích thước riêng. Mind Map cho phép kéo node thủ công và sắp xếp radial có Preview/Apply/Cancel, thu gọn nhánh; dùng Fit/Focus để đọc từng vùng.
 
-Trong Detail → Format chọn Card, Chữ, Ảnh hoặc Ảnh và chữ. Thêm ảnh PNG/JPEG/WebP/GIF ở Edit rồi chọn làm ảnh đại diện; ảnh nhúng nằm trong JSON, không tải lên server. Contain hiển thị toàn bộ ảnh; Cover lấp đầy khung. Đổi cover hoặc kiểu node trước khi xóa attachment đang dùng. Click node chữ/ảnh hoặc Enter mở Overview; connector vẫn tạo liên kết như card.
+Trong Detail → Format chọn Card, Chữ, Ảnh hoặc Ảnh và chữ. Thêm ảnh PNG/JPEG/WebP/GIF ở Edit rồi chọn làm ảnh đại diện; ảnh nhúng nằm trong JSON, không tải lên server. Contain hiển thị toàn bộ ảnh; Cover lấp đầy khung. Đổi cover hoặc kiểu node trước khi xóa attachment đang dùng. Click chữ mở popup thông tin; nút ↗ hoặc Enter khi focus node mở Overview; connector vẫn tạo liên kết như card.
 
 Đặt Root trong Format; chỉnh relation → Vai trò Mind Map → Nhánh cha → con hoặc Liên kết tham khảo. Branch không cycle và mỗi node tối đa một parent. Đổi Root có parent yêu cầu xác nhận chuyển liên kết đi vào sang tham khảo. Node ngoài Root có viền đứt và nhãn riêng. Màu Mind Map không thay màu liên kết Card Map.
 
@@ -198,7 +198,7 @@ Select a node → Edit or Format → check **Transparent background** / **Transp
 
 Home mới là thư viện sáu template local, lọc Cá nhân/Học tập/Công việc/Dự án. Click tile mở bản project độc lập; logo đưa về Home, nút Tiếp tục giữ project trong phiên. Gallery không phải nơi tự lưu project.
 
-Click một lần chọn node; double click, nút Open hoặc Enter mở Detail ở giữa. Detail có Tổng quan/Chỉnh sửa/Format, cỡ75% và Full. X, Escape hoặc click nền dùng guard khi có draft. Menu “Thao tác dự án” trong Detail giữ undo/redo, export, recovery, Guide, view và Fit/Focus. Đóng Detail vẫn giữ selection.
+Click vùng trống chọn node; double click vùng trống, nút Open hoặc Enter trên node mở Detail ở giữa. Click title/summary/type mở popup chỉnh thông tin. Detail có Tổng quan/Chỉnh sửa/Format, cỡ75% và Full. X, Escape hoặc click nền dùng guard khi có draft. Menu “Thao tác dự án” trong Detail giữ undo/redo, export, recovery, Guide, view và Fit/Focus. Đóng Detail vẫn giữ selection.
 
 Ảnh Detail giữ vừa vùng đọc; click/Enter/Space để phóng ảnh. Viewer mặc định Fit trong75% viewport; chọn100% để xem kích thước gốc có cuộn. Escape đóng ảnh trước, rồi mới đóng Detail. Hover không tự phóng.
 
@@ -222,7 +222,7 @@ Sidebar có Card/Chữ/Ảnh/Ảnh+chữ và 8 shapes: chữ nhật, bo tròn, v
 
 Chọn node rồi kéo **handle vuông góc dưới phải** để resize (handle tròn là nối relation). Escape/blur/cancel hủy preview; thả chuột tạo một Undo. Resize chỉ view đang mở, giới hạn96×64–1200×1000; hình vuông/tròn/tam giác giữ tỷ lệ. Hình cố định tỷ lệ nằm trong bounds cũ khi import/đổi view, không tự sửa geometry view còn lại.
 
-Detail → **Format**: chọn shape, font12–72, Manual hoặc Fit text. Fit đo tổng quan (title, tối đa3 dòng summary, tags/cover tùy kind), không đo Markdown. Hình gọn chỉ title/cover trên Canvas; dữ liệu khác giữ Detail. Fit được tính trong draft và Apply atomic; Edit tiếp nội dung với modeFit sẽ đo lại tạiApply. Nội dung vượt khung tối đa được báo lỗi; rút gọn title hoặc giảm font. Locale/theme/render không tự resize. Camera Fit vẫn chỉ thay góc nhìn. Radius áp dụng shape rounded và card legacy; polygon có góc theo hình học. Fit ảnh thuần dùng khung240×180 trước khi giữ tỷ lệ shape.
+Detail → **Format**: chọn shape và Thủ công/Tự vừa nội dung; font8–72 chỉnh trong popup thông tin. Fit đo tổng quan (title, tối đa3 dòng summary, tags/cover tùy kind), không đo Markdown. Hình gọn chỉ title/cover trên Canvas; dữ liệu khác giữ Detail. Fit được tính trong draft và Apply atomic; Edit tiếp nội dung với modeFit sẽ đo lại tạiApply. Nội dung vượt khung tối đa được báo lỗi; rút gọn title hoặc giảm font. Locale/theme/render không tự resize. Camera Fit vẫn chỉ thay góc nhìn. Radius áp dụng shape rounded và card legacy; polygon có góc theo hình học. Fit ảnh thuần dùng khung240×180 trước khi giữ tỷ lệ shape.
 
 Ví dụ: [basic-shapes-example.json](assets/data/basic-shapes-example.json), tải từ Format Guide rồi Import Project. Shape/font/sizeMode lưu trong card-atlas:appearance; JSON1.0, unknown extensions và ảnh portable giữ nguyên. Star/heart/octagon/arrow/các biến thể tam giác thuộc đợt4 FB024–FB029, chưa triển khai.
 
@@ -243,3 +243,21 @@ Giao diện giấy note theo reference .agents/idea/note-paper.png: bóng nhẹ,
 Bấm badge ngày ở góc trên trái card để mở ô nhập/chọn ngày. Chọn **Áp dụng** để lưu hoặc **Hủy/Escape** để bỏ thay đổi. Xóa ngày nhập để trở lại ngày tạo tự động (card cũ chưa có timestamp sẽ hiển thị chưa có ngày). Ngày nhập lưu trong `card-atlas:metadata.createdDate` theo `YYYY-MM-DD`, giữ nguyên `createdAt` gốc và hỗ trợ Undo/Redo ở cả Card Map và Mind Map.
 
 Tài liệu nội bộ trong planning/, project-context/ và wordspace/ được giữ local, không nằm trong bản clone GitHub. Khi làm việc với agents trên máy khác, sao chép riêng các folder này để có plan/checklist/spec. scripts/vendor-src/ được tạo lại khi chạy npm run build; assets/vendor/ vẫn nằm trong repo để ứng dụng chạy offline.
+
+### Sửa thông tin ngay trên card
+
+Bấm tiêu đề, tóm tắt hoặc type badge (Enter/Space khi focus) để mở popup. Chọn mục cần sửa để thêm cả tóm tắt/loại đang trống. Mỗi mục có cỡ chữ8–72px, màu và font System/Serif/Monospace; không tải font từ mạng. Ô cỡ chữ trống/font Mặc định kế thừa style cũ; Đặt lại định dạng chỉ xóa override của mục đang chọn. Apply lưu chung một Undo, Hủy/Escape bỏ staging. Di chuyển card bằng vùng trống quanh chữ.
+
+Detail → Chỉnh sửa dành cho Markdown; nút Chỉnh thông tin card mở cùng popup nhưng cập nhật bản nháp, chỉ commit khi Apply Detail. Tags nằm trong popup thông tin; màu nền/viền nằm Format. JSON1.0 lưu override trong card-atlas:typography theo title/summary/type; không có override thì giao diện giữ nguyên. titleFontSize cũ trong JSON vẫn được đọc; giao diện chỉ chỉnh cỡ chữ qua popup thông tin. Nội dung Markdown không đổi font theo style overview.
+
+### Đồng nhất style các card
+
+Trong popup Chỉnh thông tin card, bật **Đồng nhất style tất cả card** rồi Áp dụng. Bộ cỡ chữ/màu/font của tiêu đề, tóm tắt và loại sẽ được áp dụng tương ứng cho mọi card hiện có; chữ và Markdown của các card khác giữ nguyên. Một Undo khôi phục toàn bộ. Trong Detail, thay đổi chờ Apply Detail và có thể Hủy bản nháp. Đây là thao tác áp dụng hiện tại, không tự áp dụng cho card tạo sau. Card Fit được tính lại ở view đang mở; nếu có card không vừa hoặc vượt giới hạn dữ liệu thì không áp dụng một phần.
+
+### Format và Chỉnh sửa sau nâng cấp UX
+
+**Chỉnh sửa** tập trung Markdown; ảnh/tệp đính kèm thu gọn khi trống. **Chỉnh thông tin card** quản lý title/summary/type/tags và cỡ/màu/font từng mục. Popup mở từ Detail dùng nút **Cập nhật bản nháp**; bấm Áp dụng trong Detail để lưu.
+
+**Format** chia nhóm Kiểu hiển thị, Kích thước, Nền/khung và preview sticky cạnh bên. Chỉ hiện ảnh khi kiểu ảnh hoặc còn cover được lưu; công cụ Root chỉ ở Mind Map; bo góc chỉ ở hình có dùng corner. Chọn một chế độ Thủ công/Tự vừa nội dung; sửa rộng/cao chuyển về thủ công. Fit trên toolbar vẫn chỉ camera. Màu chữ mặc định cũ nằm Nâng cao và chỉ tác động phần chưa override/tags. Dropdown Góc vuông đặt radius0, Bo tròn đặt24 khi chọn; không thay JSON đã import ngầm.
+
+Chuyển tab về đầu để không khuất toolbar; đổi ngôn ngữ/theme trong cùng tab giữ bản nháp, caret, scroll và nhóm nâng cao đang mở. Preview và nút reset khung không thay nội dung/style chữ. Undo/Redo và JSON1.0 giữ nguyên.

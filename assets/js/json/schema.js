@@ -237,6 +237,18 @@ schema.properties.extensions = extensions({
   'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
 });
 schema.$defs.card.properties.extensions = extensions({
+  'card-atlas:typography': object(
+    Object.fromEntries(
+      ['title', 'summary', 'type'].map((field) => [
+        field,
+        object({
+          fontSize: { type: 'number', minimum: 8, maximum: 72 },
+          color: { type: 'string', pattern: '^#[0-9a-fA-F]{6}$' },
+          fontFamily: { enum: ['system', 'serif', 'mono'] },
+        }),
+      ]),
+    ),
+  ),
   'card-atlas:metadata': object({
     createdDate: { type: 'string', pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' },
     pinned: { type: 'boolean' },

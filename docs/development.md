@@ -65,3 +65,15 @@ Pin/date: graph/card-metadata giữ contract và pure mutation helpers; overview
 ### Ngày card và editor Canvas
 
 `graph/card-metadata.js` là nguồn chung cho pin, UTC `createdAt` và ngày lịch optional `createdDate`. Không ghi đè timestamp gốc khi sửa ngày; duplicate dùng stampCreated và bỏ override. `ui/card-date-editor.js` dùng dialogSurface, draft local, port onApply/current/onLocale; command nằm trong app/store. Canvas badge là control bàn phím, preview readonly. Không tạo input cho từng node: một editor dùng chung giúp giữ DOM nhỏ. Locale sync cache theo locale, không reset draft.
+
+## Popup overview E015
+
+Graph/card-typography là policy thuần fields/font whitelist/mutation; Canvas/overview apply DOM dùng chung Canvas/Format/measurement. Namespace card-atlas:typography strict title/summary/type {fontSize8–72,colorHex,fontFamily system|serif|mono}; không CSS/url/font ngoại. Typography overrides ưu tiên appearance.titleFontSize, reset giữ default cũ. UI/card-overview-editor staging và ports; Canvas một commit, Detail Apply vào draft trước command chung. Native dialogSurface/anchorDialog dùng chung ngày và text. Edit lớn chỉ Markdown + nút popup; tags/màu ở Format. Transfer Update typography thuộc takeFormat, Add/export giữ nguồn.
+
+## E016 — Uniform typography action
+
+Checkbox copy cả profile title/summary/type tới toàn bộ card hiện có, không auto-sync hoặc default cho card mới. Graph uniformProfile resolve cấu hình source; applyUniformStyles chỉ copy typography và Fit size qua callback; app validate candidate trước onecommand. Detail pending batch thuộc WeakMap keyed draftOriginal, dirty/Cancel/recovery giữ đúng vòng đời; không ghi pending vào project JSON. Khi Fit lỗi một card thì bỏ cả candidate. anchorDialog tự clamp qua ResizeObserver để locale/textarea không làm action tràn viewport.
+
+## E017 — Contextual Format/Edit
+
+Detail/card-format-fields dựng markup thuần qua shared forms; editor-fields giữ Edit/relation/project. Context sync ở app chỉ toggle image/radius groups, không xóa cấu hình hidden; cover còn lưu vẫn cho quản lý để không mắc kẹt ref. Typography/titleFontSize UI ở popup duy nhất, tags pending array giữ literal comma nếu chưa edit; explicit edit string comma-delimited. Reset frame giữ APPEARANCE.titleFontSize legacy và namespace typography. AutoFit selector dùng một private fitDraftSize; không còn handler data-shape preset có thể bắt nhầm readonly preview. Same-tab restore caret/scroll/disclosures; new tab reset scroll. CSS inspector headings phải direct-child để không override card title và làm Fit đo sai.

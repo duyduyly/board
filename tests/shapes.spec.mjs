@@ -1,3 +1,4 @@
+import { setDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const open = async (page) => {
@@ -37,7 +38,7 @@ test('basic shapes share Canvas and Format geometry, preserve data and portable 
     );
     await expect(page.locator('#format-card-preview polygon')).toHaveCount(1);
   }
-  await page.locator('[name=appearance-titleFontSize]').fill('48');
+  await setDraftFontSize(page, '48');
   await page.locator('#panel-body form button[type=submit]').click();
   await page.locator('[data-action=close]').click();
   const card = page.locator('.graph-card[data-id=card-user-service]');
@@ -106,7 +107,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
   }
   await page.locator('[name=appearance-backgroundTransparent]').check();
   await page.locator('[name=appearance-borderTransparent]').check();
-  await page.locator('#fit-text').click();
+  await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   await page.locator('#panel-body form button[type=submit]').click();
   await page.locator('[data-action=close]').click();
   await page.locator('#locale').selectOption('en');
@@ -247,8 +248,8 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
   await card.focus();
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Format', exact: true }).click();
-  await page.locator('[name=appearance-titleFontSize]').fill('72');
-  await page.locator('#fit-text').click();
+  await setDraftFontSize(page, '72');
+  await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   const width = await page.locator('[name=width]').inputValue();
   expect(Number(width)).toBeGreaterThan(240);
   await page.locator('#detail-locale').selectOption('en');
@@ -272,10 +273,10 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
   expect(applied.history).toBe(history + 1);
   expect(applied.result.errors).toEqual([]);
   expect(
-    applied.result.project.cards.at(-1).extensions['card-atlas:appearance'].titleFontSize,
+    applied.result.project.cards.at(-1).extensions['card-atlas:typography'].title.fontSize,
   ).toBe(72);
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
-  await page.locator('[name=title]').fill('Very long title '.repeat(200));
+  await setDraftTitle(page, 'Very long title '.repeat(200));
   await page.locator('#panel-body form button[type=submit]').click();
   await expect(page.locator('.form-errors').first()).toContainText('cannot fit');
   expect(
@@ -339,8 +340,8 @@ test('bundled shapes import, polygon edges and corner hit areas match; Mind Fit 
   await card.focus();
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Format', exact: true }).click();
-  await page.locator('[name=appearance-titleFontSize]').fill('72');
-  await page.locator('#fit-text').click();
+  await setDraftFontSize(page, '72');
+  await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   await page.locator('#panel-body form button[type=submit]').click();
   const result = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');

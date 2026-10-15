@@ -1,3 +1,4 @@
+import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -85,11 +86,11 @@ test('layout draft guards and switch cancellation keep drafts and viewport', asy
   await sample(page);
   await select(page, 'english-s-use');
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
-  await page.locator('input[name=title]').fill('Unapplied title');
+  await setDraftTitle(page, 'Unapplied title');
   await projectAction(page, 'layout');
   await expect(page.locator('#modal')).toBeVisible();
   await page.locator('[data-choice=cancel]').click();
-  await expect(page.locator('input[name=title]')).toHaveValue('Unapplied title');
+  await expectDraftTitle(page, 'Unapplied title');
   expect((await state(page)).preview).toBe(false);
   await projectAction(page, 'layout');
   await page.locator('[data-choice=apply]').click();
@@ -250,13 +251,13 @@ test('collapsed recovery restores full graph and draft; relation Focus reveals b
   await collapse(page, 'english-s-use');
   await openRow(page, page.locator('.card-row[data-card-id=english-s-use]'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
-  await page.locator('input[name=title]').fill('Recovered collapsed draft');
+  await setDraftTitle(page, 'Recovered collapsed draft');
   await projectAction(page, 'recovery');
   await page.locator('[data-choice=enable]').click();
   await page.waitForTimeout(800);
   await page.reload();
   await page.locator('[data-choice=restore]').click();
-  await expect(page.locator('input[name=title]')).toHaveValue('Recovered collapsed draft');
+  await expectDraftTitle(page, 'Recovered collapsed draft');
   expect((await state(page)).collapsed).toEqual([]);
   expect((await state(page)).project.cards).toHaveLength(12);
   await page.locator('#cancel-draft').click();

@@ -195,6 +195,82 @@
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
           },
           "properties": {
+            "card-atlas:typography": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "object",
+                  "properties": {
+                    "fontSize": {
+                      "type": "number",
+                      "minimum": 8,
+                      "maximum": 72
+                    },
+                    "color": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "fontFamily": {
+                      "enum": [
+                        "system",
+                        "serif",
+                        "mono"
+                      ]
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                },
+                "summary": {
+                  "type": "object",
+                  "properties": {
+                    "fontSize": {
+                      "type": "number",
+                      "minimum": 8,
+                      "maximum": 72
+                    },
+                    "color": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "fontFamily": {
+                      "enum": [
+                        "system",
+                        "serif",
+                        "mono"
+                      ]
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                },
+                "type": {
+                  "type": "object",
+                  "properties": {
+                    "fontSize": {
+                      "type": "number",
+                      "minimum": 8,
+                      "maximum": 72
+                    },
+                    "color": {
+                      "type": "string",
+                      "pattern": "^#[0-9a-fA-F]{6}$"
+                    },
+                    "fontFamily": {
+                      "enum": [
+                        "system",
+                        "serif",
+                        "mono"
+                      ]
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            },
             "card-atlas:metadata": {
               "type": "object",
               "properties": {

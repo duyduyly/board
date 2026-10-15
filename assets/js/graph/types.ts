@@ -85,3 +85,10 @@ export interface CardMetadata {
   pinned?: boolean;
   createdAt?: string;
 }
+
+export interface CardTextStyle {
+  fontSize?: number;
+  color?: string;
+  fontFamily?: 'system' | 'serif' | 'mono';
+}
+export type CardTypography = Partial<Record<'title' | 'summary' | 'type', CardTextStyle>>;

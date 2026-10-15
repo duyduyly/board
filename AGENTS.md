@@ -83,3 +83,15 @@ User giao FB017–FB023 ngày2026-10-12. Contract shape/font/sizeMode trong feed
 User giao FB024–FB029 ngày2026-10-13. Tiếp tục theo contract FB024 và gate đợt4; FB001–FB023 đã hoàn tất. Shapes mở rộng dùng registry chung, không nhân bản renderer/resize/Fit. Kiểm tra full regression và benchmark mixed shapes/font/images cả hai view trước final gate. BACKLOG cũ giữ nguyên.
 
 Đợt4 FB024–FB029 đã hoàn tất; evidence planning/feedback-01-phase4-evidence.md. FB001–FB029 DONE; BACKLOG cũ ngoài phạm vi. Đọc evidence và trạng thái master trước task mới; không tự triển khai BACKLOG.
+
+## E015 — Overview editor
+
+User giao2026-10-15: đọc planning/inline-overview-plan.md và task E015. Popup overview dùng chung Canvas/Detail draft, namespace card-atlas:typography per-field title/summary/type, bounded fontSize8–72/colorHex/fontFamily system|serif|mono. Default giữ style cũ, không font mạng. UI/card-overview-editor giữ staging, app giữ validation/command; graph/card-typography dùng chung Canvas/Format/Fit/transfer. Click text sửa popup, kéo bằng vùng trống; ↗ mở Detail. Edit lớn tập trung Markdown, tags/màu ở Format. Planning chỉ local ignored; không force-add.
+
+## E016 — Đồng nhất typography
+
+Đọc planning/uniform-overview-plan.md và E016 khi sửa bulk style. Đây là action cho mọi card hiện có, không profile mặc định cho card mới. Chỉ copy style, giữ chữ của các card khác; Canvas một command, Detail pending WeakMap theo draftOriginal, dirty/Cancel/opt-in recovery phải giữ intent. Apply/Fit validate toàn candidate và fail atomic, chỉ geometry activeview. Không ghi pending checkbox vào project JSON. Anchor popup dùng shared anchorDialog observer, không để locale/textarea đẩy actions khỏi viewport.
+
+## E017 — Format/Edit UX
+
+Đọc planning/format-edit-upgrade-plan.md và review evidence trước sửa UI này. Format markup tách detail/card-format-fields; typography/Tags chỉ popup overview, Tags chưa edit giữ array nguyên dạng (có literal comma). Không đưa titleFontSize legacy trở lại UI Format; vẫn đọc JSON và reset khung giữ giá trị đó. Auto Fit một selector, preset radius0/24 tích hợp shape selector, không bind data-shape chung vào readonly preview. Root chỉ Mind, ảnh theo kind/cover; same-tab giữ caret/scroll/disclosures, đổi tab reset scroll. Header CSS inspector phải direct-child để không đổi card fonts/margins và làm Fit sai. Planning vẫn ignored local.

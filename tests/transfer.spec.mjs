@@ -1,3 +1,4 @@
+import { setDraftTitle, readDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -105,7 +106,7 @@ test('Markdown preview Replace/Append, locale, unsafe source and Apply/Undo', as
   await page.locator('#panel-tabs button').nth(1).click();
   await page.locator('textarea[name=content]').fill('# Existing draft');
   const before = await readProject(page),
-    title = await page.locator('input[name=title]').inputValue();
+    title = await readDraftTitle(page);
   const text =
     '# Imported tiếng Việt\n\n![Local][pic]\n\n[pic]: ./photo.png\n\n![Remote](https://evil.invalid/a.png)\n\n<script>window.bad=1</script>\n\n```mermaid\nflowchart LR\n A-->B\n```';
   await upload(page, 'markdown', text);
@@ -133,7 +134,7 @@ test('Markdown preview Replace/Append, locale, unsafe source and Apply/Undo', as
   await expect(page.locator('#transfer-md-mode')).toHaveValue('append');
   await page.locator('[data-choice=accept]').click();
   await expect(page.locator('textarea[name=content]')).toHaveValue('# Existing draft\n\n' + text);
-  await expect(page.locator('input[name=title]')).toHaveValue(title);
+  await expectDraftTitle(page, title);
   expect(await readProject(page)).toEqual(before);
   expect(external).toEqual([]);
   expect(consoleIssues).toEqual([]);
@@ -177,7 +178,7 @@ test('Node export applied/draft, project exclusion consent and unused image opti
   fixture.extensions = { 'test:project': { foreignRef: 'card-user-api' } };
   await start(page, fixture);
   await page.locator('#panel-tabs button').nth(1).click();
-  await page.locator('input[name=title]').fill('Unapplied title');
+  await setDraftTitle(page, 'Unapplied title');
   const before = await readProject(page);
   await tools(page);
   await page.locator('#export-node').click();
@@ -202,7 +203,7 @@ test('Node export applied/draft, project exclusion consent and unused image opti
   const pruned = JSON.parse(await fs.readFile(await (await wait).path(), 'utf8'));
   expect(Object.keys(pruned.cards[0].extensions[imageNS])).toEqual(['cover', 'body']);
   expect(await readProject(page)).toEqual(before);
-  await expect(page.locator('input[name=title]')).toHaveValue('Unapplied title');
+  await expectDraftTitle(page, 'Unapplied title');
 });
 test('Node Update remaps image collision and preserves cover/geometry/relations with one Apply undo', async ({
   page,
@@ -218,7 +219,7 @@ test('Node Update remaps image collision and preserves cover/geometry/relations 
   await page.locator('#modal-locale').selectOption('en');
   await page.locator('[data-choice=accept]').click();
   expect(await readProject(page)).toEqual(before);
-  await expect(page.locator('input[name=title]')).toHaveValue('Imported node');
+  await expectDraftTitle(page, 'Imported node');
   await page.locator('.editor button[type=submit]').click();
   const after = await readProject(page),
     updated = after.cards.find((c) => c.id === current.id);

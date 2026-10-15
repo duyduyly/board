@@ -1,3 +1,4 @@
+import { setDraftTitle, expectDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -44,15 +45,15 @@ test('editor draft survives locale switch, guard cancel/discard and Apply', asyn
   await sample(page);
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
-  await page.locator('input[name=title]').fill('Changed Service');
+  await setDraftTitle(page, 'Changed Service');
   await locale(page, 'en');
-  await expect(page.locator('input[name=title]')).toHaveValue('Changed Service');
+  await expectDraftTitle(page, 'Changed Service');
   await openRow(page, page.locator('.card-row[data-card-id="card-database"]'));
   await expect(page.locator('#modal')).toBeVisible();
   await page.locator('#modal-locale').selectOption('vi');
   await expect(page.locator('#modal')).toContainText('Giữ các chỉnh sửa?');
   await page.locator('[data-choice=cancel]').click();
-  await expect(page.locator('input[name=title]')).toHaveValue('Changed Service');
+  await expectDraftTitle(page, 'Changed Service');
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await expect(page.locator('#panel-title')).toHaveText('Changed Service');
   await projectAction(page, 'undo');
@@ -64,7 +65,7 @@ test('drag card one undo, duplicate and cascade deletion', async ({ page }) => {
   const c = page.locator('.graph-card[data-id="card-user-api"]');
   const box = await c.boundingBox();
   const before = await exportData(page);
-  await page.mouse.move(box.x + 40, box.y + 40);
+  await page.mouse.move(box.x + 5, box.y + box.height / 2);
   await page.mouse.down();
   await page.mouse.move(box.x + 120, box.y + 95, { steps: 8 });
   await page.mouse.up();
@@ -73,7 +74,7 @@ test('drag card one undo, duplicate and cascade deletion', async ({ page }) => {
   await projectAction(page, 'undo');
   const restored = await exportData(page);
   expect(restored.cards).toEqual(before.cards);
-  await c.dblclick();
+  await c.locator('.card-open').click();
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('#duplicate').click();
   await expect(page.locator('.graph-card')).toHaveCount(4);
@@ -183,7 +184,7 @@ test('search, keyboard input isolation, panel resize, desktop notice', async ({ 
   await openRow(page, page.locator('.card-row'));
   await expect(page.locator('#panel-title')).toHaveText('Database');
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
-  await page.locator('input[name=title]').focus();
+  await page.locator('textarea[name=content]').focus();
   await page.keyboard.press('Delete');
   await expect(page.locator('.graph-card')).toHaveCount(3);
   await page.locator('[data-action=expand]').click();
@@ -196,7 +197,7 @@ test('Format Guide example/schema downloads keep dirty state', async ({ page }) 
   await sample(page);
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
-  await page.locator('input[name=title]').fill('changed');
+  await setDraftTitle(page, 'changed');
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await projectAction(page, 'format');
   const d = page.waitForEvent('download');
@@ -311,7 +312,7 @@ test('English workflow import, edit, search and export guards', async ({ page })
   await page.locator('#search').fill('storage');
   await openRow(page, page.locator('.card-row'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
-  await page.locator('input[name=title]').fill('Database Updated');
+  await setDraftTitle(page, 'Database Updated');
   await page.getByRole('button', { name: 'Apply', exact: true }).click();
   await expect(page.locator('#save-state')).toContainText('Unsaved changes');
   await page.locator('textarea[name=content]').fill('# New English Draft');
@@ -348,7 +349,7 @@ test('failed export preserves dirty and Escape cancels connector creation', asyn
   await sample(page);
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
-  await page.locator('input[name=title]').fill('Must keep');
+  await setDraftTitle(page, 'Must keep');
   await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
   await page.evaluate(() => {
     window.originalAnchorClick = HTMLAnchorElement.prototype.click;
@@ -467,14 +468,14 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   expect(Math.abs(cardBox.x + cardBox.width / 2 - frame.x - frame.width / 2)).toBeLessThan(3);
   expect(Math.abs(cardBox.y + cardBox.height / 2 - frame.y - frame.height / 2)).toBeLessThan(3);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
-  await page.locator('input[name=title]').fill('Unsaved grammar draft');
+  await setDraftTitle(page, 'Unsaved grammar draft');
   await theme(page);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('input[name=title]')).toHaveValue('Unsaved grammar draft');
+  await expectDraftTitle(page, 'Unsaved grammar draft');
   await locale(page, 'en');
   await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-label', 'Switch to light mode');
-  await expect(page.locator('input[name=title]')).toHaveValue('Unsaved grammar draft');
+  await expectDraftTitle(page, 'Unsaved grammar draft');
   await projectAction(page, 'fit');
   expect(await snapshot()).toEqual(baseline);
   await theme(page);
@@ -929,14 +930,14 @@ test('Format shares draft, previews appearance and applies one undo with portabl
   await sample(page);
   await selectService(page);
   await page.locator('#panel-tabs button').nth(1).click();
-  await page.locator('input[name=title]').fill('Styled service');
+  await setDraftTitle(page, 'Styled service');
   await page.locator('#panel-tabs button').nth(2).click();
   await expect(page.locator('#modal')).not.toBeVisible();
   await page.locator('[name=width]').fill('360');
   await page.locator('[name=height]').fill('230');
   await page.locator('[name=appearance-radius]').fill('24');
   await page.locator('[name=appearance-borderWidth]').fill('3');
-  await page.locator('[name=appearance-titleFontSize]').fill('18');
+  await setDraftFontSize(page, '18');
   await page.locator('[name=appearance-align]').selectOption('center');
   await expect(page.locator('#format-card-preview .graph-card')).toHaveCSS('border-radius', '24px');
   await expect(page.locator('#format-card-preview h3')).toHaveText('Styled service');

@@ -1,4 +1,4 @@
-import { dialogSurface } from './dialog-surface.js';
+import { dialogSurface, anchorDialog } from './dialog-surface.js';
 import { t, getLocale } from '../i18n/index.js';
 import { cardDateValue } from '../graph/card-metadata.js';
 export function createCardDateEditor({ current, onApply, onLocale, fallback }) {
@@ -66,11 +66,7 @@ export function createCardDateEditor({ current, onApply, onLocale, fallback }) {
       error.hidden = true;
       syncLocale();
       surface.show(input);
-      const r = anchor.getBoundingClientRect();
-      element.style.left =
-        Math.max(12, Math.min(r.left, window.innerWidth - element.offsetWidth - 12)) + 'px';
-      element.style.top =
-        Math.max(12, Math.min(r.bottom + 8, window.innerHeight - element.offsetHeight - 12)) + 'px';
+      anchorDialog(element, anchor);
     },
   };
 }

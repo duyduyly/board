@@ -165,6 +165,7 @@ test('cover picker style Apply Cancel and referenced attachment deletion guard',
 });
 test('Root detach explicit atomic, relation invariants and delete undo', async ({ page }) => {
   await sample(page);
+  await page.locator('#map-view').selectOption('mind');
   await format(page, 'english-s-use');
   const before = await data(page);
   await page.locator('#set-root').click();

@@ -1,3 +1,4 @@
+import { textFields, textStyle, fontFamilies } from '../graph/card-typography.js';
 import { cardMetadata } from '../graph/card-metadata.js';
 import { nodeStyle } from '../graph/mind-map.js';
 import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
@@ -87,6 +88,7 @@ export function overviewElement(card, view, size = card.size, renderShape = true
     }
     el.append(kicker, title, summary, meta);
   }
+  applyTypography(el, card);
   const strip = document.createElement('div');
   strip.className = 'card-status-strip';
   const date = document.createElement('time');
@@ -144,5 +146,23 @@ export function updateCardMetadata(el, card) {
     pin.setAttribute('aria-pressed', String(Boolean(meta.pinned)));
     pin.title = t(meta.pinned ? 'unpinCard' : 'pinCard');
     pin.setAttribute('aria-label', pin.title);
+  }
+}
+
+function applyTypography(el, card) {
+  for (const field of textFields) {
+    const target = el.querySelector(
+      { title: 'h3', summary: '.card-summary', type: '.type-badge' }[field],
+    );
+    if (!target) continue;
+    target.dataset.overviewField = field;
+    const style = textStyle(card, field);
+    if (style.fontSize) {
+      if (field === 'type') target.style.lineHeight = '1.4';
+      target.style.fontSize = style.fontSize + 'px';
+      if (field === 'summary') target.style.maxHeight = style.fontSize * 1.4 * 3 + 'px';
+    }
+    if (style.color) target.style.color = style.color;
+    if (style.fontFamily) target.style.fontFamily = fontFamilies[style.fontFamily];
   }
 }

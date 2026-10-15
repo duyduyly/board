@@ -57,7 +57,7 @@ test('transparent background/border preview, themes, views, undo and portable ex
   }, text);
   expect(imported).toEqual([]);
   await openRow(page, page.locator('.card-row[data-card-id=card-user-service]'));
-  await page.locator('#panel-tabs button').nth(1).click();
+  await page.locator('#panel-tabs button').nth(2).click();
   await expect(bg).toBeChecked();
   await bg.uncheck();
   await border.uncheck();

@@ -129,6 +129,14 @@ export class GraphAdapter {
         this.cy.getElementById(rid(selection.id)).addClass('selected');
       if (this.lastLocale !== getLocale()) {
         for (const el of this.cards.values()) {
+          for (const text of el.querySelectorAll('[data-overview-field]'))
+            text.setAttribute(
+              'aria-label',
+              t('editOverviewField', {
+                field: t(text.dataset.overviewField),
+                value: text.textContent,
+              }),
+            );
           const b = el.querySelector('.connector');
           if (b.title !== t('dragConnector')) {
             b.title = t('dragConnector');
@@ -233,6 +241,31 @@ export class GraphAdapter {
         const overview = overviewElement(c, view, c.size, false);
         el.classList.toggle('paper-note', overview.classList.contains('paper-note'));
         el.append(...overview.children);
+        for (const target of el.querySelectorAll('[data-overview-field]')) {
+          target.tabIndex = 0;
+          target.setAttribute('role', 'button');
+          target.setAttribute(
+            'aria-label',
+            t('editOverviewField', {
+              field: t(target.dataset.overviewField),
+              value: target.textContent,
+            }),
+          );
+          target.onpointerdown = (e) => e.stopPropagation();
+          target.ondblclick = (e) => e.stopPropagation();
+          const edit = (e) => {
+            e.stopPropagation();
+            if (!this.callbacks.locked())
+              this.callbacks.overview(c.id, target, target.dataset.overviewField);
+          };
+          target.onclick = edit;
+          target.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              edit(e);
+            }
+          };
+        }
         const date = el.querySelector('.card-created-date');
         date.tabIndex = 0;
         date.setAttribute('aria-disabled', 'false');
@@ -528,7 +561,7 @@ export class GraphAdapter {
   cardStart(e, id) {
     if (
       e.target.closest(
-        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date',
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, [data-overview-field]',
       ) ||
       this.space ||
       e.button !== 0

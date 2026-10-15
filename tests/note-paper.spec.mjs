@@ -1,3 +1,4 @@
+import { setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
 test('note paper reference surface and muted dates preserve controls/fit in both themes', async ({
   page,
@@ -25,8 +26,8 @@ test('note paper reference surface and muted dates preserve controls/fit in both
   await card.focus();
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Format', exact: true }).click();
-  await page.locator('[name=appearance-titleFontSize]').fill('48');
-  await page.locator('#fit-text').click();
+  await setDraftFontSize(page, '48');
+  await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   await page.locator('#panel-body form button[type=submit]').click();
   await page.locator('[data-action=close]').click();
   await expect(card).toHaveAttribute('data-size-mode', 'fit');

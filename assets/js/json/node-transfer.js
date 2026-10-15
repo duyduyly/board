@@ -1,3 +1,4 @@
+import { TYPOGRAPHY } from '../graph/card-typography.js';
 import { CARD_META } from '../graph/card-metadata.js';
 import { clone } from '../common/data.js';
 import { validate, stage, serialize } from './validator.js';
@@ -6,7 +7,7 @@ import { APPEARANCE } from '../detail/appearance.js';
 import { IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { marked } from '../../vendor/marked-entry.js';
 
-const known = new Set([CARD_META, NODE, APPEARANCE, IMAGE_NAMESPACE]);
+const known = new Set([CARD_META, TYPOGRAPHY, NODE, APPEARANCE, IMAGE_NAMESPACE]);
 export function transferError(code, issues = []) {
   const error = new Error(code);
   error.issues = issues;
@@ -116,7 +117,7 @@ export function mergeNode(current, incoming, { takeFormat = false, takeUnknown =
       card.extensions[key] = clone(value);
   if (takeFormat) {
     card.style = clone(incoming.style);
-    for (const key of [NODE, APPEARANCE]) {
+    for (const key of [NODE, APPEARANCE, TYPOGRAPHY]) {
       if (incoming.extensions?.[key]) card.extensions[key] = clone(incoming.extensions[key]);
       else delete card.extensions[key];
     }

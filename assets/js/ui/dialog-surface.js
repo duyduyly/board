@@ -49,3 +49,27 @@ export function dialogSurface(element, { onRequestClose, fallback }) {
     requestClose,
   };
 }
+
+const anchorContexts = new WeakMap();
+function positionDialog(element, state) {
+  if (!element.open) return;
+  const r = state.anchor.isConnected ? state.anchor.getBoundingClientRect() : state.rect;
+  element.style.left =
+    Math.max(12, Math.min(r.left, window.innerWidth - element.offsetWidth - 12)) + 'px';
+  element.style.top =
+    Math.max(12, Math.min(r.bottom + 8, window.innerHeight - element.offsetHeight - 12)) + 'px';
+}
+export function anchorDialog(element, anchor) {
+  let state = anchorContexts.get(element);
+  if (!state) {
+    state = { anchor, rect: anchor.getBoundingClientRect() };
+    anchorContexts.set(element, state);
+    const observer = new window.ResizeObserver(() => positionDialog(element, state));
+    observer.observe(element);
+    window.addEventListener('resize', () => positionDialog(element, state));
+  } else {
+    state.anchor = anchor;
+    state.rect = anchor.getBoundingClientRect();
+  }
+  positionDialog(element, state);
+}

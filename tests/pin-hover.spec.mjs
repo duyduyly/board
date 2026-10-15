@@ -14,7 +14,7 @@ test('pushpin hover preserves transparent SVG in both themes and views', async (
         await page.locator('#theme-toggle').click();
       await pin.hover();
       const style = await pin.evaluate((el) => {
-        const s = getComputedStyle(el);
+        const s = window.getComputedStyle(el);
         return {
           image: s.backgroundImage,
           color: s.backgroundColor,
@@ -29,7 +29,7 @@ test('pushpin hover preserves transparent SVG in both themes and views', async (
       await pin.click();
       await expect(pin).toHaveAttribute('aria-pressed', 'true');
       await pin.hover();
-      expect(await pin.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain(
+      expect(await pin.evaluate((el) => window.getComputedStyle(el).backgroundImage)).toContain(
         'pushpin.svg',
       );
       await page.locator('[data-action=undo]').first().click();

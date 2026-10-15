@@ -1,3 +1,5 @@
+import { createCardOverviewEditor } from './ui/card-overview-editor.js';
+import { setOverview, uniformProfile, applyUniformStyles } from './graph/card-typography.js';
 import { createCardDateEditor } from './ui/card-date-editor.js';
 import {
   stampCreated,
@@ -56,6 +58,7 @@ import { blank, stage, validate, serialize, filename, LIMITS } from './json/vali
 import { t, setLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
 import { renderMarkdown } from './detail/markdown.js';
+const uniformDrafts = new WeakMap();
 export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
@@ -191,7 +194,8 @@ function entity() {
 function draftDirty() {
   return (
     draft &&
-    (JSON.stringify(draft) !== JSON.stringify(draftOriginal) ||
+    (uniformDrafts.has(draftOriginal) ||
+      JSON.stringify(draft) !== JSON.stringify(draftOriginal) ||
       JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
   );
 }
@@ -254,9 +258,78 @@ const dateEditor = createCardDateEditor({
     );
   },
 });
+const overviewEditor = createCardOverviewEditor({
+  context: () => ({ draft: Boolean(detailOpen && draft), count: store.project.cards.length }),
+  isShared: () => Boolean(draftOriginal && uniformDrafts.has(draftOriginal)),
+  current: (id) =>
+    detailOpen && selection?.kind === 'card' && selection.id === id && draft
+      ? draft
+      : projectIndex(store.project).cards.get(id),
+  fallback: (id, field) =>
+    detailOpen
+      ? document.querySelector('#edit-card-overview')
+      : adapter.cards.get(id)?.querySelector('[data-overview-field="' + field + '"]') ||
+        adapter.cards.get(id)?.querySelector('h3'),
+  onLocale: (locale) => {
+    setLocale(locale);
+    render();
+  },
+  onApply: (id, values, styles, shared) => {
+    if (feedback.state || layoutPreview || dateEditor.open) return false;
+    const editing = detailOpen && selection?.kind === 'card' && selection.id === id && draft;
+    if (detailOpen && !editing) return false;
+    const source = editing ? draft : projectIndex(store.project).cards.get(id);
+    if (!source) return false;
+    const candidate = clone(source);
+    const profile = shared ? uniformProfile(source, styles) : null;
+    setOverview(candidate, values, profile || styles);
+    let fitted = null;
+    if (appearance(candidate).sizeMode === 'fit') {
+      fitted = measureOverview(candidate, null, store.activeView);
+      if (!fitted && !editing) return false;
+    }
+    const project = clone(store.project);
+    const index = project.cards.findIndex((c) => c.id === id);
+    project.cards[index] = candidate;
+    if (editing && store.activeView === 'mind')
+      setGeometry(project, id, 'mind', 'size', draftMindSize);
+    if (fitted) setGeometry(project, id, store.activeView, 'size', fitted);
+    if (shared && !editing) {
+      try {
+        applyUniformStyles(project, profile, store.activeView, (card) =>
+          measureOverview(
+            { ...card, size: geometry(project, card, store.activeView).size },
+            null,
+            store.activeView,
+          ),
+        );
+      } catch {
+        return false;
+      }
+    }
+    if (validate(project).errors.length) return false;
+    if (editing) {
+      if (shared) uniformDrafts.set(draftOriginal, profile);
+      else uniformDrafts.delete(draftOriginal);
+      draft = project.cards[index];
+      if (store.activeView === 'mind') draftMindSize = clone(geometry(project, draft, 'mind').size);
+      renderPanel();
+      updateStatus();
+      scheduleRecovery();
+      return true;
+    }
+    if (JSON.stringify(project) === JSON.stringify(store.project)) return true;
+    return change((p) => {
+      p.cards = project.cards;
+      if (project.extensions) p.extensions = project.extensions;
+      else delete p.extensions;
+    });
+  },
+});
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   select: (s, edit = false) => select(s, edit),
   date: (id, anchor) => dateEditor.show(id, anchor),
+  overview: (id, anchor, field) => overviewEditor.show(id, anchor, field),
   open: async (s) => {
     if (!(await guardDraft())) return;
     connectMode = false;
@@ -289,7 +362,14 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   },
   collapse: (id) => toggleBranch(id),
   locked: () =>
-    Boolean(detailOpen || draftDirty() || feedback.state || layoutPreview || dateEditor.open),
+    Boolean(
+      detailOpen ||
+      draftDirty() ||
+      feedback.state ||
+      layoutPreview ||
+      dateEditor.open ||
+      overviewEditor.open,
+    ),
 });
 function render() {
   $('#app').classList.toggle('home-mode', home);
@@ -374,6 +454,7 @@ function render() {
   updateStatus();
   translate();
   dateEditor.syncLocale();
+  overviewEditor.syncLocale();
   scheduleRecovery();
 }
 const renderCardList = createCardList({
@@ -428,6 +509,14 @@ function renderPanel() {
   const key = selection?.kind + ':' + selection?.id + ':' + tab;
   const state = previousPanelKey === key ? captureEditor(body) : null;
   const transferToolsOpen = Boolean(state && body.querySelector('.node-transfer-tools')?.open);
+  const advancedOpen = Boolean(state && body.querySelector('.format-advanced')?.open);
+  const imageOpen =
+    state && body.querySelector('.image-tools')
+      ? {
+          open: body.querySelector('.image-tools').open,
+          count: body.querySelectorAll('.attachment-row').length,
+        }
+      : null;
   if (previousPanelKey !== key) {
     previewDraft = false;
     sourceEditorState = null;
@@ -440,7 +529,16 @@ function renderPanel() {
   if (detailOpen && !home && selection?.kind === 'card' && entity()) documentTransfer.mount(body);
   if (body.querySelector('.node-transfer-tools'))
     body.querySelector('.node-transfer-tools').open = transferToolsOpen;
+  if (body.querySelector('.format-advanced'))
+    body.querySelector('.format-advanced').open = advancedOpen;
+  if (
+    imageOpen &&
+    body.querySelector('.image-tools') &&
+    (imageOpen.open || imageOpen.count === body.querySelectorAll('.attachment-row').length)
+  )
+    body.querySelector('.image-tools').open = imageOpen.open;
   restoreEditor(body, state);
+  if (!state) body.scrollTop = 0;
   $('#writing-exit').hidden = !(writing && selection?.kind === 'card');
   document.documentElement.classList.toggle(
     'writing-mode',
@@ -581,6 +679,22 @@ function renderPanelContent() {
         '</button></div>') +
     '</form>';
   const form = body.querySelector('form');
+  if ($('#edit-card-overview'))
+    $('#edit-card-overview').onclick = () =>
+      overviewEditor.show(selection.id, $('#edit-card-overview'));
+  function syncFormatContext() {
+    const images = form.querySelector('[data-image-fields]');
+    if (images)
+      images.hidden = !(
+        ['image', 'image-text'].includes(nodeStyle(draft).kind) || nodeStyle(draft).coverImageId
+      );
+    const radius = form.querySelector('[data-radius-field]');
+    if (radius)
+      radius.hidden = !['', 'rectangle', 'rounded', 'square'].includes(
+        appearance(draft).shape || '',
+      );
+  }
+  syncFormatContext();
   form.oninput = (event) => {
     for (const input of form.querySelectorAll('[name]')) {
       const name = input.name;
@@ -626,12 +740,12 @@ function renderPanelContent() {
               : Number(value);
       } else draft[name] = value;
     }
-    if (
-      ['appearance-shape', 'width', 'height'].includes(event.target.name) &&
-      (appearance(draft).shape || event.target.name === 'appearance-shape')
-    ) {
+    if (['appearance-shape', 'width', 'height'].includes(event.target.name)) {
       const size = store.activeView === 'mind' ? draftMindSize : draft.size;
-      const next = resizeShape(appearance(draft).shape, size.width, size.height, event.target.name);
+      const next =
+        appearance(draft).shape || event.target.name === 'appearance-shape'
+          ? resizeShape(appearance(draft).shape, size.width, size.height, event.target.name)
+          : { ...size };
       if (['width', 'height'].includes(event.target.name)) {
         draft.extensions ||= {};
         draft.extensions[APPEARANCE] = { ...appearance(draft), sizeMode: 'manual' };
@@ -643,8 +757,20 @@ function renderPanelContent() {
       form.elements.width.value = next.width;
       form.elements.height.value = next.height;
     }
+    if (
+      event.target.name === 'appearance-shape' &&
+      ['rectangle', 'rounded'].includes(event.target.value)
+    ) {
+      draft.extensions[APPEARANCE].radius = event.target.value === 'rectangle' ? 0 : 24;
+      form.elements['appearance-radius'].value = draft.extensions[APPEARANCE].radius;
+    }
+    syncFormatContext();
     updateFormatPreview();
-    if (selection.kind === 'card' && appearance(draft).sizeMode === 'fit' && $('#fit-text'))
+    if (
+      selection.kind === 'card' &&
+      appearance(draft).sizeMode === 'fit' &&
+      $('#format-card-preview')
+    )
       fitDraftSize();
     updateStatus();
     scheduleRecovery();
@@ -654,7 +780,7 @@ function renderPanelContent() {
     if (
       selection.kind === 'card' &&
       appearance(draft).sizeMode === 'fit' &&
-      $('#fit-text') &&
+      $('#format-card-preview') &&
       !fitDraftSize()
     )
       return;
@@ -681,16 +807,6 @@ function renderPanelContent() {
     updateFormatPreview();
     return true;
   }
-  if ($('#fit-text'))
-    $('#fit-text').onclick = () => {
-      draft.extensions ||= {};
-      draft.extensions[APPEARANCE] = { ...appearance(draft), sizeMode: 'fit' };
-      form.elements['appearance-sizeMode'].value = 'fit';
-      updateFormatPreview();
-      fitDraftSize();
-      updateStatus();
-      scheduleRecovery();
-    };
   function updateFormatPreview() {
     const host = $('#format-card-preview');
     if (!host) return;
@@ -724,21 +840,14 @@ function renderPanelContent() {
   }
   if ($('#reset-appearance')) {
     $('#reset-appearance').onclick = () => {
-      if (draft.extensions) delete draft.extensions[APPEARANCE];
+      if (draft.extensions) {
+        const fontSize = draft.extensions[APPEARANCE]?.titleFontSize;
+        delete draft.extensions[APPEARANCE];
+        if (fontSize !== undefined) draft.extensions[APPEARANCE] = { titleFontSize: fontSize };
+      }
       renderPanel();
       updateStatus();
     };
-    for (const button of body.querySelectorAll('[data-shape]'))
-      button.onclick = () => {
-        draft.extensions ||= {};
-        draft.extensions[APPEARANCE] = {
-          ...appearance(draft),
-          shape: button.dataset.shape,
-          radius: button.dataset.shape === 'rectangle' ? 0 : 24,
-        };
-        renderPanel();
-        updateStatus();
-      };
   }
   for (const button of body.querySelectorAll('[data-text-format]')) {
     button.onpointerdown = (event) => event.preventDefault();
@@ -766,7 +875,8 @@ function renderPanelContent() {
     $('#writing-toggle').onclick = () => {
       writing = !writing;
       renderPanel();
-      body.querySelector('.editor-metadata').open = !writing;
+      const metadata = body.querySelector('.editor-metadata');
+      if (metadata) metadata.open = !writing;
       body.scrollTop = 0;
       adapter.cy.resize();
     };
@@ -908,6 +1018,21 @@ function applyDraft() {
     JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize)
   )
     setGeometry(p, selection.id, 'mind', 'size', draftMindSize);
+  const profile = selection.kind === 'card' ? uniformDrafts.get(draftOriginal) : null;
+  if (profile) {
+    try {
+      applyUniformStyles(p, profile, store.activeView, (card) =>
+        measureOverview(
+          { ...card, size: geometry(p, card, store.activeView).size },
+          null,
+          store.activeView,
+        ),
+      );
+    } catch {
+      $('#panel-body .form-errors').textContent = t('fitOverflow');
+      return false;
+    }
+  }
   const result = validate(p);
   if (result.errors.length) {
     $('#panel-body .form-errors').textContent = errorLines(result.errors);
@@ -915,9 +1040,12 @@ function applyDraft() {
   }
   const d = clone(draft),
     s = clone(selection);
-  draftOriginal = clone(draft);
-  change((project) => {
-    if (s.kind === 'project') project.metadata = d;
+  const changed = change((project) => {
+    if (profile) {
+      project.cards = p.cards;
+      if (p.extensions) project.extensions = p.extensions;
+      else delete project.extensions;
+    } else if (s.kind === 'project') project.metadata = d;
     else {
       const kind = s.kind === 'card' ? 'cards' : 'relations';
       project[kind] = project[kind].map((e) => (e.id === s.id ? d : e));
@@ -925,6 +1053,7 @@ function applyDraft() {
         setGeometry(project, s.id, 'mind', 'size', draftMindSize);
     }
   });
+  if (!changed && JSON.stringify(p) !== JSON.stringify(store.project)) return false;
   beginDraft();
   renderPanel();
   updateStatus();
@@ -1117,6 +1246,7 @@ function recoverySnapshot() {
     selection: clone(selection),
     draft: clone(draft),
     draftOriginal: clone(draftOriginal),
+    uniformStyles: clone(uniformDrafts.get(draftOriginal) || null),
     tab,
     time: Date.now(),
   };
@@ -1200,6 +1330,8 @@ async function restoreRecovery() {
   tab = ['edit', 'format'].includes(snapshot.tab) ? snapshot.tab : 'overview';
   draft = snapshot.draft;
   draftOriginal = snapshot.draftOriginal;
+  if (draftOriginal && snapshot.uniformStyles)
+    uniformDrafts.set(draftOriginal, clone(snapshot.uniformStyles));
   draftMindSize =
     snapshot.draftMindSize ||
     (selection?.kind === 'card' && entity()
@@ -1629,7 +1761,7 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#project-menu') || button) $('#project-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
-  if (dateEditor.open) return;
+  if (dateEditor.open || overviewEditor.open) return;
   if (e.key === 'Escape' && !detailOpen && !feedback.state && !$('#search-drawer').hidden) {
     e.preventDefault();
     closeSearch();
@@ -1687,7 +1819,7 @@ document.addEventListener('keyup', (e) => {
 });
 window.addEventListener('blur', () => (adapter.space = false));
 window.addEventListener('beforeunload', (e) => {
-  if (store.dirty || draftDirty() || dateEditor.dirty) {
+  if (store.dirty || draftDirty() || dateEditor.dirty || overviewEditor.dirty) {
     e.preventDefault();
     e.returnValue = '';
   }
