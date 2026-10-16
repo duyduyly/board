@@ -1,3 +1,85 @@
+/* Separate-window ChatGPT shortcut */
+.project-menu-body {
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.chatgpt-launcher {
+  position: absolute;
+  z-index: 5;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 3px 14px #0000000d;
+}
+.chatgpt-launcher[hidden] {
+  display: none;
+}
+.chatgpt-launcher button {
+  width: 38px;
+  border: 0;
+  background: transparent;
+  padding: 8px;
+}
+.chatgpt-launcher button:hover {
+  background: var(--hover);
+}
+#chatgpt-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-direction: column;
+  color: var(--accent);
+  border-radius: 11px 11px 0 0;
+}
+.chatgpt-label {
+  writing-mode: vertical-rl;
+  font-size: 12px;
+  font-weight: 600;
+}
+#chatgpt-hide {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 11px 11px;
+  min-height: 30px;
+  color: var(--muted);
+}
+.chatgpt-settings {
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  white-space: normal;
+}
+.chatgpt-settings label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.chatgpt-settings input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.chatgpt-settings a {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: 10px;
+}
+.chatgpt-settings p {
+  font-size: 11px;
+  margin: 8px 0 0;
+}
+.chatgpt-settings a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 /* Writing workspace */
 .writing-mode .canvas-region,
 .writing-mode .sidebar {

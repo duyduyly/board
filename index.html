@@ -28,6 +28,24 @@
 
               <button data-action="recovery" class="recovery-button" data-i18n="recovery"></button>
               <p id="recovery-status" class="muted recovery-status" role="status"></p>
+              <div class="chatgpt-settings">
+                <label>
+                  <input
+                    id="chatgpt-visible"
+                    type="checkbox"
+                    checked
+                    aria-controls="chatgpt-launcher"
+                  />
+                  <span data-i18n="chatgptShowButton"></span>
+                </label>
+                <a
+                  href="https://chatgpt.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n="chatgptOpenTab"
+                ></a>
+                <p id="chatgpt-help" class="muted" data-i18n="chatgptHelp"></p>
+              </div>
             </div>
           </details>
           <button data-action="new" data-i18n="newProject"></button
@@ -94,6 +112,12 @@
           <div id="card-list" class="card-list"></div>
         </aside>
         <section id="canvas-region" class="canvas-region">
+          <div id="chatgpt-launcher" class="chatgpt-launcher">
+            <button id="chatgpt-open" type="button" data-i18n-title="chatgptOpenWindow">
+              <span aria-hidden="true">↗</span><span class="chatgpt-label">ChatGPT</span>
+            </button>
+            <button id="chatgpt-hide" type="button" data-i18n-title="chatgptHideButton">×</button>
+          </div>
           <div id="graph"></div>
           <div id="cards-layer"></div>
           <div id="welcome" class="welcome">

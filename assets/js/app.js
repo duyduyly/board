@@ -1,3 +1,4 @@
+import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
 import { setOverview, uniformProfile, applyUniformStyles } from './graph/card-typography.js';
 import { createCardDateEditor } from './ui/card-date-editor.js';
@@ -429,7 +430,7 @@ function render() {
     t('projectSettings') + ': ' + store.project.metadata.title,
   );
   $('#welcome').hidden = store.project.cards.length > 0;
-  $('#project-menu summary').setAttribute('aria-label', t('projectMenu'));
+  $('#project-menu > summary').setAttribute('aria-label', t('projectMenu'));
   $('#counts').textContent =
     number(store.project.cards.length) +
     ' ' +
@@ -1770,7 +1771,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !detailOpen && !feedback.state && $('#project-menu').open) {
     e.preventDefault();
     $('#project-menu').open = false;
-    $('#project-menu summary').focus();
+    $('#project-menu > summary').focus();
     return;
   }
   if (layoutPreview && e.key === 'Escape' && !feedback.state) {
@@ -1825,6 +1826,7 @@ window.addEventListener('beforeunload', (e) => {
   }
 });
 installImagePreview($('#panel-body'));
+installChatGPTLauncher();
 store.subscribe(render);
 setLocale('vi');
 render();

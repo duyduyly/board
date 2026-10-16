@@ -1,5 +1,9 @@
 # Hướng dẫn agents cho Visual Card Graph Editor
 
+## E020 — ChatGPT launcher đơn giản
+
+User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP/hướng dẫn cài đã loại khỏi scope hiện hành; không tự tích hợp lại. Giữ E018: mở cửa sổ ChatGPT riêng, hide/show phiên và link tab mới, vi/en; không API/backend hoặc tác động model/history/draft. Evidence E019 chỉ còn lịch sử, bị thay thế bởi E020.
+
 ## Mục tiêu và cấu trúc dự án
 
 Triển khai V1 của JSON-driven Visual Card Graph Editor theo plan và checklist, kiểm chứng và cập nhật tiến độ liên tục đến khi phạm vi người dùng giao hoàn thành. Không có backend/account/auto-persistence trong V1.

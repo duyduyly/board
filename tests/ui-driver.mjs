@@ -14,7 +14,7 @@ export async function projectAction(page, action) {
     ['format', 'recovery'].includes(action) &&
     !(await page.locator('#project-menu').evaluate((e) => e.open))
   )
-    await page.locator('#project-menu summary').click();
+    await page.locator('#project-menu > summary').click();
   await page
     .locator('[data-action="' + action + '"]')
     .first()

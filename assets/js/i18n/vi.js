@@ -1,4 +1,10 @@
 export default {
+  chatgptOpenWindow: 'Mở ChatGPT trong cửa sổ riêng',
+  chatgptHideButton: 'Ẩn nút ChatGPT — bật lại trong menu dự án',
+  chatgptShowButton: 'Hiện nút ChatGPT bên phải',
+  chatgptOpenTab: 'Mở ChatGPT trong tab mới ↗',
+  chatgptHelp:
+    'Kéo cửa sổ ChatGPT sang cạnh Canvas và đổi kích thước tùy ý. Nếu cửa sổ bị chặn, dùng liên kết tab mới ở trên. Nội dung dự án không tự gửi sang ChatGPT.',
   displaySettings: 'Hiển thị trên Canvas',
   imageSettings: 'Ảnh và tệp đính kèm',
   sizeSettings: 'Kích thước card',

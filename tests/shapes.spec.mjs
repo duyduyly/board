@@ -169,7 +169,7 @@ test('palette keyboard and drag create at viewport coordinates; search and proje
   await expect(page.locator('#detail-panel')).toBeVisible();
   await expect(page.locator('#search-drawer')).not.toBeVisible();
   await page.locator('[data-action=close]').click();
-  await page.locator('#project-menu summary').click();
+  await page.locator('#project-menu > summary').click();
   await expect(page.locator('#counts')).toContainText('5');
   await page.locator('[data-action=format]').click();
   await expect(page.locator('#modal')).toBeVisible();

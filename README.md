@@ -29,6 +29,10 @@ Mở **http://127.0.0.1:4173**. Nếu thư viện local đã được build, cá
 
 ## Hướng dẫn sử dụng
 
+### ChatGPT bên cạnh Canvas
+
+Nút **ChatGPT ↗** ở mép phải Canvas mở ChatGPT trong cửa sổ riêng. Bạn có thể kéo cửa sổ sang bên cạnh và dùng controls của hệ điều hành để đổi kích thước, thu nhỏ hoặc phóng to. Trình duyệt quyết định có mở thành cửa sổ hay tab. Nút **×** ẩn shortcut; bật lại tại **Menu dự án → Hiện nút ChatGPT bên phải**. Nếu popup bị chặn, dùng **Mở ChatGPT trong tab mới** trong cùng menu. Lựa chọn ẩn chỉ giữ trong phiên. Card Atlas không tự gửi nội dung dự án sang ChatGPT; tài khoản và hội thoại nằm trên trang ChatGPT riêng.
+
 ### Bắt đầu
 
 Chọn **Bắt đầu trống**, **Mở ví dụ**, **Ví dụ tiếng Anh: -s/-es và -ed**, hoặc **Nhập project JSON** trên màn hình bắt đầu. Nút **Dự án mới** trên toolbar mở hộp thoại đặt tên; chọn **Tạo dự án** để tạo sơ đồ trống hoặc **Hủy** để giữ project hiện tại. Tên không được để trống. Nếu đang có dữ liệu chưa xuất, ứng dụng hỏi trước khi thay thế.

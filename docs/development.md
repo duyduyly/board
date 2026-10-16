@@ -38,6 +38,9 @@ npm run typecheck kiểm tra contract TypeScript và checkJs cho common/html, co
 
 ## Giới hạn
 
+Shortcut ChatGPT (E018): ui/chatgpt-launcher chỉ bind controls và mở URL cố định qua popup noopener/noreferrer theo click trực tiếp; không nhận store/model. Checkbox/hidden chỉ DOM session, không render graph hoặc ghi recovery. Link native target=_blank/rel=noopener noreferrer trong menu là fallback. Browser/OS quản lý cửa sổ, vị trí/kích thước chỉ là yêu cầu; không iframe/SDK/API/backend và không tích hợp hội thoại vào JSON.
+
+
 app.js vẫn giữ workflow Edit/Apply/import/recovery/layout vì chúng chia sẻ guards và session. Khi thêm workflow lớn, tách controller với ports/callbacks cụ thể; tránh chuyển nguyên khối sang một controller lớn khác. Chưa cần plugin registry hoặc framework mới khi chưa có use case được giao.
 
 Nguồn chính thức: [MDN JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), [Cytoscape batch](https://js.cytoscape.org/#cy.batch). Cấu trúc và boundaries trên là quyết định của dự án.

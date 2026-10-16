@@ -1,4 +1,10 @@
 export default {
+  chatgptOpenWindow: 'Open ChatGPT in a separate window',
+  chatgptHideButton: 'Hide ChatGPT button — restore it in the project menu',
+  chatgptShowButton: 'Show ChatGPT button on the right',
+  chatgptOpenTab: 'Open ChatGPT in a new tab ↗',
+  chatgptHelp:
+    'Move the ChatGPT window beside the Canvas and resize it as needed. If the window is blocked, use the new-tab link above. Project content is not sent to ChatGPT automatically.',
   displaySettings: 'Canvas display',
   imageSettings: 'Images and attachments',
   sizeSettings: 'Card size',
