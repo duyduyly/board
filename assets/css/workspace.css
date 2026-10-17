@@ -1,4 +1,21 @@
 /* Separate-window ChatGPT shortcut */
+.graph-card.pinned-card {
+  cursor: default;
+}
+.graph-card.pinned-card .connector {
+  display: none;
+}
+.pinned-lock-notice {
+  border: 1px solid var(--border);
+  background: var(--soft);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.pinned-lock-notice p {
+  margin: 0 0 8px;
+}
 .project-menu-body {
   max-height: calc(100dvh - 100px);
   overflow-y: auto;

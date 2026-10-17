@@ -67,6 +67,8 @@ Pin/date: graph/card-metadata giữ contract và pure mutation helpers; overview
 
 ### Ngày card và editor Canvas
 
+E021: `isPinned` dùng chung cho mọi node/view. graph/card-lock kiểm invariant ở ProjectStore.commit trước validation/history; card ghim và mind geometry/root role/incidentrelations không được đổi, ngoại lệ unpin-only. Replay Undo/Redo và Replace có lifecycle riêng vẫn được phép. Canvas chặn customdrag/nativegrab/resize/connector/date/overviewedit trước mutation; Detail ghim chỉ Overview + unpin, relationlockedfields disabled, không mount transfereditor. Lớp commit vẫn chặn bypass từ draft/import/commands. Uniformstyle bỏ qua pinned; radial preview/apply giữ vị trí và báooverlap. Không dùng CSS làm khóa dữ liệu, không thêm JSONfields/sessionpersist.
+
 `graph/card-metadata.js` là nguồn chung cho pin, UTC `createdAt` và ngày lịch optional `createdDate`. Không ghi đè timestamp gốc khi sửa ngày; duplicate dùng stampCreated và bỏ override. `ui/card-date-editor.js` dùng dialogSurface, draft local, port onApply/current/onLocale; command nằm trong app/store. Canvas badge là control bàn phím, preview readonly. Không tạo input cho từng node: một editor dùng chung giúp giữ DOM nhỏ. Locale sync cache theo locale, không reset draft.
 
 ## Popup overview E015

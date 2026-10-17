@@ -1,4 +1,5 @@
 import { stampCreated } from '../graph/card-metadata.js';
+import { assertPinnedUnchanged } from '../graph/card-lock.js';
 import { clone } from '../common/data.js';
 import { VIEWS, MIND } from '../graph/mind-map.js';
 import { blank, validate } from '../json/validator.js';
@@ -104,6 +105,7 @@ export class ProjectStore {
   commit(mutator) {
     const next = clone(this.project);
     mutator(next);
+    assertPinnedUnchanged(this.project, next);
     const result = validate(next);
     if (result.errors.length) {
       const e = new Error('invalidProject');

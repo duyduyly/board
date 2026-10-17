@@ -1,4 +1,5 @@
 import { geometry, MIND, relationKind, setGeometry } from './mind-map.js';
+import { isPinned } from './card-metadata.js';
 const order = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 export function branchTree(project) {
   const children = new Map(project.cards.map((c) => [c.id, []])),
@@ -166,6 +167,8 @@ export function radialLayout(project, { gap = 60 } = {}) {
       cursorY += b.bottom - b.top + gap;
       detached += ids.length;
     }
+  for (const card of project.cards)
+    if (isPinned(card)) positions[card.id] = { ...geometry(project, card, 'mind').position };
   const b = bounds([...assigned]),
     overlaps = overlapCount(project, positions);
   const warnings = [];
@@ -177,6 +180,7 @@ export function radialLayout(project, { gap = 60 } = {}) {
   return { positions, warnings, overlaps, bounds: b, detached };
 }
 export function applyLayout(project, result) {
+  const pinned = new Set(project.cards.filter(isPinned).map((c) => c.id));
   for (const [id, position] of Object.entries(result.positions))
-    setGeometry(project, id, 'mind', 'position', position);
+    if (!pinned.has(id)) setGeometry(project, id, 'mind', 'position', position);
 }

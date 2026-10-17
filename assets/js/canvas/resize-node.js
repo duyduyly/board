@@ -2,7 +2,9 @@ import { resizeShape, shapes } from '../graph/shape-registry.js';
 import { appearance } from '../detail/appearance.js';
 import { applyShape } from './shape-view.js';
 import { t } from '../i18n/index.js';
+import { isPinned } from '../graph/card-metadata.js';
 export function installResize(adapter, el, card, size) {
+  if (isPinned(card)) return;
   const handle = document.createElement('button');
   handle.type = 'button';
   handle.className = 'resize-handle';

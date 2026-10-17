@@ -1,5 +1,6 @@
 export const CARD_META = 'card-atlas:metadata';
 export const cardMetadata = (card) => card.extensions?.[CARD_META] || {};
+export const isPinned = (card) => Boolean(card && cardMetadata(card).pinned);
 export function stampCreated(card, now = new Date().toISOString()) {
   card.extensions ||= {};
   card.extensions[CARD_META] = { ...cardMetadata(card), createdAt: now };

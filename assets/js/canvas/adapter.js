@@ -1,4 +1,5 @@
 import { overviewElement, updateCardMetadata } from './overview.js';
+import { isPinned } from '../graph/card-metadata.js';
 import { installResize } from './resize-node.js';
 import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
@@ -132,10 +133,12 @@ export class GraphAdapter {
           for (const text of el.querySelectorAll('[data-overview-field]'))
             text.setAttribute(
               'aria-label',
-              t('editOverviewField', {
-                field: t(text.dataset.overviewField),
-                value: text.textContent,
-              }),
+              el.classList.contains('pinned-card')
+                ? t('pinnedReadOnly')
+                : t('editOverviewField', {
+                    field: t(text.dataset.overviewField),
+                    value: text.textContent,
+                  }),
             );
           const b = el.querySelector('.connector');
           if (b.title !== t('dragConnector')) {
@@ -217,6 +220,8 @@ export class GraphAdapter {
           node.data(data);
           node.position(pos);
         }
+        if (isPinned(c)) node.ungrabify();
+        else node.grabify();
         let el = this.cards.get(c.id);
         if (!el) {
           el = document.createElement('article');
@@ -246,15 +251,21 @@ export class GraphAdapter {
           target.setAttribute('role', 'button');
           target.setAttribute(
             'aria-label',
-            t('editOverviewField', {
-              field: t(target.dataset.overviewField),
-              value: target.textContent,
-            }),
+            isPinned(c)
+              ? t('pinnedReadOnly')
+              : t('editOverviewField', {
+                  field: t(target.dataset.overviewField),
+                  value: target.textContent,
+                }),
           );
           target.onpointerdown = (e) => e.stopPropagation();
           target.ondblclick = (e) => e.stopPropagation();
           const edit = (e) => {
             e.stopPropagation();
+            if (isPinned(c)) {
+              this.callbacks.open({ kind: 'card', id: c.id });
+              return;
+            }
             if (!this.callbacks.locked())
               this.callbacks.overview(c.id, target, target.dataset.overviewField);
           };
@@ -267,13 +278,13 @@ export class GraphAdapter {
           };
         }
         const date = el.querySelector('.card-created-date');
-        date.tabIndex = 0;
-        date.setAttribute('aria-disabled', 'false');
+        date.tabIndex = isPinned(c) ? -1 : 0;
+        date.setAttribute('aria-disabled', String(isPinned(c)));
         updateCardMetadata(el, c);
         date.onpointerdown = (e) => e.stopPropagation();
         date.ondblclick = (e) => e.stopPropagation();
         const openDate = () => {
-          if (!this.callbacks.locked()) this.callbacks.date(c.id, date);
+          if (!isPinned(c) && !this.callbacks.locked()) this.callbacks.date(c.id, date);
         };
         date.onclick = openDate;
         date.onkeydown = (e) => {
@@ -318,6 +329,7 @@ export class GraphAdapter {
         else el.append(open);
         const connector = document.createElement('button');
         connector.className = 'connector';
+        connector.disabled = isPinned(c);
         connector.title = t('dragConnector');
         connector.setAttribute('aria-label', t('dragConnector'));
         connector.addEventListener('pointerdown', (e) => {
@@ -567,7 +579,7 @@ export class GraphAdapter {
       e.button !== 0
     )
       return;
-    if (this.callbacks.locked()) {
+    if (this.callbacks.locked() || this.cards.get(id)?.classList.contains('pinned-card')) {
       this.callbacks.select({ kind: 'card', id });
       return;
     }

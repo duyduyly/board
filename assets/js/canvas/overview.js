@@ -115,6 +115,8 @@ export function updateCardMetadata(el, card) {
     date = el.querySelector('.card-created-date'),
     pin = el.querySelector('.card-pin');
   el.classList.toggle('pinned-card', Boolean(meta.pinned));
+  if (meta.pinned) el.setAttribute('aria-description', t('pinnedReadOnly'));
+  else el.removeAttribute('aria-description');
   if (date) {
     if (meta.createdDate) {
       const [year, month, day] = meta.createdDate.split('-');

@@ -1,4 +1,5 @@
 import { setGeometry } from './mind-map.js';
+import { isPinned } from './card-metadata.js';
 export const TYPOGRAPHY = 'card-atlas:typography';
 export const textFields = ['title', 'summary', 'type'];
 export const fontFamilies = {
@@ -49,10 +50,12 @@ export function uniformProfile(card, styles) {
 }
 export function applyUniformStyles(project, profile, view, measure) {
   for (const card of project.cards) {
+    if (isPinned(card)) continue;
     card.extensions ||= {};
     card.extensions[TYPOGRAPHY] = structuredClone(profile);
   }
   for (const card of project.cards) {
+    if (isPinned(card)) continue;
     if (card.extensions?.['card-atlas:appearance']?.sizeMode !== 'fit') continue;
     const size = measure(card);
     if (!size) throw new Error('fitOverflow');

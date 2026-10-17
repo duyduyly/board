@@ -1,4 +1,7 @@
 export default {
+  pinnedReadOnly: 'Card đã ghim — chỉ xem nội dung. Bỏ ghim để chỉnh sửa hoặc di chuyển.',
+  pinnedCardLocked:
+    'Card đã ghim đang bị khóa. Hãy bỏ ghim trước khi thay đổi card hoặc quan hệ liên quan.',
   chatgptOpenWindow: 'Mở ChatGPT trong cửa sổ riêng',
   chatgptHideButton: 'Ẩn nút ChatGPT — bật lại trong menu dự án',
   chatgptShowButton: 'Hiện nút ChatGPT bên phải',
@@ -21,15 +24,15 @@ export default {
   updateOverviewDraft: 'Cập nhật bản nháp',
   applyThisCard: 'Áp dụng cho card này',
   applyUniformCount: 'Áp dụng style cho {count} card',
-  uniformStylesCount: 'Áp dụng bộ style cho {count} card hiện có',
+  uniformStylesCount: 'Áp dụng bộ style cho {count} card chưa ghim',
   overviewDraftScope: 'Thay đổi chờ Áp dụng trong Detail. Nội dung và tags chỉ đổi trên card này.',
   overviewBulkScope:
     'Style của cả ba mục áp dụng cho {count} card. Nội dung và tags chỉ đổi trên card này.',
   overviewCardScope: 'Chỉ cập nhật card này.',
   contentType: 'Loại nội dung',
-  uniformStyles: 'Đồng nhất style tất cả card',
+  uniformStyles: 'Đồng nhất style các card chưa ghim',
   uniformStylesHint:
-    'Áp dụng cỡ chữ, màu và font của cả ba mục cho mọi card hiện có; giữ nội dung riêng. Trong Detail, thay đổi chờ Apply Detail. Card tạo sau không tự kế thừa.',
+    'Áp dụng cỡ chữ, màu và font của cả ba mục cho card chưa ghim; giữ nội dung riêng. Bỏ qua card đã ghim. Trong Detail, thay đổi chờ Apply Detail. Card tạo sau không tự kế thừa.',
   editCardOverview: 'Chỉnh thông tin card',
   overviewField: 'Mục cần sửa',
   overviewText: 'Nội dung hiển thị',
@@ -50,7 +53,7 @@ export default {
   dateHelp: 'Nhập hoặc chọn ngày. Xóa để dùng ngày tạo ban đầu.',
   dateApplyFailed: 'Chưa thể cập nhật ngày. Hãy thử lại.',
 
-  pinCard: 'Ghim card quan trọng',
+  pinCard: 'Ghim và khóa card',
   unpinCard: 'Bỏ ghim card',
   createdAt: 'Ngày tạo',
   creationUnknown: 'Chưa có ngày tạo',

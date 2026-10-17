@@ -238,7 +238,7 @@ Format Guide → Mixed shapes example → Import để thử ảnh/text và cả
 
 ### Ghim và ngày tạo card
 
-Nhấn icon ghim ở đầu card để đánh dấu quan trọng; nhấn lại để bỏ ghim. Có Undo/Redo; ghim không khóa vị trí hoặc tự sắp xếp graph. Ngày tạo nằm ở góc đầu card, lưu UTC trong extensions.card-atlas:metadata.createdAt và giữ nguyên khi sửa. Card cũ không có dữ liệu ngày hiển thị chưa có ngày tạo; không gán ngày giả. Card mới/nhân bản có ngày mới, import giữ ngày nguồn. Pin và ngày đi cùng JSON project/node offline.
+Nhấn icon ghim ở đầu node để **khóa chỉ xem** (mọi loại card/chữ/ảnh và cả hai view). Node đã ghim không thể kéo, đổi kích thước, sửa nội dung/ngày/style/ảnh, nhân bản hoặc xóa; quan hệ liên quan cũng được bảo vệ. Bạn vẫn có thể xem nội dung, mở ảnh, tìm kiếm và pan/zoom. Nhấn ghim lần nữa hoặc **Bỏ ghim card** trong Detail để chỉnh sửa trở lại; có Undo/Redo. Đồng nhất style bỏ qua node ghim; tự bố trí giữ vị trí node ghim và có thể báo chồng lấn thay vì tự dời chúng. Các node `pinned: true` trong JSON cũ cũng được khóa. Ngày tạo nằm ở góc đầu card, lưu UTC trong extensions.card-atlas:metadata.createdAt và giữ nguyên khi sửa. Card cũ không có dữ liệu ngày hiển thị chưa có ngày tạo; không gán ngày giả. Card mới/nhân bản có ngày mới, import giữ ngày nguồn. Pin và ngày đi cùng JSON project/node offline.
 
 Giao diện giấy note theo reference .agents/idea/note-paper.png: bóng nhẹ, ghim đỏ, badge ngày góc trái. Màu nền tùy chỉnh được giữ; node hình khác giữ outline. Mẫu5màu: assets/data/note-paper-example.json (Import JSON). Không dùng ảnh watermark làm tài nguyên.
 

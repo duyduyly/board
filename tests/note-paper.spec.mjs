@@ -23,6 +23,8 @@ test('note paper reference surface and muted dates preserve controls/fit in both
     expect(date.opacity).toBeGreaterThanOrEqual(0.7);
     expect(date.x).toBeGreaterThan(date.px);
   }
+  // E021: unpin before testing Format edits; pinned cards are read-only.
+  await card.locator('.card-pin').click();
   await card.focus();
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Format', exact: true }).click();
@@ -63,6 +65,7 @@ test('five paper colors match reference; date badge stays inside and transparent
   await page.locator('#theme-toggle').click();
   await page.screenshot({ path: 'planning/design/note-paper-reference-dark.png' });
   const c = page.locator('.graph-card[data-id=paper-0]');
+  await c.locator('.card-pin').click();
   await c.focus();
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Format', exact: true }).click();

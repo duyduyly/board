@@ -1,4 +1,5 @@
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
+import { selectionLocked } from './graph/card-lock.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
 import { setOverview, uniformProfile, applyUniformStyles } from './graph/card-typography.js';
 import { createCardDateEditor } from './ui/card-date-editor.js';
@@ -8,6 +9,7 @@ import {
   setCreatedDate,
   cardDateValue,
   cardMetadata,
+  isPinned,
 } from './graph/card-metadata.js';
 import { overviewElement } from './canvas/overview.js';
 import { createShapePalette } from './ui/shape-palette.js';
@@ -123,6 +125,7 @@ const documentTransfer = createDocumentTransfer({
     store.project === ctx.snapshot &&
     JSON.stringify(draft || entity()) === ctx.revision,
   useDraft: (card, formatSource) => {
+    if (selectionLocked(store.project, selection)) return;
     if (!draft) beginDraft();
     draft = clone(card);
     if (formatSource) {
@@ -235,12 +238,19 @@ function change(mutator) {
     if (store.notice) toast('historyLimit');
     return result;
   } catch (e) {
+    if (e.message === 'pinnedCardLocked') {
+      toast('pinnedCardLocked');
+      return false;
+    }
     showMessage('invalid', () => errorLines(e.issues || [{ path: '$root', code: 'unknown' }]));
     return false;
   }
 }
 const dateEditor = createCardDateEditor({
-  current: (id) => projectIndex(store.project).cards.get(id),
+  current: (id) => {
+    const card = projectIndex(store.project).cards.get(id);
+    return isPinned(card) ? null : card;
+  },
   fallback: (id) => adapter.cards.get(id)?.querySelector('.card-created-date'),
   onLocale: (locale) => {
     setLocale(locale);
@@ -249,7 +259,7 @@ const dateEditor = createCardDateEditor({
   onApply: (id, value) => {
     if (detailOpen || draftDirty() || feedback.state || layoutPreview) return false;
     const c = projectIndex(store.project).cards.get(id);
-    if (!c) return false;
+    if (!c || isPinned(c)) return false;
     if (value === cardDateValue(c) || (!value && !cardMetadata(c).createdDate)) return true;
     return change((p) =>
       setCreatedDate(
@@ -260,12 +270,17 @@ const dateEditor = createCardDateEditor({
   },
 });
 const overviewEditor = createCardOverviewEditor({
-  context: () => ({ draft: Boolean(detailOpen && draft), count: store.project.cards.length }),
+  context: () => ({
+    draft: Boolean(detailOpen && draft),
+    count: store.project.cards.filter((c) => !isPinned(c)).length,
+  }),
   isShared: () => Boolean(draftOriginal && uniformDrafts.has(draftOriginal)),
   current: (id) =>
-    detailOpen && selection?.kind === 'card' && selection.id === id && draft
-      ? draft
-      : projectIndex(store.project).cards.get(id),
+    isPinned(projectIndex(store.project).cards.get(id))
+      ? null
+      : detailOpen && selection?.kind === 'card' && selection.id === id && draft
+        ? draft
+        : projectIndex(store.project).cards.get(id),
   fallback: (id, field) =>
     detailOpen
       ? document.querySelector('#edit-card-overview')
@@ -280,7 +295,7 @@ const overviewEditor = createCardOverviewEditor({
     const editing = detailOpen && selection?.kind === 'card' && selection.id === id && draft;
     if (detailOpen && !editing) return false;
     const source = editing ? draft : projectIndex(store.project).cards.get(id);
-    if (!source) return false;
+    if (!source || isPinned(source)) return false;
     const candidate = clone(source);
     const profile = shared ? uniformProfile(source, styles) : null;
     setOverview(candidate, values, profile || styles);
@@ -478,8 +493,16 @@ function beginDraft() {
   originalMindSize = clone(draftMindSize);
 }
 async function select(next, edit = false, open = false) {
+  if (edit && next?.kind === 'card' && selectionLocked(store.project, next)) {
+    edit = false;
+    open = true;
+  }
   if (feedback.state || layoutPreview) return false;
   if (connectMode && next?.kind === 'card') {
+    if (selectionLocked(store.project, next)) {
+      toast('pinnedCardLocked');
+      return false;
+    }
     if (!connectSource) {
       connectSource = next.id;
       return true;
@@ -527,7 +550,22 @@ function renderPanel() {
   else if (state && body.querySelector('.writing-source')) sourceEditorState = state;
   previousPanelKey = key;
   renderPanelContent();
-  if (detailOpen && !home && selection?.kind === 'card' && entity()) documentTransfer.mount(body);
+  if (
+    detailOpen &&
+    !home &&
+    selection?.kind === 'card' &&
+    entity() &&
+    !selectionLocked(store.project, selection)
+  )
+    documentTransfer.mount(body);
+  if (selection?.kind === 'relation' && selectionLocked(store.project, selection)) {
+    for (const field of body.querySelectorAll('input,textarea,select,button'))
+      field.disabled = true;
+    const notice = document.createElement('p');
+    notice.className = 'pinned-lock-notice';
+    notice.textContent = t('pinnedCardLocked');
+    body.prepend(notice);
+  }
   if (body.querySelector('.node-transfer-tools'))
     body.querySelector('.node-transfer-tools').open = transferToolsOpen;
   if (body.querySelector('.format-advanced'))
@@ -557,6 +595,8 @@ function renderPanelContent() {
     body.replaceChildren();
     return;
   }
+  const readOnly = selection.kind === 'card' && isPinned(e);
+  if (readOnly) tab = 'overview';
   panel.classList.toggle('detail-full', expanded);
   $('#panel-title').textContent =
     selection.kind === 'project'
@@ -572,6 +612,7 @@ function renderPanelContent() {
       const button = document.createElement('button');
       button.textContent = t(mode === 'format' ? 'appearanceTab' : mode);
       button.className = tab === mode ? 'active' : '';
+      button.disabled = readOnly && mode !== 'overview';
       button.onclick = async () => {
         if (mode === tab) return;
         const editing = ['edit', 'format'].includes(tab) && ['edit', 'format'].includes(mode);
@@ -589,6 +630,13 @@ function renderPanelContent() {
     }
   if (tab === 'overview' && selection.kind === 'card') {
     body.innerHTML =
+      (readOnly
+        ? '<div class="pinned-lock-notice"><p>' +
+          esc(t('pinnedReadOnly')) +
+          '</p><button type="button" id="detail-unpin">' +
+          esc(t('unpinCard')) +
+          '</button></div>'
+        : '') +
       '<p class="summary">' +
       esc(e.summary) +
       '</p><div class="type-tags">' +
@@ -601,6 +649,11 @@ function renderPanelContent() {
       '</p><button id="allow-images">' +
       esc(t('loadImages')) +
       '</button></div><div id="relations-list" class="relations-section"></div>';
+    const unpin = body.querySelector('#detail-unpin');
+    if (unpin)
+      unpin.onclick = async () => {
+        if (await guardDraft()) change((p) => togglePinned(p.cards.find((c) => c.id === e.id)));
+      };
     const host = body.querySelector('.markdown');
     if (e.content)
       renderMarkdown(host, e.content, {
@@ -998,6 +1051,10 @@ async function insertImage(file) {
   }
 }
 function applyDraft() {
+  if (selectionLocked(store.project, selection)) {
+    toast('pinnedCardLocked');
+    return false;
+  }
   if (!draft) return true;
   if (selection.kind === 'card' && appearance(draft).sizeMode === 'fit') {
     const next = measureOverview(draft, null, store.activeView);
@@ -1076,6 +1133,10 @@ async function guardDraft() {
   return true;
 }
 async function connection(source, target, position) {
+  if ([source, target].some((id) => isPinned(projectIndex(store.project).cards.get(id)))) {
+    toast('pinnedCardLocked');
+    return;
+  }
   if (!(await guardDraft())) return;
   connectMode = false;
   connectSource = null;
@@ -1199,6 +1260,10 @@ async function addCard() {
   render();
 }
 async function duplicate() {
+  if (selectionLocked(store.project, selection)) {
+    toast('pinnedCardLocked');
+    return;
+  }
   if (selection?.kind !== 'card' || !(await guardDraft())) return;
   const original = entity();
   const card = clone(original);
@@ -1226,13 +1291,17 @@ async function duplicate() {
   render();
 }
 async function deleteSelected() {
+  if (selectionLocked(store.project, selection)) {
+    toast('pinnedCardLocked');
+    return;
+  }
   if (!selection || selection.kind === 'project' || !(await guardDraft())) return;
   const s = clone(selection);
+  if (!change((p) => remove(p, s))) return;
   selection = null;
   detailOpen = false;
   draft = null;
   draftOriginal = null;
-  change((p) => remove(p, s));
   render();
 }
 
@@ -1702,6 +1771,10 @@ const actions = {
   new: createProject,
   add: addCard,
   connect: async () => {
+    if (selectionLocked(store.project, selection)) {
+      toast('pinnedCardLocked');
+      return;
+    }
     if (!(await guardDraft())) return;
     connectMode = !connectMode;
     connectSource = connectMode && selection?.kind === 'card' ? selection.id : null;

@@ -1,4 +1,7 @@
 export default {
+  pinnedReadOnly: 'Pinned card — content is read-only. Unpin to edit or move.',
+  pinnedCardLocked:
+    'This card is pinned and locked. Unpin it before changing the card or its connected relations.',
   chatgptOpenWindow: 'Open ChatGPT in a separate window',
   chatgptHideButton: 'Hide ChatGPT button — restore it in the project menu',
   chatgptShowButton: 'Show ChatGPT button on the right',
@@ -21,15 +24,15 @@ export default {
   updateOverviewDraft: 'Update draft',
   applyThisCard: 'Apply to this card',
   applyUniformCount: 'Apply styles to {count} cards',
-  uniformStylesCount: 'Apply this style set to {count} existing cards',
+  uniformStylesCount: 'Apply this style set to {count} unpinned cards',
   overviewDraftScope: 'Changes wait for Apply in Detail. Text and tags change only on this card.',
   overviewBulkScope:
     'All three field styles apply to {count} cards. Text and tags change only on this card.',
   overviewCardScope: 'Update this card only.',
   contentType: 'Content type',
-  uniformStyles: 'Use the same styles on all cards',
+  uniformStyles: 'Use the same styles on unpinned cards',
   uniformStylesHint:
-    'Apply size, color and font for all three fields to every existing card; keep each card’s text. In Detail, changes wait for Detail Apply. Future cards do not inherit automatically.',
+    'Apply size, color and font for all three fields to unpinned cards; keep each card’s text. Pinned cards are skipped. In Detail, changes wait for Detail Apply. Future cards do not inherit automatically.',
   editCardOverview: 'Edit card information',
   overviewField: 'Field',
   overviewText: 'Display text',
@@ -50,7 +53,7 @@ export default {
   dateHelp: 'Enter or choose a date. Clear to use the original creation day.',
   dateApplyFailed: 'The date could not be updated. Please try again.',
 
-  pinCard: 'Pin important card',
+  pinCard: 'Pin and lock card',
   unpinCard: 'Unpin card',
   createdAt: 'Created',
   creationUnknown: 'Creation date unavailable',
