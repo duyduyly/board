@@ -130,7 +130,7 @@ test('Markdown preview Replace/Append, locale, unsafe source and Apply/Undo', as
   await expect(page.locator('textarea[name=content]')).toHaveValue('# Existing draft');
   await upload(page, 'markdown', text);
   await page.locator('#transfer-md-mode').selectOption('append');
-  await page.locator('#modal-locale').selectOption('en');
+  await expect(page.locator('#modal-locale')).toHaveCount(0);
   await expect(page.locator('#transfer-md-mode')).toHaveValue('append');
   await page.locator('[data-choice=accept]').click();
   await expect(page.locator('textarea[name=content]')).toHaveValue('# Existing draft\n\n' + text);
@@ -216,7 +216,7 @@ test('Node Update remaps image collision and preserves cover/geometry/relations 
   await upload(page, 'node', source);
   await expect(page.locator('.transfer-result')).toContainText('cover-import-1');
   await page.screenshot({ path: 'planning/design/feedback-02-node-preview.png' });
-  await page.locator('#modal-locale').selectOption('en');
+  await expect(page.locator('#modal-locale')).toHaveCount(0);
   await page.locator('[data-choice=accept]').click();
   expect(await readProject(page)).toEqual(before);
   await expectDraftTitle(page, 'Imported node');

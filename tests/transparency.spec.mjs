@@ -12,6 +12,7 @@ test('transparent background/border preview, themes, views, undo and portable ex
   await page.locator('[data-action=example]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
   await openRow(page, page.locator('.card-row[data-card-id=card-user-service]'));
+  await locale(page, 'en');
   await page.locator('#panel-tabs button').nth(2).click();
   const bg = page.locator('[name=appearance-backgroundTransparent]');
   const border = page.locator('[name=appearance-borderTransparent]');
@@ -22,7 +23,6 @@ test('transparent background/border preview, themes, views, undo and portable ex
   await expect(preview).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(preview).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)');
   await expect(preview).toHaveCSS('box-shadow', 'none');
-  await locale(page, 'en');
   await expect(page.getByText('Transparent background', { exact: true })).toBeVisible();
   await expect(bg).toBeChecked();
   await theme(page);

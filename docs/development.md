@@ -17,6 +17,8 @@ Entry vẫn là index.html ở gốc, JavaScript ESM và thư viện local trong
 
 ## Thêm tính năng
 
+E025: một control ngôn ngữ#locale duy nhất trên toolbar cho toàn web. Popup/Detail/feedback/date/overview không sở hữu locale selector hoặc onLocale callback. UI dịch qua i18n global và syncLocale khi mở; native dialogs vẫn giữ inert/focus, chọn ngôn ngữ trước khi mở. Không đóng modal/Apply/Discard draft tự động để đổi ngôn ngữ. Test driver chỉ đóng/reopen Detail sạch qua visible controls, không bypass inert hoặc thao tác locale trong draft đang mở.
+
 1. Ghi yêu cầu và acceptance vào planning; xác định dữ liệu thuộc model hay session, chốt namespace trước khi code.
 2. Viết command atomic và truy vấn thuần; kiểm tra validation, Undo và JSON round-trip.
 3. Thêm field builder trong detail hoặc controller trong ui, nhận callbacks từ app; giữ các guards hiện có.
@@ -27,6 +29,8 @@ Entry vẫn là index.html ở gốc, JavaScript ESM và thư viện local trong
 Chỉ đưa code vào common khi có ít nhất hai caller thực tế và cùng policy. Escape HTML không thay DOMPurify: Markdown/Mermaid vẫn phải sanitize. JSON clone trong validator có mục đích khác structuredClone của session, nên giữ riêng. Fixtures có mục đích khác nhau không gom chỉ vì cùng tên sample.
 
 ## Query cache
+
+E023: app giữ selectedCards Set session bên cạnh primary selection của Detail. canvas/multi-selection nhận ports, giữ preview DOM/Cytoscape và một pointer transaction; cancel trên Escape/capture/blur/viewport/sync. adapter.paintSelection chỉ cập nhật các IDs trong tập cũ/mới. graph/move-cards chạy trong một commit, bỏ pins/dedup, chỉ active-view positions; khi kéo Card có Mind fallback thì materialize vị trí Mind cũ để không kéo theo view kia. Chặn command/shortcut trong gesture; group không export/recovery/history, bulk delete không thuộc scope. JSON1.0 và pin invariant giữ nguyên.
 
 projectIndex(snapshot) xây cards/relations/degrees/incoming/outgoing trong O(N+E), lưu qua WeakMap. Chỉ dùng với committed snapshot; không dùng bên trong mutator đang sửa object và không sửa Map/array trả về. Commit, Undo hoặc Replace tạo snapshot mới nên nhận index mới. Locale và viewport không đổi dữ liệu graph. Cache không export, không nằm trong history hoặc recovery; snapshot cũ có thể được GC.
 
@@ -69,7 +73,7 @@ Pin/date: graph/card-metadata giữ contract và pure mutation helpers; overview
 
 E021: `isPinned` dùng chung cho mọi node/view. graph/card-lock kiểm invariant ở ProjectStore.commit trước validation/history; card ghim và mind geometry/root role/incidentrelations không được đổi, ngoại lệ unpin-only. Replay Undo/Redo và Replace có lifecycle riêng vẫn được phép. Canvas chặn customdrag/nativegrab/resize/connector/date/overviewedit trước mutation; Detail ghim chỉ Overview + unpin, relationlockedfields disabled, không mount transfereditor. Lớp commit vẫn chặn bypass từ draft/import/commands. Uniformstyle bỏ qua pinned; radial preview/apply giữ vị trí và báooverlap. Không dùng CSS làm khóa dữ liệu, không thêm JSONfields/sessionpersist.
 
-`graph/card-metadata.js` là nguồn chung cho pin, UTC `createdAt` và ngày lịch optional `createdDate`. Không ghi đè timestamp gốc khi sửa ngày; duplicate dùng stampCreated và bỏ override. `ui/card-date-editor.js` dùng dialogSurface, draft local, port onApply/current/onLocale; command nằm trong app/store. Canvas badge là control bàn phím, preview readonly. Không tạo input cho từng node: một editor dùng chung giúp giữ DOM nhỏ. Locale sync cache theo locale, không reset draft.
+`graph/card-metadata.js` là nguồn chung cho pin, UTC `createdAt` và ngày lịch optional `createdDate`. Không ghi đè timestamp gốc khi sửa ngày; duplicate dùng stampCreated và bỏ override. `ui/card-date-editor.js` dùng dialogSurface, draft local, port onApply/current; command nằm trong app/store. Canvas badge là control bàn phím, preview readonly. Không tạo input cho từng node: một editor dùng chung giúp giữ DOM nhỏ. Locale sync cache theo lựa chọn global, không reset draft.
 
 ## Popup overview E015
 

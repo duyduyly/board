@@ -423,13 +423,8 @@ dialog.detail-panel.detail-full {
   box-sizing: border-box;
 }
 #modal:has(.transfer-result) h2,
-#modal:has(.transfer-result) #modal-locale,
 #modal:has(.transfer-result) .modal-actions {
   flex: none;
-}
-#modal:has(.transfer-result) #modal-locale {
-  align-self: flex-start;
-  width: auto;
 }
 #modal:has(.transfer-result) .modal-body {
   min-height: 0;

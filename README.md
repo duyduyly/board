@@ -29,6 +29,8 @@ Mở **http://127.0.0.1:4173**. Nếu thư viện local đã được build, cá
 
 ## Hướng dẫn sử dụng
 
+Bấm nút **?** nhỏ ngay bên phải **Tiếng Việt / English** để xem hướng dẫn nhanh về chọn/kéo nhóm, quét chọn, ghim, đọc/sửa, điều hướng và lưu JSON. Dùng **Đóng** hoặc **Escape** để quay lại.
+
 ### ChatGPT bên cạnh Canvas
 
 Nút **ChatGPT ↗** ở mép phải Canvas mở ChatGPT trong cửa sổ riêng. Bạn có thể kéo cửa sổ sang bên cạnh và dùng controls của hệ điều hành để đổi kích thước, thu nhỏ hoặc phóng to. Trình duyệt quyết định có mở thành cửa sổ hay tab. Nút **×** ẩn shortcut; bật lại tại **Menu dự án → Hiện nút ChatGPT bên phải**. Nếu popup bị chặn, dùng **Mở ChatGPT trong tab mới** trong cùng menu. Lựa chọn ẩn chỉ giữ trong phiên. Card Atlas không tự gửi nội dung dự án sang ChatGPT; tài khoản và hội thoại nằm trên trang ChatGPT riêng.
@@ -44,13 +46,21 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 ### Card và quan hệ
 
 1. Bấm **Thẻ mới** để tạo card. Click vùng trống card để chọn/kéo; bấm tiêu đề, tóm tắt hoặc loại để sửa trong popup riêng. Bấm **↗** để mở Detail; **Chỉnh sửa** tập trung nội dung Markdown, **Format** quản lý khung/màu nền/hình dạng; Tags nằm trong popup thông tin.
-2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi ngôn ngữ/theme giữ nguyên bản nháp.
+2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi theme giữ nguyên bản nháp.
 3. Kéo card trên canvas để đổi vị trí.
 4. Dùng **Kết nối**, chọn card nguồn rồi card đích; hoặc kéo chấm nối bên cạnh card. Thả vào vùng trống tạo card mới và quan hệ trong một thao tác undo.
 5. Click đường nối để đọc/sửa relation. Xóa card sẽ xóa các relation liên quan.
 6. Dùng Undo/Redo để quay lại hoặc thực hiện lại thao tác dữ liệu.
 
 Badge phía trên hiển thị type; số quan hệ nằm trong tooltip của nút ↗. Dưới card có tối đa hai tag không trùng type; **+N** hiển thị các tag còn lại qua tooltip.
+
+### Chọn nhiều khối và kéo nhóm
+
+- **Shift + click** khối (kể cả chữ) để thêm/bỏ khỏi nhóm. Bằng bàn phím: focus khối rồi **Shift + Space**.
+- **Shift + kéo vùng trống** để quét chọn thêm các khối giao với khung. Chỉ chọn khối đang hiển thị; quét theo hướng nào cũng được.
+- Kéo vùng trống trên một khối chưa ghim đã chọn để dịch cả nhóm. **Khối đã ghim đứng yên**. Mỗi lần kéo là một bước Undo; chỉ vị trí trong view hiện tại thay đổi.
+- **Escape** khi đang kéo hủy lần kéo; nhấn lại để bỏ chọn. Nút **Bỏ chọn** hoặc click vùng trống cũng xóa nhóm. Click khối ngoài nhóm thay selection; click khối trong nhóm giữ nhóm.
+- Nhóm hiện chỉ dùng để kéo; chọn một khối để sửa/xóa. Mở Detail, sửa chữ/ngày, bật Kết nối hoặc chuyển Card/Mind đưa nhóm về một khối. Nhóm chọn chỉ tồn tại trong phiên, không lưu trong JSON.
 
 ### Điều hướng sơ đồ
 
@@ -63,7 +73,7 @@ Badge phía trên hiển thị type; số quan hệ nằm trong tooltip của n�
 
 ### Ngôn ngữ và giao diện
 
-Dùng **Tiếng Việt / English** trên toolbar để đổi ngôn ngữ. Nút **◐ Sáng/Tối** chuyển Light/Dark mode. Giao diện tối điều chỉnh màu hiển thị card và sơ đồ để dễ đọc; màu đã chọn trong JSON được bảo toàn. Theme và locale chỉ sống trong phiên, mặc định sáng và tiếng Việt khi reload, không đi vào file export.
+Chỉ có một bộ chọn **Tiếng Việt / English** trên toolbar chính, áp dụng cho toàn bộ web và mọi popup/tab. Chọn ngôn ngữ trước khi mở popup; popup không có bộ chọn riêng. Nút **◐ Sáng/Tối** chuyển Light/Dark mode. Giao diện tối điều chỉnh màu hiển thị card và sơ đồ để dễ đọc; màu đã chọn trong JSON được bảo toàn. Theme và locale chỉ sống trong phiên, mặc định sáng và tiếng Việt khi reload, không đi vào file export.
 
 ### Lưu và mở lại
 
@@ -142,7 +152,7 @@ Card mới mặc định 260 × 190 px để đủ chỗ cho overview; kích th�
 
 ## Viết tài liệu
 
-Trong tab **Chỉnh sửa**, chọn **Viết tập trung** để mở vùng viết rộng. Thông tin card có thể thu gọn; **Về sơ đồ** quay lại Canvas. Đổi theme/ngôn ngữ giữ vị trí con trỏ, selection và cuộn trong ô viết. **Xem trước bản nháp** render Markdown/Mermaid/ảnh mà chưa thay project; **Viết Markdown** quay lại soạn thảo. Apply/Cancel vẫn quản lý bản nháp; nút Apply ở vùng thao tác cố định khi cuộn.
+Trong tab **Chỉnh sửa**, chọn **Viết tập trung** để mở vùng viết rộng. Thông tin card có thể thu gọn; **Về sơ đồ** quay lại Canvas. Đổi theme giữ vị trí con trỏ, selection và cuộn trong ô viết. **Xem trước bản nháp** render Markdown/Mermaid/ảnh mà chưa thay project; **Viết Markdown** quay lại soạn thảo. Apply/Cancel vẫn quản lý bản nháp; nút Apply ở vùng thao tác cố định khi cuộn.
 
 Mẫu Hướng dẫn/API/Ghi chú được chèn **thêm ở cuối** nội dung, không thay phần đang viết. Mục lục tự tạo khi bài có từ hai heading H1–H3, bấm để đi tới mục tương ứng. Tìm kiếm toàn văn chạy trên nội dung đã Apply; chưa tìm bản nháp và chỉ highlight trong đoạn trích kết quả.
 
@@ -178,7 +188,7 @@ Illustrated Mind Map phase 1: choose a view in the toolbar, select a node style/
 
 ## Bố trí radial và thu gọn nhánh — đợt 2
 
-Trong Mind Map, đặt Root rồi bấm **Sắp xếp Mind Map**. Preview hiển thị toàn bộ graph; các node ngoài Root nằm ở vùng riêng. Bố trí xét kích thước thực, chỉ dựa vào branch; liên kết tham khảo không đổi hierarchy. **Áp dụng bố trí** lưu vị trí Mind Map trong một undo và giữ Card Map nguyên vẹn. **Hủy**, Escape hoặc đổi view bỏ preview và khôi phục viewport/trạng thái nhánh trước preview. **Đặt lại preview** tính lại từ model hiện tại. Trong preview, chỉnh sửa và export tạm khóa; theme/ngôn ngữ/zoom/Fit vẫn dùng được. Áp dụng lại bố trí không đổi không thêm history.
+Trong Mind Map, đặt Root rồi bấm **Sắp xếp Mind Map**. Preview hiển thị toàn bộ graph; các node ngoài Root nằm ở vùng riêng. Bố trí xét kích thước thực, chỉ dựa vào branch; liên kết tham khảo không đổi hierarchy. **Áp dụng bố trí** lưu vị trí Mind Map trong một undo và giữ Card Map nguyên vẹn. **Hủy**, Escape hoặc đổi view bỏ preview và khôi phục viewport/trạng thái nhánh trước preview. **Đặt lại preview** tính lại từ model hiện tại. Trong preview, chỉnh sửa và export tạm khóa; theme/zoom/Fit vẫn dùng được. Áp dụng lại bố trí không đổi không thêm history.
 
 Nút − bên trái node có con thu gọn descendants; nút +N mở lại và cho biết số node ẩn. **Mở tất cả nhánh** bỏ trạng thái thu gọn. Chỉ branch quyết định descendants; liên kết tham khảo với đầu bị ẩn cũng ẩn. Search, điều hướng và Focus mở các tổ tiên cần thiết. Nếu thu gọn làm selection bị ẩn, Detail chuyển về node cha sau guard draft.
 
@@ -264,4 +274,4 @@ Trong popup Chỉnh thông tin card, bật **Đồng nhất style tất cả car
 
 **Format** chia nhóm Kiểu hiển thị, Kích thước, Nền/khung và preview sticky cạnh bên. Chỉ hiện ảnh khi kiểu ảnh hoặc còn cover được lưu; công cụ Root chỉ ở Mind Map; bo góc chỉ ở hình có dùng corner. Chọn một chế độ Thủ công/Tự vừa nội dung; sửa rộng/cao chuyển về thủ công. Fit trên toolbar vẫn chỉ camera. Màu chữ mặc định cũ nằm Nâng cao và chỉ tác động phần chưa override/tags. Dropdown Góc vuông đặt radius0, Bo tròn đặt24 khi chọn; không thay JSON đã import ngầm.
 
-Chuyển tab về đầu để không khuất toolbar; đổi ngôn ngữ/theme trong cùng tab giữ bản nháp, caret, scroll và nhóm nâng cao đang mở. Preview và nút reset khung không thay nội dung/style chữ. Undo/Redo và JSON1.0 giữ nguyên.
+Chuyển tab về đầu để không khuất toolbar; đổi theme trong cùng tab giữ bản nháp, caret, scroll và nhóm nâng cao đang mở. Preview và nút reset khung không thay nội dung/style chữ. Undo/Redo và JSON1.0 giữ nguyên.

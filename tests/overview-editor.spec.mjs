@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
-test('Canvas popup edits text/style atomically, preserves locale draft and resets to defaults', async ({
+test('Canvas popup inherits global locale, edits text/style atomically and resets to defaults', async ({
   page,
 }) => {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
   await page.locator('[data-template=architecture]').click();
+  await page.locator('#locale').selectOption('en');
   const card = page.locator('.graph-card[data-id=card-user-service]'),
     title = card.locator('h3'),
     popup = page.locator('#card-overview-editor');
@@ -17,7 +18,7 @@ test('Canvas popup edits text/style atomically, preserves locale draft and reset
   await page.locator('#overview-font').selectOption('serif');
   await page.locator('#overview-color').fill('#884422');
   await page.locator('#overview-color').dispatchEvent('input');
-  await page.locator('[data-overview-locale]').selectOption('en');
+  await expect(page.locator('[data-overview-locale]')).toHaveCount(0);
   await expect(page.locator('#overview-text')).toHaveValue('New title');
   await page.locator('#overview-field').selectOption('summary');
   await page.locator('#overview-text').fill('A new summary');

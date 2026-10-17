@@ -1,6 +1,7 @@
 import { overviewElement, updateCardMetadata } from './overview.js';
 import { isPinned } from '../graph/card-metadata.js';
 import { installResize } from './resize-node.js';
+import { installMultiSelection, startGroupDrag } from './multi-selection.js';
 import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
 import { projectIndex } from '../graph/project-index.js';
@@ -17,6 +18,7 @@ export class GraphAdapter {
     this.layer = layer;
     this.callbacks = callbacks;
     this.cards = new Map();
+    this.selectedCards = new Set();
     this.space = false;
     this.moving = false;
     this.cy = cytoscape({
@@ -77,11 +79,12 @@ export class GraphAdapter {
           selector: 'edge.reference-edge',
           style: { 'line-style': 'dashed', opacity: 0.55, width: 1.3 },
         },
-        { selector: 'edge.viewport-moving', style: { visibility: 'hidden' } },
+        { selector: 'edge.viewport-moving, edge.group-preview', style: { visibility: 'hidden' } },
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
       ],
     });
     this.cy.on('viewport', () => {
+      this.cancelGesture?.();
       this.deferEdges();
       this.view();
       callbacks.viewport(this.cy.zoom(), this.cy.pan());
@@ -95,6 +98,7 @@ export class GraphAdapter {
     region.addEventListener('pointerdown', (e) => {
       if (this.space || e.button === 1) this.panStart(e);
     });
+    installMultiSelection(this);
     this.observer = new ResizeObserver(() => {
       this.cy.resize();
       this.view();
@@ -102,7 +106,11 @@ export class GraphAdapter {
     this.observer.observe(region);
   }
   sync(project, selection, view = 'card', options = {}) {
+    this.cancelGesture?.();
     this.cancelResize?.();
+    this.selectedCards = new Set(
+      options.selectedCards || (selection?.kind === 'card' ? [selection.id] : []),
+    );
     if (
       this.activeView !== view ||
       this.lastPreview !== options.positions ||
@@ -114,16 +122,7 @@ export class GraphAdapter {
       this.activeView = view;
     }
     if (this.lastProject === project) {
-      if (this.lastSelection?.kind === 'card') {
-        const el = this.cards.get(this.lastSelection.id);
-        el?.classList.remove('selected');
-        el?.setAttribute('aria-pressed', 'false');
-      }
-      if (selection?.kind === 'card') {
-        const el = this.cards.get(selection.id);
-        el?.classList.add('selected');
-        el?.setAttribute('aria-pressed', 'true');
-      }
+      this.paintSelection(this.selectedCards);
       if (this.lastSelection?.kind === 'relation')
         this.cy.getElementById(rid(this.lastSelection.id)).removeClass('selected');
       if (selection?.kind === 'relation')
@@ -402,12 +401,9 @@ export class GraphAdapter {
             points.flatMap((p) => [(p.x / c.size.width) * 2 - 1, (p.y / c.size.height) * 2 - 1]),
           );
         installResize(this, el, c, c.size);
-        el.classList.toggle('selected', selection?.kind === 'card' && selection.id === c.id);
+        el.classList.toggle('selected', this.selectedCards.has(c.id));
         el.setAttribute('aria-label', c.title);
-        el.setAttribute(
-          'aria-pressed',
-          String(selection?.kind === 'card' && selection.id === c.id),
-        );
+        el.setAttribute('aria-pressed', String(this.selectedCards.has(c.id)));
       }
       for (const [id, el] of this.cards)
         if (!index.cards.has(id)) {
@@ -447,7 +443,17 @@ export class GraphAdapter {
       }
     });
     this.lastLocale = getLocale();
+    this.paintedSelection = new Set(this.selectedCards);
     this.view();
+  }
+  paintSelection(ids) {
+    for (const id of new Set([...(this.paintedSelection || []), ...ids])) {
+      if (Boolean(this.paintedSelection?.has(id)) === ids.has(id)) continue;
+      const el = this.cards.get(id);
+      el?.classList.toggle('selected', ids.has(id));
+      el?.setAttribute('aria-pressed', String(ids.has(id)));
+    }
+    this.paintedSelection = new Set(ids);
   }
   deferEdges() {
     if (this.cy.edges().length < 1000) return;
@@ -579,55 +585,11 @@ export class GraphAdapter {
       e.button !== 0
     )
       return;
-    if (this.callbacks.locked() || this.cards.get(id)?.classList.contains('pinned-card')) {
+    if (this.callbacks.locked()) {
       this.callbacks.select({ kind: 'card', id });
       return;
     }
-    e.preventDefault();
-    e.stopPropagation();
-    const el = this.cards.get(id),
-      n = this.cy.getElementById(cid(id)),
-      start = this.graphPoint(e.clientX, e.clientY),
-      original = { ...n.position() },
-      width = n.data('width'),
-      height = n.data('height');
-    let moved = false;
-    el.setPointerCapture(e.pointerId);
-    const move = (ev) => {
-      const p = this.graphPoint(ev.clientX, ev.clientY),
-        dx = p.x - start.x,
-        dy = p.y - start.y;
-      if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
-      if (moved) {
-        this.deferEdges();
-        n.position({ x: original.x + dx, y: original.y + dy });
-        el.style.left = original.x + dx - width / 2 + 'px';
-        el.style.top = original.y + dy - height / 2 + 'px';
-      }
-    };
-    const end = (ev) => {
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerup', end);
-      el.removeEventListener('pointercancel', cancel);
-      if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
-      if (moved)
-        this.callbacks.move(id, {
-          x: n.position('x') - width / 2,
-          y: n.position('y') - height / 2,
-        });
-      else this.callbacks.select({ kind: 'card', id });
-    };
-    const cancel = () => {
-      n.position(original);
-      el.style.left = original.x - width / 2 + 'px';
-      el.style.top = original.y - height / 2 + 'px';
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerup', end);
-      el.removeEventListener('pointercancel', cancel);
-    };
-    el.addEventListener('pointermove', move);
-    el.addEventListener('pointerup', end);
-    el.addEventListener('pointercancel', cancel);
+    if (!startGroupDrag(this, e, id)) this.callbacks.select({ kind: 'card', id });
   }
   panStart(e) {
     if (!this.space && e.button !== 1) return;

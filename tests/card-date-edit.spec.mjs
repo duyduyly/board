@@ -1,18 +1,19 @@
 import { test, expect } from '@playwright/test';
-test('date editor stages, cancels, changes locale and applies one undoable date', async ({
+test('date editor inherits global locale, stages, cancels and applies one undoable date', async ({
   page,
 }) => {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
   await page.locator('[data-template=architecture]').click();
+  await page.locator('#locale').selectOption('en');
   const badge = page.locator('.graph-card[data-id=card-user-service] time');
   const popup = page.locator('#card-date-editor');
   const input = page.locator('#card-date-input');
   await badge.click();
   await expect(popup).toBeVisible();
   await input.fill('2026-10-10');
-  await page.locator('#card-date-locale').selectOption('en');
+  await expect(page.locator('#card-date-locale')).toHaveCount(0);
   await expect(input).toHaveValue('2026-10-10');
   await popup.locator('[data-date-cancel]').click();
   await expect(badge).toHaveText('Creation date unavailable');

@@ -18,9 +18,9 @@ test('contextual Format has sticky preview and one typography editor; tags stage
   await expect(page.locator('#set-root')).toHaveCount(0);
   await page.locator('.format-advanced summary').scrollIntoViewIfNeeded();
   await page.locator('.format-advanced summary').click();
-  await page.locator('#detail-locale').selectOption('en');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   await expect(page.locator('.format-advanced')).toHaveJSProperty('open', true);
-  await page.locator('#detail-locale').selectOption('vi');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   const boxes = await page.locator('.format-preview-pane').evaluate((el) => ({
     preview: el.getBoundingClientRect().top,
     body: document.querySelector('#panel-body').getBoundingClientRect().top,

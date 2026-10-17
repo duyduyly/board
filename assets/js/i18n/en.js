@@ -1,4 +1,27 @@
 export default {
+  quickHelpTitle: 'Quick help',
+  quickHelpIntro: 'A few essentials for Card Map and Mind Map.',
+  quickHelpSelect: 'Select & move groups',
+  quickHelpSelectBody:
+    'Hold Shift and click cards to add/remove them. Or focus a card and press Shift + Space. Drag blank space on a selected card to move the group.',
+  quickHelpMarquee: 'Select an area',
+  quickHelpMarqueeBody:
+    'Hold Shift and drag blank Canvas space to add cards inside or touching the rectangle. Escape during a drag cancels it; press again to clear the selection.',
+  quickHelpPin: 'Pins & clearing selection',
+  quickHelpPinBody:
+    'Pinned cards are read-only and stay fixed. Click the pin to unlock. Use Clear selection or click blank space to clear the group; select one card to edit or delete it.',
+  quickHelpEdit: 'Read & edit',
+  quickHelpEditBody:
+    'Click ↗ or focus a card and press Enter to open Detail. Click the title/summary/type for quick edits; Edit handles content, Format handles frames and colors.',
+  quickHelpNavigate: 'Navigate the canvas',
+  quickHelpNavigateBody:
+    'Space + drag or middle mouse pans; scroll zooms. Fit shows the whole map, Focus centers the selected card. Mind Map has −/+ controls to collapse/expand branches.',
+  quickHelpSave: 'Undo & save',
+  quickHelpSaveBody:
+    'Ctrl/Cmd + Z undoes; add Shift to redo. A group drag is one Undo step. Export project saves JSON; Import opens it again. By default, data stays in this session only.',
+  selectedCardsCount: '{count} cards selected · drag to move · pinned cards stay fixed',
+  clearSelection: 'Clear selection',
+  groupMoveOnly: 'Groups support moving. Select one card to edit or delete it.',
   pinnedReadOnly: 'Pinned card — content is read-only. Unpin to edit or move.',
   pinnedCardLocked:
     'This card is pinned and locked. Unpin it before changing the card or its connected relations.',
@@ -400,7 +423,7 @@ export default {
   historyLimit:
     'This change exceeds the history budget and cannot be undone. Earlier history was cleared.',
   desktop: 'Please use a desktop browser to edit this project.',
-  hint: 'Drag cards to move · Scroll to zoom · Space + drag to pan',
+  hint: 'Shift + click: multi-select · Shift + drag blank space: select area · Space + drag: pan · Scroll: zoom',
   escape: 'Escape cancels the current action',
   loading: 'Loading…',
   defaultAdded: 'Missing fields were normalized. Export recommended.',

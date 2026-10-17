@@ -1,3 +1,69 @@
+.toolbar-actions .quick-help-button {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.quick-help-content > p {
+  margin-bottom: 18px;
+}
+.quick-help-content dl {
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.quick-help-content dt {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.quick-help-content dd {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.group-drag-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.selection-marquee {
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  border: 1px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.selection-tools {
+  position: absolute;
+  z-index: 5;
+  bottom: 82px;
+  left: 18px;
+  max-width: calc(100% - 80px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+}
+.selection-tools[hidden] {
+  display: none;
+}
+.canvas-hint {
+  max-width: calc(100% - 340px);
+  text-align: right;
+}
 /* Separate-window ChatGPT shortcut */
 .graph-card.pinned-card {
   cursor: default;

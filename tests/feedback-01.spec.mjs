@@ -49,7 +49,7 @@ test('selection, modal focus, Full, draft guard and locale', async ({ page }) =>
   await expect(page.locator('#panel-title')).toBeFocused();
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await setDraftTitle(page, 'Draft title');
-  await page.locator('#detail-locale').selectOption('en');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   await expectDraftTitle(page, 'Draft title');
   await page.locator('[data-action=expand]').click();
   await expect(page.locator('#detail-panel')).toHaveClass(/detail-full/);

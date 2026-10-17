@@ -1,5 +1,7 @@
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
+import { quickHelpBody } from './ui/quick-help.js';
 import { selectionLocked } from './graph/card-lock.js';
+import { moveCards } from './graph/move-cards.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
 import { setOverview, uniformProfile, applyUniformStyles } from './graph/card-typography.js';
 import { createCardDateEditor } from './ui/card-date-editor.js';
@@ -65,6 +67,7 @@ const uniformDrafts = new WeakMap();
 export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
+  selectedCards = new Set(),
   tab = 'overview',
   draft = null,
   draftOriginal = null,
@@ -90,7 +93,7 @@ let selection = null,
   recoveredSnapshot = null,
   draftMindSize = null,
   originalMindSize = null;
-const feedback = createFeedback({ onLocaleChange: () => render() });
+const feedback = createFeedback();
 const { toast, dialog, renderModal, finishDialog, showMessage } = feedback;
 const formatGuide = createFormatGuide({ dialog, toast });
 const detailSurface = dialogSurface($('#detail-panel'), {
@@ -252,10 +255,6 @@ const dateEditor = createCardDateEditor({
     return isPinned(card) ? null : card;
   },
   fallback: (id) => adapter.cards.get(id)?.querySelector('.card-created-date'),
-  onLocale: (locale) => {
-    setLocale(locale);
-    render();
-  },
   onApply: (id, value) => {
     if (detailOpen || draftDirty() || feedback.state || layoutPreview) return false;
     const c = projectIndex(store.project).cards.get(id);
@@ -286,10 +285,6 @@ const overviewEditor = createCardOverviewEditor({
       ? document.querySelector('#edit-card-overview')
       : adapter.cards.get(id)?.querySelector('[data-overview-field="' + field + '"]') ||
         adapter.cards.get(id)?.querySelector('h3'),
-  onLocale: (locale) => {
-    setLocale(locale);
-    render();
-  },
   onApply: (id, values, styles, shared) => {
     if (feedback.state || layoutPreview || dateEditor.open) return false;
     const editing = detailOpen && selection?.kind === 'card' && selection.id === id && draft;
@@ -344,8 +339,16 @@ const overviewEditor = createCardOverviewEditor({
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   select: (s, edit = false) => select(s, edit),
-  date: (id, anchor) => dateEditor.show(id, anchor),
-  overview: (id, anchor, field) => overviewEditor.show(id, anchor, field),
+  selectMany: (ids) => selectMany(ids),
+  groupLocked: () => adapter.callbacks.locked() || connectMode || home,
+  date: (id, anchor) => {
+    selectMany([id]);
+    dateEditor.show(id, anchor);
+  },
+  overview: (id, anchor, field) => {
+    selectMany([id]);
+    overviewEditor.show(id, anchor, field);
+  },
   open: async (s) => {
     if (!(await guardDraft())) return;
     connectMode = false;
@@ -360,10 +363,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     if (detailOpen || draftDirty() || feedback.state || layoutPreview) return;
     change((p) => togglePinned(p.cards.find((c) => c.id === id)));
   },
-  move: (id, position) =>
-    change((p) => {
-      setGeometry(p, id, store.activeView, 'position', position);
-    }),
+  moveMany: (ids, delta) => change((p) => moveCards(p, ids, delta, store.activeView)),
   resize: (id, size) =>
     change((p) => {
       setGeometry(p, id, store.activeView, 'size', size);
@@ -384,7 +384,9 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       feedback.state ||
       layoutPreview ||
       dateEditor.open ||
-      overviewEditor.open,
+      overviewEditor.open ||
+      adapter.gesturing ||
+      adapter.resizing,
     ),
 });
 function render() {
@@ -393,11 +395,15 @@ function render() {
   $('.workspace').hidden = home;
   $('[data-action=continue]').hidden = !hasSession;
   if (home) gallery.render();
-  $('#detail-locale').value = document.documentElement.lang || 'vi';
   $('#detail-theme').dataset.i18nTitle = theme === 'dark' ? 'lightMode' : 'darkMode';
   $('[data-action=expand]').dataset.i18nTitle = expanded ? 'restoreDetail' : 'fullDetail';
 
   const existing = new Set(store.project.cards.map((c) => c.id));
+  selectedCards = new Set([...selectedCards].filter((id) => existing.has(id)));
+  if (detailOpen || selection?.kind !== 'card' || !selectedCards.has(selection.id))
+    selectedCards = new Set(
+      selection?.kind === 'card' && existing.has(selection.id) ? [selection.id] : [],
+    );
   if ([...store.collapsed].some((id) => !existing.has(id)))
     store.collapsed = new Set([...store.collapsed].filter((id) => existing.has(id)));
   if (layoutPreview && layoutPreview.project !== store.project) {
@@ -420,7 +426,10 @@ function render() {
   adapter.sync(store.project, selection, store.activeView, {
     positions: layoutPreview?.result.positions,
     collapsed: store.collapsed,
+    selectedCards,
   });
+  $('#selection-tools').hidden = selectedCards.size < 2;
+  $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
   $('#mind-map-tools').hidden = store.activeView !== 'mind';
   $('#layout-preview-bar').hidden = !layoutPreview;
   $('#panel-body').inert = Boolean(layoutPreview);
@@ -510,7 +519,7 @@ async function select(next, edit = false, open = false) {
     await connection(connectSource, next.id);
     return true;
   }
-  if (JSON.stringify(selection) === JSON.stringify(next) && !edit) {
+  if (JSON.stringify(selection) === JSON.stringify(next) && !edit && selectedCards.size < 2) {
     if (open) {
       detailOpen = true;
       renderPanel();
@@ -520,11 +529,25 @@ async function select(next, edit = false, open = false) {
   if (!(await guardDraft())) return false;
   revealSelection(next);
   selection = next;
+  selectedCards = new Set(next?.kind === 'card' ? [next.id] : []);
   detailOpen = Boolean(next && (open || edit || next.kind === 'relation' || detailOpen));
   tab = next?.kind === 'relation' || edit || next?.kind === 'project' ? 'edit' : 'overview';
   draft = null;
   draftOriginal = null;
   if (tab === 'edit' && entity()) beginDraft();
+  render();
+  return true;
+}
+function selectMany(ids) {
+  if (adapter.callbacks.groupLocked()) return false;
+  selectedCards = new Set(
+    ids.filter((id) => adapter.cards.has(id) && !adapter.cards.get(id).hidden),
+  );
+  const id = selectedCards.has(selection?.id) ? selection.id : [...selectedCards][0];
+  selection = id ? { kind: 'card', id } : null;
+  tab = 'overview';
+  draft = null;
+  draftOriginal = null;
   render();
   return true;
 }
@@ -1118,7 +1141,7 @@ function applyDraft() {
   return true;
 }
 async function guardDraft() {
-  if (adapter.resizing) return false;
+  if (adapter.resizing || adapter.gesturing) return false;
   if (layoutPreview) return false;
   if (!draftDirty()) return true;
   const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -1291,6 +1314,10 @@ async function duplicate() {
   render();
 }
 async function deleteSelected() {
+  if (selectedCards.size > 1) {
+    toast('groupMoveOnly');
+    return;
+  }
   if (selectionLocked(store.project, selection)) {
     toast('pinnedCardLocked');
     return;
@@ -1615,14 +1642,10 @@ $('#map-view').onchange = () => {
     toast('previewCancelledSwitch');
   }
   store.switchView(targetView);
+  selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
   previousPanelKey = null;
   render();
   adapter.setViewport(store.viewport);
-};
-$('#detail-locale').onchange = (e) => {
-  $('#locale').value = e.target.value;
-  setLocale(e.target.value);
-  render();
 };
 $('#detail-map-view').onchange = (e) => {
   $('#map-view').value = e.target.value;
@@ -1657,6 +1680,7 @@ async function toggleBranch(id) {
   else collapsed.add(id);
   const { hidden } = visibility(store.project, collapsed);
   store.collapsed = collapsed;
+  selectedCards = new Set([...selectedCards].filter((key) => !hidden.has(key)));
   const r = selection?.kind === 'relation' ? entity() : null;
   if (
     (selection?.kind === 'card' && hidden.has(selection.id)) ||
@@ -1766,6 +1790,11 @@ const actions = {
     }
   },
 
+  'clear-selection': () => selectMany([]),
+  help: () => {
+    if (adapter.gesturing || adapter.resizing || feedback.state) return;
+    dialog('quickHelpTitle', quickHelpBody, [['close', 'cancel', true]]);
+  },
   search: openSearch,
   'search-close': closeSearch,
   new: createProject,
@@ -1777,6 +1806,7 @@ const actions = {
     }
     if (!(await guardDraft())) return;
     connectMode = !connectMode;
+    selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
     connectSource = connectMode && selection?.kind === 'card' ? selection.id : null;
     render();
   },
@@ -1873,6 +1903,8 @@ document.addEventListener('keydown', (e) => {
     }
     connectMode = false;
     connectSource = null;
+    selectedCards.clear();
+    selection = null;
     render();
   }
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {

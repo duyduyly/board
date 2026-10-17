@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 async function start(page) {
   await page.goto('/');
   await page.locator('[data-template=architecture]').click();
+  await page.locator('#locale').selectOption('en');
 }
 const source = (p) => p.locator('.graph-card[data-id=card-user-service]');
 test('uniform style on Canvas preserves other text, is undo atomic and survives views/JSON', async ({
@@ -16,7 +17,7 @@ test('uniform style on Canvas preserves other text, is undo atomic and survives 
   await page.locator('#overview-size').fill('24');
   await page.locator('#overview-font').selectOption('serif');
   await page.locator('#overview-uniform').check();
-  await page.locator('[data-overview-locale]').selectOption('en');
+  await expect(page.locator('[data-overview-locale]')).toHaveCount(0);
   await expect(page.locator('#overview-uniform')).toBeChecked();
   await expect
     .poll(async () => {

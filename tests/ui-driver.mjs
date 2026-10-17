@@ -21,9 +21,26 @@ export async function projectAction(page, action) {
     .click();
 }
 export async function locale(page, value) {
-  await page
-    .locator((await page.locator('#detail-panel').isVisible()) ? '#detail-locale' : '#locale')
-    .selectOption(value);
+  const open = await page.locator('#detail-panel').isVisible();
+  const id = open
+    ? await page.locator('.graph-card.selected').first().getAttribute('data-id')
+    : null;
+  const tab = open
+    ? await page
+        .locator('#panel-tabs button')
+        .evaluateAll((buttons) => buttons.findIndex((b) => b.classList.contains('active')))
+    : -1;
+  if (open) {
+    await page.locator('[data-action=close]').click();
+    if (await page.locator('#modal').isVisible())
+      throw Error('Choose the global locale before editing an unsaved draft.');
+  }
+  await page.locator('#locale').selectOption(value);
+  if (open && id) {
+    await page.locator('.graph-card[data-id="' + id + '"]').focus();
+    await page.keyboard.press('Enter');
+    if (tab > 0) await page.locator('#panel-tabs button').nth(tab).click();
+  }
 }
 export async function theme(page) {
   await page

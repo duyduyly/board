@@ -41,16 +41,16 @@ test('primary screen, documentation and vi/en without content changes', async ({
   expect(errors).toEqual([]);
 });
 
-test('editor draft survives locale switch, guard cancel/discard and Apply', async ({ page }) => {
+test('editor draft guard cancel/discard and Apply use the global language', async ({ page }) => {
   await sample(page);
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await setDraftTitle(page, 'Changed Service');
-  await locale(page, 'en');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   await expectDraftTitle(page, 'Changed Service');
   await openRow(page, page.locator('.card-row[data-card-id="card-database"]'));
   await expect(page.locator('#modal')).toBeVisible();
-  await page.locator('#modal-locale').selectOption('vi');
+  await expect(page.locator('#modal-locale')).toHaveCount(0);
   await expect(page.locator('#modal')).toContainText('Giữ các chỉnh sửa?');
   await page.locator('[data-choice=cancel]').click();
   await expectDraftTitle(page, 'Changed Service');
@@ -473,8 +473,7 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-pressed', 'true');
   await expectDraftTitle(page, 'Unsaved grammar draft');
-  await locale(page, 'en');
-  await expect(page.locator('#theme-toggle')).toHaveAttribute('aria-label', 'Switch to light mode');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   await expectDraftTitle(page, 'Unsaved grammar draft');
   await projectAction(page, 'fit');
   expect(await snapshot()).toEqual(baseline);
@@ -515,11 +514,12 @@ test('New Project names blank projects and preserves work when replacement is ca
   page,
 }) => {
   await page.goto('/');
+  await locale(page, 'en');
   await projectAction(page, 'new');
   await expect(page.locator('#new-project-title')).toBeFocused();
   await page.locator('#new-project-title').fill('   ');
   await expect(page.locator('[data-choice=create]')).toBeDisabled();
-  await page.locator('#modal-locale').selectOption('en');
+  await expect(page.locator('#modal-locale')).toHaveCount(0);
   await expect(page.locator('[data-choice=create]')).toBeDisabled();
   await page.locator('#new-project-title').fill('  English Practice  ');
   await page.locator('#new-project-title').press('Enter');
@@ -583,8 +583,9 @@ test('embedded image upload is portable in JSON and Detail needs no external req
   page.on('pageerror', (error) => errors.push(error.message));
   const bytes = await fs.readFile('tests/fixtures/english-endings.png');
   await sample(page);
+  await locale(page, 'en');
   await selectService(page);
-  await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await page.locator('textarea[name=content]').fill('# Image in JSON');
   await page
     .locator('#embedded-image-input')
@@ -597,7 +598,6 @@ test('embedded image upload is portable in JSON and Detail needs no external req
     ];
   });
   expect(beforeApply).toBeUndefined();
-  await locale(page, 'en');
   await theme(page);
   await expect(page.locator('.attachment-row')).toContainText('english-endings.png');
   await page.getByRole('button', { name: 'Apply', exact: true }).click();
@@ -788,10 +788,11 @@ test('Oversized click image defaults Fit and explicit 100 percent scrolls', asyn
   await expect(page.locator('.image-preview')).toHaveCount(0);
 });
 
-test('Writing workspace preserves caret and scroll across theme and locale and previews safely', async ({
+test('Writing workspace inherits global locale, preserves caret across theme and previews safely', async ({
   page,
 }) => {
   await sample(page);
+  await locale(page, 'en');
   await selectService(page);
   await page.locator('#panel-tabs button').nth(1).click();
   const input = page.locator('textarea[name=content]');
@@ -813,7 +814,6 @@ test('Writing workspace preserves caret and scroll across theme and locale and p
   expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
     80, 90, 250,
   ]);
-  await locale(page, 'en');
   expect(await input.evaluate((e) => [e.selectionStart, e.selectionEnd, e.scrollTop])).toEqual([
     80, 90, 250,
   ]);

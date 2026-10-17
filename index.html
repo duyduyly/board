@@ -74,6 +74,17 @@
             <option value="vi">Tiếng Việt</option>
             <option value="en">English</option>
           </select>
+          <button
+            type="button"
+            id="quick-help"
+            class="quick-help-button"
+            data-action="help"
+            data-i18n-title="quickHelpTitle"
+            aria-haspopup="dialog"
+            aria-controls="modal"
+          >
+            ?
+          </button>
         </div>
       </header>
       <section id="home-page" class="home-page">
@@ -158,6 +169,10 @@
               <span aria-hidden="true">◎</span><span data-i18n="focusLabel"></span>
             </button>
           </div>
+          <div id="selection-tools" class="selection-tools" hidden>
+            <span id="selection-count" role="status" aria-live="polite"></span>
+            <button type="button" data-action="clear-selection" data-i18n="clearSelection"></button>
+          </div>
           <div class="canvas-hint" data-i18n="hint"></div>
           <svg id="connection-preview" class="connection-preview" aria-hidden="true">
             <path></path>
@@ -166,10 +181,7 @@
         <dialog id="detail-panel" class="detail-panel" aria-labelledby="panel-title">
           <div class="panel-header">
             <h2 id="panel-title" tabindex="-1"></h2>
-            <select id="detail-locale" aria-label="Tiếng Việt / English">
-              <option value="vi">Tiếng Việt</option>
-              <option value="en">English</option></select
-            ><button data-action="detail-theme" data-i18n-title="darkMode" id="detail-theme">
+            <button data-action="detail-theme" data-i18n-title="darkMode" id="detail-theme">
               ◐
             </button>
             <button

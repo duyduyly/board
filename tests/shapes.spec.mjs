@@ -243,6 +243,7 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
   page,
 }) => {
   await open(page);
+  await page.locator('#locale').selectOption('en');
   await page.locator('[data-palette-shape=triangle]').click();
   const card = page.locator('.graph-card[data-shape=triangle]');
   await card.focus();
@@ -252,7 +253,7 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   const width = await page.locator('[name=width]').inputValue();
   expect(Number(width)).toBeGreaterThan(240);
-  await page.locator('#detail-locale').selectOption('en');
+  await expect(page.locator('#detail-locale')).toHaveCount(0);
   expect(Number(await page.locator('[name=width]').inputValue())).toBeCloseTo(Number(width), 8);
   await page.locator('#detail-theme').click();
   expect(Number(await page.locator('[name=width]').inputValue())).toBeCloseTo(Number(width), 8);

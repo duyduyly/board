@@ -1,7 +1,7 @@
 import { query as $ } from '../common/dom.js';
 import { escapeHTML as esc } from '../common/html.js';
-import { t, getLocale, setLocale } from '../i18n/index.js';
-export function createFeedback({ onLocaleChange }) {
+import { t } from '../i18n/index.js';
+export function createFeedback() {
   let modalState = null,
     toastTimer = null;
   function toast(key) {
@@ -25,14 +25,7 @@ export function createFeedback({ onLocaleChange }) {
     $('#modal-content').innerHTML =
       '<div class="modal-inner"><h2>' +
       esc(t(titleKey)) +
-      '</h2><select id="modal-locale" aria-label="Tiếng Việt / English"><option value="vi">Tiếng Việt</option><option value="en">English</option></select><div class="modal-body"></div><div class="modal-actions"></div></div>';
-    $('#modal-locale').value = getLocale();
-    $('#modal-locale').onchange = (e) => {
-      $('#locale').value = e.target.value;
-      setLocale(e.target.value);
-      onLocaleChange();
-      renderModal();
-    };
+      '</h2><div class="modal-body"></div><div class="modal-actions"></div></div>';
     const result = body();
     const host = $('.modal-body');
     if (typeof result === 'string') host.innerHTML = result;

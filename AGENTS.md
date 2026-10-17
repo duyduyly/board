@@ -6,6 +6,10 @@ User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP
 
 ## Mục tiêu và cấu trúc dự án
 
+E025 user xác nhận2026-10-17: chỉ một locale selector#locale trên toolbar chính cho toàn web. Không thêm selector vào Detail/feedback/date/overview/help/tab. Popup kế thừa locale; chọn ngôn ngữ trước khi mở modal, giữ native focus/inert và draft guards. Thay yêu cầu cũ đổi locale ngay trong popup. Đọc planning/global-locale-evidence.md khi sửa. User đã yêu cầu commit thay đổi E023–E025, không push.
+
+E023 user giao2026-10-17: Shift+click/Shift+Space toggle, Shift+blankdrag marquee union visible nodes, kéo nhóm chưaghim mộtcommand activeview, pinsđứngyên. Đọc planning/multi-selection-plan.md/evidence. Selection Set session, primary Detail riêng; không JSON/recovery fields. canvas/multi-selection quản lý preview/cancel/guards, graph/move-cards pure atomic helper; giữ Mind fallback khi kéo Card. B101 bulkdelete/edge selection còn BACKLOG. Không tựcommit/push.
+
 E021 user xác nhận2026-10-17: ghim nay khóa node chỉxem (mọikind/cả2view), thay policy E011 chỉ đánh dấu. Đọc planning/pinned-lock-plan.md/evidence trước sửa. Commitinvariant graph/card-lock bảo vệ card/2viewgeometry/rootrole/incidentrelations; unpin-only và UndoRedo/Replace hợp lệ. UI chỉ xem/bỏghim, không transferedit; uniformstyle skip pins và radialgiữpositionpins/báooverlap. Không tự unlock hoặc bypass guard; không thêmJSONfield. Planning ignored local, không tựcommit/push.
 
 Triển khai V1 của JSON-driven Visual Card Graph Editor theo plan và checklist, kiểm chứng và cập nhật tiến độ liên tục đến khi phạm vi người dùng giao hoàn thành. Không có backend/account/auto-persistence trong V1.

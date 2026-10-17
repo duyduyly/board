@@ -1,11 +1,10 @@
 import { appearance } from '../detail/appearance.js';
 import { dialogSurface, anchorDialog } from './dialog-surface.js';
-import { t, getLocale } from '../i18n/index.js';
+import { t } from '../i18n/index.js';
 import { textFields, textStyle, fontFamilies } from '../graph/card-typography.js';
 export function createCardOverviewEditor({
   current,
   onApply,
-  onLocale,
   fallback,
   isShared = () => false,
   context = () => ({ draft: false, count: 0 }),
@@ -15,7 +14,7 @@ export function createCardOverviewEditor({
   element.className = 'card-date-editor card-overview-editor';
   element.setAttribute('aria-labelledby', 'overview-editor-title');
   element.innerHTML =
-    '<form><div class="date-editor-heading"><h2 id="overview-editor-title"></h2><select data-overview-locale><option value="vi">Tiếng Việt</option><option value="en">English</option></select></div><label data-label="field" for="overview-field"></label><select id="overview-field"></select><label data-label="text" for="overview-text"></label><textarea id="overview-text" rows="3"></textarea><div class="overview-style-grid"><label data-label="fontSize" for="overview-size"></label><input id="overview-size" type="number" min="8" max="72" step="any"><label data-label="fontFamily" for="overview-font"></label><select id="overview-font"></select><label data-label="textColor" for="overview-color"></label><input id="overview-color" type="color"></div><button type="button" data-overview-reset></button><label for="overview-tags" data-tags-label></label><input id="overview-tags" type="text"><p class="overview-preview"></p><label class="uniform-style-option"><input id="overview-uniform" type="checkbox"><span data-uniform-label></span></label><p class="date-editor-help" data-uniform-hint></p><p class="date-editor-error" role="alert" hidden></p><p class="date-editor-help" data-overview-scope aria-live="polite"></p><div class="date-editor-actions"><button type="button" data-overview-cancel></button><button type="submit" class="primary" data-overview-apply></button></div></form>';
+    '<form><div class="date-editor-heading"><h2 id="overview-editor-title"></h2></div><label data-label="field" for="overview-field"></label><select id="overview-field"></select><label data-label="text" for="overview-text"></label><textarea id="overview-text" rows="3"></textarea><div class="overview-style-grid"><label data-label="fontSize" for="overview-size"></label><input id="overview-size" type="number" min="8" max="72" step="any"><label data-label="fontFamily" for="overview-font"></label><select id="overview-font"></select><label data-label="textColor" for="overview-color"></label><input id="overview-color" type="color"></div><button type="button" data-overview-reset></button><label for="overview-tags" data-tags-label></label><input id="overview-tags" type="text"><p class="overview-preview"></p><label class="uniform-style-option"><input id="overview-uniform" type="checkbox"><span data-uniform-label></span></label><p class="date-editor-help" data-uniform-hint></p><p class="date-editor-error" role="alert" hidden></p><p class="date-editor-help" data-overview-scope aria-live="polite"></p><div class="date-editor-actions"><button type="button" data-overview-cancel></button><button type="submit" class="primary" data-overview-apply></button></div></form>';
   document.body.append(element);
   const shared = element.querySelector('#overview-uniform');
   const tags = element.querySelector('#overview-tags');
@@ -24,7 +23,6 @@ export function createCardOverviewEditor({
     size = element.querySelector('#overview-size'),
     font = element.querySelector('#overview-font'),
     color = element.querySelector('#overview-color'),
-    locale = element.querySelector('[data-overview-locale]'),
     error = element.querySelector('[role=alert]'),
     preview = element.querySelector('.overview-preview');
   let id = null,
@@ -73,8 +71,6 @@ export function createCardOverviewEditor({
     });
     element.querySelector('[data-tags-label]').textContent = t('tags');
     element.querySelector('[data-uniform-hint]').textContent = t('uniformStylesHint');
-    locale.value = getLocale();
-    locale.setAttribute('aria-label', t('dateLanguage'));
     for (const label of element.querySelectorAll('[data-label]'))
       label.textContent = t(
         label.dataset.label === 'field'
@@ -135,11 +131,6 @@ export function createCardOverviewEditor({
   element.querySelector('[data-overview-reset]').onclick = () => {
     styles[active] = {};
     showField();
-  };
-  locale.onchange = () => {
-    saveText();
-    onLocale(locale.value);
-    syncLocale();
   };
   element.querySelector('[data-overview-cancel]').onclick = close;
   element.querySelector('form').onsubmit = (e) => {

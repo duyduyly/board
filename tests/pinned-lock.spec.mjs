@@ -1,3 +1,4 @@
+import { locale } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
 async function dragBlank(page, locator) {
@@ -40,7 +41,7 @@ test('pinned card is read-only in both views, unpin unlocks and Undo restores lo
   await expect(page.locator('.node-transfer-tools')).toHaveCount(0);
   await page.keyboard.press('Delete');
   expect(await snapshot(page)).toBe(before);
-  await page.locator('#detail-locale').selectOption('en');
+  await locale(page, 'en');
   await expect(page.locator('.pinned-lock-notice')).toContainText('read-only');
   await page.screenshot({ path: 'planning/design/pinned-read-only.png' });
   await page.locator('#detail-unpin').click();

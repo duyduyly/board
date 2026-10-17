@@ -1,4 +1,27 @@
 export default {
+  quickHelpTitle: 'Hướng dẫn nhanh',
+  quickHelpIntro: 'Một vài thao tác để bắt đầu trên Card Map và Mind Map.',
+  quickHelpSelect: 'Chọn nhiều & kéo nhóm',
+  quickHelpSelectBody:
+    'Giữ Shift và bấm từng khối để chọn/bỏ chọn. Hoặc focus khối rồi nhấn Shift + Space. Kéo vùng trống trên khối đã chọn để di chuyển cả nhóm.',
+  quickHelpMarquee: 'Quét vùng chọn',
+  quickHelpMarqueeBody:
+    'Giữ Shift rồi kéo vùng trống trên Canvas để chọn thêm các khối nằm trong hoặc chạm khung. Escape khi đang kéo sẽ hủy thao tác; nhấn lại để bỏ chọn.',
+  quickHelpPin: 'Ghim & bỏ chọn',
+  quickHelpPinBody:
+    'Khối đã ghim chỉ xem và luôn đứng yên. Bấm ghim để mở khóa. Bấm Bỏ chọn hoặc vùng trống để bỏ chọn; chọn một khối khi cần sửa hoặc xóa.',
+  quickHelpEdit: 'Đọc & chỉnh sửa',
+  quickHelpEditBody:
+    'Bấm ↗ hoặc focus khối rồi Enter để mở Detail. Bấm tiêu đề/tóm tắt/loại để sửa nhanh; Chỉnh sửa dành cho nội dung, Format dành cho khung và màu.',
+  quickHelpNavigate: 'Di chuyển khung nhìn',
+  quickHelpNavigateBody:
+    'Space + kéo hoặc chuột giữa để pan; cuộn để zoom. Fit xem toàn sơ đồ, Focus đưa khối đang chọn vào giữa. Mind Map có nút −/+ để thu gọn/mở nhánh.',
+  quickHelpSave: 'Hoàn tác & lưu dự án',
+  quickHelpSaveBody:
+    'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Một lần kéo nhóm là một bước Undo. Xuất dự án để lưu JSON, Nhập JSON để mở lại; mặc định dữ liệu chỉ ở trong phiên.',
+  selectedCardsCount: 'Đã chọn {count} khối · kéo để di chuyển · khối ghim giữ nguyên',
+  clearSelection: 'Bỏ chọn',
+  groupMoveOnly: 'Nhóm chọn dùng để kéo. Chọn một khối để chỉnh sửa hoặc xóa.',
   pinnedReadOnly: 'Card đã ghim — chỉ xem nội dung. Bỏ ghim để chỉnh sửa hoặc di chuyển.',
   pinnedCardLocked:
     'Card đã ghim đang bị khóa. Hãy bỏ ghim trước khi thay đổi card hoặc quan hệ liên quan.',
@@ -396,7 +419,7 @@ export default {
   unsupportedImage: 'Ảnh chưa được hỗ trợ',
   historyLimit: 'Thay đổi vượt ngân sách history và không thể hoàn tác. History cũ đã được xóa.',
   desktop: 'Vui lòng dùng trình duyệt desktop để chỉnh sửa dự án.',
-  hint: 'Kéo thẻ để di chuyển · Cuộn để zoom · Space + kéo để pan',
+  hint: 'Shift + click: chọn nhiều · Shift + kéo vùng trống: quét chọn · Space + kéo: pan · Cuộn: zoom',
   escape: 'Escape hủy thao tác hiện tại',
   loading: 'Đang tải…',
   defaultAdded: 'Đã chuẩn hóa trường thiếu. Nên xuất lại JSON.',
