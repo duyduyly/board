@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, readDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -139,7 +140,7 @@ test('Markdown preview Replace/Append, locale, unsafe source and Apply/Undo', as
   expect(external).toEqual([]);
   expect(consoleIssues).toEqual([]);
   expect(await page.evaluate(() => window.bad)).toBeUndefined();
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   expect(
     (await readProject(page)).cards.find((c) => c.id === 'card-user-service').content,
   ).toContain('Imported tiếng Việt');
@@ -220,7 +221,7 @@ test('Node Update remaps image collision and preserves cover/geometry/relations 
   await page.locator('[data-choice=accept]').click();
   expect(await readProject(page)).toEqual(before);
   await expectDraftTitle(page, 'Imported node');
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   const after = await readProject(page),
     updated = after.cards.find((c) => c.id === current.id);
   expect(updated.position).toEqual(current.position);
@@ -250,7 +251,7 @@ test('Node format opt-in affects only active view and explicitly replaces confli
   await page.locator('#transfer-unknown').check();
   await page.screenshot({ path: 'planning/design/feedback-02-node-preview-dark.png' });
   await page.locator('[data-choice=accept]').click();
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   const after = await readProject(page),
     card = after.cards.find((c) => c.id === current.id);
   expect(card.size).toEqual(current.size);
@@ -352,7 +353,7 @@ test('Self-contained Markdown images reimport offline and imported draft recover
   await page.reload();
   await page.locator('[data-choice=restore]').click();
   await expect(page.locator('textarea[name=content]')).toHaveValue(/attachment:markdown-image-/);
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   await page.locator('#panel-tabs button').nth(0).click();
   await expect(page.locator('.markdown img')).toBeVisible();
   expect(requests).toEqual([]);

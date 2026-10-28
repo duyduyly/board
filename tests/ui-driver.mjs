@@ -1,4 +1,50 @@
 // Explicit user paths for the modal UI; never bypass inert or call product internals.
+import { expect } from '@playwright/test';
+
+// Legacy multi-step editor scenarios intentionally continue editing after Apply.
+// Assert the new close lifecycle, then reopen through visible controls/keyboard.
+export async function applyAndContinue(page, button) {
+  const main = await button.evaluate((el) => Boolean(el.closest('#panel-body form')));
+  const target = main
+    ? await page.evaluate(async () => {
+        const { adapter } = await import('/assets/js/app.js');
+        return {
+          selection: adapter.lastSelection,
+          tab: [...document.querySelectorAll('#panel-tabs button')].findIndex((b) =>
+            b.classList.contains('active'),
+          ),
+        };
+      })
+    : null;
+  await button.click();
+  if (!main || (await page.locator('#detail-panel').isVisible())) return;
+  await expect(page.locator('#detail-panel')).not.toBeVisible();
+  const s = target.selection;
+  if (s.kind === 'card') {
+    await page.locator('.graph-card[data-id="' + s.id + '"]').focus();
+    await page.keyboard.press('Enter');
+  } else if (s.kind === 'project') await page.locator('#project-name').click();
+  else {
+    await page.locator('[data-action=focus]').click();
+    await expect
+      .poll(() =>
+        page.evaluate(async (id) => {
+          const { adapter } = await import('/assets/js/app.js');
+          return adapter.cy.getElementById('r:' + id).style('visibility');
+        }, s.id),
+      )
+      .toBe('visible');
+    const p = await page.evaluate(async (id) => {
+        const { adapter } = await import('/assets/js/app.js');
+        return adapter.cy.getElementById('r:' + id).renderedMidpoint();
+      }, s.id),
+      b = await page.locator('#canvas-region').boundingBox();
+    await page.mouse.click(b.x + p.x, b.y + p.y);
+  }
+  await expect(page.locator('#detail-panel')).toBeVisible();
+  if (s.kind === 'card' && target.tab > 0)
+    await page.locator('#panel-tabs button').nth(target.tab).click();
+}
 export async function projectAction(page, action) {
   if (await page.locator('#detail-panel').isVisible()) {
     const local = page.locator('[data-panel-action="' + action + '"]');

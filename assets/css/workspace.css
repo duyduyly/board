@@ -637,3 +637,10 @@
 .auto-route-status.warning {
   border-color: #b77b22;
 }
+.toast[data-position='top'] {
+  top: 84px;
+  bottom: auto;
+  padding: 9px 14px;
+  max-width: min(650px, calc(100vw - 24px));
+  pointer-events: none;
+}

@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -39,7 +40,7 @@ test('basic shapes share Canvas and Format geometry, preserve data and portable 
     await expect(page.locator('#format-card-preview polygon')).toHaveCount(1);
   }
   await setDraftFontSize(page, '48');
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   await page.locator('[data-action=close]').click();
   const card = page.locator('.graph-card[data-id=card-user-service]');
   await expect(card).toHaveAttribute('data-shape', 'hexagon');
@@ -108,7 +109,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
   await page.locator('[name=appearance-backgroundTransparent]').check();
   await page.locator('[name=appearance-borderTransparent]').check();
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   await page.locator('[data-action=close]').click();
   await page.locator('#locale').selectOption('en');
   await page.locator('#theme-toggle').click();
@@ -261,7 +262,7 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
     const { store } = await import('/assets/js/app.js');
     return store.undoStack.length;
   });
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   const applied = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { stage, serialize } = await import('/assets/js/json/validator.js');
@@ -278,7 +279,7 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
   ).toBe(72);
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await setDraftTitle(page, 'Very long title '.repeat(200));
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   await expect(page.locator('.form-errors').first()).toContainText('cannot fit');
   expect(
     await page.evaluate(async () => {
@@ -343,7 +344,7 @@ test('bundled shapes import, polygon edges and corner hit areas match; Mind Fit 
   await page.getByRole('button', { name: 'Format', exact: true }).click();
   await setDraftFontSize(page, '72');
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   const result = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { geometry } = await import('/assets/js/graph/mind-map.js');

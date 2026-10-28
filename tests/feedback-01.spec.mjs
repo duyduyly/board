@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -105,7 +106,7 @@ test('click image Fit/100%, no hover opening and nested Escape', async ({ page }
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('#embedded-image-input').setInputFiles('tests/fixtures/english-endings.png');
   await expect(page.locator('.attachment-row')).toHaveCount(1);
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   const image = page.locator('.markdown img');
   await expect(image).toBeVisible();
@@ -197,7 +198,7 @@ test('portrait Fit preserves ratio and tiny GIF is not upscaled or fetched', asy
     buffer: Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'),
   });
   await expect(page.locator('.attachment-row')).toHaveCount(2);
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   await page.locator('#panel-tabs button').nth(0).click();
   const images = page.locator('.markdown img');
   await expect(images).toHaveCount(2);

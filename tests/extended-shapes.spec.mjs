@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
 const extended = ['star', 'heart', 'octagon', 'arrow', 'isosceles-triangle', 'right-triangle'];
@@ -20,7 +21,7 @@ test('extended shapes Fit72, shared anchors, active view and safe content round-
       await page.getByRole('button', { name: 'Format', exact: true }).click();
       await setDraftFontSize(page, '72', 'summary', 'Fit');
       await page.locator('[name=appearance-sizeMode]').selectOption('fit');
-      await page.locator('#panel-body form button[type=submit]').click();
+      await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
       await page.locator('[data-action=close]').click();
       await expect(card).toHaveAttribute('data-size-mode', 'fit');
       const fit = await card.locator('.card-summary').evaluate((el) => ({

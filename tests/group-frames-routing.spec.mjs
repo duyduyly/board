@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 import { projectAction } from './ui-driver.mjs';
@@ -180,7 +181,7 @@ test('routing editor persists straight, orthogonal and zigzag with Undo, preserv
   ]) {
     const before = await state(page);
     await page.locator('[name=edge-route]').selectOption(route);
-    await page.locator('#panel-body form [type=submit]').click();
+    await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
     const s = await state(page);
     expect(s.p.relations[0].extensions['card-atlas:edge'].route).toBe(route);
     expect([s.p.relations[0].source, s.p.relations[0].target]).toEqual(['a', 'd']);

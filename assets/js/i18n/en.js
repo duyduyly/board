@@ -1,4 +1,5 @@
 export default {
+  formatUpdated: 'Formatting updated successfully',
   autoGuide:
     'Automatic orthogonal routing: select auto/manual per relation and view. Extension example: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Omitted modes retain manual/legacy behavior. The project menu enables eligible automatic routes but keeps pinned or explicitly/manual-adjusted routes. Automatic paths are derived, never JSON waypoints; card positions stay unchanged. Mode switches retain saved manual corners/adjustments. Adjust on Canvas switches to manual. Routing is bounded; overlapping cards/search limits may leave unavailable routes, shown by status. No node layout, backend or dependency.',
   autoRouteAll: 'Auto-route orthogonal connectors',

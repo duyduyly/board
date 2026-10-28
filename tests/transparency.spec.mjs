@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -27,7 +28,7 @@ test('transparent background/border preview, themes, views, undo and portable ex
   await expect(bg).toBeChecked();
   await theme(page);
   await expect(preview).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-  await page.locator('.editor [type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor [type=submit]'));
   const card = page.locator('.graph-card[data-id=card-user-service]');
   await expect(card).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(card).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)');
@@ -61,7 +62,7 @@ test('transparent background/border preview, themes, views, undo and portable ex
   await expect(bg).toBeChecked();
   await bg.uncheck();
   await border.uncheck();
-  await page.locator('.editor [type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor [type=submit]'));
   await expect(card).not.toHaveClass(/transparent-background/);
   await theme(page);
   await view(page, 'card');

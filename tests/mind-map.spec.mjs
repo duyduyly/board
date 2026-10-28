@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 test('renderer prototype single curved edge and text bounds', async ({ page }) => {
@@ -100,7 +101,7 @@ test('switch preserves draft, geometry resize isolation and atomic undo', async 
   await expect(page.locator('input[name=width]')).toHaveValue('300');
   await view(page, 'mind');
   await expect(page.locator('input[name=width]')).toHaveValue('340');
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   const after = await data(page);
   expect(after.project.cards[0].size.width).toBe(300);
   expect(after.project.extensions['card-atlas:views'].mindMap.sizes['english-overview'].width).toBe(
@@ -141,7 +142,7 @@ test('cover picker style Apply Cancel and referenced attachment deletion guard',
   await page.locator('#cancel-draft').click();
   await expect(page.locator('select[name=node-kind]')).toHaveValue('image');
   await page.locator('select[name=node-kind]').selectOption('image-text');
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   expect(
     (await data(page)).project.cards.find((c) => c.id === 'illustration').extensions[
       'card-atlas:node'
@@ -156,7 +157,7 @@ test('cover picker style Apply Cancel and referenced attachment deletion guard',
   await page.locator('select[name=node-coverImageId]').selectOption('');
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await page.locator('[data-remove-image=cover]').click();
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   expect(
     (await data(page)).project.cards.find((c) => c.id === 'illustration').extensions[
       'card-atlas:images'
@@ -252,7 +253,7 @@ test('relation branch validation rejects second parent; image connector stays at
     await adapter.callbacks.select({ kind: 'relation', id: 'cross-1' });
   });
   await page.locator('select[name=mind-kind]').selectOption('branch');
-  await page.locator('.editor button[type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor button[type=submit]'));
   await expect(page.locator('.form-errors')).not.toBeEmpty();
   expect(
     (await data(page)).project.relations.find((r) => r.id === 'cross-1').extensions[

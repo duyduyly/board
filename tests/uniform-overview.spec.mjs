@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 async function start(page) {
@@ -78,7 +79,7 @@ test('uniform Detail draft waits for Apply and Cancel discards all-card changes'
   await page.locator('#overview-size').fill('23');
   await page.locator('[data-overview-apply]').click();
   await page.locator('[name=content]').fill('# Keep this source content');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   for (const title of await page.locator('.graph-card h3').all())
     await expect(title).toHaveCSS('font-size', '23px');
   await page.locator('[data-action=close]').click();
@@ -113,7 +114,7 @@ test('opt-in recovery restores pending shared style without committing it early'
   await expect(page.locator('#overview-uniform')).toBeChecked();
   await page.locator('[data-overview-cancel]').click();
   await expect(source(page).locator('h3')).not.toHaveCSS('font-size', '21px');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   for (const title of await page.locator('.graph-card h3').all())
     await expect(title).toHaveCSS('font-size', '21px');
 });

@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, expectDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
@@ -54,7 +55,7 @@ test('editor draft guard cancel/discard and Apply use the global language', asyn
   await expect(page.locator('#modal')).toContainText('Giữ các chỉnh sửa?');
   await page.locator('[data-choice=cancel]').click();
   await expectDraftTitle(page, 'Changed Service');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await expect(page.locator('#panel-title')).toHaveText('Changed Service');
   await projectAction(page, 'undo');
   await expect(page.locator('#panel-title')).toHaveText('User Service');
@@ -139,7 +140,7 @@ test('applied export keeps draft; replacement cancel retains work', async ({ pag
   await projectAction(page, 'new');
   await page.locator('[data-choice=cancel]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await projectAction(page, 'new');
   await page.locator('[data-choice=cancel]').click();
   await expect(page.locator('.graph-card')).toHaveCount(3);
@@ -164,7 +165,7 @@ test('Markdown safety, blocked images, invalid Mermaid and no external requests'
         'mermaid\nnot a diagram\n' +
         String.fromCharCode(96).repeat(3),
     );
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.blocked-image')).toBeVisible();
   await expect(page.locator('.form-errors')).toContainText('Không thể render');
@@ -198,7 +199,7 @@ test('Format Guide example/schema downloads keep dirty state', async ({ page }) 
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await setDraftTitle(page, 'changed');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await projectAction(page, 'format');
   const d = page.waitForEvent('download');
   await page.locator('#schema-download').click();
@@ -227,11 +228,11 @@ test('Connect mode, relation editor endpoints and style, self-loop rejected', as
   await page.locator('input[name=label]').fill('optional');
   await page.locator('select[name=line]').selectOption('dashed');
   await page.locator('select[name=arrow]').selectOption('both');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   const edited = await exportData(page);
   expect(edited.relations.at(-1).style).toMatchObject({ line: 'dashed', arrow: 'both' });
   await page.locator('select[name=target]').selectOption(edited.relations.at(-1).source);
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await expect(page.locator('.form-errors')).toContainText('chính thẻ');
   await page.locator('#cancel-draft').click();
   await page.locator('#delete').click();
@@ -252,7 +253,7 @@ test('image opt-in only after click and fresh session resets it', async ({ page 
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('textarea[name=content]').fill('![test](https://example.com/image.svg)');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.blocked-image')).toBeVisible();
   expect(requests).toBe(0);
@@ -313,7 +314,7 @@ test('English workflow import, edit, search and export guards', async ({ page })
   await openRow(page, page.locator('.card-row'));
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await setDraftTitle(page, 'Database Updated');
-  await page.getByRole('button', { name: 'Apply', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Apply', exact: true }));
   await expect(page.locator('#save-state')).toContainText('Unsaved changes');
   await page.locator('textarea[name=content]').fill('# New English Draft');
   await projectAction(page, 'export');
@@ -350,7 +351,7 @@ test('failed export preserves dirty and Escape cancels connector creation', asyn
   await selectService(page);
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await setDraftTitle(page, 'Must keep');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.evaluate(() => {
     window.originalAnchorClick = HTMLAnchorElement.prototype.click;
     HTMLAnchorElement.prototype.click = () => {
@@ -389,7 +390,7 @@ test('Mermaid embedded resources and configuration blocked before rendering', as
   ]) {
     await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
     await page.locator('textarea[name=content]').fill(fence + 'mermaid\n' + source + '\n' + fence);
-    await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+    await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
     await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
     await expect(page.locator('.form-errors')).toContainText('V1 không cho');
   }
@@ -441,6 +442,7 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   await page.goto('/');
   await expect(page.locator('[data-action=focus]')).toBeDisabled();
   await page.locator('[data-action=english-example]').click();
+  await expect(page.locator('.graph-card[data-id="english-overview"]')).toBeVisible();
   const snapshot = () =>
     page.evaluate(async () => {
       const { store } = await import('/assets/js/app.js');
@@ -600,7 +602,7 @@ test('embedded image upload is portable in JSON and Detail needs no external req
   expect(beforeApply).toBeUndefined();
   await theme(page);
   await expect(page.locator('.attachment-row')).toContainText('english-endings.png');
-  await page.getByRole('button', { name: 'Apply', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Apply', exact: true }));
   await page.getByRole('button', { name: 'Overview', exact: true }).click();
   await expect
     .poll(() => page.locator('.embedded-image').evaluate((image) => image.naturalWidth))
@@ -659,7 +661,7 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
     .locator('#embedded-image-input')
     .setInputFiles({ name: 'chart.png', mimeType: 'image/png', buffer: png });
   await expect(page.locator('.attachment-row')).toHaveCount(1);
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.embedded-image')).toBeVisible();
   await projectAction(page, 'undo');
@@ -669,7 +671,7 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
   await page.getByRole('button', { name: 'Chỉnh sửa', exact: true }).click();
   await page.locator('[data-remove-image]').click();
   await expect(page.locator('textarea[name=content]')).not.toContainText('attachment:');
-  await page.getByRole('button', { name: 'Áp dụng', exact: true }).click();
+  await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
   await page.getByRole('button', { name: 'Tổng quan', exact: true }).click();
   await expect(page.locator('.embedded-image')).toHaveCount(0);
   await projectAction(page, 'undo');
@@ -839,7 +841,7 @@ test('Writing workspace inherits global locale, preserves caret across theme and
   );
   await page.locator('#writing-exit').click();
   await expect(page.locator('html')).not.toHaveClass(/writing-mode/);
-  await page.locator('.editor [type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor [type=submit]'));
   await page.locator('[data-action=close]').click();
   await openSearch(page);
   await page.locator('#search').fill('UniqueInsideBodyOnly');
@@ -946,7 +948,7 @@ test('Format shares draft, previews appearance and applies one undo with portabl
     '260px',
   );
   await page.screenshot({ path: 'planning/design/detail-format-light.png' });
-  await page.locator('.editor [type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor [type=submit]'));
   const card = page.locator('#cards-layer .graph-card[data-id="card-user-service"]');
   await expect(card).toHaveCSS('width', '360px');
   await expect(card).toHaveCSS('border-radius', '24px');
@@ -999,7 +1001,7 @@ test('Text toolbar formats selection and colored text remains safe in preview an
   await text.fill(
     '[Important]{color:#d34f45}\n\n[Bad]{color:red;position:fixed}\n\n[<img src=x onerror=alert(1)>]{color:#123456}',
   );
-  await page.locator('.editor [type=submit]').click();
+  await applyAndContinue(page, page.locator('.editor [type=submit]'));
   await page.locator('#panel-tabs button').nth(0).click();
   await expect(page.locator('.markdown [data-text-color]').first()).toHaveCSS(
     'color',

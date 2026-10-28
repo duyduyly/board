@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 async function start(page) {
   await page.goto('/');
@@ -34,7 +35,7 @@ test('contextual Format has sticky preview and one typography editor; tags stage
   await expect(page.locator('[data-overview-apply]')).toHaveText('Cập nhật bản nháp');
   await page.locator('#overview-tags').fill('important, grammar');
   await page.locator('[data-overview-apply]').click();
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   const tags = () =>
     page.evaluate(async () => {
       const { store } = await import('/assets/js/app.js');
@@ -105,7 +106,7 @@ test('frame reset preserves legacy font defaults and popup override', async ({ p
   await page.locator('[data-overview-reset]').click();
   await page.locator('[data-overview-apply]').click();
   await expect(page.locator('#format-card-preview h3')).toHaveCSS('font-size', '18px');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   const data = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { serialize, stage } = await import('/assets/js/json/validator.js');

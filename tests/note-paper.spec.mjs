@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
 test('note paper reference surface and muted dates preserve controls/fit in both themes', async ({
@@ -30,7 +31,7 @@ test('note paper reference surface and muted dates preserve controls/fit in both
   await page.getByRole('button', { name: 'Format', exact: true }).click();
   await setDraftFontSize(page, '48');
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   await page.locator('[data-action=close]').click();
   await expect(card).toHaveAttribute('data-size-mode', 'fit');
   await page.locator('[data-action=fit]').click();
@@ -71,7 +72,7 @@ test('five paper colors match reference; date badge stays inside and transparent
   await page.getByRole('button', { name: 'Format', exact: true }).click();
   await page.locator('[name=appearance-shape]').selectOption('rectangle');
   await page.locator('[name=appearance-backgroundTransparent]').check();
-  await page.locator('#panel-body form button[type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
   await page.locator('[data-action=close]').click();
   await expect(c.locator('polygon')).toHaveCSS('fill', 'rgba(0, 0, 0, 0)');
 });

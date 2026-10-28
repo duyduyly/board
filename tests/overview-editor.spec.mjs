@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 test('Canvas popup inherits global locale, edits text/style atomically and resets to defaults', async ({
@@ -65,7 +66,7 @@ test('Detail Edit keeps Markdown primary and popup edits stay in the shared draf
   await expect(card.locator('h3')).toHaveText('User Service');
   await page.locator('#panel-tabs button').nth(2).click();
   await expect(page.locator('#format-card-preview h3')).toHaveText('Draft title');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   await expect(card.locator('h3')).toHaveText('Draft title');
   await page.locator('[data-action=close]').click();
   await page.locator('[data-action=undo]').first().click();

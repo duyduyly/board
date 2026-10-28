@@ -6,6 +6,8 @@ User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP
 
 ## Mục tiêu và cấu trúc dự án
 
+E033 user giao Apply thànhcông đóngpopup vàtoastnhỏphíatrên, yêu cầucommitkhi xong (khôngpush). Đọc planning/apply-close-plan.md/evidence. Chỉ explicitDetailformsubmit đóngsauapplyDraftsuccess; primitiveapplyDraft giữ cho guard/navigation. Noopclose, invalid/Fit/pinnedfail giữdraft/modal khôngsuccess. Overview/dateCanvas giữclosevàthêmtoast; nestedoverviewchỉstagingkhôngtựcommitparent. Feedbacktopoptionkhôngđổi defaultbottom khác, giữfocus/inert/history/global locale/JSON. TestcontinuationphảimởlạinativeUI.
+
 E032 user giao tự căn đường vuông + manual option, thay giới hạn no-auto của E030/E031 chỉ trong scope này. Đọc planning/auto-routing-plan.md/evidence. modes per-view auto/manual, legacymanual; auto results derived/cache, không JSONwaypoints/CSS, không tựlayoutcards. Batchskip pins/explicitmanual/manualcontrols; selector từngrelation vẫn cho bật auto giữ cấu hìnhmanualđểkhôiphục. Corneredit chuyểnmanual bằngcommand. Pure bounded obstacle router/outlineports/fanoutlanes, status khi không cólối hoặc hitbudget, không hứakhônggiao cắt mọi graph. Preserve pin invariant/Undo/roundtrip/inactiveview/global locale; khôngdependency/backend/commitpush.
 
 E031 user làm rõ cần kéo góc vuông riêng để né card. Đọc planning/edge-corners-plan.md/evidence. corners per-view {axis,source:Point,target:Point} là control offsets±10000 tương đối endpointcenters, không đổi source/targetIDs; ưu tiên scalar cũ, reset activeview xóa cảhai, đổi route clear. Hai ôvuông edit2D độc lập, circle translate profile; derived orthogonal elbows giữ90độ, không tựné/dependency/pinbypass/commitpush.

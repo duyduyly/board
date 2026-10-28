@@ -1,3 +1,4 @@
+import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 import { fanoutProject } from './auto-routing-fixture.mjs';
@@ -224,7 +225,7 @@ test('mode selector restores manual corners and persists automatic choice throug
   }
   await open();
   await page.locator('[name=edge-mode]').selectOption('auto');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   await page.locator('[data-action=close]').click();
   const auto = await state(page);
   expect(auto.p.relations[0].extensions['card-atlas:edge'].modes.card).toBe('auto');
@@ -233,14 +234,14 @@ test('mode selector restores manual corners and persists automatic choice throug
   );
   await open();
   await page.locator('[name=edge-mode]').selectOption('manual');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   await page.locator('[data-action=close]').click();
   expect((await state(page)).p.relations[0].extensions['card-atlas:edge'].corners.card).toEqual(
     p.relations[0].extensions['card-atlas:edge'].corners.card,
   );
   await open();
   await page.locator('[name=edge-mode]').selectOption('auto');
-  await page.locator('#panel-body form [type=submit]').click();
+  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   await page.locator('[data-action=close]').click();
   const downloading = page.waitForEvent('download');
   await page.locator('.toolbar [data-action=export]').click();

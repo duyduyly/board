@@ -273,6 +273,11 @@ function change(mutator) {
     return false;
   }
 }
+function announceApplied(success) {
+  if (success)
+    toast('formatUpdated', { position: 'top', detail: store.notice ? 'historyLimit' : null });
+  return success;
+}
 const dateEditor = createCardDateEditor({
   current: (id) => {
     const card = projectIndex(store.project).cards.get(id);
@@ -283,11 +288,14 @@ const dateEditor = createCardDateEditor({
     if (detailOpen || draftDirty() || feedback.state || layoutPreview) return false;
     const c = projectIndex(store.project).cards.get(id);
     if (!c || isPinned(c)) return false;
-    if (value === cardDateValue(c) || (!value && !cardMetadata(c).createdDate)) return true;
-    return change((p) =>
-      setCreatedDate(
-        p.cards.find((c) => c.id === id),
-        value,
+    if (value === cardDateValue(c) || (!value && !cardMetadata(c).createdDate))
+      return announceApplied(true);
+    return announceApplied(
+      change((p) =>
+        setCreatedDate(
+          p.cards.find((c) => c.id === id),
+          value,
+        ),
       ),
     );
   },
@@ -353,12 +361,14 @@ const overviewEditor = createCardOverviewEditor({
       scheduleRecovery();
       return true;
     }
-    if (JSON.stringify(project) === JSON.stringify(store.project)) return true;
-    return change((p) => {
-      p.cards = project.cards;
-      if (project.extensions) p.extensions = project.extensions;
-      else delete p.extensions;
-    });
+    if (JSON.stringify(project) === JSON.stringify(store.project)) return announceApplied(true);
+    return announceApplied(
+      change((p) => {
+        p.cards = project.cards;
+        if (project.extensions) p.extensions = project.extensions;
+        else delete p.extensions;
+      }),
+    );
   },
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
@@ -904,7 +914,7 @@ function renderPanelContent() {
     updateStatus();
     scheduleRecovery();
   };
-  form.onsubmit = (ev) => {
+  form.onsubmit = async (ev) => {
     ev.preventDefault();
     if (
       selection.kind === 'card' &&
@@ -913,7 +923,10 @@ function renderPanelContent() {
       !fitDraftSize()
     )
       return;
-    applyDraft();
+    if (applyDraft()) {
+      await detailSurface.requestClose();
+      if (!detailOpen) announceApplied(true);
+    }
   };
   $('#cancel-draft').onclick = () => {
     beginDraft();

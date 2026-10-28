@@ -1,4 +1,5 @@
 export default {
+  formatUpdated: 'Cập nhật định dạng thành công',
   autoGuide:
     'Tự căn đường vuông: chọn auto/manual theo relation và view. Ví dụ: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Bỏ modes giữ đường thủ công/cũ. Menu dự án bật auto cho đường phù hợp, giữ đường ghim và đường đã chọn/chỉnh thủ công. Đường auto được tính từ hình học, không lưu JSON waypoints; vị trí card không đổi. Chuyển chế độ giữ góc thủ công đã lưu; Chỉnh trên Canvas chuyển sang manual. Khi card chồng nhau hoặc hết ngân sách tìm đường, trạng thái báo đường chưa có lối. Không tự layout card, không backend/dependency.',
   autoRouteAll: 'Tự căn đường nối vuông',
