@@ -1,9 +1,28 @@
 export default {
+  groupsGuide:
+    'Khung nhóm: chọn từ hai card chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển; card ghim đứng yên. Sửa nhóm để đổi tên/bỏ thành viên; Rã nhóm giữ card. Ví dụ extension của project: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Nhóm 1","cardIds":["card-1","card-2"]}]}. ID thành viên phải tồn tại; mỗi card tối đa một nhóm, không lồng nhóm.',
+  routingGuide:
+    'Đường nối: mở quan hệ và chọn Kiểu đường nối. Ví dụ extension của relation: "card-atlas:edge":{"route":"orthogonal"}. route nhận curved, straight, orthogonal hoặc zigzag. Bỏ trường này giữ kiểu đường cũ; không thay source/target hoặc chiều mũi tên.',
+  groupCreate: 'Tạo nhóm',
+  groupEdit: 'Sửa nhóm',
+  groupUngroup: 'Rã nhóm',
+  groupName: 'Tên nhóm',
+  newGroup: 'Nhóm mới',
+  groupMove: 'Kéo nhóm {title} ({count} khối)',
+  groupMoveHint:
+    'Kéo tiêu đề khung để di chuyển nhóm. Khối ghim đứng yên. Rã nhóm giữ nguyên các card.',
+  groupSelectCards: 'Chọn ít nhất hai khối để tạo nhóm.',
+  groupAlreadyAssigned: 'Khối đã thuộc nhóm khác. Bỏ khối khỏi nhóm cũ trước khi tạo nhóm mới.',
+  edgeRoute: 'Kiểu đường nối',
+  routecurved: 'Đường cong',
+  routestraight: 'Đường thẳng',
+  routeorthogonal: 'Vuông góc',
+  routezigzag: 'Gấp khúc (zigzag)',
   quickHelpTitle: 'Hướng dẫn nhanh',
   quickHelpIntro: 'Một vài thao tác để bắt đầu trên Card Map và Mind Map.',
   quickHelpSelect: 'Chọn nhiều & kéo nhóm',
   quickHelpSelectBody:
-    'Giữ Shift và bấm từng khối để chọn/bỏ chọn. Hoặc focus khối rồi nhấn Shift + Space. Kéo vùng trống trên khối đã chọn để di chuyển cả nhóm.',
+    'Giữ Shift và bấm từng khối để chọn/bỏ chọn; Shift + Space khi focus khối cũng được. Kéo khối đã chọn để di chuyển nhóm. Chọn từ hai khối chưa có nhóm rồi bấm Tạo nhóm để lưu khung có tên.',
   quickHelpMarquee: 'Quét vùng chọn',
   quickHelpMarqueeBody:
     'Giữ Shift rồi kéo vùng trống trên Canvas để chọn thêm các khối nằm trong hoặc chạm khung. Escape khi đang kéo sẽ hủy thao tác; nhấn lại để bỏ chọn.',
@@ -438,6 +457,7 @@ export default {
   templatePersonal: 'Ghi chú cá nhân',
   templateRoadmap: 'Lộ trình dự án',
   templateJournal: 'Nhật ký học tập',
+  templateShowcase: 'Bộ mẫu đầy đủ · Feature Atlas',
   continueProject: 'Tiếp tục dự án',
   noTemplates: 'Chưa có mẫu trong nhóm này.',
   retry: 'Thử lại',

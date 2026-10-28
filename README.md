@@ -1,5 +1,11 @@
 # Card Atlas — Version 1.0.0
 
+## Khung nhóm, đường nối và bộ mẫu học tập
+
+Chọn ít nhất hai card chưa thuộc nhóm → **Tạo nhóm** để đặt tên khung. Kéo thanh tên để di chuyển nhóm; card ghim đứng yên. Sửa nhóm cho phép đổi tên/bỏ thành viên; rã nhóm giữ nguyên card. Phần sửa liên kết có kiểu đường cong, thẳng, vuông góc và zigzag. Node ảnh dùng summary trên Canvas, giữ title trong Detail; node chữ hiện title và summary.
+
+Gallery → **Bộ mẫu đầy đủ** có 6 thiết kế học tập độc lập: kế hoạch ôn giãn cách, so sánh khái niệm, lời giải mẫu/tự luyện, Cornell, sơ đồ tự nhớ và nhật ký sửa lỗi. [JSON mẫu](assets/data/showcase-example.json) · [Hướng dẫn cho Agent](docs/showcase-reference.md) · [Nghiên cứu phương pháp học](docs/study-notes-research.md).
+
 **Phiên bản hiện tại: 1.0.0.** Card Atlas là trình biên tập đồ thị trực quan chạy phía trình duyệt, dùng JSON để lưu các card và quan hệ. Bạn có thể xây bản đồ kiến thức, ghi chú học tập, luồng công việc hoặc tài liệu kiến trúc hệ thống. Giao diện hỗ trợ **Tiếng Việt / English**, **Light / Dark mode**.
 
 ## Tính năng

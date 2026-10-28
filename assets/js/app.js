@@ -1,5 +1,8 @@
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
+import { EDGE } from './graph/edge-routing.js';
+import { createGroupEditor } from './ui/group-editor.js';
+import { removeGroup, createGroup, cardGroups, GROUPS } from './graph/card-groups.js';
 import { selectionLocked } from './graph/card-lock.js';
 import { moveCards } from './graph/move-cards.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
@@ -96,6 +99,20 @@ let selection = null,
 const feedback = createFeedback();
 const { toast, dialog, renderModal, finishDialog, showMessage } = feedback;
 const formatGuide = createFormatGuide({ dialog, toast });
+const editGroup = createGroupEditor({
+  dialog,
+  toast,
+  project: () => store.project,
+  onApply: (id, title, cardIds) =>
+    change((p) => {
+      if (id)
+        Object.assign(
+          p.extensions[GROUPS].groups.find((g) => g.id === id),
+          { title, cardIds },
+        );
+      else createGroup(p, { id: newId('group'), title, cardIds });
+    }),
+});
 const detailSurface = dialogSurface($('#detail-panel'), {
   onRequestClose: async () => {
     if (feedback.state || !(await guardDraft())) return;
@@ -340,6 +357,8 @@ const overviewEditor = createCardOverviewEditor({
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   select: (s, edit = false) => select(s, edit),
   selectMany: (ids) => selectMany(ids),
+  groupAction: (id, action) =>
+    action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
   groupLocked: () => adapter.callbacks.locked() || connectMode || home,
   date: (id, anchor) => {
     selectMany([id]);
@@ -430,6 +449,10 @@ function render() {
   });
   $('#selection-tools').hidden = selectedCards.size < 2;
   $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
+  const groupedCards = new Set(cardGroups(store.project).flatMap((group) => group.cardIds));
+  const createGroupButton = $('[data-action=group-create]');
+  createGroupButton.disabled = [...selectedCards].some((id) => groupedCards.has(id));
+  createGroupButton.title = t(createGroupButton.disabled ? 'groupAlreadyAssigned' : 'groupCreate');
   $('#mind-map-tools').hidden = store.activeView !== 'mind';
   $('#layout-preview-bar').hidden = !layoutPreview;
   $('#panel-body').inert = Boolean(layoutPreview);
@@ -779,7 +802,10 @@ function renderPanelContent() {
       if ((name.startsWith('node-') || name.startsWith('mind-')) && event.target !== input)
         continue;
       const value = input.value;
-      if (name === 'tags')
+      if (name === 'edge-route') {
+        draft.extensions ||= {};
+        draft.extensions[EDGE] = { route: value };
+      } else if (name === 'tags')
         draft.tags = value
           .split(',')
           .map((v) => v.trim())
@@ -1791,6 +1817,9 @@ const actions = {
   },
 
   'clear-selection': () => selectMany([]),
+  'group-create': () => {
+    if (!adapter.callbacks.groupLocked()) editGroup(null, [...selectedCards]);
+  },
   help: () => {
     if (adapter.gesturing || adapter.resizing || feedback.state) return;
     dialog('quickHelpTitle', quickHelpBody, [['close', 'cancel', true]]);

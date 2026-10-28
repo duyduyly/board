@@ -4,6 +4,7 @@ import { t } from '../i18n/index.js';
 import { labelField } from '../ui/forms.js';
 import { IMAGE_NAMESPACE } from './attachments.js';
 import { relationKind, MIND } from '../graph/mind-map.js';
+import { edgeRoute, routeTypes } from '../graph/edge-routing.js';
 export function editorFields({
   draft: d,
   kind,
@@ -110,6 +111,9 @@ export function editorFields({
         .join('') +
       '</div></details>';
   } else if (kind === 'relation') {
+    fields += labelField('edgeRoute', 'edge-route', edgeRoute(d), {
+      options: routeTypes.map((value) => ({ value, label: t('route' + value) })),
+    });
     fields += labelField('relationKind', 'mind-kind', relationKind(d), {
       options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),
     });

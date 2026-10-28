@@ -1,0 +1,2566 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Card Atlas · Design Styles",
+    "description": "6 nhóm độc lập, mỗi nhóm là một phong cách thiết kế hoàn chỉnh với mũi tên phù hợp."
+  },
+  "canvas": {
+    "zoom": 0.5,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "roadmap-intro",
+      "title": "01 · Spaced Study Plan",
+      "summary": "Lập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.",
+      "type": "Sage / Minimal",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 100,
+        "y": 120
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 32
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# 01 · Spaced Study Plan\n\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "roadmap-0",
+      "title": "Mục tiêu",
+      "summary": "Sau buổi học, tôi giải thích và áp dụng được điều gì?",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 100,
+        "y": 520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        },
+        "card-atlas:metadata": {
+          "createdAt": "2026-10-28T00:00:00.000Z",
+          "createdDate": "2026-10-20"
+        }
+      },
+      "content": "# Mục tiêu\n\nViết một mục tiêu quan sát được, ví dụ: chọn cấu trúc dữ liệu và giải thích trade-off. Chọn 3 câu hỏi kiểm tra tương ứng.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "roadmap-1",
+      "title": "Học lần đầu",
+      "summary": "Đọc một phần ngắn → ghi ý chính → tự giải thích.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 630,
+        "y": 520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        },
+        "card-atlas:metadata": {
+          "createdAt": "2026-10-28T00:00:00.000Z",
+          "createdDate": "2026-10-21"
+        }
+      },
+      "content": "# Học lần đầu\n\nVí dụ: đọc về get(index), viết một ví dụ sử dụng rồi đóng tài liệu. Không chỉ đánh dấu màu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "roadmap-2",
+      "title": "Ôn có khoảng cách",
+      "summary": "Buổi sau: trả lời câu hỏi trước khi mở ghi chú.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 1160,
+        "y": 520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        },
+        "card-atlas:metadata": {
+          "createdAt": "2026-10-28T00:00:00.000Z",
+          "createdDate": "2026-10-22"
+        }
+      },
+      "content": "# Ôn có khoảng cách\n\nTự điền ngày ôn. Nếu sai hoặc thiếu, xem lại rồi thử tiếp ở một thời điểm sau. Không có lịch tối ưu cố định cho mọi nội dung.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "roadmap-3",
+      "title": "Áp dụng mới",
+      "summary": "Dùng kiến thức vào một bài chưa làm.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 1690,
+        "y": 520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        },
+        "card-atlas:metadata": {
+          "createdAt": "2026-10-28T00:00:00.000Z",
+          "createdDate": "2026-10-23"
+        }
+      },
+      "content": "# Áp dụng mới\n\nĐổi dữ kiện hoặc ngữ cảnh, giải thích vì sao lựa chọn vẫn đúng. Nếu không giải được, quay lại câu hỏi cụ thể còn yếu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "roadmap-note",
+      "title": "KẾT THÚC / TỰ ĐÁNH GIÁ",
+      "summary": "Tôi đã trả lời được gì mà không xem? Câu nào còn sai? Lần sau tôi sẽ thử lại điều gì?",
+      "type": "Sage / Minimal",
+      "tags": [
+        "design-example",
+        "roadmap"
+      ],
+      "position": {
+        "x": 100,
+        "y": 1520
+      },
+      "size": {
+        "width": 2000,
+        "height": 140
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 22
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-intro",
+      "title": "02 · Concept & Comparison Map",
+      "summary": "Nhãn đường nối phải giải thích quan hệ. Dùng sơ đồ để hiểu, sau đó tự dựng lại khi đã đóng nguồn.",
+      "type": "Blue / Monospace",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 120
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 32
+          },
+          "summary": {
+            "fontFamily": "mono",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "mono",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# 02 · Concept & Comparison Map\n\nNhãn đường nối phải giải thích quan hệ. Dùng sơ đồ để hiểu, sau đó tự dựng lại khi đã đóng nguồn.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-0",
+      "title": "Java List",
+      "summary": "Một giao diện; nhiều cách triển khai.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 670
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Java List\n\nCâu hỏi: cùng hợp đồng List nhưng vì sao chi phí thao tác khác nhau? Phân biệt giao diện với triển khai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-1",
+      "title": "ArrayList",
+      "summary": "Mảng động · get(index) O(1).",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 3050,
+        "y": 380
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# ArrayList\n\nTruy cập theo index nhanh; chèn giữa phải dịch phần tử. Viết một ví dụ workload phù hợp.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-2",
+      "title": "LinkedList",
+      "summary": "Node liên kết · get(index) O(n).",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 3050,
+        "y": 980
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# LinkedList\n\nNối node tại iterator đã có có thể O(1); tìm node theo index vẫn tốn O(n). Không suy ra thêm/xóa luôn nhanh hơn ArrayList.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-3",
+      "title": "Chọn theo workload",
+      "summary": "Truy cập? Chèn ở đâu? Bộ nhớ?",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 3850,
+        "y": 670
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Chọn theo workload\n\nGiải thích lựa chọn cho: đọc ngẫu nhiên nhiều; duyệt tuần tự; chèn/xóa khi đã có iterator. Đo trong ngữ cảnh thực tế khi cần.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "architecture-note",
+      "title": "KẾT THÚC / TỰ ĐÁNH GIÁ",
+      "summary": "Tôi đã trả lời được gì mà không xem? Câu nào còn sai? Lần sau tôi sẽ thử lại điều gì?",
+      "type": "Blue / Monospace",
+      "tags": [
+        "design-example",
+        "architecture"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 1520
+      },
+      "size": {
+        "width": 2000,
+        "height": 140
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 22
+          },
+          "summary": {
+            "fontFamily": "mono",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "mono",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-intro",
+      "title": "03 · Worked Example → Try",
+      "summary": "Xen kẽ lời giải mẫu với bài tự làm; giảm gợi ý khi người học đã vững. Đây là tiến trình luyện tập, không phải sơ đồ trang trí.",
+      "type": "Cream / Process",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 100,
+        "y": 1820
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 32
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# 03 · Worked Example → Try\n\nXen kẽ lời giải mẫu với bài tự làm; giảm gợi ý khi người học đã vững. Đây là tiến trình luyện tập, không phải sơ đồ trang trí.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-0",
+      "title": "01 / Xem lời giải",
+      "summary": "Mở Detail: tìm phần tử lớn nhất trong [3, 1, 4].",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 100,
+        "y": 2300
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 01 / Xem lời giải\n\nKhởi tạo max=3. So sánh 1: giữ 3. So sánh 4: cập nhật 4. Kết quả 4.\n\nVì sao khởi tạo bằng phần tử đầu? Với toàn số âm, max=0 sẽ sai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-1",
+      "title": "02 / Giải thích",
+      "summary": "Tại sao phải xét từng phần tử?",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 620,
+        "y": 2300
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 02 / Giải thích\n\nBất biến: sau mỗi bước, max là giá trị lớn nhất trong phần đã xét. Thử giải thích bằng lời mình trước khi đối chiếu lời giải.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-2",
+      "title": "03 / Tự làm",
+      "summary": "Tìm max của [-8, -3, -5]. Không xem lời giải.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 1140,
+        "y": 2300
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 03 / Tự làm\n\n## Đối chiếu sau khi thử\n\nKhởi tạo -8 → gặp -3 cập nhật → gặp -5 giữ nguyên. Kết quả -3. Nếu ra 0, kiểm tra khởi tạo.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-3",
+      "title": "04 / Biến thể",
+      "summary": "Nếu mảng rỗng thì sao? Nếu có nhiều max bằng nhau?",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 1660,
+        "y": 2300
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 04 / Biến thể\n\nXác định yêu cầu trước khi code: báo lỗi hay giá trị optional cho mảng rỗng? Chỉ trả giá trị hay cả index? Quyết định này tùy bài toán, không tự bịa đặc tả.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "process-note",
+      "title": "KẾT THÚC / TỰ ĐÁNH GIÁ",
+      "summary": "Tôi đã trả lời được gì mà không xem? Câu nào còn sai? Lần sau tôi sẽ thử lại điều gì?",
+      "type": "Cream / Process",
+      "tags": [
+        "design-example",
+        "process"
+      ],
+      "position": {
+        "x": 100,
+        "y": 3220
+      },
+      "size": {
+        "width": 2000,
+        "height": 140
+      },
+      "style": {
+        "backgroundColor": "#fff0d6",
+        "textColor": "#684c26",
+        "borderColor": "#684c26"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 22
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "story-intro",
+      "title": "04 / CORNELL STUDY LAB",
+      "summary": "Ghi bằng lời mình → đóng tài liệu → tự trả lời → kiểm tra → ôn lại sau.",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 1820
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#fffdf8",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 04 / CORNELL STUDY LAB\n\nBố cục này áp dụng cấu trúc Cornell kết hợp retrieval practice và spaced practice. Không khẳng định đây là phương pháp tốt nhất cho mọi môn. Ví dụ cụ thể: phân biệt Java ArrayList và LinkedList.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "story-0",
+      "title": "01 / CÂU HỎI GỢI NHỚ",
+      "summary": "ArrayList lưu phần tử thế nào?\nLinkedList truy cập index ra sao?\nKhi nào chèn/xóa thực sự nhanh?",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 2080
+      },
+      "size": {
+        "width": 430,
+        "height": 580
+      },
+      "style": {
+        "backgroundColor": "#e9eff7",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 01 / CÂU HỎI GỢI NHỚ\n\n## Trước khi xem đáp án\n\n1. Đóng tài liệu, trả lời từng câu bằng lời của bạn.\n2. Viết một ví dụ hoặc giải thích thành tiếng.\n3. Mở card Ghi chú cốt lõi để đối chiếu.\n4. Ghi câu trả lời sai vào nhật ký lỗi.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "story-1",
+      "title": "02 / GHI CHÚ CỐT LÕI",
+      "summary": "Một ý / một dòng. Viết giải thích và ví dụ bằng lời mình.\nĐáp án minh họa nằm trong Detail; hãy tự trả lời trước khi mở.",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 2920,
+        "y": 2080
+      },
+      "size": {
+        "width": 890,
+        "height": 580
+      },
+      "style": {
+        "backgroundColor": "#fffdf8",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 02 / GHI CHÚ CỐT LÕI\n\n## ArrayList vs LinkedList\n\n| Khía cạnh | ArrayList | LinkedList |\n| --- | --- | --- |\n| Cấu trúc | Mảng động chứa tham chiếu | Các node liên kết hai chiều |\n| get(index) | O(1) | O(n) |\n| Chèn ở giữa theo index | Dịch phần tử O(n) | Tìm node O(n), nối node O(1) |\n\n**Ví dụ:** đọc phần tử ngẫu nhiên nhiều thường nghiêng về ArrayList. Không kết luận LinkedList luôn nhanh hơn khi thêm/xóa: phải tính cả chi phí tìm vị trí và ngữ cảnh sử dụng.\n\nĐây là ghi chú mẫu; khi học thực tế hãy bổ sung nguồn của bài học.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "story-2",
+      "title": "03 / TỰ KIỂM TRA",
+      "summary": "Không nhìn ghi chú:\nGiải thích cho người mới trong 60 giây.\nTạo một tình huống chọn sai cấu trúc.\nChỉ mở đáp án sau khi đã thử.",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 3900,
+        "y": 2080
+      },
+      "size": {
+        "width": 500,
+        "height": 580
+      },
+      "style": {
+        "backgroundColor": "#fffdf8",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 03 / TỰ KIỂM TRA\n\n## Mini quiz\n\n1. Cần get(i) nhiều: bạn ưu tiên gì và vì sao?\n2. LinkedList.add(index,x) có luôn O(1)?\n3. Chỉ biết Big-O đã đủ để chọn cấu trúc chưa?\n\n## Đối chiếu sau khi trả lời\n\n1. Thường là ArrayList: truy cập index O(1).\n2. Không, tìm vị trí theo index có thể O(n).\n3. Chưa: cần xem cách truy cập, bộ nhớ và workload.\n\nĐánh dấu: Đúng / Thiếu / Sai; viết lại lời giải cho câu sai.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "story-3",
+      "title": "04 / ÔN CÁCH QUÃNG",
+      "summary": "Lần sau: trả lời lại trước khi đọc.\nVí dụ lịch khởi đầu: ngày 1 → 3 → 7; rút ngắn nếu hay quên, giãn ra nếu nhớ tốt.",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 2770
+      },
+      "size": {
+        "width": 2000,
+        "height": 210
+      },
+      "style": {
+        "backgroundColor": "#fffdf8",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# 04 / ÔN CÁCH QUÃNG\n\n## Nhật ký ôn\n\n| Lần | Ngày dự kiến | Kết quả | Câu còn sai |\n| --- | --- | --- | --- |\n| 1 | Tự điền | | |\n| 2 | Tự điền | | |\n| 3 | Tự điền | | |\n\nLịch 1–3–7 chỉ là ví dụ thực hành, không phải khoảng cách tối ưu được chứng minh cho mọi người. Chọn khoảng cách theo độ khó, mức nhớ và ngày cần sử dụng. Đây là bảng ghi thủ công, app không tự nhắc lịch.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "story-note",
+      "title": "TÓM TẮT BẰNG LỜI MÌNH",
+      "summary": "Sau khi đóng tài liệu: viết 2–3 câu về điều đã hiểu, một lỗi đã sửa và một câu hỏi còn mở.",
+      "type": "Cornell · Recall · Review",
+      "tags": [
+        "design-example",
+        "story"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 3100
+      },
+      "size": {
+        "width": 2000,
+        "height": 200
+      },
+      "style": {
+        "backgroundColor": "#fffdf8",
+        "textColor": "#25364a",
+        "borderColor": "#93a5ba"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# TÓM TẮT BẰNG LỜI MÌNH\n\n## Tự tổng kết\n\n- Ý chính tôi giải thích được: …\n- Tôi từng nhầm …; nay sửa thành …\n- Tôi vẫn chưa hiểu …\n\nĐừng chỉ chép lại ghi chú. Thử nhớ trước rồi mới đối chiếu. Tóm tắt là phần kết thúc buổi học, không thay thế tự kiểm tra.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+    },
+    {
+      "id": "learning-intro",
+      "title": "05 · Closed-book Recall Map",
+      "summary": "Đóng tài liệu rồi tự điền các nhánh. Sau đó đối chiếu và đánh dấu phần thiếu; không dùng hình phức tạp để chứa chữ.",
+      "type": "Lavender / Mind Map",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 100,
+        "y": 3520
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 32
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# 05 · Closed-book Recall Map\n\nĐóng tài liệu rồi tự điền các nhánh. Sau đó đối chiếu và đánh dấu phần thiếu; không dùng hình phức tạp để chứa chữ.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-0",
+      "title": "Chủ đề cần nhớ",
+      "summary": "Điền tên bài học và một câu hỏi trung tâm.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 900,
+        "y": 4070
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Chủ đề cần nhớ\n\nTrước khi bắt đầu: đóng ghi chú, đặt thời gian ngắn vừa sức. Tự dựng lại các ý, không sao chép mẫu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-1",
+      "title": "Định nghĩa?",
+      "summary": "Giải thích bằng lời mình, tránh đọc thuộc câu chữ.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 100,
+        "y": 3760
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Định nghĩa?\n\nTự điền: khái niệm là gì? Có đặc điểm nào bắt buộc?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-2",
+      "title": "Ví dụ?",
+      "summary": "Đưa một ví dụ và một phản ví dụ.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 1600,
+        "y": 3760
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Ví dụ?\n\nTự điền: ví dụ nào thỏa định nghĩa? Trường hợp gần giống nhưng không thỏa là gì?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-3",
+      "title": "Vì sao / khi nào?",
+      "summary": "Nêu quan hệ nguyên nhân hoặc điều kiện áp dụng.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 100,
+        "y": 4520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Vì sao / khi nào?\n\nTự điền: khi nào dùng được? Khi nào không? Có giả định nào cần kiểm tra?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-4",
+      "title": "Còn thiếu gì?",
+      "summary": "Mở nguồn, sửa lỗi rồi hẹn một lần thử lại.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 1600,
+        "y": 4520
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Còn thiếu gì?\n\nGhi rõ điều thiếu hoặc sai và cách sửa. Lần ôn sau trả lời lại từ trí nhớ. Không tự đánh giá chỉ dựa trên cảm giác quen mắt.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "learning-note",
+      "title": "KẾT THÚC / TỰ ĐÁNH GIÁ",
+      "summary": "Tôi đã trả lời được gì mà không xem? Câu nào còn sai? Lần sau tôi sẽ thử lại điều gì?",
+      "type": "Lavender / Mind Map",
+      "tags": [
+        "design-example",
+        "learning"
+      ],
+      "position": {
+        "x": 100,
+        "y": 4920
+      },
+      "size": {
+        "width": 2000,
+        "height": 140
+      },
+      "style": {
+        "backgroundColor": "#eae5f7",
+        "textColor": "#49366f",
+        "borderColor": "#49366f"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 22
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-intro",
+      "title": "06 · Mistake → Feedback → Retry",
+      "summary": "Biến lỗi thành câu hỏi để thử lại. Zigzag diễn tả các vòng sửa; lịch sử lỗi ghi thủ công, không tự chấm điểm.",
+      "type": "Teal / Energetic",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 3520
+      },
+      "size": {
+        "width": 2000,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 32
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# 06 · Mistake → Feedback → Retry\n\nBiến lỗi thành câu hỏi để thử lại. Zigzag diễn tả các vòng sửa; lịch sử lỗi ghi thủ công, không tự chấm điểm.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-0",
+      "title": "Bài đã thử",
+      "summary": "Ghi đề và câu trả lời ban đầu; đừng xóa dấu vết lỗi.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 3870
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        },
+        "card-atlas:metadata": {
+          "pinned": true,
+          "createdAt": "2026-10-28T00:00:00.000Z"
+        }
+      },
+      "content": "# Bài đã thử\n\nVí dụ: tìm max của mảng số âm, nhưng kết quả ban đầu là 0. Card được ghim như đề gốc; bỏ ghim nếu cần sửa.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-1",
+      "title": "Phân tích lỗi",
+      "summary": "Sai ở bước nào? Do thiếu hiểu hay do thao tác?",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 2930,
+        "y": 4320
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Phân tích lỗi\n\nVí dụ: khởi tạo max=0 thay vì phần tử đầu. Viết lý do lỗi xảy ra và một cách nhận ra lỗi tương tự.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-2",
+      "title": "Phản hồi / sửa",
+      "summary": "Đối chiếu lời giải, giải thích vì sao cách sửa đúng.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 3460,
+        "y": 3870
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Phản hồi / sửa\n\nVí dụ: với mảng không rỗng, khởi tạo từ phần tử đầu rồi duyệt phần còn lại. Ghi nguồn đáp án hoặc hỏi người hướng dẫn nếu chưa chắc.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-3",
+      "title": "Thử lại sau",
+      "summary": "Làm biến thể không nhìn lời giải, ghi kết quả.",
+      "type": "Learning · Practice",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 3990,
+        "y": 4320
+      },
+      "size": {
+        "width": 420,
+        "height": 300
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 24
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 18
+          }
+        }
+      },
+      "content": "# Thử lại sau\n\nVí dụ: [-10,-2,-7]. Đáp án -2 chỉ xem sau khi làm. Tự điền ngày thử lại và kết quả; lặp nếu còn sai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    },
+    {
+      "id": "sprint-note",
+      "title": "KẾT THÚC / TỰ ĐÁNH GIÁ",
+      "summary": "Tôi đã trả lời được gì mà không xem? Câu nào còn sai? Lần sau tôi sẽ thử lại điều gì?",
+      "type": "Teal / Energetic",
+      "tags": [
+        "design-example",
+        "sprint"
+      ],
+      "position": {
+        "x": 2400,
+        "y": 4920
+      },
+      "size": {
+        "width": 2000,
+        "height": 140
+      },
+      "style": {
+        "backgroundColor": "#e3f1f2",
+        "textColor": "#245b63",
+        "borderColor": "#245b63"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 22
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      },
+      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+    }
+  ],
+  "relations": [
+    {
+      "id": "study-edge-0",
+      "source": "story-0",
+      "target": "story-1",
+      "label": "đối chiếu sau khi thử",
+      "style": {
+        "color": "#597692",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "study-edge-1",
+      "source": "story-1",
+      "target": "story-2",
+      "label": "đóng ghi chú",
+      "style": {
+        "color": "#597692",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "study-edge-2",
+      "source": "story-2",
+      "target": "story-3",
+      "label": "ôn lại sau",
+      "style": {
+        "color": "#597692",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "roadmap-study-0",
+      "source": "roadmap-0",
+      "target": "roadmap-1",
+      "label": "tiếp tục",
+      "style": {
+        "color": "#255c49",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "roadmap-study-1",
+      "source": "roadmap-1",
+      "target": "roadmap-2",
+      "label": "tự thử",
+      "style": {
+        "color": "#255c49",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "roadmap-study-2",
+      "source": "roadmap-2",
+      "target": "roadmap-3",
+      "label": "kiểm chứng",
+      "style": {
+        "color": "#255c49",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "architecture-study-0",
+      "source": "architecture-0",
+      "target": "architecture-1",
+      "label": "triển khai bởi",
+      "style": {
+        "color": "#254a7a",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "architecture-study-1",
+      "source": "architecture-0",
+      "target": "architecture-2",
+      "label": "triển khai bởi",
+      "style": {
+        "color": "#254a7a",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "architecture-study-2",
+      "source": "architecture-1",
+      "target": "architecture-3",
+      "label": "cân nhắc",
+      "style": {
+        "color": "#254a7a",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "architecture-study-3",
+      "source": "architecture-2",
+      "target": "architecture-3",
+      "label": "cân nhắc",
+      "style": {
+        "color": "#254a7a",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        },
+        "card-atlas:mind-map": {
+          "kind": "reference"
+        }
+      }
+    },
+    {
+      "id": "process-study-0",
+      "source": "process-0",
+      "target": "process-1",
+      "label": "tiếp tục",
+      "style": {
+        "color": "#684c26",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "process-study-1",
+      "source": "process-1",
+      "target": "process-2",
+      "label": "tự thử",
+      "style": {
+        "color": "#684c26",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "process-study-2",
+      "source": "process-2",
+      "target": "process-3",
+      "label": "kiểm chứng",
+      "style": {
+        "color": "#684c26",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "straight"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "learning-study-0",
+      "source": "learning-0",
+      "target": "learning-1",
+      "label": "định nghĩa",
+      "style": {
+        "color": "#49366f",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "learning-study-1",
+      "source": "learning-0",
+      "target": "learning-2",
+      "label": "minh họa",
+      "style": {
+        "color": "#49366f",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "learning-study-2",
+      "source": "learning-0",
+      "target": "learning-3",
+      "label": "giải thích",
+      "style": {
+        "color": "#49366f",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "learning-study-3",
+      "source": "learning-0",
+      "target": "learning-4",
+      "label": "đối chiếu",
+      "style": {
+        "color": "#49366f",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "sprint-study-0",
+      "source": "sprint-0",
+      "target": "sprint-1",
+      "label": "tiếp tục",
+      "style": {
+        "color": "#245b63",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "zigzag"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "sprint-study-1",
+      "source": "sprint-1",
+      "target": "sprint-2",
+      "label": "tự thử",
+      "style": {
+        "color": "#245b63",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "zigzag"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "sprint-study-2",
+      "source": "sprint-2",
+      "target": "sprint-3",
+      "label": "kiểm chứng",
+      "style": {
+        "color": "#245b63",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "zigzag"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    }
+  ],
+  "extensions": {
+    "card-atlas:groups": {
+      "groups": [
+        {
+          "id": "roadmap",
+          "title": "01 · Spaced Study Plan",
+          "cardIds": [
+            "roadmap-intro",
+            "roadmap-0",
+            "roadmap-1",
+            "roadmap-2",
+            "roadmap-3",
+            "roadmap-note"
+          ]
+        },
+        {
+          "id": "architecture",
+          "title": "02 · Concept & Comparison Map",
+          "cardIds": [
+            "architecture-intro",
+            "architecture-0",
+            "architecture-1",
+            "architecture-2",
+            "architecture-3",
+            "architecture-note"
+          ]
+        },
+        {
+          "id": "process",
+          "title": "03 · Worked Example → Try",
+          "cardIds": [
+            "process-intro",
+            "process-0",
+            "process-1",
+            "process-2",
+            "process-3",
+            "process-note"
+          ]
+        },
+        {
+          "id": "story",
+          "title": "04 · Cornell Study Lab",
+          "cardIds": [
+            "story-intro",
+            "story-0",
+            "story-1",
+            "story-2",
+            "story-3",
+            "story-note"
+          ]
+        },
+        {
+          "id": "learning",
+          "title": "05 · Closed-book Recall Map",
+          "cardIds": [
+            "learning-intro",
+            "learning-0",
+            "learning-1",
+            "learning-2",
+            "learning-3",
+            "learning-4",
+            "learning-note"
+          ]
+        },
+        {
+          "id": "sprint",
+          "title": "06 · Mistake → Feedback → Retry",
+          "cardIds": [
+            "sprint-intro",
+            "sprint-0",
+            "sprint-1",
+            "sprint-2",
+            "sprint-3",
+            "sprint-note"
+          ]
+        }
+      ]
+    },
+    "card-atlas:mind-map": {
+      "rootId": "roadmap-0"
+    },
+    "card-atlas:views": {
+      "mindMap": {
+        "positions": {
+          "roadmap-intro": {
+            "x": 100,
+            "y": 120
+          },
+          "roadmap-0": {
+            "x": 100,
+            "y": 520
+          },
+          "roadmap-1": {
+            "x": 630,
+            "y": 520
+          },
+          "roadmap-2": {
+            "x": 1160,
+            "y": 520
+          },
+          "roadmap-3": {
+            "x": 1690,
+            "y": 520
+          },
+          "roadmap-note": {
+            "x": 100,
+            "y": 1520
+          },
+          "architecture-intro": {
+            "x": 2400,
+            "y": 120
+          },
+          "architecture-0": {
+            "x": 2400,
+            "y": 670
+          },
+          "architecture-1": {
+            "x": 3050,
+            "y": 380
+          },
+          "architecture-2": {
+            "x": 3050,
+            "y": 980
+          },
+          "architecture-3": {
+            "x": 3850,
+            "y": 670
+          },
+          "architecture-note": {
+            "x": 2400,
+            "y": 1520
+          },
+          "process-intro": {
+            "x": 100,
+            "y": 1820
+          },
+          "process-0": {
+            "x": 100,
+            "y": 2300
+          },
+          "process-1": {
+            "x": 620,
+            "y": 2300
+          },
+          "process-2": {
+            "x": 1140,
+            "y": 2300
+          },
+          "process-3": {
+            "x": 1660,
+            "y": 2300
+          },
+          "process-note": {
+            "x": 100,
+            "y": 3220
+          },
+          "story-intro": {
+            "x": 2400,
+            "y": 1820
+          },
+          "story-0": {
+            "x": 2400,
+            "y": 2080
+          },
+          "story-1": {
+            "x": 2920,
+            "y": 2080
+          },
+          "story-2": {
+            "x": 3900,
+            "y": 2080
+          },
+          "story-3": {
+            "x": 2400,
+            "y": 2770
+          },
+          "story-note": {
+            "x": 2400,
+            "y": 3100
+          },
+          "learning-intro": {
+            "x": 100,
+            "y": 3520
+          },
+          "learning-0": {
+            "x": 900,
+            "y": 4070
+          },
+          "learning-1": {
+            "x": 100,
+            "y": 3760
+          },
+          "learning-2": {
+            "x": 1600,
+            "y": 3760
+          },
+          "learning-3": {
+            "x": 100,
+            "y": 4520
+          },
+          "learning-4": {
+            "x": 1600,
+            "y": 4520
+          },
+          "learning-note": {
+            "x": 100,
+            "y": 4920
+          },
+          "sprint-intro": {
+            "x": 2400,
+            "y": 3520
+          },
+          "sprint-0": {
+            "x": 2400,
+            "y": 3870
+          },
+          "sprint-1": {
+            "x": 2930,
+            "y": 4320
+          },
+          "sprint-2": {
+            "x": 3460,
+            "y": 3870
+          },
+          "sprint-3": {
+            "x": 3990,
+            "y": 4320
+          },
+          "sprint-note": {
+            "x": 2400,
+            "y": 4920
+          }
+        },
+        "sizes": {
+          "roadmap-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "roadmap-0": {
+            "width": 420,
+            "height": 300
+          },
+          "roadmap-1": {
+            "width": 420,
+            "height": 300
+          },
+          "roadmap-2": {
+            "width": 420,
+            "height": 300
+          },
+          "roadmap-3": {
+            "width": 420,
+            "height": 300
+          },
+          "roadmap-note": {
+            "width": 2000,
+            "height": 140
+          },
+          "architecture-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "architecture-0": {
+            "width": 420,
+            "height": 300
+          },
+          "architecture-1": {
+            "width": 420,
+            "height": 300
+          },
+          "architecture-2": {
+            "width": 420,
+            "height": 300
+          },
+          "architecture-3": {
+            "width": 420,
+            "height": 300
+          },
+          "architecture-note": {
+            "width": 2000,
+            "height": 140
+          },
+          "process-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "process-0": {
+            "width": 420,
+            "height": 300
+          },
+          "process-1": {
+            "width": 420,
+            "height": 300
+          },
+          "process-2": {
+            "width": 420,
+            "height": 300
+          },
+          "process-3": {
+            "width": 420,
+            "height": 300
+          },
+          "process-note": {
+            "width": 2000,
+            "height": 140
+          },
+          "story-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "story-0": {
+            "width": 430,
+            "height": 580
+          },
+          "story-1": {
+            "width": 890,
+            "height": 580
+          },
+          "story-2": {
+            "width": 500,
+            "height": 580
+          },
+          "story-3": {
+            "width": 2000,
+            "height": 210
+          },
+          "story-note": {
+            "width": 2000,
+            "height": 200
+          },
+          "learning-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "learning-0": {
+            "width": 420,
+            "height": 300
+          },
+          "learning-1": {
+            "width": 420,
+            "height": 300
+          },
+          "learning-2": {
+            "width": 420,
+            "height": 300
+          },
+          "learning-3": {
+            "width": 420,
+            "height": 300
+          },
+          "learning-4": {
+            "width": 420,
+            "height": 300
+          },
+          "learning-note": {
+            "width": 2000,
+            "height": 140
+          },
+          "sprint-intro": {
+            "width": 2000,
+            "height": 150
+          },
+          "sprint-0": {
+            "width": 420,
+            "height": 300
+          },
+          "sprint-1": {
+            "width": 420,
+            "height": 300
+          },
+          "sprint-2": {
+            "width": 420,
+            "height": 300
+          },
+          "sprint-3": {
+            "width": 420,
+            "height": 300
+          },
+          "sprint-note": {
+            "width": 2000,
+            "height": 140
+          }
+        },
+        "viewport": {
+          "zoom": 0.5,
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      }
+    }
+  }
+}

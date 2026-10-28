@@ -17,6 +17,8 @@ Entry vẫn là index.html ở gốc, JavaScript ESM và thư viện local trong
 
 ## Thêm tính năng
 
+E026–E028: canvas/overview chia sẻ caption: image kinds dùng summary, text dùng title+summary; compact text80px dùng compactOverview chung resize/shape/preview, measure bỏ compact clamp để Fit đúng. canvas/group-frames sở hữu DOM derived frame bounds, không là Cy compound hoặc model node; gesture dùng startGroupDrag với member IDs/capture handle. graph/card-groups giữ contract/crossrefs/cleanup/bounds; ProjectStore.remove dọn membership atomic. Group editor chỉ staging/ports, app giữ commands. card-atlas:groups typed project namespace; card-atlas:edge typed relation route namespace, validator/schema/download/type/guide đồng bộ. Không đưa renderer props hoặc session selection vào JSON, không sửa pinned invariant. Frame paint dùng node geometry hiện hành, view đổi/resize/cancel/layout giữ đồng bộ; Fit camera tính cả frame extents. Giữ một locale control toolbar.
+
 E025: một control ngôn ngữ#locale duy nhất trên toolbar cho toàn web. Popup/Detail/feedback/date/overview không sở hữu locale selector hoặc onLocale callback. UI dịch qua i18n global và syncLocale khi mở; native dialogs vẫn giữ inert/focus, chọn ngôn ngữ trước khi mở. Không đóng modal/Apply/Discard draft tự động để đổi ngôn ngữ. Test driver chỉ đóng/reopen Detail sạch qua visible controls, không bypass inert hoặc thao tác locale trong draft đang mở.
 
 1. Ghi yêu cầu và acceptance vào planning; xác định dữ liệu thuộc model hay session, chốt namespace trước khi code.

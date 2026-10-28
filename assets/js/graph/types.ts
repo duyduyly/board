@@ -2,6 +2,17 @@ export interface Point {
   x: number;
   y: number;
 }
+export interface CardGroup {
+  id: string;
+  title: string;
+  cardIds: string[];
+}
+export interface ProjectGroups {
+  groups: CardGroup[];
+}
+export interface EdgeRouting {
+  route: 'curved' | 'straight' | 'orthogonal' | 'zigzag';
+}
 export interface Card {
   id: string;
   title: string;

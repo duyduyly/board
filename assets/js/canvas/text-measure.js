@@ -7,7 +7,7 @@ export function measureOverview(card, preview, view) {
   const a = appearance(card),
     clone = preview.cloneNode(true);
   clone.classList.add('overview-measure');
-  clone.classList.remove('shaped-node');
+  clone.classList.remove('shaped-node', 'compact-summary');
   const content = clone.querySelector('.shape-content');
   if (content) {
     clone.replaceChildren(...content.children);
@@ -32,7 +32,7 @@ export function measureOverview(card, preview, view) {
         cache.set(width, result);
         return result;
       },
-      { imageOnly: nodeStyle(card).kind === 'image', radius: a.radius },
+      { imageOnly: nodeStyle(card).kind === 'image' && !card.summary, radius: a.radius },
     );
   } finally {
     clone.remove();

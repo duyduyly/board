@@ -38,6 +38,47 @@
         "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
       },
       "properties": {
+        "card-atlas:groups": {
+          "type": "object",
+          "properties": {
+            "groups": {
+              "type": "array",
+              "maxItems": 250,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "title": {
+                    "type": "string",
+                    "pattern": "\\S",
+                    "maxLength": 120
+                  },
+                  "cardIds": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 500,
+                    "uniqueItems": true,
+                    "items": {
+                      "$ref": "#/$defs/id"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "title",
+                  "cardIds"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "groups"
+          ],
+          "additionalProperties": false
+        },
         "card-atlas:views": {
           "type": "object",
           "properties": {
@@ -418,6 +459,23 @@
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*:.+$"
           },
           "properties": {
+            "card-atlas:edge": {
+              "type": "object",
+              "properties": {
+                "route": {
+                  "enum": [
+                    "curved",
+                    "straight",
+                    "orthogonal",
+                    "zigzag"
+                  ]
+                }
+              },
+              "required": [
+                "route"
+              ],
+              "additionalProperties": false
+            },
             "card-atlas:mind-map": {
               "type": "object",
               "properties": {

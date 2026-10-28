@@ -233,6 +233,29 @@ schema.$defs.mindView = object({
 });
 const extensions = (properties) => ({ ...schema.$defs.extensions, properties });
 schema.properties.extensions = extensions({
+  'card-atlas:groups': object(
+    {
+      groups: {
+        type: 'array',
+        maxItems: 250,
+        items: object(
+          {
+            id: { $ref: '#/$defs/id' },
+            title: { type: 'string', pattern: '\\S', maxLength: 120 },
+            cardIds: {
+              type: 'array',
+              minItems: 1,
+              maxItems: 500,
+              uniqueItems: true,
+              items: { $ref: '#/$defs/id' },
+            },
+          },
+          ['id', 'title', 'cardIds'],
+        ),
+      },
+    },
+    ['groups'],
+  ),
   'card-atlas:views': object({ mindMap: { $ref: '#/$defs/mindView' } }),
   'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
 });
@@ -288,6 +311,9 @@ schema.$defs.card.properties.extensions = extensions({
   }),
 });
 schema.$defs.relation.properties.extensions = extensions({
+  'card-atlas:edge': object({ route: { enum: ['curved', 'straight', 'orthogonal', 'zigzag'] } }, [
+    'route',
+  ]),
   'card-atlas:mind-map': object(
     { kind: { enum: ['branch', 'reference'] }, color: { $ref: '#/$defs/color' } },
     ['kind'],

@@ -17,9 +17,10 @@ export async function expectDraftTitle(page, value) {
   expect(await readDraftTitle(page)).toBe(value);
 }
 
-export async function setDraftFontSize(page, value) {
+export async function setDraftFontSize(page, value, field = 'title', text = null) {
   await page.locator('#edit-card-overview').click();
-  await page.locator('#overview-field').selectOption('title');
+  await page.locator('#overview-field').selectOption(field);
+  if (text !== null) await page.locator('#overview-text').fill(text);
   await page.locator('#overview-size').fill(value);
   await page.locator('[data-overview-apply]').click();
   await expect(page.locator('#card-overview-editor')).not.toBeVisible();

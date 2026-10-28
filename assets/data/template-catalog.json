@@ -1,5 +1,12 @@
 [
   {
+    "id": "showcase",
+    "category": "project",
+    "titleKey": "templateShowcase",
+    "path": "assets/data/showcase-example.json",
+    "preview": "assets/images/templates/showcase.svg"
+  },
+  {
     "id": "personal",
     "category": "personal",
     "titleKey": "templatePersonal",

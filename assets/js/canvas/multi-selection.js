@@ -106,15 +106,21 @@ function gesture(adapter, event, { move, finish, restore, target = adapter.regio
   window.addEventListener('blur', cancel);
 }
 
-export function startGroupDrag(adapter, event, id) {
+export function startGroupDrag(
+  adapter,
+  event,
+  id,
+  { members, target = adapter.cards.get(id) } = {},
+) {
   const { callbacks } = adapter;
   if (callbacks.groupLocked()) return false;
   event.preventDefault();
   event.stopPropagation();
-  if (!adapter.selectedCards.has(id)) callbacks.selectMany([id]);
+  if (members) callbacks.selectMany(members);
+  else if (!adapter.selectedCards.has(id)) callbacks.selectMany([id]);
   if (adapter.cards.get(id).classList.contains('pinned-card')) return true;
-  const items = [...adapter.selectedCards]
-    .filter((key) => !adapter.hiddenNodes.has(key))
+  const items = [...new Set(members || adapter.selectedCards)]
+    .filter((key) => members || !adapter.hiddenNodes.has(key))
     .map((key) => {
       const el = adapter.cards.get(key);
       const node = adapter.cy.getElementById('c:' + key);
@@ -161,6 +167,7 @@ export function startGroupDrag(adapter, event, id) {
     }
     group.remove();
     edges.removeClass('group-preview');
+    adapter.groupFrames?.paint();
   };
   let delta = { x: 0, y: 0 },
     moved = false;
@@ -171,9 +178,10 @@ export function startGroupDrag(adapter, event, id) {
         el.style.left = position.x + d.x - node.data('width') / 2 + 'px';
         el.style.top = position.y + d.y - node.data('height') / 2 + 'px';
       }
+      adapter.groupFrames?.paint();
     });
   gesture(adapter, event, {
-    target: adapter.cards.get(id),
+    target,
     move(e) {
       const p = adapter.graphPoint(e.clientX, e.clientY);
       const next = { x: p.x - start.x, y: p.y - start.y };
@@ -183,6 +191,17 @@ export function startGroupDrag(adapter, event, id) {
         if (group) {
           if (!group.style.transform) edges.addClass('group-preview');
           group.style.transform = `translate(${delta.x}px, ${delta.y}px)`;
+          adapter.groupFrames?.paint(
+            new Map(
+              items.map((item) => [
+                item.id,
+                {
+                  x: item.position.x + delta.x - item.node.data('width') / 2,
+                  y: item.position.y + delta.y - item.node.data('height') / 2,
+                },
+              ]),
+            ),
+          );
         } else {
           adapter.deferEdges();
           paint(delta);

@@ -23,6 +23,10 @@ export function createFormatGuide({ dialog, toast }) {
         '</p><p>' +
         esc(t('radialGuide')) +
         '</p><p>' +
+        esc(t('groupsGuide')) +
+        '</p><p>' +
+        esc(t('routingGuide')) +
+        '</p><p>' +
         esc(t('transferGuide')) +
         '</p><div class="guide-actions"><button id="node-example-download">' +
         esc(t('transferExample')) +
@@ -56,7 +60,9 @@ export function createFormatGuide({ dialog, toast }) {
         };
       div.querySelector('#copy-ai').onclick = async () => {
         try {
-          await navigator.clipboard.writeText(t('aiGuide'));
+          await navigator.clipboard.writeText(
+            [t('aiGuide'), t('groupsGuide'), t('routingGuide')].join('\n\n'),
+          );
           toast('copied');
         } catch {
           toast('copyFailed');

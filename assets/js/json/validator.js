@@ -1,4 +1,6 @@
 import { metadataIssues } from '../graph/card-metadata.js';
+import { routingIssues } from '../graph/edge-routing.js';
+import { groupIssues } from '../graph/card-groups.js';
 import { mindIssues, VIEWS } from '../graph/mind-map.js';
 import { appearanceIssues } from '../detail/appearance.js';
 import { imageAttachmentIssues } from '../detail/attachments.js';
@@ -77,6 +79,8 @@ export function validate(raw) {
     duplicates.add(key);
   });
   errors.push(...mindIssues(raw));
+  errors.push(...routingIssues(raw));
+  errors.push(...groupIssues(raw));
   return { errors, warnings };
 }
 export function normalize(raw) {

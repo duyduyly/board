@@ -1,9 +1,28 @@
 export default {
+  groupsGuide:
+    'Group frames: select two or more ungrouped cards, then Create group. Drag the frame title to move; pins stay fixed. Edit to rename/remove members; Ungroup keeps the cards. Example project extension: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Group 1","cardIds":["card-1","card-2"]}]}. Member IDs must exist; at most one group per card, no nesting.',
+  routingGuide:
+    'Connectors: open a relation and choose its route. Example relation extension: "card-atlas:edge":{"route":"orthogonal"}. Allowed routes: curved, straight, orthogonal, zigzag. Omit to keep legacy routing; source/target and arrow direction stay unchanged.',
+  groupCreate: 'Create group',
+  groupEdit: 'Edit group',
+  groupUngroup: 'Ungroup',
+  groupName: 'Group name',
+  newGroup: 'New group',
+  groupMove: 'Move group {title} ({count} cards)',
+  groupMoveHint:
+    'Drag the frame title to move its cards. Pins stay fixed. Ungroup keeps all cards.',
+  groupSelectCards: 'Select at least two cards to create a group.',
+  groupAlreadyAssigned: 'A card already belongs to another group. Remove it from that group first.',
+  edgeRoute: 'Connector route',
+  routecurved: 'Curved',
+  routestraight: 'Straight',
+  routeorthogonal: 'Orthogonal',
+  routezigzag: 'Zigzag',
   quickHelpTitle: 'Quick help',
   quickHelpIntro: 'A few essentials for Card Map and Mind Map.',
   quickHelpSelect: 'Select & move groups',
   quickHelpSelectBody:
-    'Hold Shift and click cards to add/remove them. Or focus a card and press Shift + Space. Drag blank space on a selected card to move the group.',
+    'Shift + click or Shift + Space on a focused card toggles selection. Drag a selected card to move the group. Select two or more ungrouped cards and choose Create group to save a named frame.',
   quickHelpMarquee: 'Select an area',
   quickHelpMarqueeBody:
     'Hold Shift and drag blank Canvas space to add cards inside or touching the rectangle. Escape during a drag cancels it; press again to clear the selection.',
@@ -442,6 +461,7 @@ export default {
   templatePersonal: 'Personal notes',
   templateRoadmap: 'Project roadmap',
   templateJournal: 'Learning journal',
+  templateShowcase: 'Complete examples · Feature Atlas',
   continueProject: 'Continue project',
   noTemplates: 'No templates in this category.',
   retry: 'Try again',

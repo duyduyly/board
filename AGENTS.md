@@ -6,6 +6,8 @@ User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP
 
 ## Mục tiêu và cấu trúc dự án
 
+E026–E028 user giao2026-10-28: ảnh trên Canvas dùng summary giữ title model/Detail, text hiện title+summary; khung có tên kéo members; routes curved/straight/orthogonal/zigzag. Đọc planning/group-captions-routing-plan.md/evidence. Groups flat project namespace card-atlas:groups, mỗi card≤1group, derived bounds không persist; move activeview/skip pins, ungroup không deletecard, delete cleanup atomic. Route ở relation card-atlas:edge, giữ legacydefault/lock/line/arrow semantics. Shared overview/shape/Fit/compact policy; không thêm locale controls/backend/dependency. Không tự commit/push theo lệnh E025 cũ đã hoàn tất.
+
 E025 user xác nhận2026-10-17: chỉ một locale selector#locale trên toolbar chính cho toàn web. Không thêm selector vào Detail/feedback/date/overview/help/tab. Popup kế thừa locale; chọn ngôn ngữ trước khi mở modal, giữ native focus/inert và draft guards. Thay yêu cầu cũ đổi locale ngay trong popup. Đọc planning/global-locale-evidence.md khi sửa. User đã yêu cầu commit thay đổi E023–E025, không push.
 
 E023 user giao2026-10-17: Shift+click/Shift+Space toggle, Shift+blankdrag marquee union visible nodes, kéo nhóm chưaghim mộtcommand activeview, pinsđứngyên. Đọc planning/multi-selection-plan.md/evidence. Selection Set session, primary Detail riêng; không JSON/recovery fields. canvas/multi-selection quản lý preview/cancel/guards, graph/move-cards pure atomic helper; giữ Mind fallback khi kéo Card. B101 bulkdelete/edge selection còn BACKLOG. Không tựcommit/push.

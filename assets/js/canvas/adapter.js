@@ -1,7 +1,9 @@
 import { overviewElement, updateCardMetadata } from './overview.js';
 import { isPinned } from '../graph/card-metadata.js';
+import { edgeRoute } from '../graph/edge-routing.js';
 import { installResize } from './resize-node.js';
 import { installMultiSelection, startGroupDrag } from './multi-selection.js';
+import { createGroupFrames } from './group-frames.js';
 import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
 import { projectIndex } from '../graph/project-index.js';
@@ -81,6 +83,19 @@ export class GraphAdapter {
         },
         { selector: 'edge.viewport-moving, edge.group-preview', style: { visibility: 'hidden' } },
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
+        { selector: 'edge.route-straight', style: { 'curve-style': 'straight' } },
+        {
+          selector: 'edge.route-orthogonal',
+          style: { 'curve-style': 'taxi', 'taxi-direction': 'auto', 'taxi-turn': '50%' },
+        },
+        {
+          selector: 'edge.route-zigzag',
+          style: {
+            'curve-style': 'segments',
+            'segment-distances': '28 -28 28',
+            'segment-weights': '0.25 0.5 0.75',
+          },
+        },
       ],
     });
     this.cy.on('viewport', () => {
@@ -99,6 +114,7 @@ export class GraphAdapter {
       if (this.space || e.button === 1) this.panStart(e);
     });
     installMultiSelection(this);
+    this.groupFrames = createGroupFrames(this);
     this.observer = new ResizeObserver(() => {
       this.cy.resize();
       this.view();
@@ -179,6 +195,7 @@ export class GraphAdapter {
         this.lastLocale = getLocale();
       }
       this.lastSelection = selection;
+      this.groupFrames.sync(project, this.hiddenNodes || new Set());
       this.view();
       return;
     }
@@ -244,6 +261,7 @@ export class GraphAdapter {
         el.replaceChildren();
         const overview = overviewElement(c, view, c.size, false);
         el.classList.toggle('paper-note', overview.classList.contains('paper-note'));
+        el.classList.toggle('compact-summary', overview.classList.contains('compact-summary'));
         el.append(...overview.children);
         for (const target of el.querySelectorAll('[data-overview-field]')) {
           target.tabIndex = 0;
@@ -439,11 +457,14 @@ export class GraphAdapter {
         );
         edge.toggleClass('mind-edge', view === 'mind');
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
+        for (const route of ['straight', 'orthogonal', 'zigzag'])
+          edge.toggleClass('route-' + route, edgeRoute(r) === route);
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
     this.lastLocale = getLocale();
     this.paintedSelection = new Set(this.selectedCards);
+    this.groupFrames.sync(project, this.hiddenNodes);
     this.view();
   }
   paintSelection(ids) {
@@ -468,6 +489,7 @@ export class GraphAdapter {
     const p = this.cy.pan(),
       z = this.cy.zoom();
     this.layer.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) scale(' + z + ')';
+    this.groupFrames?.paint();
     // Keep the full graph model; skip rasterizing offscreen DOM cards in large maps.
     const large = this.cards.size >= 200;
     const width = this.region.clientWidth,
@@ -508,6 +530,33 @@ export class GraphAdapter {
   }
   fit() {
     const visible = this.cy.elements().filter((e) => e.style('display') !== 'none');
+    const frames = this.groupFrames.bounds();
+    if (frames.length && visible.nodes().length) {
+      const b = visible.boundingBox();
+      const left = Math.min(b.x1, ...frames.map((f) => f.x)),
+        top = Math.min(b.y1, ...frames.map((f) => f.y));
+      const right = Math.max(b.x2, ...frames.map((f) => f.x + f.width)),
+        bottom = Math.max(b.y2, ...frames.map((f) => f.y + f.height));
+      const zoom = Math.min(
+        4,
+        Math.max(
+          0.1,
+          Math.min(
+            (this.region.clientWidth - 130) / (right - left),
+            (this.region.clientHeight - 130) / (bottom - top),
+          ),
+        ),
+      );
+      this.cy.viewport({
+        zoom,
+        pan: {
+          x: this.region.clientWidth / 2 - ((left + right) * zoom) / 2,
+          y: this.region.clientHeight / 2 - ((top + bottom) * zoom) / 2,
+        },
+      });
+      this.view();
+      return;
+    }
     if (visible.nodes().length) this.cy.fit(visible, 65);
     else this.cy.viewport({ zoom: 1, pan: { x: 0, y: 0 } });
     this.view();

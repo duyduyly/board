@@ -1,4 +1,5 @@
 import { stampCreated } from '../graph/card-metadata.js';
+import { cleanupGroups } from '../graph/card-groups.js';
 import { assertPinnedUnchanged } from '../graph/card-lock.js';
 import { clone } from '../common/data.js';
 import { VIEWS, MIND } from '../graph/mind-map.js';
@@ -197,6 +198,7 @@ export function newRelation(source, target) {
 export function remove(p, selection) {
   if (selection.kind === 'card') {
     p.cards = p.cards.filter((c) => c.id !== selection.id);
+    cleanupGroups(p);
     const m = p.extensions?.[VIEWS]?.mindMap;
     if (m) {
       delete m.positions?.[selection.id];

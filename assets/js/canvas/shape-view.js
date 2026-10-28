@@ -16,7 +16,7 @@ export function applyShape(el, card, size) {
   }
   el.dataset.shape = shape;
   const points = shapePoints(shape, size, a.radius),
-    area = safeArea(shape, size, 16, a.radius);
+    area = safeArea(shape, size, el.classList.contains('compact-summary') ? 8 : 16, a.radius);
   if (el.classList.contains('paper-note')) {
     area.y += 24;
     area.height = Math.max(1, area.height - 24);
@@ -32,7 +32,12 @@ export function applyShape(el, card, size) {
       )
     )
       continue;
-    if (shapes[shape].compact && child.matches('.card-kicker,.card-summary,.card-meta')) {
+    if (
+      (shapes[shape].compact && child.matches('.card-kicker,.card-meta')) ||
+      (shapes[shape].compact &&
+        child.matches('.card-summary') &&
+        !el.classList.contains('simple-node'))
+    ) {
       child.remove();
       continue;
     }

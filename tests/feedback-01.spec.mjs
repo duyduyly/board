@@ -16,7 +16,7 @@ test('gallery categories, responsive and local template assets', async ({ page }
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await expect(page.locator('.template-tile')).toHaveCount(6);
+  await expect(page.locator('.template-tile')).toHaveCount(7);
   await page.locator('#locale').selectOption('en');
   await expect(page.locator('#template-gallery h1')).toHaveText('Templates');
   await page.screenshot({ path: 'planning/design/feedback-01-gallery.png' });

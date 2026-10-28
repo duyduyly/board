@@ -3,6 +3,7 @@ import { appearance } from '../detail/appearance.js';
 import { applyShape } from './shape-view.js';
 import { t } from '../i18n/index.js';
 import { isPinned } from '../graph/card-metadata.js';
+import { compactOverview } from './overview.js';
 export function installResize(adapter, el, card, size) {
   if (isPinned(card)) return;
   const handle = document.createElement('button');
@@ -26,6 +27,7 @@ export function installResize(adapter, el, card, size) {
     handle.setPointerCapture(e.pointerId);
     el.classList.add('resizing');
     const paint = (s) => {
+      el.classList.toggle('compact-summary', compactOverview(card, s));
       el.style.width = s.width + 'px';
       el.style.height = s.height + 'px';
       node.data({ width: s.width, height: s.height });
@@ -36,6 +38,7 @@ export function installResize(adapter, el, card, size) {
           'polygon',
           points.flatMap((p) => [(p.x / s.width) * 2 - 1, (p.y / s.height) * 2 - 1]),
         );
+      adapter.groupFrames?.paint();
     };
     const cleanup = () => {
       if (finished) return;

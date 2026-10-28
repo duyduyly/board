@@ -27,6 +27,62 @@
   font-size: 12px;
   line-height: 1.65;
 }
+#group-frames-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.group-frame {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  pointer-events: none;
+}
+.group-frame[hidden] {
+  display: none;
+}
+.group-frame-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 4px 10px;
+  color: var(--ink);
+  pointer-events: auto;
+}
+.group-frame-handle {
+  flex: 1;
+  min-width: 0;
+  cursor: grab;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.group-frame-header button {
+  font-size: 10px;
+  padding: 4px 7px;
+  flex: none;
+}
+.group-members {
+  display: grid;
+  gap: 8px;
+  max-height: 220px;
+  overflow: auto;
+}
+.group-members label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.group-members input {
+  width: auto;
+}
 .group-drag-layer {
   position: absolute;
   left: 0;
@@ -319,6 +375,56 @@
 .simple-node h3 {
   margin: 0;
   flex: none;
+}
+.simple-node .card-summary {
+  flex: 0 1 auto;
+  min-height: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  padding-right: 20px;
+}
+.simple-node:not(.shaped-node) > .card-open {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+}
+.simple-node:not(.shaped-node) > .node-hierarchy-marker {
+  position: absolute;
+  left: 0;
+  bottom: -18px;
+  width: 100%;
+  text-align: center;
+}
+.simple-node .shape-content {
+  gap: 8px;
+}
+.simple-node[data-node-kind='image'],
+.simple-node[data-node-kind='image-text'],
+.simple-node[data-node-kind='image'] .shape-content,
+.simple-node[data-node-kind='image-text'] .shape-content {
+  gap: 6px;
+}
+.graph-card.compact-summary.paper-note:not(.shaped-node) {
+  padding-top: 28px;
+  padding-bottom: 6px;
+  gap: 2px;
+}
+.compact-summary .shape-content {
+  gap: 2px;
+}
+.compact-summary h3 {
+  -webkit-line-clamp: 1;
+  max-height: 1.4em;
+}
+.compact-summary .card-summary {
+  -webkit-line-clamp: 1;
+  max-height: 1.4em;
+}
+.overview-measure.simple-node .card-summary,
+.graph-card.simple-node[data-size-mode='fit'] .card-summary {
+  display: block;
+  -webkit-line-clamp: unset;
+  max-height: none !important;
 }
 .node-image-frame {
   position: relative;

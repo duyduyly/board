@@ -6,6 +6,8 @@ import { applyAppearance, appearance } from '../detail/appearance.js';
 import { applyShape } from './shape-view.js';
 import { t, getLocale } from '../i18n/index.js';
 const dateFormats = new Map();
+export const compactOverview = (card, size) =>
+  nodeStyle(card).kind === 'text' && Boolean(card.summary) && size.height < 120;
 function dateFormat() {
   const locale = getLocale();
   if (!dateFormats.has(locale))
@@ -24,13 +26,19 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   el.className = 'graph-card';
   const config = nodeStyle(card),
     simple = view === 'mind' || config.kind !== 'card';
+  el.dataset.nodeKind = config.kind;
   el.classList.toggle('simple-node', simple);
   el.classList.toggle('image-only', config.kind === 'image');
+  el.classList.toggle('compact-summary', compactOverview(card, size));
   const shape = appearance(card).shape;
   el.classList.toggle('paper-note', ['rectangle', 'rounded', 'square'].includes(shape) || !shape);
   const title = document.createElement('h3');
   title.textContent = card.title;
   title.title = card.title;
+  const summary = document.createElement('p');
+  summary.className = 'card-summary';
+  summary.textContent = card.summary;
+  summary.title = card.summary;
   if (simple) {
     if (['image', 'image-text'].includes(config.kind)) {
       const frame = document.createElement('div');
@@ -54,7 +62,8 @@ export function overviewElement(card, view, size = card.size, renderShape = true
       image.src =
         attachmentDataURL(card.extensions?.[IMAGE_NAMESPACE]?.[config.coverImageId]) || '';
     }
-    if (config.kind !== 'image') el.append(title);
+    if (!['image', 'image-text'].includes(config.kind)) el.append(title);
+    if (card.summary && config.kind !== 'card') el.append(summary);
   } else {
     const kicker = document.createElement('div');
     kicker.className = 'card-kicker';
@@ -65,9 +74,6 @@ export function overviewElement(card, view, size = card.size, renderShape = true
       badge.title = card.type;
       kicker.append(badge);
     }
-    const summary = document.createElement('p');
-    summary.className = 'card-summary';
-    summary.textContent = card.summary;
     const meta = document.createElement('div');
     meta.className = 'card-meta';
     const tags = [...new Set(card.tags)].filter((tag) => tag !== card.type);
