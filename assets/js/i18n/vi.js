@@ -1,8 +1,25 @@
 export default {
+  autoGuide:
+    'Tự căn đường vuông: chọn auto/manual theo relation và view. Ví dụ: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Bỏ modes giữ đường thủ công/cũ. Menu dự án bật auto cho đường phù hợp, giữ đường ghim và đường đã chọn/chỉnh thủ công. Đường auto được tính từ hình học, không lưu JSON waypoints; vị trí card không đổi. Chuyển chế độ giữ góc thủ công đã lưu; Chỉnh trên Canvas chuyển sang manual. Khi card chồng nhau hoặc hết ngân sách tìm đường, trạng thái báo đường chưa có lối. Không tự layout card, không backend/dependency.',
+  autoRouteAll: 'Tự căn đường nối vuông',
+  autoRouteStatus: '{count} đường tự động · giữ nguyên vị trí card',
+  autoRouteBlocked:
+    '{failed}/{count} đường chưa tìm được lối · kiểm tra card chồng nhau hoặc chuyển sang thủ công',
+  autoRouteEnabled:
+    'Đã bật tự căn đường vuông đủ điều kiện. Giữ nguyên đường ghim và đường đã chỉnh/chọn thủ công.',
+  autoRouteNoCandidates:
+    'Không có đường phù hợp mới. Đường ghim hoặc đã chỉnh/chọn thủ công được giữ nguyên.',
+  edgeMode: 'Điều khiển đường nối (view hiện tại)',
+  edgeModemanual: 'Thủ công',
+  edgeModeauto: 'Tự động né card',
+  edgeModeHelp:
+    'Tự động giữ vị trí card, tính lại đường khi card di chuyển. Thủ công khôi phục góc đã lưu; Chỉnh trên Canvas chuyển sang thủ công. Không thể bảo đảm né khi card chồng nhau.',
+  cornerGuide:
+    'Đường vuông: kéo ô vuông 1/2 theo hai chiều để chỉnh góc riêng; chấm tròn dịch cả đường. card-atlas:edge có thể thêm corners:{card:{axis:"horizontal",source:{x:120,y:-180},target:{x:-120,y:-100}}}; mind tương tự. source/target là độ lệch world-pixel của điểm điều khiển so với tâm card ở hai đầu, không đổi ID đầu nối; mỗi tọa độ trong ±10000. corners ưu tiên hơn adjustments của cùng view. Đặt lại xóa cả hai cấu hình ở view đang mở. Đây là chỉnh thủ công, không tự né vật cản.',
   groupsGuide:
     'Khung nhóm: chọn từ hai card chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển; card ghim đứng yên. Sửa nhóm để đổi tên/bỏ thành viên; Rã nhóm giữ card. Ví dụ extension của project: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Nhóm 1","cardIds":["card-1","card-2"]}]}. ID thành viên phải tồn tại; mỗi card tối đa một nhóm, không lồng nhóm.',
   routingGuide:
-    'Đường nối: mở quan hệ và chọn kiểu. Ví dụ: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. route: curved, straight, orthogonal, zigzag. adjustments tùy chọn theo view, độ lệch world-pixel từ -2000 đến 2000, dùng cho curved/orthogonal. Chọn Chỉnh đường nối trên Canvas, kéo điểm hoặc dùng phím mũi tên (Shift:10px), Đặt lại hoặc Xong. Đặt lại chỉ xóa phần chỉnh của view đang mở. Chưa tự né vật cản; quan hệ với card ghim vẫn khóa. Bỏ cấu hình giữ đường cũ.',
+    'Đường nối: mở quan hệ và chọn kiểu. Ví dụ: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. route: curved, straight, orthogonal, zigzag. adjustments tùy chọn theo view, độ lệch world-pixel từ -2000 đến 2000, dùng cho curved/orthogonal. Chọn Chỉnh đường nối trên Canvas, kéo điểm hoặc dùng phím mũi tên (Shift:10px), Đặt lại hoặc Xong. Đặt lại chỉ xóa phần chỉnh của view đang mở. Điểm kéo thuộc chế độ thủ công; chọn Tự động để né card. Quan hệ với card ghim vẫn khóa. Bỏ cấu hình giữ đường cũ.',
   groupCreate: 'Tạo nhóm',
   groupEdit: 'Sửa nhóm',
   groupUngroup: 'Rã nhóm',
@@ -461,6 +478,9 @@ export default {
     'Áp dụng bản sửa trước, rồi kéo điểm điều khiển để né các khối. Chỉnh riêng cho view đang mở.',
   edgeAdjustHint: 'Kéo điểm để chỉnh · phím mũi tên để tinh chỉnh · Escape hủy kéo',
   edgeHandle: 'Điểm điều khiển đường nối',
+  edgeCorner1: 'Góc 1: kéo để chỉnh đoạn gần card bắt đầu',
+  edgeCorner2: 'Góc 2: kéo để chỉnh đoạn gần card kết thúc',
+  edgeCornerHint: 'Kéo ô vuông 1/2 để bẻ góc né card · chấm tròn dịch cả đường · Escape hủy kéo',
   edgeReset: 'Đặt lại đường nối',
   done: 'Xong',
   templateJournal: 'Nhật ký học tập',

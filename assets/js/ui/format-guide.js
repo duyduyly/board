@@ -25,7 +25,7 @@ export function createFormatGuide({ dialog, toast }) {
         '</p><p>' +
         esc(t('groupsGuide')) +
         '</p><p>' +
-        esc(t('routingGuide')) +
+        esc(t('routingGuide') + '\n\n' + [t('cornerGuide'), t('autoGuide')].join('\n\n')) +
         '</p><p>' +
         esc(t('transferGuide')) +
         '</p><div class="guide-actions"><button id="node-example-download">' +
@@ -61,7 +61,11 @@ export function createFormatGuide({ dialog, toast }) {
       div.querySelector('#copy-ai').onclick = async () => {
         try {
           await navigator.clipboard.writeText(
-            [t('aiGuide'), t('groupsGuide'), t('routingGuide')].join('\n\n'),
+            [
+              t('aiGuide'),
+              t('groupsGuide'),
+              t('routingGuide') + '\n\n' + [t('cornerGuide'), t('autoGuide')].join('\n\n'),
+            ].join('\n\n'),
           );
           toast('copied');
         } catch {

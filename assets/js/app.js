@@ -1,6 +1,13 @@
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
-import { EDGE, setEdgeOffset } from './graph/edge-routing.js';
+import {
+  EDGE,
+  setEdgeOffset,
+  setEdgeCorners,
+  edgeMode,
+  setEdgeMode,
+} from './graph/edge-routing.js';
+import { enableAutoRoutes } from './graph/auto-routing.js';
 import { createGroupEditor } from './ui/group-editor.js';
 import { removeGroup, createGroup, cardGroups, GROUPS } from './graph/card-groups.js';
 import { selectionLocked } from './graph/card-lock.js';
@@ -355,6 +362,14 @@ const overviewEditor = createCardOverviewEditor({
   },
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
+  edgeCorners: (id, value) =>
+    change((p) =>
+      setEdgeCorners(
+        p.relations.find((r) => r.id === id),
+        store.activeView,
+        value,
+      ),
+    ),
   edgeOffset: (id, value) =>
     change((p) =>
       setEdgeOffset(
@@ -363,7 +378,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
         value,
       ),
     ),
-  select: (s, edit = false) => select(s, edit),
+  select: (s, edit = false, open = false) => select(s, edit, open),
   selectMany: (ids) => selectMany(ids),
   groupAction: (id, action) =>
     action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
@@ -814,6 +829,8 @@ function renderPanelContent() {
       if (name === 'edge-route') {
         draft.extensions ||= {};
         if (draft.extensions[EDGE]?.route !== value) draft.extensions[EDGE] = { route: value };
+      } else if (name === 'edge-mode') {
+        if (event.target === input) setEdgeMode(draft, store.activeView, value);
       } else if (name === 'tags')
         draft.tags = value
           .split(',')
@@ -1790,6 +1807,15 @@ function acceptLayout() {
   }
 }
 const actions = {
+  'auto-route-all': async () => {
+    if (home || !(await guardDraft())) return;
+    let result;
+    const ok = change((p) => {
+      result = enableAutoRoutes(p, store.activeView);
+    });
+    if (ok || result?.changed === 0)
+      toast(result.changed ? 'autoRouteEnabled' : 'autoRouteNoCandidates');
+  },
   'edge-adjust': async () => {
     if (
       selection?.kind !== 'relation' ||
@@ -1798,6 +1824,19 @@ const actions = {
     )
       return;
     const id = selection.id;
+    if (
+      edgeMode(entity(), store.activeView) === 'auto' &&
+      !change((p) =>
+        setEdgeMode(
+          p.relations.find((r) => r.id === id),
+          store.activeView,
+          'manual',
+        ),
+      )
+    )
+      return;
+    draft = null;
+    draftOriginal = null;
     detailOpen = false;
     detailSurface.close();
     render();

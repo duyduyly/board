@@ -314,10 +314,38 @@ schema.$defs.relation.properties.extensions = extensions({
   'card-atlas:edge': object(
     {
       route: { enum: ['curved', 'straight', 'orthogonal', 'zigzag'] },
+      modes: object({ card: { enum: ['auto', 'manual'] }, mind: { enum: ['auto', 'manual'] } }),
       adjustments: object({
         card: { type: 'number', minimum: -2000, maximum: 2000 },
         mind: { type: 'number', minimum: -2000, maximum: 2000 },
       }),
+      corners: object(
+        Object.fromEntries(
+          ['card', 'mind'].map((view) => [
+            view,
+            object(
+              {
+                axis: { enum: ['horizontal', 'vertical'] },
+                source: object(
+                  {
+                    x: { type: 'number', minimum: -10000, maximum: 10000 },
+                    y: { type: 'number', minimum: -10000, maximum: 10000 },
+                  },
+                  ['x', 'y'],
+                ),
+                target: object(
+                  {
+                    x: { type: 'number', minimum: -10000, maximum: 10000 },
+                    y: { type: 'number', minimum: -10000, maximum: 10000 },
+                  },
+                  ['x', 'y'],
+                ),
+              },
+              ['axis', 'source', 'target'],
+            ),
+          ]),
+        ),
+      ),
     },
     ['route'],
   ),

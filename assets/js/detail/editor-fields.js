@@ -4,7 +4,7 @@ import { t } from '../i18n/index.js';
 import { labelField } from '../ui/forms.js';
 import { IMAGE_NAMESPACE } from './attachments.js';
 import { relationKind, MIND } from '../graph/mind-map.js';
-import { edgeRoute, routeTypes } from '../graph/edge-routing.js';
+import { edgeRoute, routeTypes, edgeMode } from '../graph/edge-routing.js';
 export function editorFields({
   draft: d,
   kind,
@@ -121,6 +121,14 @@ export function editorFields({
     fields += labelField('edgeRoute', 'edge-route', edgeRoute(d), {
       options: routeTypes.map((value) => ({ value, label: t('route' + value) })),
     });
+    if (edgeRoute(d) === 'orthogonal')
+      fields +=
+        labelField('edgeMode', 'edge-mode', edgeMode(d, activeView), {
+          options: ['manual', 'auto'].map((value) => ({ value, label: t('edgeMode' + value) })),
+        }) +
+        '<p class="muted">' +
+        esc(t('edgeModeHelp')) +
+        '</p>';
     fields += labelField('relationKind', 'mind-kind', relationKind(d), {
       options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),
     });

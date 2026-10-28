@@ -2,7 +2,9 @@
 
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
-Với đường cong/vuông góc: mở quan hệ → **Chỉnh đường nối trên Canvas** → kéo điểm điều khiển để tránh card. Phím mũi tên tinh chỉnh, Shift tăng bước10px; Escape hủy lần kéo. **Đặt lại đường nối** khôi phục mặc định ở view đang mở; **Xong** kết thúc chỉnh. Card/Mind Map lưu phần chỉnh riêng trong JSON, có Undo/Redo. Đây là chỉnh thủ công; chưa tự né card và chưa hỗ trợ chỉnh self-loop/straight/zigzag.
+**Tự động né card:** mở **Menu dự án (☰) → Tự căn đường nối vuông** để bật cho các đường vuông đủ điều kiện trong view hiện tại. Card giữ vị trí; đường được tính lại sau khi kéo card, giãn điểm nối và ưu tiên các làn khác nhau. Đường đã chỉnh/chọn thủ công và liên kết với card ghim được giữ nguyên. Trong phần sửa từng quan hệ, chọn **Tự động né card / Thủ công** rồi **Áp dụng**. Chuyển về thủ công khôi phục góc bạn đã lưu; **Chỉnh đường nối trên Canvas** cũng chuyển sang thủ công. Hai view độc lập, có Undo/Redo và lưu JSON. Trạng thái góc dưới báo những đường chưa tìm được lối (ví dụ card chồng nhau); không tự di chuyển card hoặc bảo đảm mọi sơ đồ đều không giao cắt.
+
+Với đường cong/vuông góc: mở quan hệ → **Chỉnh đường nối trên Canvas**. Đường vuông có **hai ô vuông 1/2**: kéo từng ô lên/xuống/trái/phải để bẻ góc riêng, tạo đường vòng tránh card. **Chấm tròn** dịch cả đường. Các đoạn gấp vẫn vuông90độ. Phím mũi tên tinh chỉnh, Shift tăng bước10px; Escape hủy lần kéo. **Đặt lại đường nối** khôi phục mặc định ở view đang mở; **Xong** kết thúc chỉnh. Card/Mind Map lưu phần chỉnh riêng trong JSON, có Undo/Redo. Đây là chế độ thủ công; dùng Tự động nếu muốn tính đường né card. Chỉnh điểm chưa hỗ trợ self-loop/straight/zigzag.
 
 Chọn ít nhất hai card chưa thuộc nhóm → **Tạo nhóm** để đặt tên khung. Kéo thanh tên để di chuyển nhóm; card ghim đứng yên. Sửa nhóm cho phép đổi tên/bỏ thành viên; rã nhóm giữ nguyên card. Phần sửa liên kết có kiểu đường cong, thẳng, vuông góc và zigzag. Node ảnh dùng summary trên Canvas, giữ title trong Detail; node chữ hiện title và summary.
 

@@ -11,8 +11,12 @@ export interface ProjectGroups {
   groups: CardGroup[];
 }
 export interface EdgeRouting {
+  modes?: Partial<Record<'card' | 'mind', 'auto' | 'manual'>>;
   route: 'curved' | 'straight' | 'orthogonal' | 'zigzag';
   adjustments?: { card?: number; mind?: number };
+  corners?: Partial<
+    Record<'card' | 'mind', { axis: 'horizontal' | 'vertical'; source: Point; target: Point }>
+  >;
 }
 export interface Card {
   id: string;

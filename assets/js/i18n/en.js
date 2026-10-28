@@ -1,8 +1,25 @@
 export default {
+  autoGuide:
+    'Automatic orthogonal routing: select auto/manual per relation and view. Extension example: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Omitted modes retain manual/legacy behavior. The project menu enables eligible automatic routes but keeps pinned or explicitly/manual-adjusted routes. Automatic paths are derived, never JSON waypoints; card positions stay unchanged. Mode switches retain saved manual corners/adjustments. Adjust on Canvas switches to manual. Routing is bounded; overlapping cards/search limits may leave unavailable routes, shown by status. No node layout, backend or dependency.',
+  autoRouteAll: 'Auto-route orthogonal connectors',
+  autoRouteStatus: '{count} automatic routes · card positions unchanged',
+  autoRouteBlocked:
+    '{failed}/{count} routes unavailable · check overlapping cards or use manual mode',
+  autoRouteEnabled:
+    'Automatic routing enabled for eligible orthogonal edges. Pinned and manually adjusted/chosen routes were kept.',
+  autoRouteNoCandidates:
+    'No new eligible routes. Pinned and manually adjusted/chosen routes were kept.',
+  edgeMode: 'Connector control (current view)',
+  edgeModemanual: 'Manual',
+  edgeModeauto: 'Automatic obstacle avoidance',
+  edgeModeHelp:
+    'Automatic routing keeps cards in place and recalculates after moves. Manual restores saved bends; Adjust on Canvas switches to manual. Overlapping cards can prevent routing.',
+  cornerGuide:
+    'Orthogonal: drag squares1/2 in two dimensions to edit bends independently; the circle moves the whole route. card-atlas:edge may include corners:{card:{axis:"horizontal",source:{x:120,y:-180},target:{x:-120,y:-100}}}; mind works similarly. source/target are world-pixel control offsets from endpoint-card centers, not relation endpoint IDs; each coordinate is bounded to ±10000. corners takes precedence over adjustments in the same view. Reset removes both for the active view. Manual control does not automatically avoid obstacles.',
   groupsGuide:
     'Group frames: select two or more ungrouped cards, then Create group. Drag the frame title to move; pins stay fixed. Edit to rename/remove members; Ungroup keeps the cards. Example project extension: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Group 1","cardIds":["card-1","card-2"]}]}. Member IDs must exist; at most one group per card, no nesting.',
   routingGuide:
-    'Connectors: open a relation and choose its route. Example: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. Routes: curved, straight, orthogonal, zigzag. Optional per-view adjustments are world-pixel offsets from -2000 to 2000, for curved/orthogonal only. Use Adjust connector on Canvas, drag the handle or use arrow keys (Shift:10px), Reset or Done. Reset removes only the active view adjustment. No automatic obstacle avoidance; pinned incident relations stay locked. Omit to retain legacy routing.',
+    'Connectors: open a relation and choose its route. Example: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. Routes: curved, straight, orthogonal, zigzag. Optional per-view adjustments are world-pixel offsets from -2000 to 2000, for curved/orthogonal only. Use Adjust connector on Canvas, drag the handle or use arrow keys (Shift:10px), Reset or Done. Reset removes only the active view adjustment. Manual controls do not auto-route; use Automatic mode for obstacle avoidance. Pinned incident relations stay locked. Omit to retain legacy routing.',
   groupCreate: 'Create group',
   groupEdit: 'Edit group',
   groupUngroup: 'Ungroup',
@@ -465,6 +482,10 @@ export default {
     'Apply draft changes first, then drag the handle around cards. Adjustments belong to the current view.',
   edgeAdjustHint: 'Drag to adjust · arrow keys to fine tune · Escape cancels drag',
   edgeHandle: 'Connector control handle',
+  edgeCorner1: 'Corner 1: drag to adjust the source-side bend',
+  edgeCorner2: 'Corner 2: drag to adjust the target-side bend',
+  edgeCornerHint:
+    'Drag square 1/2 to bend around cards · circle moves the route · Escape cancels drag',
   edgeReset: 'Reset connector',
   done: 'Done',
   templateJournal: 'Learning journal',

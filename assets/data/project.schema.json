@@ -470,6 +470,25 @@
                     "zigzag"
                   ]
                 },
+                "modes": {
+                  "type": "object",
+                  "properties": {
+                    "card": {
+                      "enum": [
+                        "auto",
+                        "manual"
+                      ]
+                    },
+                    "mind": {
+                      "enum": [
+                        "auto",
+                        "manual"
+                      ]
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                },
                 "adjustments": {
                   "type": "object",
                   "properties": {
@@ -482,6 +501,127 @@
                       "type": "number",
                       "minimum": -2000,
                       "maximum": 2000
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                },
+                "corners": {
+                  "type": "object",
+                  "properties": {
+                    "card": {
+                      "type": "object",
+                      "properties": {
+                        "axis": {
+                          "enum": [
+                            "horizontal",
+                            "vertical"
+                          ]
+                        },
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "target": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "axis",
+                        "source",
+                        "target"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "mind": {
+                      "type": "object",
+                      "properties": {
+                        "axis": {
+                          "enum": [
+                            "horizontal",
+                            "vertical"
+                          ]
+                        },
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "target": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            },
+                            "y": {
+                              "type": "number",
+                              "minimum": -10000,
+                              "maximum": 10000
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "axis",
+                        "source",
+                        "target"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [],

@@ -2,6 +2,7 @@ import { overviewElement, updateCardMetadata } from './overview.js';
 import { isPinned } from '../graph/card-metadata.js';
 import { edgeRoute } from '../graph/edge-routing.js';
 import { createEdgeEditor, applyEdgePath } from './edge-editor.js';
+import { createAutoEdges } from './auto-edges.js';
 import { installResize } from './resize-node.js';
 import { installMultiSelection, startGroupDrag } from './multi-selection.js';
 import { createGroupFrames } from './group-frames.js';
@@ -107,8 +108,9 @@ export class GraphAdapter {
       callbacks.viewport(this.cy.zoom(), this.cy.pan());
     });
     this.edgeEditor = createEdgeEditor(this);
+    this.autoEdges = createAutoEdges(this);
     this.cy.on('tap', 'edge', (e) =>
-      callbacks.select({ kind: 'relation', id: e.target.data('appId') }),
+      callbacks.select({ kind: 'relation', id: e.target.data('appId') }, false, true),
     );
     this.cy.on('tap', (e) => {
       if (e.target === this.cy) callbacks.select(null);
@@ -200,6 +202,7 @@ export class GraphAdapter {
       }
       this.lastSelection = selection;
       this.edgeEditor.sync(project, selection);
+      this.autoEdges.sync(project, view, this.hiddenNodes || new Set());
       this.groupFrames.sync(project, this.hiddenNodes || new Set());
       this.view();
       return;
@@ -433,6 +436,7 @@ export class GraphAdapter {
           el.remove();
           this.cards.delete(id);
         }
+      const automatic = this.autoEdges.sync(project, view, this.hiddenNodes);
       for (const r of project.relations) {
         let edge = this.cy.getElementById(rid(r.id));
         const data = {
@@ -464,7 +468,7 @@ export class GraphAdapter {
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         for (const route of ['straight', 'orthogonal', 'zigzag'])
           edge.toggleClass('route-' + route, edgeRoute(r) === route);
-        applyEdgePath(edge, r, view);
+        applyEdgePath(edge, r, view, automatic.get(r.id));
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
