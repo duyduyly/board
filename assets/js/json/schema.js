@@ -311,9 +311,16 @@ schema.$defs.card.properties.extensions = extensions({
   }),
 });
 schema.$defs.relation.properties.extensions = extensions({
-  'card-atlas:edge': object({ route: { enum: ['curved', 'straight', 'orthogonal', 'zigzag'] } }, [
-    'route',
-  ]),
+  'card-atlas:edge': object(
+    {
+      route: { enum: ['curved', 'straight', 'orthogonal', 'zigzag'] },
+      adjustments: object({
+        card: { type: 'number', minimum: -2000, maximum: 2000 },
+        mind: { type: 'number', minimum: -2000, maximum: 2000 },
+      }),
+    },
+    ['route'],
+  ),
   'card-atlas:mind-map': object(
     { kind: { enum: ['branch', 'reference'] }, color: { $ref: '#/$defs/color' } },
     ['kind'],

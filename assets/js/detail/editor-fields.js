@@ -111,6 +111,13 @@ export function editorFields({
         .join('') +
       '</div></details>';
   } else if (kind === 'relation') {
+    if (d.source !== d.target && ['curved', 'orthogonal'].includes(edgeRoute(d)))
+      fields +=
+        '<button type="button" data-action="edge-adjust">' +
+        esc(t('edgeAdjust')) +
+        '</button><p class="muted">' +
+        esc(t('edgeAdjustHelp')) +
+        '</p>';
     fields += labelField('edgeRoute', 'edge-route', edgeRoute(d), {
       options: routeTypes.map((value) => ({ value, label: t('route' + value) })),
     });

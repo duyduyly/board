@@ -1,6 +1,6 @@
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
-import { EDGE } from './graph/edge-routing.js';
+import { EDGE, setEdgeOffset } from './graph/edge-routing.js';
 import { createGroupEditor } from './ui/group-editor.js';
 import { removeGroup, createGroup, cardGroups, GROUPS } from './graph/card-groups.js';
 import { selectionLocked } from './graph/card-lock.js';
@@ -355,6 +355,14 @@ const overviewEditor = createCardOverviewEditor({
   },
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
+  edgeOffset: (id, value) =>
+    change((p) =>
+      setEdgeOffset(
+        p.relations.find((r) => r.id === id),
+        store.activeView,
+        value,
+      ),
+    ),
   select: (s, edit = false) => select(s, edit),
   selectMany: (ids) => selectMany(ids),
   groupAction: (id, action) =>
@@ -405,7 +413,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       dateEditor.open ||
       overviewEditor.open ||
       adapter.gesturing ||
-      adapter.resizing,
+      adapter.resizing ||
+      adapter.edgeDragging,
     ),
 });
 function render() {
@@ -804,7 +813,7 @@ function renderPanelContent() {
       const value = input.value;
       if (name === 'edge-route') {
         draft.extensions ||= {};
-        draft.extensions[EDGE] = { route: value };
+        if (draft.extensions[EDGE]?.route !== value) draft.extensions[EDGE] = { route: value };
       } else if (name === 'tags')
         draft.tags = value
           .split(',')
@@ -1167,7 +1176,7 @@ function applyDraft() {
   return true;
 }
 async function guardDraft() {
-  if (adapter.resizing || adapter.gesturing) return false;
+  if (adapter.resizing || adapter.gesturing || adapter.edgeDragging) return false;
   if (layoutPreview) return false;
   if (!draftDirty()) return true;
   const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -1781,6 +1790,19 @@ function acceptLayout() {
   }
 }
 const actions = {
+  'edge-adjust': async () => {
+    if (
+      selection?.kind !== 'relation' ||
+      selectionLocked(store.project, selection) ||
+      !(await guardDraft())
+    )
+      return;
+    const id = selection.id;
+    detailOpen = false;
+    detailSurface.close();
+    render();
+    adapter.edgeEditor.start(id);
+  },
   home: async () => {
     if (layoutPreview) cancelLayout();
     if (feedback.state || !(await guardDraft())) return;

@@ -1,5 +1,7 @@
 # Phát triển và mở rộng Card Atlas
 
+E030: graph/edge-routing owns bounded per-view manual offsets and pure edgePath geometry. canvas/edge-editor owns session handles and preview; app port commits setEdgeOffset atomically. applyEdgePath clears only its own Cytoscape bypass properties, with scratch flag so legacy graphs skip unnecessary writes; scratch is renderer-only. Segment/control calculations use edge-distances:node-position to preserve orthogonal corners. No stored arbitrary points/CSS; rail geometry follows endpoint centers. Draft route change clears old offsets, other form fields preserve them. Pointer preview uses edgeDragging guard, capture/blur/Escape/viewport/sync rollback. Selection/view/project/layout/theme/locale render keeps editor visibility consistent; pin commit invariant unchanged.
+
 Entry vẫn là index.html ở gốc, JavaScript ESM và thư viện local trong assets/. app.js điều phối session, commands và các controller. Module nhỏ nhận dữ liệu hoặc callback rõ ràng; module cấp thấp không import ngược app.js.
 
 | Module | Trách nhiệm |

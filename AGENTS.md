@@ -6,6 +6,8 @@ User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP
 
 ## Mục tiêu và cấu trúc dự án
 
+E030 user giao chỉnh đường nối thủ công: đọc planning/manual-edge-plan.md/evidence. card-atlas:edge.adjustments optional card/mind finite offset±2000worldpx; không persist CSS/path/handles. Canvas edge-editor preview tách model, drop một command, reset activeview, Escape/capture/blur/viewport/sync rollback. Orthogonal dùng node-position segment rails giữ90độ, curved dùng unbundled-bezier; omitted giữlegacy. Không tự tránh card, không dependency, pin incident lock giữ nguyên, không tựcommit/push.
+
 E026–E028 user giao2026-10-28: ảnh trên Canvas dùng summary giữ title model/Detail, text hiện title+summary; khung có tên kéo members; routes curved/straight/orthogonal/zigzag. Đọc planning/group-captions-routing-plan.md/evidence. Groups flat project namespace card-atlas:groups, mỗi card≤1group, derived bounds không persist; move activeview/skip pins, ungroup không deletecard, delete cleanup atomic. Route ở relation card-atlas:edge, giữ legacydefault/lock/line/arrow semantics. Shared overview/shape/Fit/compact policy; không thêm locale controls/backend/dependency. Không tự commit/push theo lệnh E025 cũ đã hoàn tất.
 
 E025 user xác nhận2026-10-17: chỉ một locale selector#locale trên toolbar chính cho toàn web. Không thêm selector vào Detail/feedback/date/overview/help/tab. Popup kế thừa locale; chọn ngôn ngữ trước khi mở modal, giữ native focus/inert và draft guards. Thay yêu cầu cũ đổi locale ngay trong popup. Đọc planning/global-locale-evidence.md khi sửa. User đã yêu cầu commit thay đổi E023–E025, không push.

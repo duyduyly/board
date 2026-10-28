@@ -469,6 +469,23 @@
                     "orthogonal",
                     "zigzag"
                   ]
+                },
+                "adjustments": {
+                  "type": "object",
+                  "properties": {
+                    "card": {
+                      "type": "number",
+                      "minimum": -2000,
+                      "maximum": 2000
+                    },
+                    "mind": {
+                      "type": "number",
+                      "minimum": -2000,
+                      "maximum": 2000
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
                 }
               },
               "required": [

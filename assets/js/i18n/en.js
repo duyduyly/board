@@ -2,7 +2,7 @@ export default {
   groupsGuide:
     'Group frames: select two or more ungrouped cards, then Create group. Drag the frame title to move; pins stay fixed. Edit to rename/remove members; Ungroup keeps the cards. Example project extension: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Group 1","cardIds":["card-1","card-2"]}]}. Member IDs must exist; at most one group per card, no nesting.',
   routingGuide:
-    'Connectors: open a relation and choose its route. Example relation extension: "card-atlas:edge":{"route":"orthogonal"}. Allowed routes: curved, straight, orthogonal, zigzag. Omit to keep legacy routing; source/target and arrow direction stay unchanged.',
+    'Connectors: open a relation and choose its route. Example: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. Routes: curved, straight, orthogonal, zigzag. Optional per-view adjustments are world-pixel offsets from -2000 to 2000, for curved/orthogonal only. Use Adjust connector on Canvas, drag the handle or use arrow keys (Shift:10px), Reset or Done. Reset removes only the active view adjustment. No automatic obstacle avoidance; pinned incident relations stay locked. Omit to retain legacy routing.',
   groupCreate: 'Create group',
   groupEdit: 'Edit group',
   groupUngroup: 'Ungroup',
@@ -460,6 +460,13 @@ export default {
   categoryproject: 'Project',
   templatePersonal: 'Personal notes',
   templateRoadmap: 'Project roadmap',
+  edgeAdjust: 'Adjust connector on Canvas',
+  edgeAdjustHelp:
+    'Apply draft changes first, then drag the handle around cards. Adjustments belong to the current view.',
+  edgeAdjustHint: 'Drag to adjust · arrow keys to fine tune · Escape cancels drag',
+  edgeHandle: 'Connector control handle',
+  edgeReset: 'Reset connector',
+  done: 'Done',
   templateJournal: 'Learning journal',
   templateShowcase: 'Complete examples · Feature Atlas',
   continueProject: 'Continue project',

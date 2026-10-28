@@ -12,6 +12,7 @@ export interface ProjectGroups {
 }
 export interface EdgeRouting {
   route: 'curved' | 'straight' | 'orthogonal' | 'zigzag';
+  adjustments?: { card?: number; mind?: number };
 }
 export interface Card {
   id: string;

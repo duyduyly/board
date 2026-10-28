@@ -2,7 +2,7 @@ export default {
   groupsGuide:
     'Khung nhóm: chọn từ hai card chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển; card ghim đứng yên. Sửa nhóm để đổi tên/bỏ thành viên; Rã nhóm giữ card. Ví dụ extension của project: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Nhóm 1","cardIds":["card-1","card-2"]}]}. ID thành viên phải tồn tại; mỗi card tối đa một nhóm, không lồng nhóm.',
   routingGuide:
-    'Đường nối: mở quan hệ và chọn Kiểu đường nối. Ví dụ extension của relation: "card-atlas:edge":{"route":"orthogonal"}. route nhận curved, straight, orthogonal hoặc zigzag. Bỏ trường này giữ kiểu đường cũ; không thay source/target hoặc chiều mũi tên.',
+    'Đường nối: mở quan hệ và chọn kiểu. Ví dụ: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. route: curved, straight, orthogonal, zigzag. adjustments tùy chọn theo view, độ lệch world-pixel từ -2000 đến 2000, dùng cho curved/orthogonal. Chọn Chỉnh đường nối trên Canvas, kéo điểm hoặc dùng phím mũi tên (Shift:10px), Đặt lại hoặc Xong. Đặt lại chỉ xóa phần chỉnh của view đang mở. Chưa tự né vật cản; quan hệ với card ghim vẫn khóa. Bỏ cấu hình giữ đường cũ.',
   groupCreate: 'Tạo nhóm',
   groupEdit: 'Sửa nhóm',
   groupUngroup: 'Rã nhóm',
@@ -456,6 +456,13 @@ export default {
   categoryproject: 'Dự án',
   templatePersonal: 'Ghi chú cá nhân',
   templateRoadmap: 'Lộ trình dự án',
+  edgeAdjust: 'Chỉnh đường nối trên Canvas',
+  edgeAdjustHelp:
+    'Áp dụng bản sửa trước, rồi kéo điểm điều khiển để né các khối. Chỉnh riêng cho view đang mở.',
+  edgeAdjustHint: 'Kéo điểm để chỉnh · phím mũi tên để tinh chỉnh · Escape hủy kéo',
+  edgeHandle: 'Điểm điều khiển đường nối',
+  edgeReset: 'Đặt lại đường nối',
+  done: 'Xong',
   templateJournal: 'Nhật ký học tập',
   templateShowcase: 'Bộ mẫu đầy đủ · Feature Atlas',
   continueProject: 'Tiếp tục dự án',

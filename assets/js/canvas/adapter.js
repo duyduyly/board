@@ -1,6 +1,7 @@
 import { overviewElement, updateCardMetadata } from './overview.js';
 import { isPinned } from '../graph/card-metadata.js';
 import { edgeRoute } from '../graph/edge-routing.js';
+import { createEdgeEditor, applyEdgePath } from './edge-editor.js';
 import { installResize } from './resize-node.js';
 import { installMultiSelection, startGroupDrag } from './multi-selection.js';
 import { createGroupFrames } from './group-frames.js';
@@ -99,11 +100,13 @@ export class GraphAdapter {
       ],
     });
     this.cy.on('viewport', () => {
+      this.edgeEditor?.cancel();
       this.cancelGesture?.();
       this.deferEdges();
       this.view();
       callbacks.viewport(this.cy.zoom(), this.cy.pan());
     });
+    this.edgeEditor = createEdgeEditor(this);
     this.cy.on('tap', 'edge', (e) =>
       callbacks.select({ kind: 'relation', id: e.target.data('appId') }),
     );
@@ -122,6 +125,7 @@ export class GraphAdapter {
     this.observer.observe(region);
   }
   sync(project, selection, view = 'card', options = {}) {
+    this.edgeEditor.cancel();
     this.cancelGesture?.();
     this.cancelResize?.();
     this.selectedCards = new Set(
@@ -195,6 +199,7 @@ export class GraphAdapter {
         this.lastLocale = getLocale();
       }
       this.lastSelection = selection;
+      this.edgeEditor.sync(project, selection);
       this.groupFrames.sync(project, this.hiddenNodes || new Set());
       this.view();
       return;
@@ -459,12 +464,14 @@ export class GraphAdapter {
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         for (const route of ['straight', 'orthogonal', 'zigzag'])
           edge.toggleClass('route-' + route, edgeRoute(r) === route);
+        applyEdgePath(edge, r, view);
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
     this.lastLocale = getLocale();
     this.paintedSelection = new Set(this.selectedCards);
     this.groupFrames.sync(project, this.hiddenNodes);
+    this.edgeEditor.sync(project, selection);
     this.view();
   }
   paintSelection(ids) {
@@ -490,6 +497,7 @@ export class GraphAdapter {
       z = this.cy.zoom();
     this.layer.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) scale(' + z + ')';
     this.groupFrames?.paint();
+    this.edgeEditor?.paint();
     // Keep the full graph model; skip rasterizing offscreen DOM cards in large maps.
     const large = this.cards.size >= 200;
     const width = this.region.clientWidth,
