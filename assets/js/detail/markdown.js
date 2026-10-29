@@ -34,6 +34,30 @@ export async function renderMarkdown(
   { allowImages = false, images = {}, isCurrent = () => true } = {},
 ) {
   const renderer = new marked.Renderer();
+  if (/^ {0,3}(`{3,}|~{3,})\w/m.test(source)) {
+    try {
+      const { default: highlighter } = await import('../../vendor/highlight-entry.js');
+      if (!isCurrent()) return;
+      renderer.code = (token) => {
+        const language = (token.lang || '').trim().split(/\s+/)[0].toLowerCase();
+        if (language === 'mermaid')
+          return '<pre><code class="language-mermaid">' + escape(token.text) + '</code></pre>';
+        const supported = highlighter.getLanguage(language) && token.text.length <= 20000;
+        const content = supported
+          ? highlighter.highlight(token.text, { language, ignoreIllegals: true }).value
+          : escape(token.text);
+        return (
+          '<pre><code' +
+          (supported ? ' class="syntax-highlight"' : '') +
+          '>' +
+          content +
+          '</code></pre>'
+        );
+      };
+    } catch {
+      /* Keep the normal escaped Markdown renderer if the local module cannot load. */
+    }
+  }
   renderer.html = (token) => escape(token.text);
   renderer.image = (token) => {
     if (token.href.startsWith('attachment:')) {

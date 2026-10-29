@@ -2,6 +2,8 @@
 
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
+Khối code Markdown có tên ngôn ngữ (ví dụ mở bằng ` ```java `) được tô màu cú pháp trong phần xem nội dung và xem trước bản nháp. Hỗ trợ Java, JavaScript/TypeScript, JSON, HTML/XML, CSS, Python, SQL, Bash; không cần mạng. Code không ghi ngôn ngữ, ngôn ngữ khác hoặc khối trên 20.000 ký tự giữ văn bản thường. Mermaid vẫn là sơ đồ; nội dung code và ô soạn Markdown giữ nguyên.
+
 Trong **Thư viện mẫu → Học tập**, chọn **Learning Atlas — Khung ghi chép học tập** để mở mẫu 14 card, 9 đường nối và 2 nhóm chủ đề. Ô **Tìm mẫu** lọc theo tên, hỗ trợ tiếng Việt không dấu và kết hợp bộ lọc danh mục. File mẫu nằm tại [learning-atlas.json](assets/data/templates/learning-atlas.json).
 
 Nút **Định dạng** trên toolbar mở sidebar bên phải: **Toàn trang**, **Chữ & tags**, **Card**, **Mũi tên**. Chọn card/đường nối để chỉnh phần tương ứng; phần đọc và viết Markdown vẫn ở modal. Tab Định dạng trong Detail là lối tắt sang sidebar. Toàn trang có các lựa chọn áp dụng màu/kiểu chữ từ card mẫu, kiểu nét/màu từ mũi tên mẫu và bật né card cho đường vuông ở view hiện tại. Chỉ tác động phần tử hiện có, bỏ qua card ghim và quan hệ liên quan, một lần Undo cho mỗi lần áp dụng; không tự đổi mặc định cho card mới.

@@ -564,6 +564,55 @@ select:focus-visible,
 .markdown code {
   padding: 2px 4px;
 }
+.markdown pre code {
+  padding: 0;
+  background: transparent;
+}
+.markdown .hljs-keyword,
+.markdown .hljs-selector-tag,
+.markdown .hljs-literal {
+  color: #8240a0;
+}
+.markdown .hljs-string,
+.markdown .hljs-attr {
+  color: #226438;
+}
+.markdown .hljs-number,
+.markdown .hljs-type,
+.markdown .hljs-built_in {
+  color: #92501b;
+}
+.markdown .hljs-title,
+.markdown .hljs-name {
+  color: #1a5e9a;
+}
+.markdown .hljs-comment,
+.markdown .hljs-quote {
+  color: #657168;
+  font-style: italic;
+}
+:root[data-theme='dark'] .markdown .hljs-keyword,
+:root[data-theme='dark'] .markdown .hljs-literal,
+:root[data-theme='dark'] .markdown .hljs-selector-tag {
+  color: #d4a6f2;
+}
+:root[data-theme='dark'] .markdown .hljs-string,
+:root[data-theme='dark'] .markdown .hljs-attr {
+  color: #a4d59e;
+}
+:root[data-theme='dark'] .markdown .hljs-number,
+:root[data-theme='dark'] .markdown .hljs-type,
+:root[data-theme='dark'] .markdown .hljs-built_in {
+  color: #efbd8f;
+}
+:root[data-theme='dark'] .markdown .hljs-title,
+:root[data-theme='dark'] .markdown .hljs-name {
+  color: #98c7f5;
+}
+:root[data-theme='dark'] .markdown .hljs-comment,
+:root[data-theme='dark'] .markdown .hljs-quote {
+  color: #a0afa5;
+}
 .markdown table {
   border-collapse: collapse;
   display: block;

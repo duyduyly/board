@@ -31,3 +31,14 @@ await build({
   legalComments: 'eof',
 });
 console.log('Local vendor modules built');
+await build({
+  entryPoints: ['scripts/highlight-entry.js'],
+  outfile: 'assets/vendor/highlight-entry.js',
+  bundle: true,
+  format: 'esm',
+  minify: true,
+  platform: 'browser',
+  target: 'es2022',
+  legalComments: 'eof',
+});
+await fs.copyFile('node_modules/highlight.js/LICENSE', 'assets/vendor/highlight-LICENSE.txt');
