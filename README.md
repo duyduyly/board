@@ -2,6 +2,8 @@
 
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
+Trong **Thư viện mẫu → Học tập**, chọn **Learning Atlas — Khung ghi chép học tập** để mở mẫu 14 card, 9 đường nối và 2 nhóm chủ đề. Ô **Tìm mẫu** lọc theo tên, hỗ trợ tiếng Việt không dấu và kết hợp bộ lọc danh mục. File mẫu nằm tại [learning-atlas.json](assets/data/templates/learning-atlas.json).
+
 Nút **Định dạng** trên toolbar mở sidebar bên phải: **Toàn trang**, **Chữ & tags**, **Card**, **Mũi tên**. Chọn card/đường nối để chỉnh phần tương ứng; phần đọc và viết Markdown vẫn ở modal. Tab Định dạng trong Detail là lối tắt sang sidebar. Toàn trang có các lựa chọn áp dụng màu/kiểu chữ từ card mẫu, kiểu nét/màu từ mũi tên mẫu và bật né card cho đường vuông ở view hiện tại. Chỉ tác động phần tử hiện có, bỏ qua card ghim và quan hệ liên quan, một lần Undo cho mỗi lần áp dụng; không tự đổi mặc định cho card mới.
 
 Bấm **Áp dụng** trong phần sửa nội dung/Format/card/đường nối sẽ lưu, đóng popup và hiện thông báo nhỏ **Cập nhật định dạng thành công** ở phía trên. Nếu dữ liệu không hợp lệ hoặc Fit không thành công, popup giữ nguyên để sửa tiếp. Popup chữ trong Detail vẫn chỉ cập nhật bản nháp; bấm Áp dụng của Detail để lưu toàn bộ.

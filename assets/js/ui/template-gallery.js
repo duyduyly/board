@@ -2,7 +2,10 @@ import { t } from '../i18n/index.js';
 export function createTemplateGallery({ host, onOpen, onError }) {
   let catalog = null,
     category = 'all',
+    search = '',
     loading = false;
+  const searchable = (value) =>
+    value.toLocaleLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd');
   async function load() {
     if (loading || catalog) return;
     loading = true;
@@ -36,6 +39,21 @@ export function createTemplateGallery({ host, onOpen, onError }) {
     const intro = document.createElement('p');
     intro.className = 'gallery-intro';
     intro.textContent = t('galleryIntro');
+    const searchInput = document.createElement('input');
+    searchInput.id = 'template-search';
+    searchInput.type = 'search';
+    searchInput.placeholder = t('templateSearch');
+    searchInput.setAttribute('aria-label', t('templateSearch'));
+    searchInput.value = search;
+    searchInput.oninput = () => {
+      const start = searchInput.selectionStart,
+        end = searchInput.selectionEnd;
+      search = searchInput.value;
+      render();
+      const replacement = host.querySelector('#template-search');
+      replacement.focus({ preventScroll: true });
+      replacement.setSelectionRange(start, end);
+    };
     const nav = document.createElement('nav');
     nav.className = 'gallery-categories';
     nav.setAttribute('aria-label', t('templateCategories'));
@@ -55,7 +73,9 @@ export function createTemplateGallery({ host, onOpen, onError }) {
     grid.className = 'template-grid';
     grid.setAttribute('aria-busy', String(loading));
     for (const item of (catalog || []).filter(
-      (x) => category === 'all' || x.category === category,
+      (x) =>
+        (category === 'all' || x.category === category) &&
+        searchable(t(x.titleKey) + ' ' + x.id).includes(searchable(search.trim())),
     )) {
       const button = document.createElement('button');
       button.className = 'template-tile';
@@ -95,7 +115,7 @@ export function createTemplateGallery({ host, onOpen, onError }) {
         grid.append(retry);
       }
     }
-    host.append(title, intro, nav, grid);
+    host.append(title, intro, searchInput, nav, grid);
   }
   return { render, load };
 }

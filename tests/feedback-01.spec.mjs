@@ -17,7 +17,7 @@ test('gallery categories, responsive and local template assets', async ({ page }
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await expect(page.locator('.template-tile')).toHaveCount(7);
+  await expect(page.locator('.template-tile')).toHaveCount(8);
   await page.locator('#locale').selectOption('en');
   await expect(page.locator('#template-gallery h1')).toHaveText('Templates');
   await page.screenshot({ path: 'planning/design/feedback-01-gallery.png' });
@@ -26,7 +26,7 @@ test('gallery categories, responsive and local template assets', async ({ page }
     /px .*px .*px .*px/,
   );
   await page.locator('[data-category=learning]').click();
-  await expect(page.locator('.template-tile')).toHaveCount(2);
+  await expect(page.locator('.template-tile')).toHaveCount(3);
   await page.locator('[data-category=all]').click();
   await page.locator('#theme-toggle').click();
   await page.screenshot({ path: 'planning/design/feedback-01-gallery-dark.png' });

@@ -1,0 +1,1042 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Learning Atlas - Reusable Template",
+    "description": "Reusable topic containers with theory > concept > sub-concept > compact code examples. Replace all bracketed placeholders."
+  },
+  "canvas": {
+    "zoom": 0.5,
+    "position": {
+      "x": 70,
+      "y": 50
+    }
+  },
+  "cards": [
+    {
+      "id": "template-guide",
+      "title": "Learning Atlas - Template Guide",
+      "summary": "Copy this project, replace the placeholders, and preserve the learning hierarchy.",
+      "type": "overview",
+      "tags": [
+        "template",
+        "overview"
+      ],
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 600,
+        "height": 240
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Keep theory cards large, concepts medium, and code examples as small transparent text nodes with a monospace title. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Card Map. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory 420 x 240; concept 320 x 180; code 340 x 100. Topic heading 1900 x 150. Use a 470px column step and leave at least 30px between sibling nodes. Separate topic frames by at least 150px.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        }
+      }
+    },
+    {
+      "id": "topic-01-heading",
+      "title": "01. [Topic name]",
+      "summary": "[Topic scope and learning goals]",
+      "type": "topic",
+      "tags": [
+        "template",
+        "topic"
+      ],
+      "position": {
+        "x": 0,
+        "y": 500
+      },
+      "size": {
+        "width": 1900,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Topic name]\n\nDescribe the scope and list its theory lessons.",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 28,
+            "color": "#255c49"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-theory",
+      "title": "[Theory lesson]",
+      "summary": "[Main explanation and learning outcomes]",
+      "type": "lesson",
+      "tags": [
+        "template",
+        "lesson"
+      ],
+      "position": {
+        "x": 0,
+        "y": 950
+      },
+      "size": {
+        "width": 420,
+        "height": 240
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 23,
+            "color": "#255c49"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-concept-a",
+      "title": "[Concept A]",
+      "summary": "[Definition and key rules]",
+      "type": "concept",
+      "tags": [
+        "template",
+        "concept"
+      ],
+      "position": {
+        "x": 470,
+        "y": 760
+      },
+      "size": {
+        "width": 320,
+        "height": 180
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 12,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 18
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 13
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-example-a1",
+      "title": "[Example A1.ext]",
+      "summary": "[What this example demonstrates]",
+      "type": "code-example",
+      "tags": [
+        "template",
+        "java-example"
+      ],
+      "position": {
+        "x": 940,
+        "y": 720
+      },
+      "size": {
+        "width": 340,
+        "height": 100
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 14,
+            "color": "#255c49"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 11,
+            "color": "#255c49"
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-example-a2",
+      "title": "[Example A2.ext]",
+      "summary": "[Another case of Concept A]",
+      "type": "code-example",
+      "tags": [
+        "template",
+        "java-example"
+      ],
+      "position": {
+        "x": 940,
+        "y": 850
+      },
+      "size": {
+        "width": 340,
+        "height": 100
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Example A2]\n\n```text\n[Alternative example for Concept A]\n```",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 14,
+            "color": "#255c49"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 11,
+            "color": "#255c49"
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-concept-b",
+      "title": "[Concept B]",
+      "summary": "[Concept containing smaller subtopics]",
+      "type": "concept",
+      "tags": [
+        "template",
+        "concept"
+      ],
+      "position": {
+        "x": 470,
+        "y": 1110
+      },
+      "size": {
+        "width": 320,
+        "height": 180
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Concept B]\n\n[Overview of the concept and its subtopics.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 12,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 18
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 13
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-subconcept-b1",
+      "title": "[Sub-concept B1]",
+      "summary": "[A specific part of Concept B]",
+      "type": "concept",
+      "tags": [
+        "template",
+        "concept"
+      ],
+      "position": {
+        "x": 940,
+        "y": 1110
+      },
+      "size": {
+        "width": 320,
+        "height": 180
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Sub-concept B1]\n\n[Detailed theory extracted from Concept B.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 12,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 18
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 13
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-example-b1",
+      "title": "[Example B1.ext]",
+      "summary": "[Demonstrates Sub-concept B1]",
+      "type": "code-example",
+      "tags": [
+        "template",
+        "java-example"
+      ],
+      "position": {
+        "x": 1410,
+        "y": 1150
+      },
+      "size": {
+        "width": 340,
+        "height": 100
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Example B1]\n\n```text\n[Code for Sub-concept B1]\n```",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 14,
+            "color": "#255c49"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 11,
+            "color": "#255c49"
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-01-concept-c",
+      "title": "[Concept C - theory only]",
+      "summary": "[No separate example is required]",
+      "type": "concept",
+      "tags": [
+        "template",
+        "concept"
+      ],
+      "position": {
+        "x": 470,
+        "y": 1460
+      },
+      "size": {
+        "width": 320,
+        "height": 180
+      },
+      "style": {
+        "backgroundColor": "#e3f0e9",
+        "textColor": "#255c49",
+        "borderColor": "#255c49"
+      },
+      "content": "# [Concept C]\n\n[Theory content. Keep this card even when no code example exists.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 12,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 18
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 13
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-02-heading",
+      "title": "02. [Topic name]",
+      "summary": "[Topic scope and learning goals]",
+      "type": "topic",
+      "tags": [
+        "template",
+        "topic"
+      ],
+      "position": {
+        "x": 2350,
+        "y": 500
+      },
+      "size": {
+        "width": 1900,
+        "height": 150
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "content": "# [Topic name]\n\nDescribe the scope and list its theory lessons.",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 28,
+            "color": "#254a7a"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-02-theory",
+      "title": "[Theory lesson]",
+      "summary": "[Main explanation and learning outcomes]",
+      "type": "lesson",
+      "tags": [
+        "template",
+        "lesson"
+      ],
+      "position": {
+        "x": 2350,
+        "y": 850
+      },
+      "size": {
+        "width": 420,
+        "height": 240
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 16,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 23,
+            "color": "#254a7a"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 15
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 11
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-02-concept-a",
+      "title": "[Concept A]",
+      "summary": "[Definition and key rules]",
+      "type": "concept",
+      "tags": [
+        "template",
+        "concept"
+      ],
+      "position": {
+        "x": 2820,
+        "y": 760
+      },
+      "size": {
+        "width": 320,
+        "height": 180
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rounded",
+          "radius": 12,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "system",
+            "fontSize": 18
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 13
+          },
+          "type": {
+            "fontFamily": "system",
+            "fontSize": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "topic-02-example-a1",
+      "title": "[Example A1.ext]",
+      "summary": "[What this example demonstrates]",
+      "type": "code-example",
+      "tags": [
+        "template",
+        "java-example"
+      ],
+      "position": {
+        "x": 3290,
+        "y": 720
+      },
+      "size": {
+        "width": 340,
+        "height": 100
+      },
+      "style": {
+        "backgroundColor": "#e7effa",
+        "textColor": "#254a7a",
+        "borderColor": "#254a7a"
+      },
+      "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "text"
+        },
+        "card-atlas:appearance": {
+          "backgroundTransparent": true,
+          "borderTransparent": true,
+          "shadow": "none",
+          "align": "left",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontFamily": "mono",
+            "fontSize": 14,
+            "color": "#254a7a"
+          },
+          "summary": {
+            "fontFamily": "system",
+            "fontSize": 11,
+            "color": "#254a7a"
+          }
+        }
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "template-rel-001",
+      "source": "topic-01-theory",
+      "target": "topic-01-concept-a",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-002",
+      "source": "topic-01-concept-a",
+      "target": "topic-01-example-a1",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-003",
+      "source": "topic-01-concept-a",
+      "target": "topic-01-example-a2",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-004",
+      "source": "topic-01-theory",
+      "target": "topic-01-concept-b",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-005",
+      "source": "topic-01-concept-b",
+      "target": "topic-01-subconcept-b1",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-006",
+      "source": "topic-01-subconcept-b1",
+      "target": "topic-01-example-b1",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-007",
+      "source": "topic-01-theory",
+      "target": "topic-01-concept-c",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-008",
+      "source": "topic-02-theory",
+      "target": "topic-02-concept-a",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    },
+    {
+      "id": "template-rel-009",
+      "source": "topic-02-concept-a",
+      "target": "topic-02-example-a1",
+      "label": "",
+      "description": "",
+      "type": "hierarchy",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      },
+      "extensions": {
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        },
+        "card-atlas:edge": {
+          "route": "orthogonal"
+        }
+      }
+    }
+  ],
+  "extensions": {
+    "card-atlas:groups": {
+      "groups": [
+        {
+          "id": "topic-01-group",
+          "title": "01. [Topic name]",
+          "cardIds": [
+            "topic-01-heading",
+            "topic-01-theory",
+            "topic-01-concept-a",
+            "topic-01-example-a1",
+            "topic-01-example-a2",
+            "topic-01-concept-b",
+            "topic-01-subconcept-b1",
+            "topic-01-example-b1",
+            "topic-01-concept-c"
+          ]
+        },
+        {
+          "id": "topic-02-group",
+          "title": "02. [Topic name]",
+          "cardIds": [
+            "topic-02-heading",
+            "topic-02-theory",
+            "topic-02-concept-a",
+            "topic-02-example-a1"
+          ]
+        }
+      ]
+    },
+    "card-atlas:mind-map": {
+      "rootId": "topic-01-theory"
+    },
+    "card-atlas:views": {
+      "mindMap": {
+        "positions": {
+          "template-guide": {
+            "x": 0,
+            "y": 0
+          },
+          "topic-01-heading": {
+            "x": 0,
+            "y": 500
+          },
+          "topic-01-theory": {
+            "x": 0,
+            "y": 950
+          },
+          "topic-01-concept-a": {
+            "x": 470,
+            "y": 760
+          },
+          "topic-01-example-a1": {
+            "x": 940,
+            "y": 720
+          },
+          "topic-01-example-a2": {
+            "x": 940,
+            "y": 850
+          },
+          "topic-01-concept-b": {
+            "x": 470,
+            "y": 1110
+          },
+          "topic-01-subconcept-b1": {
+            "x": 940,
+            "y": 1110
+          },
+          "topic-01-example-b1": {
+            "x": 1410,
+            "y": 1150
+          },
+          "topic-01-concept-c": {
+            "x": 470,
+            "y": 1460
+          },
+          "topic-02-heading": {
+            "x": 2350,
+            "y": 500
+          },
+          "topic-02-theory": {
+            "x": 2350,
+            "y": 850
+          },
+          "topic-02-concept-a": {
+            "x": 2820,
+            "y": 760
+          },
+          "topic-02-example-a1": {
+            "x": 3290,
+            "y": 720
+          }
+        },
+        "sizes": {
+          "template-guide": {
+            "width": 600,
+            "height": 240
+          },
+          "topic-01-heading": {
+            "width": 1900,
+            "height": 150
+          },
+          "topic-01-theory": {
+            "width": 420,
+            "height": 240
+          },
+          "topic-01-concept-a": {
+            "width": 320,
+            "height": 180
+          },
+          "topic-01-example-a1": {
+            "width": 340,
+            "height": 100
+          },
+          "topic-01-example-a2": {
+            "width": 340,
+            "height": 100
+          },
+          "topic-01-concept-b": {
+            "width": 320,
+            "height": 180
+          },
+          "topic-01-subconcept-b1": {
+            "width": 320,
+            "height": 180
+          },
+          "topic-01-example-b1": {
+            "width": 340,
+            "height": 100
+          },
+          "topic-01-concept-c": {
+            "width": 320,
+            "height": 180
+          },
+          "topic-02-heading": {
+            "width": 1900,
+            "height": 150
+          },
+          "topic-02-theory": {
+            "width": 420,
+            "height": 240
+          },
+          "topic-02-concept-a": {
+            "width": 320,
+            "height": 180
+          },
+          "topic-02-example-a1": {
+            "width": 340,
+            "height": 100
+          }
+        },
+        "viewport": {
+          "zoom": 0.5,
+          "position": {
+            "x": 70,
+            "y": 50
+          }
+        }
+      }
+    }
+  }
+}

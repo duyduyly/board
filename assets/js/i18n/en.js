@@ -1,4 +1,6 @@
 export default {
+  templateSearch: 'Search templates…',
+  templateLearningAtlas: 'Learning Atlas — Reusable study template',
   inspectorTitle: 'Format',
   inspectorglobal: 'Page',
   inspectortext: 'Text & tags',

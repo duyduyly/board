@@ -7,6 +7,13 @@
     "preview": "assets/images/templates/showcase.svg"
   },
   {
+    "id": "learning-atlas",
+    "category": "learning",
+    "titleKey": "templateLearningAtlas",
+    "path": "assets/data/templates/learning-atlas.json",
+    "preview": "assets/images/templates/learning-atlas.svg"
+  },
+  {
     "id": "personal",
     "category": "personal",
     "titleKey": "templatePersonal",

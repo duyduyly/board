@@ -1,4 +1,6 @@
 export default {
+  templateSearch: 'Tìm mẫu…',
+  templateLearningAtlas: 'Learning Atlas — Khung ghi chép học tập',
   inspectorTitle: 'Định dạng',
   inspectorglobal: 'Toàn trang',
   inspectortext: 'Chữ & tags',
