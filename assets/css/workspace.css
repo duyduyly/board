@@ -644,3 +644,145 @@
   max-width: min(650px, calc(100vw - 24px));
   pointer-events: none;
 }
+#format-inspector {
+  position: fixed;
+  inset: 72px 0 0 auto;
+  width: min(380px, 90vw);
+  z-index: 40;
+  background: var(--surface, #fff);
+  color: var(--ink);
+  border-left: 1px solid var(--border, #dce5e1);
+  overflow: auto;
+  box-shadow: -8px 0 28px #152d2110;
+}
+#format-inspector > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+#format-inspector h2 {
+  font-size: 16px;
+  margin: 0;
+}
+#inspector-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 12px 12px;
+  border-bottom: 1px solid var(--border, #dce5e1);
+}
+#inspector-tabs button {
+  flex: 1;
+  padding: 8px 4px;
+}
+#inspector-tabs .active {
+  background: var(--accent, #28594b);
+  color: white;
+}
+#inspector-global {
+  padding: 16px;
+}
+#inspector-global p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+#inspector-global label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 18px 0;
+}
+#inspector-global .inspector-config-group {
+  min-width: 0;
+  margin: 24px 0;
+  padding: 14px 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+#inspector-global .inspector-config-group legend {
+  padding: 0 8px 0 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+#inspector-global .inspector-config-group label {
+  margin: 12px 0;
+  line-height: 1.5;
+}
+#inspector-global .bulk-typography-settings {
+  border: 0;
+  padding: 12px;
+  margin: 12px 0;
+  background: var(--soft);
+  border-radius: 8px;
+  min-width: 0;
+}
+#inspector-global .bulk-typography-settings h4 {
+  margin: 20px 0 8px;
+  font-size: 14px;
+}
+#inspector-global .bulk-typography-settings label {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  align-items: center;
+}
+#inspector-global .bulk-typography-settings input,
+#inspector-global .bulk-typography-settings select {
+  width: 100%;
+  min-width: 0;
+}
+#format-inspector .inspector-docked,
+#format-inspector #card-overview-editor {
+  position: static;
+  inset: auto;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
+  padding: 12px;
+}
+#format-inspector .inspector-docked[open] {
+  display: block;
+}
+#format-inspector .panel-header,
+#format-inspector .panel-tabs,
+#format-inspector .detail-tools {
+  display: none;
+}
+#format-inspector .panel-body {
+  overflow: visible;
+  padding: 0;
+}
+#format-inspector .format-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+#format-inspector .format-preview-pane {
+  position: static;
+  max-height: none;
+}
+#format-inspector .format-controls .colors {
+  grid-template-columns: minmax(0, 1fr);
+}
+#format-inspector .date-editor-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  padding: 12px 0;
+  z-index: 2;
+}
+#format-inspector #card-overview-editor[open] {
+  display: block;
+}
+#format-inspector .overview-style-grid {
+  grid-template-columns: 1fr;
+}
+.inspector-open #canvas-region {
+  margin-right: min(380px, 90vw);
+}

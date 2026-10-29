@@ -2,6 +2,8 @@
 
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
+Nút **Định dạng** trên toolbar mở sidebar bên phải: **Toàn trang**, **Chữ & tags**, **Card**, **Mũi tên**. Chọn card/đường nối để chỉnh phần tương ứng; phần đọc và viết Markdown vẫn ở modal. Tab Định dạng trong Detail là lối tắt sang sidebar. Toàn trang có các lựa chọn áp dụng màu/kiểu chữ từ card mẫu, kiểu nét/màu từ mũi tên mẫu và bật né card cho đường vuông ở view hiện tại. Chỉ tác động phần tử hiện có, bỏ qua card ghim và quan hệ liên quan, một lần Undo cho mỗi lần áp dụng; không tự đổi mặc định cho card mới.
+
 Bấm **Áp dụng** trong phần sửa nội dung/Format/card/đường nối sẽ lưu, đóng popup và hiện thông báo nhỏ **Cập nhật định dạng thành công** ở phía trên. Nếu dữ liệu không hợp lệ hoặc Fit không thành công, popup giữ nguyên để sửa tiếp. Popup chữ trong Detail vẫn chỉ cập nhật bản nháp; bấm Áp dụng của Detail để lưu toàn bộ.
 
 **Tự động né card:** mở **Menu dự án (☰) → Tự căn đường nối vuông** để bật cho các đường vuông đủ điều kiện trong view hiện tại. Card giữ vị trí; đường được tính lại sau khi kéo card, giãn điểm nối và ưu tiên các làn khác nhau. Đường đã chỉnh/chọn thủ công và liên kết với card ghim được giữ nguyên. Trong phần sửa từng quan hệ, chọn **Tự động né card / Thủ công** rồi **Áp dụng**. Chuyển về thủ công khôi phục góc bạn đã lưu; **Chỉnh đường nối trên Canvas** cũng chuyển sang thủ công. Hai view độc lập, có Undo/Redo và lưu JSON. Trạng thái góc dưới báo những đường chưa tìm được lối (ví dụ card chồng nhau); không tự di chuyển card hoặc bảo đảm mọi sơ đồ đều không giao cắt.

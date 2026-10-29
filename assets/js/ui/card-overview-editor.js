@@ -145,6 +145,7 @@ export function createCardOverviewEditor({
   };
   syncLocale();
   return {
+    close,
     get open() {
       return element.open;
     },
@@ -168,7 +169,7 @@ export function createCardOverviewEditor({
       error.hidden = true;
       syncLocale();
       surface.show(text);
-      anchorDialog(element, anchor);
+      if (!element.closest('#format-inspector')) anchorDialog(element, anchor);
     },
   };
 }

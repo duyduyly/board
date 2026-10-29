@@ -37,7 +37,8 @@ export function dialogSurface(element, { onRequestClose, fallback }) {
     show(initial) {
       if (element.open) return;
       trigger = document.activeElement;
-      element.showModal();
+      if (element.closest('#format-inspector')) element.show();
+      else element.showModal();
       initial?.focus({ preventScroll: true });
     },
     close() {

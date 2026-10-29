@@ -1,4 +1,20 @@
 export default {
+  inspectorTitle: 'Định dạng',
+  inspectorglobal: 'Toàn trang',
+  inspectortext: 'Chữ & tags',
+  inspectorcard: 'Card',
+  inspectoredge: 'Mũi tên',
+  inspectorGlobalHint:
+    'Áp dụng cho các phần tử hiện có; bỏ qua card ghim. Màu lấy từ card đang chọn; kiểu chữ dùng giá trị nhập bên dưới. Đường vuông áp dụng ở view hiện tại, kể cả đường đã chọn thủ công; giữ cấu hình góc để khôi phục. Không đổi vị trí, nội dung hoặc thiết lập cho card mới.',
+  inspectorBulkroutes: 'Tự động né card cho tất cả đường vuông',
+  inspectorGroupcards: 'Card',
+  inspectorGrouparrows: 'Mũi tên',
+  inspectorBulksurface: 'Đồng nhất màu nền, chữ và viền card',
+  inspectorBulktypography: 'Đồng nhất kiểu chữ tiêu đề, tóm tắt và loại',
+  inspectorTypographyHint:
+    'Nhập định dạng cho từng phần bên dưới. Chỉ đổi kiểu chữ, giữ nguyên nội dung; bỏ qua card ghim. Cỡ chữ từ 8 đến 72 px.',
+  inspectorBulkarrows: 'Đồng nhất màu, nét và đầu mũi tên theo đường đang chọn',
+  inspectorSelectCard: 'Chọn một card để lấy định dạng mẫu.',
   formatUpdated: 'Cập nhật định dạng thành công',
   autoGuide:
     'Tự căn đường vuông: chọn auto/manual theo relation và view. Ví dụ: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Bỏ modes giữ đường thủ công/cũ. Menu dự án bật auto cho đường phù hợp, giữ đường ghim và đường đã chọn/chỉnh thủ công. Đường auto được tính từ hình học, không lưu JSON waypoints; vị trí card không đổi. Chuyển chế độ giữ góc thủ công đã lưu; Chỉnh trên Canvas chuyển sang manual. Khi card chồng nhau hoặc hết ngân sách tìm đường, trạng thái báo đường chưa có lối. Không tự layout card, không backend/dependency.',

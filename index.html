@@ -16,6 +16,7 @@
         </button>
         <button id="project-name" class="project-name"></button>
         <div class="toolbar-actions">
+          <button id="open-inspector" data-i18n="inspectorTitle"></button>
           <details id="project-menu" class="project-menu">
             <summary data-i18n-title="projectMenu" aria-label="Menu dự án">
               <span aria-hidden="true">☰</span>
@@ -184,6 +185,16 @@
             <path></path>
           </svg>
         </section>
+        <aside id="format-inspector" hidden aria-labelledby="inspector-title">
+          <header>
+            <h2 id="inspector-title" data-i18n="inspectorTitle"></h2>
+            <button id="inspector-close" data-i18n-title="close">×</button>
+          </header>
+          <nav id="inspector-tabs" aria-label="Format"></nav>
+          <div id="inspector-global" hidden></div>
+          <div id="inspector-text" hidden></div>
+          <div id="inspector-fields"></div>
+        </aside>
         <dialog id="detail-panel" class="detail-panel" aria-labelledby="panel-title">
           <div class="panel-header">
             <h2 id="panel-title" tabindex="-1"></h2>

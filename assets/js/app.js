@@ -1,3 +1,4 @@
+import { createFormatInspector } from './ui/format-inspector.js';
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
 import {
@@ -133,6 +134,80 @@ const detailSurface = dialogSurface($('#detail-panel'), {
       ? adapter.cards.get(selection.id) || $('[data-action=add]')
       : $('#project-name'),
 });
+const inspector = createFormatInspector({
+  context: () => ({ kind: selection?.kind, locked: selectionLocked(store.project, selection) }),
+  guard: async () => {
+    if (overviewEditor.dirty) {
+      const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
+        ['cancel', 'cancel'],
+        ['discard', 'discard'],
+      ]);
+      if (choice !== 'discard') return false;
+    }
+    overviewEditor.close();
+    return guardDraft();
+  },
+  onTab: async (key) => {
+    detailSurface.close();
+    detailOpen = false;
+    if (key === 'text') {
+      $('#inspector-text').append($('#card-overview-editor'));
+      if (selection?.kind === 'card' && !isPinned(entity()))
+        overviewEditor.show(selection.id, $('#inspector-tabs'));
+    } else if (key === 'card' || key === 'edge') {
+      if (selection?.kind !== (key === 'card' ? 'card' : 'relation')) return;
+      detailOpen = true;
+      tab = key === 'card' ? 'format' : 'edit';
+      beginDraft();
+      renderPanel();
+    }
+  },
+  onGlobal: async (options, typographyProfile) => {
+    if (home || !(await guardDraft())) return;
+    const source = selection?.kind === 'card' ? entity() : null;
+    const edgeSource = selection?.kind === 'relation' ? entity() : null;
+    if (options.surface && !source) {
+      toast('inspectorSelectCard');
+      return;
+    }
+    if (!Object.values(options).some(Boolean)) return;
+    if (
+      change((p) => {
+        if (options.routes)
+          for (const relation of p.relations) {
+            if (
+              relation.extensions?.[EDGE]?.route === 'orthogonal' &&
+              !selectionLocked(p, { kind: 'relation', id: relation.id })
+            )
+              setEdgeMode(relation, store.activeView, 'auto');
+          }
+        if (options.surface)
+          for (const card of p.cards) {
+            if (!isPinned(card)) card.style = clone(source.style);
+          }
+        if (options.arrows && edgeSource)
+          for (const relation of p.relations) {
+            if (!selectionLocked(p, { kind: 'relation', id: relation.id }))
+              relation.style = clone(edgeSource.style);
+          }
+        if (options.typography)
+          applyUniformStyles(p, typographyProfile, store.activeView, (card) =>
+            measureOverview(
+              { ...card, size: geometry(p, card, store.activeView).size },
+              null,
+              store.activeView,
+            ),
+          );
+      })
+    ) {
+      render();
+      announceApplied(true);
+    }
+  },
+});
+$('#open-inspector').onclick = async () => {
+  await inspector.activate('global');
+};
 const gallery = createTemplateGallery({
   host: $('#template-gallery'),
   onOpen: (path) => loadExample(path),
@@ -399,6 +474,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   },
   overview: (id, anchor, field) => {
     selectMany([id]);
+    inspector.show('text');
+    $('#inspector-text').append($('#card-overview-editor'));
     overviewEditor.show(id, anchor, field);
   },
   open: async (s) => {
@@ -431,7 +508,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   collapse: (id) => toggleBranch(id),
   locked: () =>
     Boolean(
-      detailOpen ||
+      (detailOpen && !$('#detail-panel').classList.contains('inspector-docked')) ||
       draftDirty() ||
       feedback.state ||
       layoutPreview ||
@@ -443,6 +520,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     ),
 });
 function render() {
+  inspector.sync();
   $('#app').classList.toggle('home-mode', home);
   $('#home-page').hidden = !home;
   $('.workspace').hidden = home;
@@ -589,6 +667,16 @@ async function select(next, edit = false, open = false) {
   selectedCards = new Set(next?.kind === 'card' ? [next.id] : []);
   detailOpen = Boolean(next && (open || edit || next.kind === 'relation' || detailOpen));
   tab = next?.kind === 'relation' || edit || next?.kind === 'project' ? 'edit' : 'overview';
+  if (
+    !$('#format-inspector').hidden &&
+    inspector.active === 'card' &&
+    next?.kind === 'card' &&
+    !open &&
+    !edit
+  ) {
+    tab = 'format';
+    detailOpen = true;
+  }
   draft = null;
   draftOriginal = null;
   if (tab === 'edit' && entity()) beginDraft();
@@ -677,6 +765,13 @@ function renderPanelContent() {
   }
   const readOnly = selection.kind === 'card' && isPinned(e);
   if (readOnly) tab = 'overview';
+  const docked = !readOnly && (tab === 'format' || selection.kind === 'relation');
+  if (panel.open && panel.classList.contains('inspector-docked') !== docked) detailSurface.close();
+  panel.classList.toggle('inspector-docked', docked);
+  if (docked) {
+    inspector.show(selection.kind === 'relation' ? 'edge' : 'card');
+    if (panel.parentElement !== $('#inspector-fields')) $('#inspector-fields').append(panel);
+  } else if (panel.parentElement !== $('.workspace')) $('.workspace').append(panel);
   panel.classList.toggle('detail-full', expanded);
   $('#panel-title').textContent =
     selection.kind === 'project'
@@ -690,7 +785,7 @@ function renderPanelContent() {
   if (selection.kind === 'card')
     for (const mode of ['overview', 'edit', 'format']) {
       const button = document.createElement('button');
-      button.textContent = t(mode === 'format' ? 'appearanceTab' : mode);
+      button.textContent = t(mode === 'format' ? 'inspectorTitle' : mode);
       button.className = tab === mode ? 'active' : '';
       button.disabled = readOnly && mode !== 'overview';
       button.onclick = async () => {
@@ -814,8 +909,14 @@ function renderPanelContent() {
     '</form>';
   const form = body.querySelector('form');
   if ($('#edit-card-overview'))
-    $('#edit-card-overview').onclick = () =>
-      overviewEditor.show(selection.id, $('#edit-card-overview'));
+    $('#edit-card-overview').onclick = async () => {
+      if (!(await guardDraft())) return;
+      detailSurface.close();
+      detailOpen = false;
+      inspector.show('text');
+      $('#inspector-text').append($('#card-overview-editor'));
+      overviewEditor.show(selection.id, $('#inspector-tabs'));
+    };
   function syncFormatContext() {
     const images = form.querySelector('[data-image-fields]');
     if (images)

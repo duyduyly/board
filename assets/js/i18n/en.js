@@ -1,4 +1,20 @@
 export default {
+  inspectorTitle: 'Format',
+  inspectorglobal: 'Page',
+  inspectortext: 'Text & tags',
+  inspectorcard: 'Card',
+  inspectoredge: 'Arrows',
+  inspectorGlobalHint:
+    'Apply to existing elements; pinned cards are skipped. Colors use the selected card; typography uses the values entered below. Orthogonal routes use the current view, including manually configured edges; saved corners remain available. Positions, content and defaults for new cards stay unchanged.',
+  inspectorBulkroutes: 'Automatically avoid cards for all orthogonal arrows',
+  inspectorGroupcards: 'Cards',
+  inspectorGrouparrows: 'Arrows',
+  inspectorBulksurface: 'Match card background, text and border colors',
+  inspectorBulktypography: 'Match title, summary and type typography',
+  inspectorTypographyHint:
+    'Set each text field below. Only typography changes; content stays unchanged and pinned cards are skipped. Font size: 8–72 px.',
+  inspectorBulkarrows: 'Match selected arrow color, line and arrowheads',
+  inspectorSelectCard: 'Select a card to use as the format source.',
   formatUpdated: 'Formatting updated successfully',
   autoGuide:
     'Automatic orthogonal routing: select auto/manual per relation and view. Extension example: "card-atlas:edge":{"route":"orthogonal","modes":{"card":"auto","mind":"manual"}}. Omitted modes retain manual/legacy behavior. The project menu enables eligible automatic routes but keeps pinned or explicitly/manual-adjusted routes. Automatic paths are derived, never JSON waypoints; card positions stay unchanged. Mode switches retain saved manual corners/adjustments. Adjust on Canvas switches to manual. Routing is bounded; overlapping cards/search limits may leave unavailable routes, shown by status. No node layout, backend or dependency.',
