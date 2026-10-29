@@ -20,12 +20,13 @@ test('small help button beside locale explains gestures, switches language and p
     });
   });
   const button = page.locator('#quick-help');
-  await expect(button).toHaveAccessibleName('Hướng dẫn nhanh');
+  await expect(button).toHaveAccessibleName('Hướng dẫn và công cụ dự án');
   const locale = await page.locator('#locale').boundingBox(),
     help = await button.boundingBox();
   expect(help.x).toBeGreaterThanOrEqual(locale.x + locale.width);
   expect(help.width).toBeLessThanOrEqual(30);
   await button.click();
+  await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toBeVisible();
   await expect(page.locator('.quick-help-content dt')).toHaveCount(6);
   await expect(page.locator('.quick-help-content')).toContainText('Shift');
@@ -34,6 +35,7 @@ test('small help button beside locale explains gestures, switches language and p
   await page.keyboard.press('Escape');
   await page.locator('#locale').selectOption('en');
   await button.click();
+  await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toHaveAccessibleName('Quick help');
   await expect(page.locator('.quick-help-content')).toContainText('Pinned cards are read-only');
   await page.keyboard.press('Escape');
@@ -55,6 +57,7 @@ test('small help button beside locale explains gestures, switches language and p
   const small = await button.boundingBox();
   expect(small.x + small.width).toBeLessThanOrEqual(1050);
   await button.click();
+  await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal [data-choice=cancel]')).toBeInViewport();
   await page.screenshot({ path: 'planning/design/quick-help-dark.png' });
   await page.locator('#modal [data-choice=cancel]').click();

@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -47,7 +48,7 @@ test('uniform style on Canvas preserves other text, is undo atomic and survives 
   await page.locator('[data-action=undo]').first().click();
   await expect(source(page).locator('h3')).toHaveText('User Service');
   await page.locator('[data-action=redo]').first().click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   for (const title of await page.locator('.graph-card h3').all())
     await expect(title).toHaveCSS('font-size', '24px');
   await source(page).locator('h3').click();

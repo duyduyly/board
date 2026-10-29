@@ -1,40 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="-80 -80 4410 1800">
-<rect x="-80" y="-80" width="4410" height="1800" fill="#f4f8f5"/>
-<path d="M210.0,1190 V975.0 H630.0 V760" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M630.0,940 V830.0 H1110.0 V720" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M630.0,940 V895.0 H1110.0 V850" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M210.0,1190 V1150.0 H630.0 V1110" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M630.0,1290 V1200.0 H1100.0 V1110" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M1100.0,1290 V1220.0 H1580.0 V1150" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M210.0,1190 V1325.0 H630.0 V1460" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M2560.0,1090 V925.0 H2980.0 V760" fill="none" stroke="#81998b" stroke-width="7"/>
-<path d="M2980.0,940 V830.0 H3460.0 V720" fill="none" stroke="#81998b" stroke-width="7"/>
-<rect x="0" y="0" width="600" height="240" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="16" y="42" font-family="sans-serif" font-size="23" fill="#23332d">Learning Atlas - Template Guide</text>
-<rect x="0" y="500" width="1900" height="150" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="16" y="542" font-family="sans-serif" font-size="23" fill="#23332d">01. [Topic name]</text>
-<rect x="0" y="950" width="420" height="240" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="16" y="992" font-family="sans-serif" font-size="23" fill="#23332d">[Theory lesson]</text>
-<rect x="470" y="760" width="320" height="180" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="486" y="802" font-family="sans-serif" font-size="23" fill="#23332d">[Concept A]</text>
-<rect x="940" y="720" width="340" height="100" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="956" y="762" font-family="sans-serif" font-size="23" fill="#23332d">[Example A1.ext]</text>
-<rect x="940" y="850" width="340" height="100" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="956" y="892" font-family="sans-serif" font-size="23" fill="#23332d">[Example A2.ext]</text>
-<rect x="470" y="1110" width="320" height="180" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="486" y="1152" font-family="sans-serif" font-size="23" fill="#23332d">[Concept B]</text>
-<rect x="940" y="1110" width="320" height="180" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="956" y="1152" font-family="sans-serif" font-size="23" fill="#23332d">[Sub-concept B1]</text>
-<rect x="1410" y="1150" width="340" height="100" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="1426" y="1192" font-family="sans-serif" font-size="23" fill="#23332d">[Example B1.ext]</text>
-<rect x="470" y="1460" width="320" height="180" rx="12" fill="#e3f0e9" stroke="#255c49" stroke-width="4"/>
-<text x="486" y="1502" font-family="sans-serif" font-size="23" fill="#23332d">[Concept C - theory only]</text>
-<rect x="2350" y="500" width="1900" height="150" rx="12" fill="#e7effa" stroke="#254a7a" stroke-width="4"/>
-<text x="2366" y="542" font-family="sans-serif" font-size="23" fill="#23332d">02. [Topic name]</text>
-<rect x="2350" y="850" width="420" height="240" rx="12" fill="#e7effa" stroke="#254a7a" stroke-width="4"/>
-<text x="2366" y="892" font-family="sans-serif" font-size="23" fill="#23332d">[Theory lesson]</text>
-<rect x="2820" y="760" width="320" height="180" rx="12" fill="#e7effa" stroke="#254a7a" stroke-width="4"/>
-<text x="2836" y="802" font-family="sans-serif" font-size="23" fill="#23332d">[Concept A]</text>
-<rect x="3290" y="720" width="340" height="100" rx="12" fill="#e7effa" stroke="#254a7a" stroke-width="4"/>
-<text x="3306" y="762" font-family="sans-serif" font-size="23" fill="#23332d">[Example A1.ext]</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="-80 -80 4410 1800"><rect x="-80" y="-80" width="4410" height="1800" fill="#f4f8f5"/>
+<path d="M210,1070 L630,850" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M630,850 L1110,770" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M630,850 L1110,900" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M210,1070 L630,1200" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M630,1200 L1100,1200" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1100,1200 L1580,1200" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M210,1070 L630,1550" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M2560,970 L2980,850" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M2980,850 L3460,770" fill="none" stroke="#719a88" stroke-width="5"/>
+<rect x="0" y="0" width="600" height="240" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="38" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Learning Atlas - Template Guide</text>
+<text x="14" y="78" fill="#52675d" font-family="sans-serif" font-size="14">Copy this project, replace the pla</text>
+<rect x="0" y="500" width="1900" height="150" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="538" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01. [Topic name]</text>
+<rect x="0" y="950" width="420" height="240" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="988" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">[Theory lesson]</text>
+<text x="14" y="1028" fill="#52675d" font-family="sans-serif" font-size="14">[Main explanation and learning out</text>
+<rect x="470" y="760" width="320" height="180" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="484" y="798" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">[Concept A]</text>
+<rect x="940" y="720" width="340" height="100" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="954" y="758" fill="#23332d" font-family="sans-serif" font-size="22.666666666666668" font-weight="600">[Example A1.ext]</text>
+<rect x="940" y="850" width="340" height="100" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="954" y="888" fill="#23332d" font-family="sans-serif" font-size="22.666666666666668" font-weight="600">[Example A2.ext]</text>
+<rect x="470" y="1110" width="320" height="180" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="484" y="1148" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">[Concept B]</text>
+<rect x="940" y="1110" width="320" height="180" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="954" y="1148" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">[Sub-concept B1]</text>
+<rect x="1410" y="1150" width="340" height="100" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="1424" y="1188" fill="#23332d" font-family="sans-serif" font-size="22.666666666666668" font-weight="600">[Example B1.ext]</text>
+<rect x="470" y="1460" width="320" height="180" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="484" y="1498" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">[Concept C - theory only]</text>
+<rect x="2350" y="500" width="1900" height="150" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2364" y="538" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">02. [Topic name]</text>
+<rect x="2350" y="850" width="420" height="240" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2364" y="888" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">[Theory lesson]</text>
+<text x="2364" y="928" fill="#52675d" font-family="sans-serif" font-size="14">[Main explanation and learning out</text>
+<rect x="2820" y="760" width="320" height="180" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2834" y="798" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">[Concept A]</text>
+<rect x="3290" y="720" width="340" height="100" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="3304" y="758" fill="#23332d" font-family="sans-serif" font-size="22.666666666666668" font-weight="600">[Example A1.ext]</text>
 </svg>

@@ -57,7 +57,9 @@ export async function projectAction(page, action) {
     await page.locator('[data-action=close]').click();
   }
   if (
-    ['format', 'recovery'].includes(action) &&
+    ['format', 'recovery', 'inspector', 'convert-mind', 'auto-route-all', 'help'].includes(
+      action,
+    ) &&
     !(await page.locator('#project-menu').evaluate((e) => e.open))
   )
     await page.locator('#project-menu > summary').click();
@@ -98,7 +100,21 @@ export async function view(page, value) {
     if (!(await page.locator('#detail-tools').evaluate((e) => e.open)))
       await page.locator('#detail-tools summary').click();
     await page.locator('#detail-map-view').selectOption(value);
-  } else await page.locator('#map-view').selectOption(value);
+  } else await page.locator('[data-map-view="' + value + '"]').click();
+  await expect
+    .poll(
+      async () =>
+        (await page.locator('[data-map-view="' + value + '"]').getAttribute('aria-pressed')) ===
+          'true' || (await page.locator('#modal').isVisible()),
+    )
+    .toBe(true);
+  if (await page.locator('#mind-convert-root').isVisible())
+    await page.locator('[data-choice=apply]').click();
+  else if (await page.locator('#modal').isVisible()) return;
+  await expect(page.locator('[data-map-view="' + value + '"]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
 }
 export async function openRow(page, row) {
   if (await page.locator('#detail-panel').isVisible()) {

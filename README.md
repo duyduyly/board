@@ -2,15 +2,23 @@
 
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
+Thanh trên dùng hai nút liền nhau **Note Board | Mind Map**; chế độ hiện tại tô xanh. Bấm Mind Map lần đầu sẽ hỏi note gốc khi cần tạo bố cục. Menu **?** cạnh ngôn ngữ chứa hướng dẫn và công cụ dự án, gồm **Định dạng** và chuyển đổi lại Mind Map. Thêm note bằng thư viện bên trái, tạo đường nối bằng cách kéo chấm nối trên note. Trên Canvas, con trỏ là bút chì vàng ở Note Board và bút chì xanh ở Mind Map; nút bấm, ô nhập và resize giữ con trỏ theo chức năng.
+
+Thư viện hiện có **10 mẫu**. Nhóm **Mind Map** gồm mẫu học qua ảnh, **Bản đồ kiến thức** và **Kế hoạch dự án**, mở trực tiếp ở giao diện Mind Map. Các mẫu ghi chú cá nhân/dự án/học tập cơ bản dùng Note paper vuông; mẫu Cornell, Learning Atlas và các bố cục chuyên biệt giữ kích thước phù hợp nội dung. Mỗi mẫu có hướng dẫn sidebar Format, chuyển đổi và lưu JSON. Mở lại từ thư viện để lấy bản mẫu mới; bản đang làm việc không bị sửa ngầm.
+
+**Chuyển sang Mind Map:** mở JSON Note Board, bấm nút chuyển đổi và chọn note gốc. Mind Map dùng node gọn/ảnh và đường cong; nhấp đúp node mở cùng bảng nội dung Markdown. Các nhánh đi theo chiều mũi tên, đường vòng/liên kết phụ giữ dạng tham chiếu, note rời được bố trí riêng. Chuyển đổi tạo lại bố cục Mind Map bằng một lệnh Undo, giữ nội dung và bố cục Note Board, bỏ qua card ghim. Note paper trên Note Board có hiệu ứng cuộn góc phải dưới khi hover/focus; Mind Map không có hiệu ứng giấy.
+
+**Note Board** là tên hiển thị mới của Card Map. **Note paper** thay Card tổng quan: ghi chú mới có nền giấy vàng nhạt, mặc định vuông 260 × 260 px, tiêu đề 20 px và tóm tắt 14 px. Tiêu đề/tóm tắt ở trên, loại và tags nhỏ gọn bên dưới. Kích thước và nội dung card đã lưu giữ nguyên; định dạng chữ tùy chỉnh vẫn được tôn trọng. Các khóa JSON `card` giữ tương thích.
+
 Khối code Markdown có tên ngôn ngữ (ví dụ mở bằng ` ```java `) được tô màu cú pháp trong phần xem nội dung và xem trước bản nháp. Hỗ trợ Java, JavaScript/TypeScript, JSON, HTML/XML, CSS, Python, SQL, Bash; không cần mạng. Code không ghi ngôn ngữ, ngôn ngữ khác hoặc khối trên 20.000 ký tự giữ văn bản thường. Mermaid vẫn là sơ đồ; nội dung code và ô soạn Markdown giữ nguyên.
 
 Trong **Thư viện mẫu → Học tập**, chọn **Learning Atlas — Khung ghi chép học tập** để mở mẫu 14 card, 9 đường nối và 2 nhóm chủ đề. Ô **Tìm mẫu** lọc theo tên, hỗ trợ tiếng Việt không dấu và kết hợp bộ lọc danh mục. File mẫu nằm tại [learning-atlas.json](assets/data/templates/learning-atlas.json).
 
-Nút **Định dạng** trên toolbar mở sidebar bên phải: **Toàn trang**, **Chữ & tags**, **Card**, **Mũi tên**. Chọn card/đường nối để chỉnh phần tương ứng; phần đọc và viết Markdown vẫn ở modal. Tab Định dạng trong Detail là lối tắt sang sidebar. Toàn trang có các lựa chọn áp dụng màu/kiểu chữ từ card mẫu, kiểu nét/màu từ mũi tên mẫu và bật né card cho đường vuông ở view hiện tại. Chỉ tác động phần tử hiện có, bỏ qua card ghim và quan hệ liên quan, một lần Undo cho mỗi lần áp dụng; không tự đổi mặc định cho card mới.
+**? → Định dạng** mở sidebar bên phải: **Toàn trang**, **Chữ & tags**, **Card**, **Mũi tên**. Chọn card/đường nối để chỉnh phần tương ứng; phần đọc và viết Markdown vẫn ở modal. Tab Định dạng trong Detail là lối tắt sang sidebar. Toàn trang có các lựa chọn áp dụng màu/kiểu chữ từ card mẫu, kiểu nét/màu từ mũi tên mẫu và bật né card cho đường vuông ở view hiện tại. Chỉ tác động phần tử hiện có, bỏ qua card ghim và quan hệ liên quan, một lần Undo cho mỗi lần áp dụng; không tự đổi mặc định cho card mới.
 
 Bấm **Áp dụng** trong phần sửa nội dung/Format/card/đường nối sẽ lưu, đóng popup và hiện thông báo nhỏ **Cập nhật định dạng thành công** ở phía trên. Nếu dữ liệu không hợp lệ hoặc Fit không thành công, popup giữ nguyên để sửa tiếp. Popup chữ trong Detail vẫn chỉ cập nhật bản nháp; bấm Áp dụng của Detail để lưu toàn bộ.
 
-**Tự động né card:** mở **Menu dự án (☰) → Tự căn đường nối vuông** để bật cho các đường vuông đủ điều kiện trong view hiện tại. Card giữ vị trí; đường được tính lại sau khi kéo card, giãn điểm nối và ưu tiên các làn khác nhau. Đường đã chỉnh/chọn thủ công và liên kết với card ghim được giữ nguyên. Trong phần sửa từng quan hệ, chọn **Tự động né card / Thủ công** rồi **Áp dụng**. Chuyển về thủ công khôi phục góc bạn đã lưu; **Chỉnh đường nối trên Canvas** cũng chuyển sang thủ công. Hai view độc lập, có Undo/Redo và lưu JSON. Trạng thái góc dưới báo những đường chưa tìm được lối (ví dụ card chồng nhau); không tự di chuyển card hoặc bảo đảm mọi sơ đồ đều không giao cắt.
+**Tự động né card:** mở **Menu hướng dẫn (?) → Tự căn đường nối vuông** để bật cho các đường vuông đủ điều kiện trong view hiện tại. Card giữ vị trí; đường được tính lại sau khi kéo card, giãn điểm nối và ưu tiên các làn khác nhau. Đường đã chỉnh/chọn thủ công và liên kết với card ghim được giữ nguyên. Trong phần sửa từng quan hệ, chọn **Tự động né card / Thủ công** rồi **Áp dụng**. Chuyển về thủ công khôi phục góc bạn đã lưu; **Chỉnh đường nối trên Canvas** cũng chuyển sang thủ công. Hai view độc lập, có Undo/Redo và lưu JSON. Trạng thái góc dưới báo những đường chưa tìm được lối (ví dụ card chồng nhau); không tự di chuyển card hoặc bảo đảm mọi sơ đồ đều không giao cắt.
 
 Với đường cong/vuông góc: mở quan hệ → **Chỉnh đường nối trên Canvas**. Đường vuông có **hai ô vuông 1/2**: kéo từng ô lên/xuống/trái/phải để bẻ góc riêng, tạo đường vòng tránh card. **Chấm tròn** dịch cả đường. Các đoạn gấp vẫn vuông90độ. Phím mũi tên tinh chỉnh, Shift tăng bước10px; Escape hủy lần kéo. **Đặt lại đường nối** khôi phục mặc định ở view đang mở; **Xong** kết thúc chỉnh. Card/Mind Map lưu phần chỉnh riêng trong JSON, có Undo/Redo. Đây là chế độ thủ công; dùng Tự động nếu muốn tính đường né card. Chỉnh điểm chưa hỗ trợ self-loop/straight/zigzag.
 
@@ -63,7 +71,7 @@ File bài học có thể tải/import riêng tại [english-endings-example.jso
 
 ### Card và quan hệ
 
-1. Bấm **Thẻ mới** để tạo card. Click vùng trống card để chọn/kéo; bấm tiêu đề, tóm tắt hoặc loại để sửa trong popup riêng. Bấm **↗** để mở Detail; **Chỉnh sửa** tập trung nội dung Markdown, **Format** quản lý khung/màu nền/hình dạng; Tags nằm trong popup thông tin.
+1. Chọn **Note paper** trong thư viện bên trái để thêm note. Kéo vùng trống của note để di chuyển; chữ, tags và khung/màu chỉnh ở sidebar Định dạng. Nhấp đúp hoặc bấm **↗** để đọc/sửa nội dung Markdown. Kéo chấm nối để tạo mũi tên.
 2. Chọn **Áp dụng** để lưu thay đổi vào project trong phiên, hoặc **Hủy** để bỏ bản nháp. Đổi theme giữ nguyên bản nháp.
 3. Kéo card trên canvas để đổi vị trí.
 4. Dùng **Kết nối**, chọn card nguồn rồi card đích; hoặc kéo chấm nối bên cạnh card. Thả vào vùng trống tạo card mới và quan hệ trong một thao tác undo.

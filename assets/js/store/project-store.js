@@ -171,7 +171,8 @@ export class ProjectStore {
   }
 }
 export const newId = (kind) => kind + '-' + crypto.randomUUID();
-export function newCard(position, title = 'New Card') {
+export const DEFAULT_CARD_SIZE = { width: 260, height: 260 };
+export function newCard(position, title = 'New note') {
   return stampCreated({
     id: newId('card'),
     title,
@@ -180,8 +181,9 @@ export function newCard(position, title = 'New Card') {
     tags: [],
     content: '',
     position,
-    size: { width: 260, height: 190 },
-    style: { backgroundColor: '#FFFFFF', textColor: '#0F172A', borderColor: '#CBD5E1' },
+    size: { ...DEFAULT_CARD_SIZE },
+    style: { backgroundColor: '#FFF2B0', textColor: '#23332D', borderColor: '#C8B76B' },
+    extensions: { 'card-atlas:typography': { title: { fontSize: 20 }, summary: { fontSize: 14 } } },
   });
 }
 export function newRelation(source, target) {

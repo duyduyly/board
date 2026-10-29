@@ -1,5 +1,13 @@
 # Design Styles — mỗi group là một thiết kế
 
+## Thư viện theo giao diện hiện tại
+
+Note Board và Mind Map dùng chung dữ liệu nhưng có bố cục riêng. Các mẫu cơ bản đã dùng Note paper vuông 260px; các nhóm học tập bên dưới giữ bố cục chuyên biệt để đọc và so sánh. Chỉnh chữ/tags/card/mũi tên trong sidebar **Định dạng**; nhấp đúp để mở Markdown. Bấm **Chuyển sang Mind Map** và chọn note gốc nếu muốn tự tạo nhánh từ Note Board.
+
+Nhóm **Mind Map** trong thư viện mở trực tiếp ba mẫu: học qua ảnh (mẫu Mind Map hiện có), [Bản đồ kiến thức](../assets/data/templates/mind-knowledge.json) và [Kế hoạch dự án](../assets/data/templates/mind-project.json). Các mẫu mới có ba nhánh chính, Markdown để điền và ví dụ code JSON có tô màu.
+
+Tái tạo toàn thư viện và ảnh xem trước: chạy `node scripts/generate-showcase.mjs`, sau đó `node scripts/refresh-template-library.mjs`. Generator thứ hai quản lý hai mẫu Mind Map mới, hình học Mind độc lập, hướng dẫn thao tác và thumbnail local. File Learning Atlas gốc ngoài repo không bị sửa; bản trong thư viện được cập nhật theo UI mới.
+
 Mở Gallery → Bộ mẫu đầy đủ hoặc Import [JSON](../assets/data/showcase-example.json). Bộ mẫu có 6 bố cục độc lập, không có đường nối xuyên group. Zoom vào từng khu để đọc; kéo header khung để di chuyển cả thiết kế. Card ghim trong Zigzag Sprint giữ nguyên vị trí.
 
 | Group | Ngôn ngữ thiết kế | Cách dùng đường nối |

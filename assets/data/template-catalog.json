@@ -29,10 +29,11 @@
   },
   {
     "id": "mind",
-    "category": "personal",
+    "category": "mind",
     "titleKey": "templateMind",
     "path": "assets/data/mind-map-example.json",
-    "preview": "assets/images/templates/mind.svg"
+    "preview": "assets/images/templates/mind.svg",
+    "view": "mind"
   },
   {
     "id": "architecture",
@@ -54,5 +55,21 @@
     "titleKey": "templateJournal",
     "path": "assets/data/templates/journal.json",
     "preview": "assets/images/templates/journal.svg"
+  },
+  {
+    "id": "mind-knowledge",
+    "category": "mind",
+    "titleKey": "templateMindKnowledge",
+    "path": "assets/data/templates/mind-knowledge.json",
+    "preview": "assets/images/templates/mind-knowledge.svg",
+    "view": "mind"
+  },
+  {
+    "id": "mind-project",
+    "category": "mind",
+    "titleKey": "templateMindProject",
+    "path": "assets/data/templates/mind-project.json",
+    "preview": "assets/images/templates/mind-project.svg",
+    "view": "mind"
   }
 ]

@@ -15,7 +15,7 @@
     {
       "id": "journal-0",
       "title": "Topics",
-      "summary": "Start with one clear idea.",
+      "summary": "What should I be able to explain without looking?",
       "type": "note",
       "tags": [
         "journal"
@@ -26,19 +26,29 @@
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#E3EFE8",
+        "backgroundColor": "#FFF2B0",
         "textColor": "#23332D",
-        "borderColor": "#28594B"
+        "borderColor": "#B8B488"
       },
-      "content": "# Topics\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+      "content": "# Topics\n\nWrite one question you want to answer. Define what a correct explanation must include.\n\n## Your notes\n\n- [ ] Replace this prompt with your own material.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     },
     {
       "id": "journal-1",
       "title": "Resources",
-      "summary": "Start with one clear idea.",
+      "summary": "Keep a source and a short explanation in your own words.",
       "type": "note",
       "tags": [
         "journal"
@@ -49,60 +59,90 @@
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#E8F0FB",
+        "backgroundColor": "#E3EFE8",
         "textColor": "#23332D",
-        "borderColor": "#4268A4"
+        "borderColor": "#B8B488"
       },
-      "content": "# Resources\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+      "content": "# Resources\n\nRecord the source link or page. Separate a quote from your explanation and list what remains unclear.\n\n## Your notes\n\n- [ ] Replace this prompt with your own material.",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     },
     {
       "id": "journal-2",
       "title": "Practice",
-      "summary": "Start with one clear idea.",
+      "summary": "Close the source, try a problem, then check your answer.",
       "type": "note",
       "tags": [
         "journal"
       ],
       "position": {
         "x": 0,
-        "y": 260
+        "y": 360
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#E3EFE8",
+        "backgroundColor": "#E8F0FB",
         "textColor": "#23332D",
-        "borderColor": "#28594B"
+        "borderColor": "#B8B488"
       },
-      "content": "# Practice\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+      "content": "# Practice\n\nWrite a practice prompt. Attempt it without notes, compare against the source, and explain any gap.\n\n## Your notes\n\n- [ ] Replace this prompt with your own material.",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     },
     {
       "id": "journal-3",
       "title": "Reflection",
-      "summary": "Start with one clear idea.",
+      "summary": "Use mistakes to choose the next practice and review date.",
       "type": "note",
       "tags": [
         "journal"
       ],
       "position": {
         "x": 380,
-        "y": 260
+        "y": 360
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#E8F0FB",
+        "backgroundColor": "#F4E4EF",
         "textColor": "#23332D",
-        "borderColor": "#4268A4"
+        "borderColor": "#B8B488"
       },
-      "content": "# Reflection\n\n## Notes\n\nWrite your thoughts here.\n\n## Next step\n\n- [ ] Add a concrete action."
+      "content": "# Reflection\n\nRecord the mistake, the corrected reasoning, and a new attempt. Choose a manual date to revisit the question.\n\n## Your notes\n\n- [ ] Replace this prompt with your own material.",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     }
   ],
   "relations": [
@@ -145,5 +185,29 @@
         "arrow": "end"
       }
     }
-  ]
+  ],
+  "extensions": {
+    "card-atlas:views": {
+      "mindMap": {
+        "sizes": {
+          "journal-0": {
+            "width": 280,
+            "height": 140
+          },
+          "journal-1": {
+            "width": 280,
+            "height": 140
+          },
+          "journal-2": {
+            "width": 280,
+            "height": 140
+          },
+          "journal-3": {
+            "width": 280,
+            "height": 140
+          }
+        }
+      }
+    }
+  }
 }

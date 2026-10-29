@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 test('pushpin hover preserves transparent SVG in both themes and views', async ({ page }) => {
   const errors = [];
@@ -8,7 +9,7 @@ test('pushpin hover preserves transparent SVG in both themes and views', async (
   const card = page.locator('.graph-card[data-id=card-user-service]');
   const pin = card.locator('.card-pin');
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     for (const theme of ['light', 'dark']) {
       if ((await page.locator('html').getAttribute('data-theme')) !== theme)
         await page.locator('#theme-toggle').click();

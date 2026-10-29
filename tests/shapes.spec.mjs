@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
@@ -52,7 +53,7 @@ test('basic shapes share Canvas and Format geometry, preserve data and portable 
   expect(snapshot.cards[0].summary).toBeTruthy();
   await page.screenshot({ path: 'planning/design/feedback-03-basic-shape.png' });
   await page.locator('#theme-toggle').click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await expect(card.locator('polygon')).toHaveCount(1);
   expect(errors).toEqual([]);
 });
@@ -113,7 +114,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
   await page.locator('[data-action=close]').click();
   await page.locator('#locale').selectOption('en');
   await page.locator('#theme-toggle').click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await expect(card.locator('img')).toBeVisible();
   await card.click();
   await expect(card.locator('.resize-handle')).toBeVisible();
@@ -227,7 +228,7 @@ test('resize commits once, keeps active-view geometry and cancels Escape/blur; c
       return store.project.cards.at(-1).size;
     }),
   ).toEqual(before.size);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await card.click();
   await drag(60, 60);
   const sizes = await page.evaluate(async () => {
@@ -336,7 +337,7 @@ test('bundled shapes import, polygon edges and corner hit areas match; Mind Fit 
     'aria-pressed',
     'false',
   );
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await page.locator('[data-action=fit]').click();
   const card = page.locator('.graph-card[data-id=shape-circle]');
   await card.focus();

@@ -1,4 +1,5 @@
 import { createFormatInspector } from './ui/format-inspector.js';
+import { convertMind } from './graph/convert-mind.js';
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
 import {
@@ -69,7 +70,14 @@ import {
 } from './detail/writing.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
 import { IMAGE_NAMESPACE, IMAGE_MIME_TYPES, imageReference } from './detail/attachments.js';
-import { ProjectStore, newId, newCard, newRelation, remove } from './store/project-store.js';
+import {
+  ProjectStore,
+  newId,
+  newCard,
+  newRelation,
+  remove,
+  DEFAULT_CARD_SIZE,
+} from './store/project-store.js';
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
 import { t, setLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
@@ -131,11 +139,15 @@ const detailSurface = dialogSurface($('#detail-panel'), {
   },
   fallback: () =>
     selection?.kind === 'card'
-      ? adapter.cards.get(selection.id) || $('[data-action=add]')
+      ? adapter.cards.get(selection.id) || $('[data-palette-kind=card]')
       : $('#project-name'),
 });
 const inspector = createFormatInspector({
-  context: () => ({ kind: selection?.kind, locked: selectionLocked(store.project, selection) }),
+  context: () => ({
+    kind: selection?.kind,
+    view: store.activeView,
+    locked: selectionLocked(store.project, selection),
+  }),
   guard: async () => {
     if (overviewEditor.dirty) {
       const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -205,12 +217,9 @@ const inspector = createFormatInspector({
     }
   },
 });
-$('#open-inspector').onclick = async () => {
-  await inspector.activate('global');
-};
 const gallery = createTemplateGallery({
   host: $('#template-gallery'),
-  onOpen: (path) => loadExample(path),
+  onOpen: (path, view) => loadExample(path, view),
   onError: () => toast('errorRead'),
 });
 const palette = createShapePalette({
@@ -520,6 +529,12 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     ),
 });
 function render() {
+  $('#canvas-region').dataset.view = store.activeView;
+  $('#map-view').hidden = home;
+  $('#map-view').setAttribute('aria-label', t('mapView'));
+  $('[data-action=inspector]').disabled = home;
+  $('#mind-view-banner').hidden = home || store.activeView !== 'mind';
+  $('[data-action=convert-mind]').hidden = home || store.activeView === 'mind';
   inspector.sync();
   $('#app').classList.toggle('home-mode', home);
   $('#home-page').hidden = !home;
@@ -576,7 +591,9 @@ function render() {
     for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
       el.disabled = Boolean(layoutPreview);
 
-  $('#map-view').value = store.activeView;
+  $('#map-view').dataset.activeView = store.activeView;
+  for (const button of document.querySelectorAll('[data-map-view]'))
+    button.setAttribute('aria-pressed', String(button.dataset.mapView === store.activeView));
   $('#detail-map-view').value = store.activeView;
   $('[data-panel-action=layout]').hidden = store.activeView !== 'mind';
   $('#mind-map-hint').hidden =
@@ -589,7 +606,7 @@ function render() {
     t('projectSettings') + ': ' + store.project.metadata.title,
   );
   $('#welcome').hidden = store.project.cards.length > 0;
-  $('#project-menu > summary').setAttribute('aria-label', t('projectMenu'));
+  $('#project-menu > summary').setAttribute('aria-label', t('helpAndTools'));
   $('#counts').textContent =
     number(store.project.cards.length) +
     ' ' +
@@ -605,7 +622,6 @@ function render() {
       el.disabled =
         Boolean(layoutPreview) ||
         (key === 'undo' ? !store.undoStack.length : !store.redoStack.length);
-  $('[data-action=connect]').classList.toggle('primary', connectMode);
   $('#connect-hint').hidden = !connectMode;
   $('#connect-hint').textContent = t('chooseTarget');
   palette.render();
@@ -908,6 +924,12 @@ function renderPanelContent() {
         '</button></div>') +
     '</form>';
   const form = body.querySelector('form');
+  if (selection.kind === 'relation' && store.activeView === 'mind') {
+    for (const input of form.querySelectorAll('[name=edge-route],[name=edge-mode]')) {
+      input.disabled = true;
+      input.title = t('mindCurvesOnly');
+    }
+  }
   if ($('#edit-card-overview'))
     $('#edit-card-overview').onclick = async () => {
       if (!(await guardDraft())) return;
@@ -1337,7 +1359,10 @@ async function connection(source, target, position) {
   let card;
   if (!target) {
     const p = position || adapter.center();
-    card = newCard({ x: p.x - 130, y: p.y - 95 }, t('newCard'));
+    card = newCard(
+      { x: p.x - DEFAULT_CARD_SIZE.width / 2, y: p.y - DEFAULT_CARD_SIZE.height / 2 },
+      t('newCard'),
+    );
     target = card.id;
   }
   const r = newRelation(source, target);
@@ -1345,6 +1370,7 @@ async function connection(source, target, position) {
     !change((p) => {
       if (card) {
         p.cards.push(card);
+        setGeometry(p, card.id, 'mind', 'size', card.size);
         if (store.activeView === 'mind') setGeometry(p, card.id, 'mind', 'position', card.position);
       }
       p.relations.push(r);
@@ -1378,7 +1404,9 @@ async function createPaletteNode(option, point, file) {
     view = store.activeView;
   const size = option.shape
     ? resizeShape(option.shape, 240, 160)
-    : { width: 260, height: option.kind === 'text' ? 80 : 190 };
+    : option.kind === 'card'
+      ? { ...DEFAULT_CARD_SIZE }
+      : { width: 260, height: option.kind === 'text' ? 80 : 190 };
   const center = point ? adapter.graphPoint(point.x, point.y) : adapter.center();
   const card = newCard(
     { x: center.x - size.width / 2, y: center.y - size.height / 2 },
@@ -1390,6 +1418,10 @@ async function createPaletteNode(option, point, file) {
     ),
   );
   card.size = size;
+  if (option.kind !== 'card') {
+    card.style = { backgroundColor: '#FFFFFF', textColor: '#0F172A', borderColor: '#CBD5E1' };
+    delete card.extensions['card-atlas:typography'];
+  }
   card.extensions = { ...card.extensions, [NODE]: { kind: option.kind } };
   if (option.shape) card.extensions[APPEARANCE] = { shape: option.shape, sizeMode: 'manual' };
   if (file) {
@@ -1417,6 +1449,7 @@ async function createPaletteNode(option, point, file) {
   if (
     !change((p) => {
       p.cards.push(card);
+      if (view === 'card' && option.kind === 'card') setGeometry(p, card.id, 'mind', 'size', size);
       if (view === 'mind') {
         setGeometry(p, card.id, view, 'position', card.position);
         setGeometry(p, card.id, view, 'size', size);
@@ -1434,10 +1467,14 @@ async function createPaletteNode(option, point, file) {
 async function addCard() {
   if (!(await guardDraft())) return;
   const pos = adapter.center(),
-    card = newCard({ x: pos.x - 130, y: pos.y - 95 }, t('newCard'));
+    card = newCard(
+      { x: pos.x - DEFAULT_CARD_SIZE.width / 2, y: pos.y - DEFAULT_CARD_SIZE.height / 2 },
+      t('newCard'),
+    );
   if (
     !change((p) => {
       p.cards.push(card);
+      setGeometry(p, card.id, 'mind', 'size', card.size);
       if (store.activeView === 'mind') setGeometry(p, card.id, 'mind', 'position', card.position);
     })
   )
@@ -1770,7 +1807,7 @@ async function importFile(file) {
   ]);
   if (choice === 'apply') await replaceProject(result.project, result.adjustments.length > 0);
 }
-async function loadExample(path = 'assets/data/example.json') {
+async function loadExample(path = 'assets/data/example.json', initialView = 'card') {
   if (loadingTemplate || feedback.state) return;
   loadingTemplate = true;
   try {
@@ -1779,6 +1816,10 @@ async function loadExample(path = 'assets/data/example.json') {
     const result = stage(await response.text());
     if (result.errors.length) throw Error();
     if (await replaceProject(result.project, false)) {
+      if (initialView === 'mind') {
+        store.switchView('mind');
+        render();
+      }
       adapter.fit();
     }
   } catch {
@@ -1797,25 +1838,35 @@ $('#search').oninput = (e) => {
   renderList();
 };
 $('#project-name').onclick = () => select({ kind: 'project', id: 'metadata' }, true);
-$('#map-view').onchange = () => {
+async function switchMapView(targetView) {
   if (feedback.state) {
-    $('#map-view').value = store.activeView;
+    $('#detail-map-view').value = store.activeView;
     return;
   }
-  const targetView = $('#map-view').value;
+  if (targetView === store.activeView) return;
   if (layoutPreview) {
     cancelLayout();
     toast('previewCancelledSwitch');
+  }
+  if (!(await guardDraft())) {
+    $('#detail-map-view').value = store.activeView;
+    return;
+  }
+  if (targetView === 'mind' && !store.project.extensions?.[MIND]?.rootId) {
+    await actions['convert-mind']();
+    $('#detail-map-view').value = store.activeView;
+    return;
   }
   store.switchView(targetView);
   selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
   previousPanelKey = null;
   render();
   adapter.setViewport(store.viewport);
-};
+}
+for (const button of document.querySelectorAll('[data-map-view]'))
+  button.onclick = () => switchMapView(button.dataset.mapView);
 $('#detail-map-view').onchange = (e) => {
-  $('#map-view').value = e.target.value;
-  $('#map-view').onchange();
+  switchMapView(e.target.value);
 };
 $('#locale').onchange = (e) => {
   setLocale(e.target.value);
@@ -1921,7 +1972,71 @@ function acceptLayout() {
   }
 }
 const actions = {
+  inspector: () => inspector.activate('global'),
+  'convert-mind': async () => {
+    if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
+    let rootId =
+      selection?.kind === 'card' && !isPinned(entity())
+        ? selection.id
+        : store.project.cards.find((c) => !isPinned(c))?.id;
+    if (!rootId) {
+      toast('mindConvertFailed');
+      return;
+    }
+    const choice = await dialog(
+      'convertMind',
+      () => {
+        const body = document.createElement('div');
+        const help = document.createElement('p');
+        help.textContent = t('mindConvertHint');
+        const label = document.createElement('label');
+        label.textContent = t('mindRoot');
+        const select = document.createElement('select');
+        select.id = 'mind-convert-root';
+        for (const card of store.project.cards.filter((c) => !isPinned(c)))
+          select.append(new window.Option(card.title, card.id));
+        select.value = rootId;
+        select.onchange = () => {
+          rootId = select.value;
+        };
+        label.append(select);
+        body.append(help, label);
+        return body;
+      },
+      [
+        ['cancel', 'cancel'],
+        ['convertMind', 'apply', true],
+      ],
+    );
+    if (choice !== 'apply') return;
+    try {
+      const result = convertMind(store.project, rootId);
+      if (
+        !change((p) => {
+          p.relations = result.project.relations;
+          p.extensions = result.project.extensions;
+        })
+      )
+        return;
+      detailSurface.close();
+      detailOpen = false;
+      draft = null;
+      draftOriginal = null;
+      store.switchView('mind');
+      store.collapsed = new Set();
+      selection = { kind: 'card', id: rootId };
+      render();
+      adapter.fit();
+      toast(result.warnings.length ? 'mindConvertWarnings' : 'mindConverted');
+    } catch {
+      toast('mindConvertFailed');
+    }
+  },
   'auto-route-all': async () => {
+    if (store.activeView === 'mind') {
+      toast('mindCurvesOnly');
+      return;
+    }
     if (home || !(await guardDraft())) return;
     let result;
     const ok = change((p) => {
@@ -1931,6 +2046,10 @@ const actions = {
       toast(result.changed ? 'autoRouteEnabled' : 'autoRouteNoCandidates');
   },
   'edge-adjust': async () => {
+    if (store.activeView === 'mind') {
+      toast('mindCurvesOnly');
+      return;
+    }
     if (
       selection?.kind !== 'relation' ||
       selectionLocked(store.project, selection) ||
@@ -1995,9 +2114,10 @@ const actions = {
   'group-create': () => {
     if (!adapter.callbacks.groupLocked()) editGroup(null, [...selectedCards]);
   },
-  help: () => {
+  help: async () => {
     if (adapter.gesturing || adapter.resizing || feedback.state) return;
-    dialog('quickHelpTitle', quickHelpBody, [['close', 'cancel', true]]);
+    await dialog('quickHelpTitle', quickHelpBody, [['close', 'cancel', true]]);
+    $('#quick-help').focus();
   },
   search: openSearch,
   'search-close': closeSearch,

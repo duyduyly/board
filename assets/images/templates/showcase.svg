@@ -1,2 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
-<rect width="400" height="300" fill="#edf4f0"/><g stroke="#66877c" stroke-width="2"><rect x="25" y="30" width="350" height="240" rx="16" fill="none"/><path d="M80 115H195V205H315" fill="none"/><rect x="45" y="70" width="90" height="70" rx="8" fill="#d1e8de"/><circle cx="200" cy="105" r="40" fill="#dfe5f7"/><path d="M315 65L360 105 315 145 270 105Z" fill="#ffebc9"/><rect x="55" y="180" width="115" height="60" rx="4" fill="#f0dfeb"/><rect x="250" y="180" width="95" height="60" rx="16" fill="#d9e9f0"/></g><g fill="#426357"><rect x="62" y="93" width="55" height="5" rx="2"/><rect x="62" y="107" width="42" height="4" rx="2"/><rect x="75" y="198" width="65" height="5" rx="2"/><rect x="75" y="213" width="45" height="4" rx="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="20 40 4470 5100"><rect x="20" y="40" width="4470" height="5100" fill="#f4f8f5"/>
+<path d="M2615,2370 L3365,2370" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M3365,2370 L4150,2370" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M4150,2370 L3400,2875" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M310,670 L840,670" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M840,670 L1370,670" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1370,670 L1900,670" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M2610,820 L3260,530" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M2610,820 L3260,1130" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M3260,530 L4060,820" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M3260,1130 L4060,820" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M310,2450 L830,2450" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M830,2450 L1350,2450" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1350,2450 L1870,2450" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1110,4220 L310,3910" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1110,4220 L1810,3910" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1110,4220 L310,4670" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M1110,4220 L1810,4670" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M2610,4020 L3140,4470" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M3140,4470 L3670,4020" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M3670,4020 L4200,4470" fill="none" stroke="#719a88" stroke-width="5"/>
+<rect x="100" y="120" width="2000" height="150" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="158" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 · Spaced Study Plan</text>
+<rect x="100" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Mục tiêu</text>
+<text x="114" y="598" fill="#52675d" font-family="sans-serif" font-size="14">Sau buổi học, tôi giải thích và áp</text>
+<rect x="630" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="644" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Học lần đầu</text>
+<text x="644" y="598" fill="#52675d" font-family="sans-serif" font-size="14">Đọc một phần ngắn → ghi ý chính → </text>
+<rect x="1160" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="1174" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Ôn có khoảng cách</text>
+<text x="1174" y="598" fill="#52675d" font-family="sans-serif" font-size="14">Buổi sau: trả lời câu hỏi trước kh</text>
+<rect x="1690" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="1704" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Áp dụng mới</text>
+<text x="1704" y="598" fill="#52675d" font-family="sans-serif" font-size="14">Dùng kiến thức vào một bài chưa là</text>
+<rect x="100" y="1520" width="2000" height="140" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="1558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
+<rect x="2400" y="120" width="2000" height="150" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="158" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">02 · Concept &amp; Comparison Map</text>
+<rect x="2400" y="670" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="708" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Java List</text>
+<text x="2414" y="748" fill="#52675d" font-family="sans-serif" font-size="14">Một giao diện; nhiều cách triển kh</text>
+<rect x="3050" y="380" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="3064" y="418" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">ArrayList</text>
+<text x="3064" y="458" fill="#52675d" font-family="sans-serif" font-size="14">Mảng động · get(index) O(1).</text>
+<rect x="3050" y="980" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="3064" y="1018" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">LinkedList</text>
+<text x="3064" y="1058" fill="#52675d" font-family="sans-serif" font-size="14">Node liên kết · get(index) O(n).</text>
+<rect x="3850" y="670" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="3864" y="708" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Chọn theo workload</text>
+<text x="3864" y="748" fill="#52675d" font-family="sans-serif" font-size="14">Truy cập? Chèn ở đâu? Bộ nhớ?</text>
+<rect x="2400" y="1520" width="2000" height="140" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="1558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
+<rect x="100" y="1820" width="2000" height="150" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="1858" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">03 · Worked Example → Try</text>
+<rect x="100" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 / Xem lời giải</text>
+<text x="114" y="2378" fill="#52675d" font-family="sans-serif" font-size="14">Mở Detail: tìm phần tử lớn nhất tr</text>
+<rect x="620" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="634" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">02 / Giải thích</text>
+<text x="634" y="2378" fill="#52675d" font-family="sans-serif" font-size="14">Tại sao phải xét từng phần tử?</text>
+<rect x="1140" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="1154" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">03 / Tự làm</text>
+<text x="1154" y="2378" fill="#52675d" font-family="sans-serif" font-size="14">Tìm max của [-8, -3, -5]. Không xe</text>
+<rect x="1660" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="1674" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / Biến thể</text>
+<text x="1674" y="2378" fill="#52675d" font-family="sans-serif" font-size="14">Nếu mảng rỗng thì sao? Nếu có nhiề</text>
+<rect x="100" y="3220" width="2000" height="140" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="3258" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
+<rect x="2400" y="1820" width="2000" height="150" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="1858" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / CORNELL STUDY LAB</text>
+<rect x="2400" y="2080" width="430" height="580" rx="2" fill="#e9eff7" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="2118" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 / CÂU HỎI GỢI NHỚ</text>
+<text x="2414" y="2158" fill="#52675d" font-family="sans-serif" font-size="14">ArrayList lưu phần tử thế nào?
+Lin</text>
+<rect x="2920" y="2080" width="890" height="580" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<text x="2934" y="2118" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">02 / GHI CHÚ CỐT LÕI</text>
+<text x="2934" y="2158" fill="#52675d" font-family="sans-serif" font-size="14">Một ý / một dòng. Viết giải thích </text>
+<rect x="3900" y="2080" width="500" height="580" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<text x="3914" y="2118" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">03 / TỰ KIỂM TRA</text>
+<text x="3914" y="2158" fill="#52675d" font-family="sans-serif" font-size="14">Không nhìn ghi chú:
+Giải thích cho</text>
+<rect x="2400" y="2770" width="2000" height="210" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="2808" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / ÔN CÁCH QUÃNG</text>
+<rect x="2400" y="3100" width="2000" height="200" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="3138" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">TÓM TẮT BẰNG LỜI MÌNH</text>
+<rect x="100" y="3520" width="2000" height="150" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="3558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">05 · Closed-book Recall Map</text>
+<rect x="900" y="4070" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="914" y="4108" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Chủ đề cần nhớ</text>
+<text x="914" y="4148" fill="#52675d" font-family="sans-serif" font-size="14">Điền tên bài học và một câu hỏi tr</text>
+<rect x="100" y="3760" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="3798" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Định nghĩa?</text>
+<text x="114" y="3838" fill="#52675d" font-family="sans-serif" font-size="14">Giải thích bằng lời mình, tránh đọ</text>
+<rect x="1600" y="3760" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="1614" y="3798" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Ví dụ?</text>
+<text x="1614" y="3838" fill="#52675d" font-family="sans-serif" font-size="14">Đưa một ví dụ và một phản ví dụ.</text>
+<rect x="100" y="4520" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="4558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Vì sao / khi nào?</text>
+<text x="114" y="4598" fill="#52675d" font-family="sans-serif" font-size="14">Nêu quan hệ nguyên nhân hoặc điều </text>
+<rect x="1600" y="4520" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="1614" y="4558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Còn thiếu gì?</text>
+<text x="1614" y="4598" fill="#52675d" font-family="sans-serif" font-size="14">Mở nguồn, sửa lỗi rồi hẹn một lần </text>
+<rect x="100" y="4920" width="2000" height="140" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<text x="114" y="4958" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
+<rect x="2400" y="3520" width="2000" height="150" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="3558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">06 · Mistake → Feedback → Retry</text>
+<rect x="2400" y="3870" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="3908" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Bài đã thử</text>
+<text x="2414" y="3948" fill="#52675d" font-family="sans-serif" font-size="14">Ghi đề và câu trả lời ban đầu; đừn</text>
+<rect x="2930" y="4320" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="2944" y="4358" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Phân tích lỗi</text>
+<text x="2944" y="4398" fill="#52675d" font-family="sans-serif" font-size="14">Sai ở bước nào? Do thiếu hiểu hay </text>
+<rect x="3460" y="3870" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="3474" y="3908" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Phản hồi / sửa</text>
+<text x="3474" y="3948" fill="#52675d" font-family="sans-serif" font-size="14">Đối chiếu lời giải, giải thích vì </text>
+<rect x="3990" y="4320" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="4004" y="4358" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Thử lại sau</text>
+<text x="4004" y="4398" fill="#52675d" font-family="sans-serif" font-size="14">Làm biến thể không nhìn lời giải, </text>
+<rect x="2400" y="4920" width="2000" height="140" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<text x="2414" y="4958" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
+</svg>

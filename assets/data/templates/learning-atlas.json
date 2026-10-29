@@ -34,7 +34,7 @@
         "textColor": "#255c49",
         "borderColor": "#255c49"
       },
-      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Keep theory cards large, concepts medium, and code examples as small transparent text nodes with a monospace title. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Card Map. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory 420 x 240; concept 320 x 180; code 340 x 100. Topic heading 1900 x 150. Use a 470px column step and leave at least 30px between sibling nodes. Separate topic frames by at least 150px.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n",
+      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Keep theory cards large, concepts medium, and code examples as small transparent text nodes with a monospace title. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory 420 x 240; concept 320 x 180; code 340 x 100. Topic heading 1900 x 150. Use a 470px column step and leave at least 30px between sibling nodes. Separate topic frames by at least 150px.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -705,7 +705,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -726,7 +729,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -747,7 +753,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -768,7 +777,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -789,7 +801,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -810,7 +825,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -831,7 +849,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -852,7 +873,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     },
@@ -873,7 +897,10 @@
           "kind": "branch"
         },
         "card-atlas:edge": {
-          "route": "orthogonal"
+          "route": "orthogonal",
+          "modes": {
+            "card": "auto"
+          }
         }
       }
     }
@@ -915,118 +942,118 @@
       "mindMap": {
         "positions": {
           "template-guide": {
-            "x": 0,
-            "y": 0
+            "x": 960.3828584123503,
+            "y": 409.6171415876498
           },
           "topic-01-heading": {
-            "x": 0,
-            "y": 500
+            "x": 960.3828584123503,
+            "y": 609.6171415876498
           },
           "topic-01-theory": {
             "x": 0,
             "y": 950
           },
           "topic-01-concept-a": {
-            "x": 470,
-            "y": 760
+            "x": 411.167250390715,
+            "y": 950
           },
           "topic-01-example-a1": {
-            "x": 940,
-            "y": 720
+            "x": 560.3828584123503,
+            "y": 409.6171415876498
           },
           "topic-01-example-a2": {
-            "x": 940,
-            "y": 850
+            "x": 560.3828584123503,
+            "y": 1490.3828584123503
           },
           "topic-01-concept-b": {
-            "x": 470,
-            "y": 1110
+            "x": -256.5970153293708,
+            "y": 1226.5970153293708
           },
           "topic-01-subconcept-b1": {
-            "x": 940,
-            "y": 1110
+            "x": -520.3828584123502,
+            "y": 1490.3828584123503
           },
           "topic-01-example-b1": {
-            "x": 1410,
-            "y": 1150
+            "x": -784.1687014953295,
+            "y": 1754.1687014953295
           },
           "topic-01-concept-c": {
-            "x": 470,
-            "y": 1460
+            "x": -256.5970153293709,
+            "y": 673.4029846706292
           },
           "topic-02-heading": {
-            "x": 2350,
-            "y": 500
+            "x": 960.3828584123503,
+            "y": 809.6171415876498
           },
           "topic-02-theory": {
-            "x": 2350,
-            "y": 850
+            "x": 960.3828584123503,
+            "y": 1009.6171415876497
           },
           "topic-02-concept-a": {
-            "x": 2820,
-            "y": 760
+            "x": 960.3828584123503,
+            "y": 1382.6666584376203
           },
           "topic-02-example-a1": {
-            "x": 3290,
-            "y": 720
+            "x": 960.3828584123503,
+            "y": 1755.7161752875909
           }
         },
         "sizes": {
           "template-guide": {
-            "width": 600,
-            "height": 240
+            "width": 280,
+            "height": 140
           },
           "topic-01-heading": {
-            "width": 1900,
-            "height": 150
+            "width": 280,
+            "height": 140
           },
           "topic-01-theory": {
-            "width": 420,
-            "height": 240
+            "width": 320,
+            "height": 140
           },
           "topic-01-concept-a": {
-            "width": 320,
-            "height": 180
+            "width": 280,
+            "height": 140
           },
           "topic-01-example-a1": {
-            "width": 340,
-            "height": 100
+            "width": 280,
+            "height": 140
           },
           "topic-01-example-a2": {
-            "width": 340,
-            "height": 100
+            "width": 280,
+            "height": 140
           },
           "topic-01-concept-b": {
-            "width": 320,
-            "height": 180
+            "width": 280,
+            "height": 140
           },
           "topic-01-subconcept-b1": {
-            "width": 320,
-            "height": 180
+            "width": 280,
+            "height": 140
           },
           "topic-01-example-b1": {
-            "width": 340,
-            "height": 100
+            "width": 280,
+            "height": 140
           },
           "topic-01-concept-c": {
-            "width": 320,
-            "height": 180
+            "width": 280,
+            "height": 140
           },
           "topic-02-heading": {
-            "width": 1900,
-            "height": 150
+            "width": 280,
+            "height": 140
           },
           "topic-02-theory": {
-            "width": 420,
-            "height": 240
+            "width": 280,
+            "height": 140
           },
           "topic-02-concept-a": {
-            "width": 320,
-            "height": 180
+            "width": 280,
+            "height": 140
           },
           "topic-02-example-a1": {
-            "width": 340,
-            "height": 100
+            "width": 280,
+            "height": 140
           }
         },
         "viewport": {

@@ -1,4 +1,18 @@
 export default {
+  helpAndTools: 'Help and project tools',
+  categorymind: 'Mind Map',
+  templateMindKnowledge: 'Mind Map — Knowledge map',
+  templateMindProject: 'Mind Map — Project plan',
+  convertMind: 'Convert to Mind Map',
+  mindViewHint: 'Compact nodes · curved branches · double-click for content',
+  mindRoot: 'Choose a root note',
+  mindConvertHint:
+    'Use the currently loaded JSON. Choose a root to rebuild Mind Map layout following outgoing arrows. Cycles and extra links remain references; detached notes are placed separately. Note Board content/layout and pinned cards stay unchanged. Supports Undo.',
+  mindConverted: 'Mind Map created. Double-click a node to open its content.',
+  mindConvertWarnings:
+    'Mind Map created with detached notes or overlap around pinned cards. You can adjust positions.',
+  mindConvertFailed: 'Cannot convert using this root. Check pinned cards and locked branches.',
+  mindCurvesOnly: 'Mind Map uses curved connectors; change other route types in Note Board.',
   templateSearch: 'Search templates…',
   templateLearningAtlas: 'Learning Atlas — Reusable study template',
   inspectorTitle: 'Format',
@@ -55,7 +69,7 @@ export default {
   routeorthogonal: 'Orthogonal',
   routezigzag: 'Zigzag',
   quickHelpTitle: 'Quick help',
-  quickHelpIntro: 'A few essentials for Card Map and Mind Map.',
+  quickHelpIntro: 'A few essentials for Note Board and Mind Map.',
   quickHelpSelect: 'Select & move groups',
   quickHelpSelectBody:
     'Shift + click or Shift + Space on a focused card toggles selection. Drag a selected card to move the group. Select two or more ungrouped cards and choose Create group to save a named frame.',
@@ -67,10 +81,10 @@ export default {
     'Pinned cards are read-only and stay fixed. Click the pin to unlock. Use Clear selection or click blank space to clear the group; select one card to edit or delete it.',
   quickHelpEdit: 'Read & edit',
   quickHelpEditBody:
-    'Click ↗ or focus a card and press Enter to open Detail. Click the title/summary/type for quick edits; Edit handles content, Format handles frames and colors.',
+    'Add notes from the left library; drag a note connector to create an arrow. Double-click or use ↗ to open content. Text/tags/frames/colors use the Format sidebar, opened from ? or the note format shortcut.',
   quickHelpNavigate: 'Navigate the canvas',
   quickHelpNavigateBody:
-    'Space + drag or middle mouse pans; scroll zooms. Fit shows the whole map, Focus centers the selected card. Mind Map has −/+ controls to collapse/expand branches.',
+    'Use Note Board | Mind Map to select a mode; green marks the current mode. Choose a root on the first Mind Map conversion. Space + drag or middle mouse pans; scroll zooms. Fit shows the map, Focus centers a node; −/+ collapses/expands branches.',
   quickHelpSave: 'Undo & save',
   quickHelpSaveBody:
     'Ctrl/Cmd + Z undoes; add Shift to redo. A group drag is one Undo step. Export project saves JSON; Import opens it again. By default, data stays in this session only.',
@@ -252,10 +266,10 @@ export default {
     'Mind Map shares cards/relations. Node style and cover: extensions.card-atlas:node; embedded images: card-atlas:images. Separate geometry: project.extensions.card-atlas:views.mindMap. Root and branch/reference: card-atlas:mind-map. Branches must be acyclic with at most one parent per node. Download the Mind Map example for the complete structure.',
 
   mapView: 'Map view',
-  cardMap: 'Card Map',
+  cardMap: 'Note Board',
   mindMap: 'Mind Map',
   nodeKind: 'Display style',
-  kindCard: 'Overview card',
+  kindCard: 'Note paper',
   kindText: 'Text',
   kindImage: 'Image',
   kindImageText: 'Image and text',
@@ -369,7 +383,7 @@ export default {
   pageTitle: 'Card Atlas — Visual Graph Editor',
   app: 'Card Atlas',
   newProject: 'New project',
-  newCard: 'New card',
+  newCard: 'New note',
   connect: 'Connect',
   undo: 'Undo',
   redo: 'Redo',

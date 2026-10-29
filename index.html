@@ -16,12 +16,52 @@
         </button>
         <button id="project-name" class="project-name"></button>
         <div class="toolbar-actions">
-          <button id="open-inspector" data-i18n="inspectorTitle"></button>
+          <button data-action="new" data-i18n="newProject"></button>
+          <div id="map-view" class="view-switch" role="group" data-i18n-title="mapView">
+            <button
+              type="button"
+              data-map-view="card"
+              aria-pressed="true"
+              data-i18n="cardMap"
+            ></button>
+            <button
+              type="button"
+              data-map-view="mind"
+              aria-pressed="false"
+              data-i18n="mindMap"
+            ></button>
+          </div>
+          <div class="history-buttons">
+            <button data-action="undo" data-i18n-title="undo">↶</button
+            ><button data-action="redo" data-i18n-title="redo">↷</button>
+          </div>
+          <button data-action="import" data-i18n="import"></button
+          ><button data-action="export" class="primary with-icon">
+            <span>↑</span><span data-i18n="export"></span></button
+          ><button
+            id="theme-toggle"
+            data-action="theme"
+            data-i18n-title="darkMode"
+            aria-pressed="false"
+          >
+            <span aria-hidden="true">◐</span><span data-i18n="lightTheme"></span></button
+          ><select id="locale" aria-label="Tiếng Việt / English">
+            <option value="vi">Tiếng Việt</option>
+            <option value="en">English</option>
+          </select>
           <details id="project-menu" class="project-menu">
-            <summary data-i18n-title="projectMenu" aria-label="Menu dự án">
-              <span aria-hidden="true">☰</span>
+            <summary
+              id="quick-help"
+              class="quick-help-button"
+              data-i18n-title="helpAndTools"
+              aria-label="Help and project tools"
+            >
+              <span aria-hidden="true">?</span>
             </summary>
             <div class="project-menu-body">
+              <button data-action="help" data-i18n="quickHelpTitle"></button>
+              <button data-action="inspector" data-i18n="inspectorTitle"></button>
+              <button data-action="convert-mind" data-i18n="convertMind"></button>
               <div id="counts"></div>
               <p id="save-state" class="save-state"></p>
               <button data-action="format" class="text-button" data-i18n="format"></button>
@@ -54,43 +94,6 @@
               </div>
             </div>
           </details>
-          <button data-action="new" data-i18n="newProject"></button
-          ><button data-action="add" class="with-icon">
-            <span>＋</span><span data-i18n="newCard"></span></button
-          ><button data-action="connect" data-i18n="connect"></button>
-          <select id="map-view" data-i18n-title="mapView">
-            <option value="card" data-i18n="cardMap"></option>
-            <option value="mind" data-i18n="mindMap"></option>
-          </select>
-          <div class="history-buttons">
-            <button data-action="undo" data-i18n-title="undo">↶</button
-            ><button data-action="redo" data-i18n-title="redo">↷</button>
-          </div>
-          <button data-action="import" data-i18n="import"></button
-          ><button data-action="export" class="primary with-icon">
-            <span>↑</span><span data-i18n="export"></span></button
-          ><button
-            id="theme-toggle"
-            data-action="theme"
-            data-i18n-title="darkMode"
-            aria-pressed="false"
-          >
-            <span aria-hidden="true">◐</span><span data-i18n="lightTheme"></span></button
-          ><select id="locale" aria-label="Tiếng Việt / English">
-            <option value="vi">Tiếng Việt</option>
-            <option value="en">English</option>
-          </select>
-          <button
-            type="button"
-            id="quick-help"
-            class="quick-help-button"
-            data-action="help"
-            data-i18n-title="quickHelpTitle"
-            aria-haspopup="dialog"
-            aria-controls="modal"
-          >
-            ?
-          </button>
         </div>
       </header>
       <section id="home-page" class="home-page">
@@ -179,6 +182,9 @@
             <span id="selection-count" role="status" aria-live="polite"></span>
             <button type="button" data-action="group-create" data-i18n="groupCreate"></button>
             <button type="button" data-action="clear-selection" data-i18n="clearSelection"></button>
+          </div>
+          <div id="mind-view-banner" hidden>
+            <strong data-i18n="mindMap"></strong><span data-i18n="mindViewHint"></span>
           </div>
           <div class="canvas-hint" data-i18n="hint"></div>
           <svg id="connection-preview" class="connection-preview" aria-hidden="true">

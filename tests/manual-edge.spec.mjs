@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const state = (page) =>
@@ -91,7 +92,7 @@ for (const route of ['curved', 'orthogonal'])
       ).toBeUndefined();
       await page.keyboard.press('Control+z');
       expect((await state(page)).p).toEqual(moved.p);
-      await page.locator('#map-view').selectOption('mind');
+      await switchMapView(page, 'mind');
       await expect(handle).toBeVisible();
       await handle.focus();
       await page.keyboard.press('ArrowRight');
@@ -204,7 +205,7 @@ test('independent corner drags detour obstacle with90degree legs and survive exp
   ).toEqual(corners.target);
   await page.keyboard.press('Control+z');
   expect((await state(page)).p).toEqual(two.p);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await source.focus();
   await page.keyboard.press('ArrowUp');
   const both = await state(page);

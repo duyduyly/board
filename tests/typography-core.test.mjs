@@ -36,9 +36,9 @@ test('overview formatting is bounded, safe, atomic and portable', () => {
   c.extensions[TYPOGRAPHY] = { title: styles.title };
   const incoming = newCard({ x: 0, y: 0 });
   assert.deepEqual(mergeNode(c, incoming).card.extensions[TYPOGRAPHY], c.extensions[TYPOGRAPHY]);
-  assert.equal(
+  assert.deepEqual(
     mergeNode(c, incoming, { takeFormat: true }).card.extensions?.[TYPOGRAPHY],
-    undefined,
+    incoming.extensions[TYPOGRAPHY],
   );
   setOverview(c, values, { title: {}, summary: {}, type: {} });
   assert.equal(c.extensions?.[TYPOGRAPHY], undefined);

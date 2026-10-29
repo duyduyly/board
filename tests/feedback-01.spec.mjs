@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
@@ -17,7 +18,7 @@ test('gallery categories, responsive and local template assets', async ({ page }
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await expect(page.locator('.template-tile')).toHaveCount(8);
+  await expect(page.locator('.template-tile')).toHaveCount(10);
   await page.locator('#locale').selectOption('en');
   await expect(page.locator('#template-gallery h1')).toHaveText('Templates');
   await page.screenshot({ path: 'planning/design/feedback-01-gallery.png' });
@@ -70,7 +71,8 @@ test('selection, modal focus, Full, draft guard and locale', async ({ page }) =>
 });
 test('Home Continue preserves project and template replacement guards', async ({ page }) => {
   await openArchitecture(page);
-  await page.locator('[data-action=add]').click();
+  await page.locator('[data-palette-kind=card]').click();
+  await page.keyboard.press('Enter');
   await setDraftTitle(page, 'Keep me');
   await page.locator('[data-action=close]').click();
   await page.locator('[data-choice=apply]').click();
@@ -159,7 +161,7 @@ test('template catalog files are valid and standalone', async ({ page }) => {
 test('Mind Map image and text use select first then explicit Open', async ({ page }) => {
   await page.goto('/');
   await page.locator('[data-template=mind]').click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await page.locator('[data-action=fit]').click();
   const imageNode = page.locator('.graph-card[data-id=illustration]');
   await imageNode.click();

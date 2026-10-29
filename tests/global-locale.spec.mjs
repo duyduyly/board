@@ -24,6 +24,7 @@ test('one toolbar locale controls Detail, help and both card popups without data
   for (const lang of ['en', 'vi']) {
     await page.locator('#locale').selectOption(lang);
     await page.locator('#quick-help').click();
+    await page.locator('[data-action=help]').click();
     await expect(page.locator('#modal')).toHaveAccessibleName(
       lang === 'en' ? 'Quick help' : 'Hướng dẫn nhanh',
     );

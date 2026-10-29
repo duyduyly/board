@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -92,13 +93,13 @@ test('supplied fanout auto routing, manual option, view isolation, Undo and over
   expect((await state(page)).p).toEqual(before.p);
   await page.keyboard.press('Control+Shift+z');
   expect((await state(page)).p).toEqual(after.p);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await enable(page);
   await expect(page.locator('#auto-route-status')).toHaveClass(/warning/);
   const mind = await state(page);
   expect(mind.p.cards).toEqual(before.p.cards);
   expect(mind.p.extensions).toEqual(before.p.extensions);
-  await page.locator('#map-view').selectOption('card');
+  await switchMapView(page, 'card');
   await expect(page.locator('#auto-route-status')).not.toHaveClass(/warning/);
   await page.locator('[data-action=fit]').click();
   await expect

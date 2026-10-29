@@ -61,6 +61,7 @@ export function createEdgeEditor(adapter) {
     project = null,
     drag = null;
   function context() {
+    if (adapter.activeView === 'mind') return null;
     if (!id) return null;
     const r = project?.relations.find((r) => r.id === id),
       edge = adapter.cy.getElementById('r:' + id);

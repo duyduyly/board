@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 test('date editor inherits global locale, stages, cancels and applies one undoable date', async ({
   page,
@@ -32,7 +33,7 @@ test('date editor inherits global locale, stages, cancels and applies one undoab
   await expect(badge).toHaveText('Creation date unavailable');
   await page.locator('[data-action=redo]').first().click();
   await expect(badge).toHaveText('10/10/2026');
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await badge.click();
   await input.fill('2026-01-01');
   await page.keyboard.press('Escape');

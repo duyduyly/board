@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -166,7 +167,7 @@ test('cover picker style Apply Cancel and referenced attachment deletion guard',
 });
 test('Root detach explicit atomic, relation invariants and delete undo', async ({ page }) => {
   await sample(page);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await format(page, 'english-s-use');
   const before = await data(page);
   await page.locator('#set-root').click();
@@ -236,7 +237,7 @@ test('opt-in recovery restores Mind Map draft and geometry; disable removes stor
   await page.reload();
   await expect(page.locator('#modal')).toBeVisible();
   await page.locator('[data-choice=restore]').click();
-  await expect(page.locator('#map-view')).toHaveValue('mind');
+  await expect(page.locator('#map-view')).toHaveAttribute('data-active-view', 'mind');
   await expect(page.locator('input[name=width]')).toHaveValue('360');
   await page.locator('#cancel-draft').click();
   await projectAction(page, 'recovery');

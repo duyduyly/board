@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
@@ -61,7 +62,7 @@ test('legacy 80px text nodes show a readable summary without changing geometry',
   await setup(page, true);
   const before = await state(page);
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     const bounds = await card(page, 'a').boundingBox();
     const summary = await card(page, 'a').locator('.card-summary').boundingBox();
     expect(summary.height).toBeGreaterThan(12);
@@ -82,7 +83,7 @@ test('image summary replaces Canvas title, text shows both; Detail retains title
 }) => {
   await setup(page);
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     await expect(card(page, 'a').locator('h3')).toHaveText('Title a');
     await expect(card(page, 'a').locator('.card-summary')).toHaveText('Summary a');
     for (const id of ['b', 'c']) {
@@ -116,7 +117,7 @@ test('named frames drag members with pinned card fixed, cancel, rename, ungroup 
   await expect(frame).toBeVisible();
   await expect(handle).toContainText('Learning group');
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     const before = await state(page);
     const box = await handle.boundingBox();
     await page.mouse.move(box.x + 30, box.y + 10);

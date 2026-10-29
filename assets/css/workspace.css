@@ -8,6 +8,11 @@
   font-weight: 600;
   color: var(--muted);
 }
+.toolbar {
+  position: relative;
+  z-index: 60;
+  background: var(--surface);
+}
 .quick-help-content > p {
   margin-bottom: 18px;
 }
@@ -323,6 +328,104 @@
 .graph-card h3 {
   font-size: var(--title-font-size, 14.5px);
 }
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node) > h3 {
+  margin: 6px 24px 12px 0;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node) > .card-summary {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node) > .card-kicker {
+  margin-top: auto;
+  padding-top: 14px;
+  flex-shrink: 0;
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node) > .card-meta {
+  margin-top: 0;
+  padding-top: 6px;
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node) .card-open {
+  position: absolute;
+  top: 38px;
+  right: 10px;
+}
+/* A decorative fold only; keep the note and every handle's hit area intact. */
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node):not(.shaped-node):not(
+    .transparent-background
+  )::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent 44%,
+    color-mix(in srgb, var(--card-ink) 18%, var(--card-background)) 48%,
+    var(--card-background) 60%,
+    var(--canvas) 62%
+  );
+  transform: scale(0);
+  transform-origin: bottom right;
+  transition: transform 160ms ease-out;
+  z-index: 1;
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node):not(.shaped-node):not(
+    .transparent-background
+  ):is(:hover, :focus-within)::after {
+  transform: scale(1);
+}
+.graph-card.paper-note .resize-handle {
+  z-index: 2;
+}
+@media (prefers-reduced-motion: reduce) {
+  .graph-card.paper-note::after {
+    transition: none !important;
+  }
+}
+.graph-card.mind-node[data-node-kind='card']:not(.shaped-node):not(.transparent-background) {
+  background: var(--surface);
+  border-color: var(--branch-color);
+  box-shadow: 0 3px 12px #132d2312;
+  padding: 24px 24px 16px;
+}
+.graph-card.mind-node.root-node[data-node-kind='card']:not(.shaped-node):not(
+    .transparent-background
+  ) {
+  background: color-mix(in srgb, var(--branch-color) 12%, var(--surface));
+  border-width: 2px;
+}
+.graph-card.mind-node[data-node-kind='card'] > h3 {
+  margin: 0;
+  text-align: center;
+}
+#mind-view-banner {
+  position: absolute;
+  bottom: 20px;
+  right: 16px;
+  z-index: 3;
+  pointer-events: none;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 2px 8px #132d2309;
+}
+#mind-view-banner strong {
+  display: block;
+  font-size: 14px;
+}
+#mind-view-banner span {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
 .graph-card.no-card-shadow {
   box-shadow: none;
 }
@@ -470,7 +573,68 @@
   line-height: 1.5;
 }
 #map-view {
-  max-width: 130px;
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--soft);
+  flex-shrink: 0;
+}
+#map-view button {
+  min-width: 94px;
+  flex: 1;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 12px;
+}
+#map-view button[aria-pressed='true'] {
+  background: #28594b;
+  color: #fff;
+  box-shadow: 0 1px 3px #17251d20;
+}
+#map-view[hidden] {
+  display: none;
+}
+.home-mode #project-menu {
+  display: block;
+}
+.project-menu > summary {
+  list-style: none;
+  display: grid;
+  place-items: center;
+}
+.project-menu > summary::-webkit-details-marker {
+  display: none;
+}
+.project-menu-body > button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 6px;
+}
+#canvas-region {
+  --workspace-cursor: url('../images/cursors/note.svg') 3 29, default;
+  cursor: var(--workspace-cursor);
+}
+#canvas-region[data-view='mind'] {
+  --workspace-cursor: url('../images/cursors/mind.svg') 3 29, default;
+}
+#canvas-region .graph-card {
+  cursor: var(--workspace-cursor);
+}
+#canvas-region .graph-card.pinned-card {
+  cursor: default;
+}
+#canvas-region .graph-card.resizing {
+  cursor: nwse-resize;
+}
+@media (pointer: coarse) {
+  #canvas-region {
+    --workspace-cursor: default;
+  }
 }
 #mind-map-hint {
   position: absolute;

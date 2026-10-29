@@ -209,11 +209,18 @@ test('Format Guide example/schema downloads keep dirty state', async ({ page }) 
   await expect(page.locator('#save-state')).toContainText('Chưa xuất');
 });
 
-test('Connect mode, relation editor endpoints and style, self-loop rejected', async ({ page }) => {
+test('connector drag, relation editor endpoints and style, self-loop rejected', async ({
+  page,
+}) => {
   await sample(page);
   await selectService(page);
-  await projectAction(page, 'connect');
-  await page.locator('.graph-card[data-id="card-database"]').click();
+  await page.locator('[data-action=close]').click();
+  const source = await page.locator('[data-id=card-user-service] .connector').boundingBox();
+  const target = await page.locator('[data-id=card-database]').boundingBox();
+  await page.mouse.move(source.x + source.width / 2, source.y + source.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 10 });
+  await page.mouse.up();
   const data = await exportData(page);
   expect(data.relations).toHaveLength(3);
   await projectAction(page, 'fit');
@@ -530,7 +537,8 @@ test('New Project names blank projects and preserves work when replacement is ca
   await locale(page, 'vi');
   await projectAction(page, 'home');
   await page.locator('[data-action=example]').click();
-  await page.locator('[data-action=add]').click();
+  await page.locator('[data-palette-kind=card]').click();
+  await page.keyboard.press('Enter');
   await expect(page.locator('.graph-card')).toHaveCount(4);
   const snapshot = () =>
     page.evaluate(async () => {

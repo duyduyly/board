@@ -59,7 +59,7 @@
           }
         }
       },
-      "content": "# 01 · Spaced Study Plan\n\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "# 01 · Spaced Study Plan\n\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động.\n\n## Current workspace\n\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy.\n"
     },
     {
       "id": "roadmap-0",
@@ -2255,152 +2255,152 @@
       "mindMap": {
         "positions": {
           "roadmap-intro": {
-            "x": 100,
-            "y": 120
+            "x": 640,
+            "y": 5373.2028654458445
           },
           "roadmap-0": {
             "x": 100,
             "y": 520
           },
           "roadmap-1": {
-            "x": 630,
-            "y": 520
+            "x": 100.00000000000006,
+            "y": 1096.1395160225575
           },
           "roadmap-2": {
-            "x": 1160,
-            "y": 520
+            "x": 100.00000000000006,
+            "y": 1672.2790320451152
           },
           "roadmap-3": {
-            "x": 1690,
-            "y": 520
+            "x": 100.00000000000011,
+            "y": 2248.418548067673
           },
           "roadmap-note": {
-            "x": 100,
-            "y": 1520
+            "x": 640,
+            "y": 5583.2028654458445
           },
           "architecture-intro": {
-            "x": 2400,
-            "y": 120
+            "x": 640,
+            "y": 880
           },
           "architecture-0": {
-            "x": 2400,
-            "y": 670
+            "x": 1216.1395160225577,
+            "y": 520
           },
           "architecture-1": {
-            "x": 3050,
-            "y": 380
+            "x": 1792.2790320451154,
+            "y": 520
           },
           "architecture-2": {
-            "x": 3050,
-            "y": 980
+            "x": 640.0000000000001,
+            "y": 520
           },
           "architecture-3": {
-            "x": 3850,
-            "y": 670
+            "x": 2368.418548067673,
+            "y": 520
           },
           "architecture-note": {
-            "x": 2400,
-            "y": 1520
+            "x": 640,
+            "y": 1090
           },
           "process-intro": {
-            "x": 100,
-            "y": 1820
+            "x": 640,
+            "y": 4963.2028654458445
           },
           "process-0": {
-            "x": 100,
-            "y": 2300
+            "x": 640.0000000000001,
+            "y": 2874.784317378172
           },
           "process-1": {
-            "x": 620,
-            "y": 2300
+            "x": 640.0000000000001,
+            "y": 3450.9238334007296
           },
           "process-2": {
-            "x": 1140,
-            "y": 2300
+            "x": 640.0000000000002,
+            "y": 4027.063349423287
           },
           "process-3": {
-            "x": 1660,
-            "y": 2300
+            "x": 640.0000000000002,
+            "y": 4603.2028654458445
           },
           "process-note": {
-            "x": 100,
-            "y": 3220
+            "x": 640,
+            "y": 5173.2028654458445
           },
           "story-intro": {
-            "x": 2400,
-            "y": 1820
+            "x": 640,
+            "y": 12111.200738082465
           },
           "story-0": {
-            "x": 2400,
-            "y": 2080
+            "x": 1425,
+            "y": 8281.621413513518
           },
           "story-1": {
-            "x": 2920,
-            "y": 2080
+            "x": 1195,
+            "y": 9233.781356800737
           },
           "story-2": {
-            "x": 3900,
-            "y": 2080
+            "x": 1390,
+            "y": 10207.819554345793
           },
           "story-3": {
-            "x": 2400,
-            "y": 2770
+            "x": 640.0000000000002,
+            "y": 11841.200738082465
           },
           "story-note": {
-            "x": 2400,
-            "y": 3100
+            "x": 640,
+            "y": 12321.200738082465
           },
           "learning-intro": {
-            "x": 100,
-            "y": 3520
+            "x": 640,
+            "y": 2464.784317378172
           },
           "learning-0": {
-            "x": 900,
-            "y": 4070
+            "x": 1047.392158689086,
+            "y": 1697.392158689086
           },
           "learning-1": {
-            "x": 100,
-            "y": 3760
+            "x": 1454.784317378172,
+            "y": 1290
           },
           "learning-2": {
-            "x": 1600,
-            "y": 3760
+            "x": 1454.784317378172,
+            "y": 2104.784317378172
           },
           "learning-3": {
-            "x": 100,
-            "y": 4520
+            "x": 640,
+            "y": 2104.784317378172
           },
           "learning-4": {
-            "x": 1600,
-            "y": 4520
+            "x": 640,
+            "y": 1290
           },
           "learning-note": {
-            "x": 100,
-            "y": 4920
+            "x": 640,
+            "y": 2674.784317378172
           },
           "sprint-intro": {
-            "x": 2400,
-            "y": 3520
+            "x": 640,
+            "y": 7871.621413513518
           },
           "sprint-0": {
             "x": 2400,
             "y": 3870
           },
           "sprint-1": {
-            "x": 2930,
-            "y": 4320
+            "x": 640.0000000000001,
+            "y": 6359.342381468402
           },
           "sprint-2": {
-            "x": 3460,
-            "y": 3870
+            "x": 640.0000000000002,
+            "y": 6935.481897490959
           },
           "sprint-3": {
-            "x": 3990,
-            "y": 4320
+            "x": 640.0000000000002,
+            "y": 7511.621413513518
           },
           "sprint-note": {
-            "x": 2400,
-            "y": 4920
+            "x": 640,
+            "y": 8081.621413513518
           }
         },
         "sizes": {

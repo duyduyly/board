@@ -18,7 +18,8 @@ export function createTemplateGallery({ host, onOpen, onError }) {
         !Array.isArray(data) ||
         data.some(
           (x) =>
-            !['personal', 'learning', 'work', 'project'].includes(x.category) ||
+            !['personal', 'learning', 'work', 'project', 'mind'].includes(x.category) ||
+            (x.view !== undefined && !['card', 'mind'].includes(x.view)) ||
             !/^assets\//.test(x.path) ||
             !/^assets\//.test(x.preview),
         )
@@ -57,7 +58,7 @@ export function createTemplateGallery({ host, onOpen, onError }) {
     const nav = document.createElement('nav');
     nav.className = 'gallery-categories';
     nav.setAttribute('aria-label', t('templateCategories'));
-    for (const key of ['all', 'personal', 'learning', 'work', 'project']) {
+    for (const key of ['all', 'personal', 'learning', 'work', 'project', 'mind']) {
       const button = document.createElement('button');
       button.textContent = t('category' + key);
       button.dataset.category = key;
@@ -94,7 +95,7 @@ export function createTemplateGallery({ host, onOpen, onError }) {
       button.append(image, label);
       button.onclick = (event) => {
         event.stopPropagation();
-        onOpen(item.path);
+        onOpen(item.path, item.view || 'card');
       };
       grid.append(button);
     }

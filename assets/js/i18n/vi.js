@@ -1,4 +1,19 @@
 export default {
+  helpAndTools: 'Hướng dẫn và công cụ dự án',
+  categorymind: 'Mind Map',
+  templateMindKnowledge: 'Mind Map — Bản đồ kiến thức',
+  templateMindProject: 'Mind Map — Kế hoạch dự án',
+  convertMind: 'Chuyển sang Mind Map',
+  mindViewHint: 'Node gọn · đường cong · nhấp đúp để mở nội dung',
+  mindRoot: 'Chọn note làm gốc',
+  mindConvertHint:
+    'Dùng dữ liệu JSON đang mở. Chọn note gốc để tạo lại bố cục Mind Map theo chiều mũi tên. Đường vòng và liên kết phụ giữ dạng tham chiếu; note rời được đặt riêng. Nội dung và bố cục Note Board giữ nguyên, card ghim không đổi. Có thể Undo.',
+  mindConverted: 'Đã tạo Mind Map. Nhấp đúp vào node để mở nội dung.',
+  mindConvertWarnings:
+    'Đã tạo Mind Map; có note rời hoặc vùng chồng do card ghim. Bạn có thể kéo chỉnh thêm.',
+  mindConvertFailed:
+    'Không thể chuyển đổi với note gốc này. Kiểm tra card ghim và các nhánh đang khóa.',
+  mindCurvesOnly: 'Mind Map dùng đường cong; chỉnh kiểu đường khác trong Note Board.',
   templateSearch: 'Tìm mẫu…',
   templateLearningAtlas: 'Learning Atlas — Khung ghi chép học tập',
   inspectorTitle: 'Định dạng',
@@ -55,7 +70,7 @@ export default {
   routeorthogonal: 'Vuông góc',
   routezigzag: 'Gấp khúc (zigzag)',
   quickHelpTitle: 'Hướng dẫn nhanh',
-  quickHelpIntro: 'Một vài thao tác để bắt đầu trên Card Map và Mind Map.',
+  quickHelpIntro: 'Một vài thao tác để bắt đầu trên Note Board và Mind Map.',
   quickHelpSelect: 'Chọn nhiều & kéo nhóm',
   quickHelpSelectBody:
     'Giữ Shift và bấm từng khối để chọn/bỏ chọn; Shift + Space khi focus khối cũng được. Kéo khối đã chọn để di chuyển nhóm. Chọn từ hai khối chưa có nhóm rồi bấm Tạo nhóm để lưu khung có tên.',
@@ -67,10 +82,10 @@ export default {
     'Khối đã ghim chỉ xem và luôn đứng yên. Bấm ghim để mở khóa. Bấm Bỏ chọn hoặc vùng trống để bỏ chọn; chọn một khối khi cần sửa hoặc xóa.',
   quickHelpEdit: 'Đọc & chỉnh sửa',
   quickHelpEditBody:
-    'Bấm ↗ hoặc focus khối rồi Enter để mở Detail. Bấm tiêu đề/tóm tắt/loại để sửa nhanh; Chỉnh sửa dành cho nội dung, Format dành cho khung và màu.',
+    'Thêm note từ thư viện bên trái; kéo chấm nối trên note để tạo mũi tên. Nhấp đúp hoặc bấm ↗ để mở nội dung. Chữ/tags/khung/màu chỉnh ở sidebar Định dạng, mở từ ? hoặc phần định dạng của note.',
   quickHelpNavigate: 'Di chuyển khung nhìn',
   quickHelpNavigateBody:
-    'Space + kéo hoặc chuột giữa để pan; cuộn để zoom. Fit xem toàn sơ đồ, Focus đưa khối đang chọn vào giữa. Mind Map có nút −/+ để thu gọn/mở nhánh.',
+    'Hai nút Note Board | Mind Map chọn chế độ, nút xanh là chế độ hiện tại. Lần đầu chuyển Mind Map, chọn note gốc. Space + kéo hoặc chuột giữa để pan; cuộn để zoom. Fit xem toàn sơ đồ, Focus đưa khối vào giữa; −/+ thu gọn/mở nhánh Mind Map.',
   quickHelpSave: 'Hoàn tác & lưu dự án',
   quickHelpSaveBody:
     'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Một lần kéo nhóm là một bước Undo. Xuất dự án để lưu JSON, Nhập JSON để mở lại; mặc định dữ liệu chỉ ở trong phiên.',
@@ -251,10 +266,10 @@ export default {
     'Mind Map dùng cùng cards/relations. Kiểu node và ảnh đại diện: extensions.card-atlas:node; ảnh nhúng: card-atlas:images. Vị trí/kích thước riêng: project.extensions.card-atlas:views.mindMap. Root và branch/reference: card-atlas:mind-map. Branch không cycle và mỗi node tối đa một parent. Dùng ví dụ Mind Map để xem cấu trúc đầy đủ.',
 
   mapView: 'Kiểu bản đồ',
-  cardMap: 'Card Map',
+  cardMap: 'Note Board',
   mindMap: 'Mind Map',
   nodeKind: 'Kiểu hiển thị',
-  kindCard: 'Card tổng quan',
+  kindCard: 'Note paper',
   kindText: 'Chữ',
   kindImage: 'Ảnh',
   kindImageText: 'Ảnh và chữ',
@@ -366,7 +381,7 @@ export default {
   pageTitle: 'Card Atlas — Trình biên tập đồ thị',
   app: 'Card Atlas',
   newProject: 'Dự án mới',
-  newCard: 'Thẻ mới',
+  newCard: 'Ghi chú mới',
   connect: 'Kết nối',
   undo: 'Hoàn tác',
   redo: 'Làm lại',

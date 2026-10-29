@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 async function start(page) {
@@ -75,7 +76,7 @@ test('display context, integrated rounded preset, Auto Fit and responsive dark p
   await page.screenshot({ path: 'planning/design/format-ux-dark-1050.png' });
   await page.locator('#cancel-draft').click();
   await page.locator('[data-action=close]').click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await page.locator('.graph-card[data-id=card-user-service] .card-open').click();
   await page.locator('#panel-tabs button').nth(2).click();
   await expect(page.locator('#set-root')).toBeVisible();

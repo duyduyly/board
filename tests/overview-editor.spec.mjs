@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
@@ -37,7 +38,7 @@ test('Canvas popup inherits global locale, edits text/style atomically and reset
   await expect(title).toHaveText('User Service');
   await page.locator('[data-action=redo]').first().click();
   await expect(title).toHaveText('New title');
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await title.focus();
   await title.press('Enter');
   await page.locator('#overview-text').fill('Cancelled');

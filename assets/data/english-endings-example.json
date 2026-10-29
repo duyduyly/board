@@ -17,7 +17,11 @@
       "title": "English Endings",
       "summary": "-s/-es và -ed: Usage → Spelling → Pronunciation → Practice.",
       "type": "overview",
-      "tags": ["english", "grammar", "overview"],
+      "tags": [
+        "english",
+        "grammar",
+        "overview"
+      ],
       "position": {
         "x": 0,
         "y": 0
@@ -31,7 +35,7 @@
         "textColor": "#23332D",
         "borderColor": "#28594B"
       },
-      "content": "# English Endings: -s/-es & -ed\n\nMục tiêu của mind map này là trả lời **4 câu hỏi**:\n\n1. **Khi nào dùng?**\n2. **Viết như thế nào?**\n3. **Đọc như thế nào?**\n4. **Làm sao tránh lỗi thường gặp?**\n\n> Quy tắc quan trọng nhất khi phát âm: nhìn vào **âm cuối của từ gốc**, không chỉ nhìn chữ cái cuối.\n\n## Lộ trình học\n\n**-s/-es → -ed → Common Mistakes → Practice**\n\nKhông cần học thuộc tất cả cùng lúc. Hãy mở từng nhánh và luyện với ví dụ.",
+      "content": "# English Endings: -s/-es & -ed\n\nMục tiêu của mind map này là trả lời **4 câu hỏi**:\n\n1. **Khi nào dùng?**\n2. **Viết như thế nào?**\n3. **Đọc như thế nào?**\n4. **Làm sao tránh lỗi thường gặp?**\n\n> Quy tắc quan trọng nhất khi phát âm: nhìn vào **âm cuối của từ gốc**, không chỉ nhìn chữ cái cuối.\n\n## Lộ trình học\n\n**-s/-es → -ed → Common Mistakes → Practice**\n\nKhông cần học thuộc tất cả cùng lúc. Hãy mở từng nhánh và luyện với ví dụ.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -43,7 +47,11 @@
       "title": "-s / -es",
       "summary": "Hiện tại đơn ngôi 3, danh từ số nhiều và 3 cách đọc /s/ /z/ /ɪz/.",
       "type": "s-es",
-      "tags": ["english", "grammar", "s-es"],
+      "tags": [
+        "english",
+        "grammar",
+        "s-es"
+      ],
       "position": {
         "x": 380,
         "y": -280
@@ -69,7 +77,12 @@
       "title": "-s/-es · Usage",
       "summary": "He/She/It + V-s/es; danh từ số nhiều thường dùng N + s/es.",
       "type": "s-es",
-      "tags": ["english", "grammar", "s-es", "usage"],
+      "tags": [
+        "english",
+        "grammar",
+        "s-es",
+        "usage"
+      ],
       "position": {
         "x": 760,
         "y": -500
@@ -95,7 +108,12 @@
       "title": "-s/-es · Spelling",
       "summary": "+s; +es; phụ âm + y → ies; có một số ngoại lệ cần nhớ.",
       "type": "s-es",
-      "tags": ["english", "grammar", "s-es", "spelling"],
+      "tags": [
+        "english",
+        "grammar",
+        "s-es",
+        "spelling"
+      ],
       "position": {
         "x": 760,
         "y": -280
@@ -121,7 +139,11 @@
       "title": "-s/-es · /s/ /z/ /ɪz/",
       "summary": "Âm cuối từ gốc quyết định cách đọc.",
       "type": "pronunciation",
-      "tags": ["english", "pronunciation", "s-es"],
+      "tags": [
+        "english",
+        "pronunciation",
+        "s-es"
+      ],
       "position": {
         "x": 760,
         "y": -60
@@ -147,7 +169,11 @@
       "title": "-ed",
       "summary": "Động từ có quy tắc ở V2/V3; 3 cách đọc /t/ /d/ /ɪd/.",
       "type": "ed",
-      "tags": ["english", "grammar", "ed"],
+      "tags": [
+        "english",
+        "grammar",
+        "ed"
+      ],
       "position": {
         "x": 380,
         "y": 280
@@ -173,7 +199,12 @@
       "title": "-ed · Usage",
       "summary": "Quá khứ đơn: S + V2; regular verbs dùng V-ed.",
       "type": "ed",
-      "tags": ["english", "grammar", "ed", "usage"],
+      "tags": [
+        "english",
+        "grammar",
+        "ed",
+        "usage"
+      ],
       "position": {
         "x": 760,
         "y": 160
@@ -199,7 +230,12 @@
       "title": "-ed · Spelling",
       "summary": "+ed; tận cùng e +d; phụ âm+y → ied; đôi khi gấp đôi phụ âm.",
       "type": "ed",
-      "tags": ["english", "grammar", "ed", "spelling"],
+      "tags": [
+        "english",
+        "grammar",
+        "ed",
+        "spelling"
+      ],
       "position": {
         "x": 760,
         "y": 380
@@ -225,7 +261,11 @@
       "title": "-ed · /t/ /d/ /ɪd/",
       "summary": "/t/ hoặc /d/ thường không thêm âm tiết; /ɪd/ sau /t/ và /d/.",
       "type": "pronunciation",
-      "tags": ["english", "pronunciation", "ed"],
+      "tags": [
+        "english",
+        "pronunciation",
+        "ed"
+      ],
       "position": {
         "x": 760,
         "y": 600
@@ -251,7 +291,11 @@
       "title": "Common Mistakes",
       "summary": "Does/did + V nguyên mẫu; đừng áp dụng -ed cho động từ bất quy tắc.",
       "type": "tips",
-      "tags": ["english", "grammar", "tips"],
+      "tags": [
+        "english",
+        "grammar",
+        "tips"
+      ],
       "position": {
         "x": -400,
         "y": -260
@@ -277,7 +321,11 @@
       "title": "Practice · 12 câu",
       "summary": "Điền dạng đúng và chọn cách đọc trước khi mở đáp án.",
       "type": "exercise",
-      "tags": ["english", "grammar", "exercise"],
+      "tags": [
+        "english",
+        "grammar",
+        "exercise"
+      ],
       "position": {
         "x": -400,
         "y": 100
@@ -303,7 +351,11 @@
       "title": "Answers",
       "summary": "Đáp án kèm lý do ngắn để tự kiểm tra.",
       "type": "exercise",
-      "tags": ["english", "grammar", "exercise"],
+      "tags": [
+        "english",
+        "grammar",
+        "exercise"
+      ],
       "position": {
         "x": -780,
         "y": 100
@@ -555,48 +607,48 @@
             "y": 0
           },
           "english-s": {
-            "x": 380,
-            "y": -280
+            "x": -430.31060150796475,
+            "y": -186.52475842498524
           },
           "english-s-use": {
-            "x": 760,
-            "y": -500
+            "x": -309.28462797527095,
+            "y": -794.9634147388767
           },
           "english-s-spelling": {
-            "x": 760,
-            "y": -280
+            "x": -774.9634147388771,
+            "y": -329.2846279752704
           },
           "english-s-sounds": {
-            "x": 760,
-            "y": -60
+            "x": -774.963414738877,
+            "y": 329.28462797527055
           },
           "english-ed": {
-            "x": 380,
-            "y": 280
+            "x": 470.31060150796475,
+            "y": -186.5247584249853
           },
           "english-ed-use": {
-            "x": 760,
-            "y": 160
+            "x": 814.963414738877,
+            "y": 329.28462797527044
           },
           "english-ed-spelling": {
-            "x": 760,
-            "y": 380
+            "x": 814.963414738877,
+            "y": -329.28462797527044
           },
           "english-ed-sounds": {
-            "x": 760,
-            "y": 600
+            "x": 349.2846279752705,
+            "y": -794.963414738877
           },
           "english-mistakes": {
-            "x": -400,
-            "y": -260
+            "x": 206.5247584249853,
+            "y": 450.31060150796475
           },
           "english-practice": {
-            "x": -400,
-            "y": 100
+            "x": -166.52475842498527,
+            "y": 450.31060150796475
           },
           "english-answers": {
-            "x": -780,
-            "y": 100
+            "x": -309.28462797527044,
+            "y": 794.963414738877
           }
         },
         "viewport": {
@@ -604,6 +656,56 @@
           "position": {
             "x": 480,
             "y": 340
+          }
+        },
+        "sizes": {
+          "english-overview": {
+            "width": 320,
+            "height": 140
+          },
+          "english-s": {
+            "width": 280,
+            "height": 140
+          },
+          "english-s-use": {
+            "width": 280,
+            "height": 140
+          },
+          "english-s-spelling": {
+            "width": 280,
+            "height": 140
+          },
+          "english-s-sounds": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed-use": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed-spelling": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed-sounds": {
+            "width": 280,
+            "height": 140
+          },
+          "english-mistakes": {
+            "width": 280,
+            "height": 140
+          },
+          "english-practice": {
+            "width": 280,
+            "height": 140
+          },
+          "english-answers": {
+            "width": 280,
+            "height": 140
           }
         }
       }

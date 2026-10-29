@@ -278,7 +278,10 @@ test('embedded raster attachments validate and survive export/import and undo', 
   assert.deepEqual(staged.errors, []);
   assert.deepEqual(staged.project.cards[0].extensions[IMAGE_NAMESPACE]['image-one'], image);
   store.undo();
-  assert.equal(store.project.cards[0].extensions, undefined);
+  assert.deepEqual(
+    store.project.cards[0].extensions,
+    normalize(example).project.cards[0].extensions,
+  );
   store.redo();
   assert.deepEqual(store.project.cards[0].extensions[IMAGE_NAMESPACE]['image-one'], image);
 });

@@ -233,7 +233,7 @@
   box-shadow: 0 8px 25px #0002;
 }
 .home-mode #project-menu {
-  display: none;
+  display: block;
 }
 #project-menu:not([open]) .recovery-button,
 #project-menu:not([open]) .recovery-status {

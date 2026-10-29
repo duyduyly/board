@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="-824.2167672406856 -741.8311344284532 1968.4335344813712 1623.6622688569064"><rect x="-824.2167672406856" y="-741.8311344284532" width="1968.4335344813712" height="1623.6622688569064" fill="#f4f8f5"/>
+<path d="M160,70 C329.3803879834338,0 329.3803879834338,-55.58362519535754 498.76077596686764,-125.58362519535754" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M498.76077596686764,-125.58362519535754 C520.4345797936052,-195.58362519535754 520.4345797936052,-521.8311344284532 542.1083836203427,-591.8311344284532" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M498.76077596686764,-125.58362519535754 C711.4887716037766,-195.58362519535754 711.4887716037766,139.99999999999991 924.2167672406856,69.99999999999991" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M160,70 C160.00000000000006,0 160.00000000000006,531.167250390715 160.0000000000001,461.1672503907151" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M160.0000000000001,461.1672503907151 C351.0541918101716,391.1672503907151 351.0541918101716,801.831134428453 542.108383620343,731.831134428453" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M160.0000000000001,461.1672503907151 C-31.05419181017126,391.1672503907151 -31.05419181017126,801.8311344284532 -222.10838362034264,731.8311344284532" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M160,70 C-9.380387983433849,0 -9.380387983433849,-55.58362519535743 -178.7607759668677,-125.58362519535743" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M-178.7607759668677,-125.58362519535743 C-391.4887716037766,-195.58362519535743 -391.4887716037766,140.0000000000001 -604.2167672406856,70.0000000000001" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M-178.7607759668677,-125.58362519535743 C-200.43457979360542,-195.58362519535743 -200.43457979360542,-521.831134428453 -222.10838362034315,-591.831134428453" fill="none" stroke="#719a88" stroke-width="5"/>
+<rect x="0" y="0" width="320" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="38" fill="#23332d" font-family="sans-serif" font-size="21.333333333333332" font-weight="600">Mục tiêu dự án</text>
+<rect x="358.76077596686764" y="-195.58362519535754" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="372.76077596686764" y="-157.58362519535754" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Phạm vi</text>
+<rect x="402.1083836203427" y="-661.8311344284532" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="416.1083836203427" y="-623.8311344284532" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Kết quả cần bàn giao</text>
+<rect x="784.2167672406856" y="-8.526512829121202e-14" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="798.2167672406856" y="37.999999999999915" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Tiêu chí hoàn thành</text>
+<rect x="20.000000000000114" y="391.1672503907151" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="34.000000000000114" y="429.1672503907151" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Triển khai</text>
+<rect x="402.10838362034303" y="661.831134428453" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="416.10838362034303" y="699.831134428453" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Công việc tiếp theo</text>
+<rect x="-362.10838362034264" y="661.8311344284532" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="-348.10838362034264" y="699.8311344284532" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Rủi ro và phương án</text>
+<rect x="-318.7607759668677" y="-195.58362519535743" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="-304.7607759668677" y="-157.58362519535743" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Phát hành</text>
+<rect x="-744.2167672406856" y="9.947598300641403e-14" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="-730.2167672406856" y="38.0000000000001" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Kiểm thử thực tế</text>
+<rect x="-362.10838362034315" y="-661.831134428453" width="280" height="140" rx="22" fill="#ffffff" stroke="#809f90" stroke-width="3"/>
+<text x="-348.10838362034315" y="-623.831134428453" fill="#23332d" font-family="sans-serif" font-size="18.666666666666668" font-weight="600">Theo dõi phản hồi</text>
+</svg>

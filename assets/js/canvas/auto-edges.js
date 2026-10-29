@@ -30,6 +30,7 @@ export function createAutoEdges(adapter) {
       lastHidden = hidden;
       const enabled = project.relations.filter(
         (r) =>
+          view !== 'mind' &&
           edgeRoute(r) === 'orthogonal' &&
           edgeMode(r, view) === 'auto' &&
           !hidden.has(r.source) &&

@@ -27,11 +27,15 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   const config = nodeStyle(card),
     simple = view === 'mind' || config.kind !== 'card';
   el.dataset.nodeKind = config.kind;
+  el.classList.toggle('mind-node', view === 'mind');
   el.classList.toggle('simple-node', simple);
   el.classList.toggle('image-only', config.kind === 'image');
   el.classList.toggle('compact-summary', compactOverview(card, size));
   const shape = appearance(card).shape;
-  el.classList.toggle('paper-note', ['rectangle', 'rounded', 'square'].includes(shape) || !shape);
+  el.classList.toggle(
+    'paper-note',
+    view !== 'mind' && (['rectangle', 'rounded', 'square'].includes(shape) || !shape),
+  );
   const title = document.createElement('h3');
   title.textContent = card.title;
   title.title = card.title;
@@ -92,7 +96,7 @@ export function overviewElement(card, view, size = card.size, renderShape = true
       more.title = t('moreTags', { tags: more.dataset.tags });
       meta.append(more);
     }
-    el.append(kicker, title, summary, meta);
+    el.append(title, summary, kicker, meta);
   }
   applyTypography(el, card);
   const strip = document.createElement('div');
@@ -110,6 +114,13 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   el.append(strip);
   updateCardMetadata(el, card);
   applyAppearance(el, card);
+  if (
+    view === 'mind' &&
+    config.kind === 'card' &&
+    !shape &&
+    card.extensions?.['card-atlas:appearance']?.radius === undefined
+  )
+    el.style.borderRadius = '20px';
   el.style.width = size.width + 'px';
   el.style.height = size.height + 'px';
   if (renderShape) applyShape(el, card, size);

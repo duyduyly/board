@@ -35,7 +35,7 @@
         "textColor": "#23332D",
         "borderColor": "#28594B"
       },
-      "content": "# Đuôi -s/-es và -ed\n\nBài học cơ bản: **cách dùng, chính tả và phát âm** là ba câu hỏi khác nhau.\n\n| Nhóm | Khi dùng | Ví dụ |\n|---|---|---|\n| -s/-es | Động từ hiện tại đơn, chủ ngữ he/she/it | She reads. |\n| -s/-es | Danh từ đếm được số nhiều | two books |\n| -ed | V2/V3 của động từ có quy tắc | worked |\n\n**Lộ trình:** mở nhánh -s/-es trước, rồi nhánh -ed, sau đó làm bài tập và xem đáp án.\n\nPhát âm dựa vào **âm cuối của từ gốc**, không chỉ chữ cuối. Nội dung học giữ nguyên khi chuyển ngôn ngữ giao diện.\n\n```mermaid\nflowchart LR\n    A[English endings] --> B[s / es]\n    A --> C[ed]\n    B --> D[Usage and spelling]\n    B --> E[s - z - iz]\n    C --> F[Usage and spelling]\n    C --> G[t - d - id]\n```\n\n## Bảng nhớ bằng ảnh\n\nẢnh này nằm trong file JSON, không cần tải từ website khác.\n\n![Bảng nhớ phát âm đuôi tiếng Anh](attachment:image-endings-chart)\n",
+      "content": "# Đuôi -s/-es và -ed\n\nBài học cơ bản: **cách dùng, chính tả và phát âm** là ba câu hỏi khác nhau.\n\n| Nhóm | Khi dùng | Ví dụ |\n|---|---|---|\n| -s/-es | Động từ hiện tại đơn, chủ ngữ he/she/it | She reads. |\n| -s/-es | Danh từ đếm được số nhiều | two books |\n| -ed | V2/V3 của động từ có quy tắc | worked |\n\n**Lộ trình:** mở nhánh -s/-es trước, rồi nhánh -ed, sau đó làm bài tập và xem đáp án.\n\nPhát âm dựa vào **âm cuối của từ gốc**, không chỉ chữ cuối. Nội dung học giữ nguyên khi chuyển ngôn ngữ giao diện.\n\n```mermaid\nflowchart LR\n    A[English endings] --> B[s / es]\n    A --> C[ed]\n    B --> D[Usage and spelling]\n    B --> E[s - z - iz]\n    C --> F[Usage and spelling]\n    C --> G[t - d - id]\n```\n\n## Bảng nhớ bằng ảnh\n\nẢnh này nằm trong file JSON, không cần tải từ website khác.\n\n![Bảng nhớ phát âm đuôi tiếng Anh](attachment:image-endings-chart)\n\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
       "extensions": {
         "card-atlas:images": {
           "image-endings-chart": {
@@ -513,48 +513,98 @@
             "y": 0
           },
           "english-s-use": {
-            "x": 320,
-            "y": 0
+            "x": -263.0673991501857,
+            "y": -296.1077823398812
           },
           "english-s-spelling": {
-            "x": 640,
-            "y": 0
+            "x": -546.3818402245392,
+            "y": -592.4739873611802
           },
           "english-s-sounds": {
-            "x": 960,
-            "y": 0
+            "x": -816.9296892487978,
+            "y": -875.4854674253113
           },
           "english-ed-use": {
-            "x": 0,
-            "y": 240
+            "x": 429.22737000677944,
+            "y": -16.562785968932644
           },
           "english-ed-spelling": {
-            "x": 320,
-            "y": 240
+            "x": 586.3818402245391,
+            "y": -592.4739873611802
           },
           "english-ed-sounds": {
-            "x": 640,
-            "y": 240
+            "x": 856.9296892487977,
+            "y": -875.4854674253114
           },
           "english-mistakes": {
-            "x": 960,
-            "y": 240
+            "x": -288.5480283608201,
+            "y": 269.45330842011117
           },
           "english-practice": {
-            "x": 0,
-            "y": 480
+            "x": -597.3653364015091,
+            "y": 539.1417773143191
           },
           "english-answers": {
-            "x": 320,
-            "y": 480
+            "x": -892.2668532992775,
+            "y": 796.6776617870239
           },
           "illustration": {
-            "x": 640,
-            "y": 480
+            "x": 586.3818402245392,
+            "y": 557.4739873611801
           },
           "detached-note": {
-            "x": 960,
-            "y": 480
+            "x": 1256.9296892487978,
+            "y": -875.4854674253114
+          }
+        },
+        "sizes": {
+          "english-overview": {
+            "width": 320,
+            "height": 140
+          },
+          "english-s-use": {
+            "width": 280,
+            "height": 140
+          },
+          "english-s-spelling": {
+            "width": 280,
+            "height": 140
+          },
+          "english-s-sounds": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed-use": {
+            "width": 280,
+            "height": 210
+          },
+          "english-ed-spelling": {
+            "width": 280,
+            "height": 140
+          },
+          "english-ed-sounds": {
+            "width": 280,
+            "height": 140
+          },
+          "english-mistakes": {
+            "width": 280,
+            "height": 140
+          },
+          "english-practice": {
+            "width": 280,
+            "height": 140
+          },
+          "english-answers": {
+            "width": 280,
+            "height": 140
+          },
+          "illustration": {
+            "width": 280,
+            "height": 210
+          },
+          "detached-note": {
+            "width": 280,
+            "height": 140
           }
         }
       }

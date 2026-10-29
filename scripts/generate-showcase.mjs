@@ -1,5 +1,6 @@
 ﻿import fs from 'node:fs/promises';
 import { stage } from '../assets/js/json/validator.js';
+import { radialLayout, applyLayout } from '../assets/js/graph/radial-layout.js';
 const old = JSON.parse(await fs.readFile('assets/data/mind-map-example.json', 'utf8'));
 const images = old.cards.find((c) => c.extensions?.['card-atlas:images']).extensions[
   'card-atlas:images'
@@ -650,6 +651,9 @@ const project = {
     },
   },
 };
+cards[0].content +=
+  '\n\n## Current workspace\n\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy.\n';
+applyLayout(project, radialLayout(project));
 const result = stage(JSON.stringify(project));
 if (result.errors.length) throw Error(JSON.stringify(result.errors));
 await fs.writeFile('assets/data/showcase-example.json', JSON.stringify(project, null, 2) + '\n');

@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
@@ -7,14 +8,14 @@ test('note paper reference surface and muted dates preserve controls/fit in both
   await page.goto('/');
   await page.locator('#file-input').setInputFiles('assets/data/english-endings-example.json');
   await page.locator('[data-choice=apply]').click();
-  await page.locator('#map-view').selectOption('card');
+  await switchMapView(page, 'card');
   await page.locator('[data-palette-shape=rectangle]').click();
   const card = page.locator('.graph-card[data-shape=rectangle]');
   await card.locator('.card-pin').click();
   await expect(card).toHaveClass(/paper-note/);
   await expect(card.locator('time')).toHaveAttribute('datetime', /Z$/);
   for (const mode of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(mode);
+    await switchMapView(page, mode);
     await expect(card.locator('.card-pin')).toHaveAttribute('aria-pressed', 'true');
     const date = await card.locator('time').evaluate((el) => ({
       opacity: parseFloat(window.getComputedStyle(el).opacity),

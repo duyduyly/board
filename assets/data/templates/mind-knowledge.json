@@ -1,0 +1,581 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Bản đồ kiến thức",
+    "description": "Mind Map với ba nhánh rõ ràng, nội dung chi tiết dùng chung với Note Board."
+  },
+  "cards": [
+    {
+      "id": "mind-knowledge-0",
+      "title": "Chủ đề đang học",
+      "summary": "Bắt đầu từ chủ đề trung tâm rồi khám phá ba nhánh.",
+      "type": "topic",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Chủ đề đang học\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-1",
+      "title": "Hiểu bản chất",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Hiểu bản chất\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 360,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-2",
+      "title": "Giải thích bằng lời mình",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Giải thích bằng lời mình\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 720,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-3",
+      "title": "Ví dụ cụ thể",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Ví dụ cụ thể\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.\n\n```json\n{\"idea\": \"one clear example\", \"reviewed\": false}\n```",
+      "position": {
+        "x": 1080,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#F4E4EF",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-4",
+      "title": "Ghi nhớ",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Ghi nhớ\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 0,
+        "y": 360
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-5",
+      "title": "Tự kiểm tra không nhìn tài liệu",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Tự kiểm tra không nhìn tài liệu\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 360,
+        "y": 360
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-6",
+      "title": "Lịch ôn cách quãng",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Lịch ôn cách quãng\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 720,
+        "y": 360
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-7",
+      "title": "Áp dụng",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Áp dụng\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 1080,
+        "y": 360
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#F4E4EF",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-8",
+      "title": "Bài tập nhỏ",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Bài tập nhỏ\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 0,
+        "y": 720
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-9",
+      "title": "Phản hồi và sửa lỗi",
+      "summary": "Ghi một ý chính; nhấp đúp để bổ sung chi tiết.",
+      "type": "idea",
+      "tags": [
+        "mind-knowledge"
+      ],
+      "content": "# Phản hồi và sửa lỗi\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "position": {
+        "x": 360,
+        "y": 720
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#8CA694"
+      },
+      "extensions": {
+        "card-atlas:node": {
+          "kind": "card"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "mind-knowledge-r1",
+      "source": "mind-knowledge-0",
+      "target": "mind-knowledge-1",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r2",
+      "source": "mind-knowledge-1",
+      "target": "mind-knowledge-2",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r3",
+      "source": "mind-knowledge-1",
+      "target": "mind-knowledge-3",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r4",
+      "source": "mind-knowledge-0",
+      "target": "mind-knowledge-4",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r5",
+      "source": "mind-knowledge-4",
+      "target": "mind-knowledge-5",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r6",
+      "source": "mind-knowledge-4",
+      "target": "mind-knowledge-6",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r7",
+      "source": "mind-knowledge-0",
+      "target": "mind-knowledge-7",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r8",
+      "source": "mind-knowledge-7",
+      "target": "mind-knowledge-8",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    },
+    {
+      "id": "mind-knowledge-r9",
+      "source": "mind-knowledge-7",
+      "target": "mind-knowledge-9",
+      "extensions": {
+        "card-atlas:edge": {
+          "route": "curved"
+        },
+        "card-atlas:mind-map": {
+          "kind": "branch"
+        }
+      }
+    }
+  ],
+  "extensions": {
+    "card-atlas:mind-map": {
+      "rootId": "mind-knowledge-0"
+    },
+    "card-atlas:views": {
+      "mindMap": {
+        "sizes": {
+          "mind-knowledge-0": {
+            "width": 320,
+            "height": 140
+          },
+          "mind-knowledge-1": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-2": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-3": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-4": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-5": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-6": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-7": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-8": {
+            "width": 280,
+            "height": 140
+          },
+          "mind-knowledge-9": {
+            "width": 280,
+            "height": 140
+          }
+        },
+        "positions": {
+          "mind-knowledge-0": {
+            "x": 0,
+            "y": 0
+          },
+          "mind-knowledge-1": {
+            "x": 358.76077596686764,
+            "y": -195.58362519535754
+          },
+          "mind-knowledge-4": {
+            "x": 20.000000000000114,
+            "y": 391.1672503907151
+          },
+          "mind-knowledge-7": {
+            "x": -318.7607759668677,
+            "y": -195.58362519535743
+          },
+          "mind-knowledge-2": {
+            "x": 402.1083836203427,
+            "y": -661.8311344284532
+          },
+          "mind-knowledge-3": {
+            "x": 784.2167672406856,
+            "y": -8.526512829121202e-14
+          },
+          "mind-knowledge-5": {
+            "x": 402.10838362034303,
+            "y": 661.831134428453
+          },
+          "mind-knowledge-6": {
+            "x": -362.10838362034264,
+            "y": 661.8311344284532
+          },
+          "mind-knowledge-8": {
+            "x": -744.2167672406856,
+            "y": 9.947598300641403e-14
+          },
+          "mind-knowledge-9": {
+            "x": -362.10838362034315,
+            "y": -661.831134428453
+          }
+        }
+      }
+    }
+  }
+}

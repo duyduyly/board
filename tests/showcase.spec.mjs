@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
 test('complete showcase opens from Gallery, captions and both views render offline', async ({
@@ -42,8 +43,7 @@ test('complete showcase opens from Gallery, captions and both views render offli
     adapter.setViewport({ zoom: 0.5, position: { x: -1150, y: -850 } });
   });
   await page.screenshot({ path: 'planning/design/cornell-study-lab.png' });
-  const view = page.locator('#map-view');
-  await view.selectOption('mind');
+  await switchMapView(page, 'mind');
   await expect(page.locator('.group-frame')).toHaveCount(6);
   await page.locator('#theme-toggle').click();
   await page.setViewportSize({ width: 1050, height: 900 });

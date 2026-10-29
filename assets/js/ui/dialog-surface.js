@@ -23,6 +23,13 @@ export function dialogSurface(element, { onRequestClose, fallback }) {
     e.stopPropagation();
     requestClose();
   });
+  element.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && element.open && !element.matches(':modal')) {
+      e.preventDefault();
+      e.stopPropagation();
+      requestClose();
+    }
+  });
   element.addEventListener('pointerdown', (e) => {
     startedOutside = outside(e);
   });

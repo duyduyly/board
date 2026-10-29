@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { locale } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
@@ -50,7 +51,7 @@ test('pinned card is read-only in both views, unpin unlocks and Undo restores lo
   await expect(card.locator('.resize-handle')).toHaveCount(1);
   await page.locator('[data-action=undo]').first().click();
   await expect(card.locator('.resize-handle')).toHaveCount(0);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   const pinnedMind = await snapshot(page);
   await dragBlank(page, card);
   expect(await snapshot(page)).toBe(pinnedMind);
@@ -78,7 +79,7 @@ test('pinned image can be viewed but not resized or edited, and unpin restores c
   const image = page.locator('.graph-card[data-id=illustration]');
   await page.locator('[data-action=fit]').click();
   await image.locator('.card-pin').click();
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await page.locator('[data-action=fit]').click();
   const before = await snapshot(page);
   await dragBlank(page, image);
@@ -104,7 +105,7 @@ test('uniform styling and radial layout retain pinned node geometry and styles',
   await page.locator('#overview-uniform').check();
   await page.locator('[data-overview-apply]').click();
   await expect(locked.locator('h3')).not.toHaveCSS('font-size', '24px');
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   const state = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { MIND, geometry } = await import('/assets/js/graph/mind-map.js');

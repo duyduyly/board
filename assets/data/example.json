@@ -22,19 +22,29 @@
         "user"
       ],
       "position": {
-        "x": 100,
-        "y": 200
+        "x": 0,
+        "y": 0
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#DBEAFE",
-        "textColor": "#172554",
-        "borderColor": "#2563EB"
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
-      "content": "# User API\n\nIllustrative API boundary.\n\n## Endpoints\n\n- `POST /users`\n- `GET /users/{id}`\n\n## Responsibility\n\nValidate request shape and delegate user operations to User Service."
+      "content": "# User API\n\nIllustrative API boundary.\n\n## Endpoints\n\n- `POST /users`\n- `GET /users/{id}`\n\n## Responsibility\n\nValidate request shape and delegate user operations to User Service.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     },
     {
       "id": "card-user-service",
@@ -46,23 +56,31 @@
         "user"
       ],
       "position": {
-        "x": 460,
-        "y": 200
+        "x": 380,
+        "y": 0
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#EDE9FE",
-        "textColor": "#2E1065",
-        "borderColor": "#7C3AED"
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# User Service\n\nIllustrative application service.\n\n## Responsibilities\n\n- Apply user account rules.\n- Coordinate reads and writes.\n\n## Request flow\n\n```mermaid\nflowchart LR\n    API[User API] --> Service[User Service]\n    Service --> DB[(Database)]\n```\n\n## Open question\n\nHow should duplicate account requests be handled? The diagram does not establish that rule.",
       "extensions": {
         "example:source": {
           "kind": "illustrative",
           "note": "Example content only; no source code has been inspected."
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
         }
       }
     },
@@ -76,19 +94,29 @@
         "storage"
       ],
       "position": {
-        "x": 820,
-        "y": 200
+        "x": 760,
+        "y": 0
       },
       "size": {
         "width": 260,
-        "height": 190
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#D1FAE5",
-        "textColor": "#064E3B",
-        "borderColor": "#059669"
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
-      "content": "# Database\n\nIllustrative persistence component.\n\nActual tables, constraints and transactions must be documented from the target project's evidence."
+      "content": "# Database\n\nIllustrative persistence component.\n\nActual tables, constraints and transactions must be documented from the target project's evidence.",
+      "extensions": {
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20
+          },
+          "summary": {
+            "fontSize": 14
+          }
+        }
+      }
     }
   ],
   "relations": [
@@ -118,5 +146,25 @@
         "arrow": "end"
       }
     }
-  ]
+  ],
+  "extensions": {
+    "card-atlas:views": {
+      "mindMap": {
+        "sizes": {
+          "card-user-api": {
+            "width": 280,
+            "height": 140
+          },
+          "card-user-service": {
+            "width": 280,
+            "height": 140
+          },
+          "card-database": {
+            "width": 280,
+            "height": 140
+          }
+        }
+      }
+    }
+  }
 }

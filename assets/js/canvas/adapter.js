@@ -269,6 +269,7 @@ export class GraphAdapter {
         el.replaceChildren();
         const overview = overviewElement(c, view, c.size, false);
         el.classList.toggle('paper-note', overview.classList.contains('paper-note'));
+        el.classList.toggle('mind-node', view === 'mind');
         el.classList.toggle('compact-summary', overview.classList.contains('compact-summary'));
         el.append(...overview.children);
         for (const target of el.querySelectorAll('[data-overview-field]')) {
@@ -284,9 +285,17 @@ export class GraphAdapter {
                 }),
           );
           target.onpointerdown = (e) => e.stopPropagation();
-          target.ondblclick = (e) => e.stopPropagation();
+          target.ondblclick = (e) => {
+            e.stopPropagation();
+            if (this.activeView === 'mind') this.callbacks.open({ kind: 'card', id: c.id });
+          };
           const edit = (e) => {
             e.stopPropagation();
+            if (this.activeView === 'mind') {
+              if (e.type === 'keydown') this.callbacks.open({ kind: 'card', id: c.id });
+              else this.callbacks.select({ kind: 'card', id: c.id });
+              return;
+            }
             if (isPinned(c)) {
               this.callbacks.open({ kind: 'card', id: c.id });
               return;
@@ -416,6 +425,13 @@ export class GraphAdapter {
         }
         el.append(connector);
         applyAppearance(el, c);
+        if (
+          view === 'mind' &&
+          config.kind === 'card' &&
+          !appearance(c).shape &&
+          c.extensions?.['card-atlas:appearance']?.radius === undefined
+        )
+          el.style.borderRadius = '20px';
         el.style.width = c.size.width + 'px';
         el.style.height = c.size.height + 'px';
         el.style.left = c.position.x + 'px';
@@ -467,8 +483,8 @@ export class GraphAdapter {
         edge.toggleClass('mind-edge', view === 'mind');
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         for (const route of ['straight', 'orthogonal', 'zigzag'])
-          edge.toggleClass('route-' + route, edgeRoute(r) === route);
-        applyEdgePath(edge, r, view, automatic.get(r.id));
+          edge.toggleClass('route-' + route, view !== 'mind' && edgeRoute(r) === route);
+        applyEdgePath(edge, view === 'mind' ? { extensions: {} } : r, view, automatic.get(r.id));
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
@@ -541,6 +557,7 @@ export class GraphAdapter {
     this.view();
   }
   fit() {
+    this.cy.resize();
     const visible = this.cy.elements().filter((e) => e.style('display') !== 'none');
     const frames = this.groupFrames.bounds();
     if (frames.length && visible.nodes().length) {

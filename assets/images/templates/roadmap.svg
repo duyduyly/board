@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 530"><rect width="720" height="530" fill="#f5f7f5"/><path d="M170 135 Q420 135 550 135" fill="none" stroke="#64748b" stroke-width="3"/><path d="M550 135 Q40 135 170 395" fill="none" stroke="#64748b" stroke-width="3"/><path d="M170 395 Q420 395 550 395" fill="none" stroke="#64748b" stroke-width="3"/><rect x="40" y="40" width="260" height="190" rx="12" fill="#E3EFE8" stroke="#28594B" stroke-width="2"/><text x="56" y="86" font-family="Segoe UI,sans-serif" font-size="22" fill="#23332d">Goal</text><rect x="420" y="40" width="260" height="190" rx="12" fill="#E8F0FB" stroke="#4268A4" stroke-width="2"/><text x="436" y="86" font-family="Segoe UI,sans-serif" font-size="22" fill="#23332d">Plan</text><rect x="40" y="300" width="260" height="190" rx="12" fill="#E3EFE8" stroke="#28594B" stroke-width="2"/><text x="56" y="346" font-family="Segoe UI,sans-serif" font-size="22" fill="#23332d">Build</text><rect x="420" y="300" width="260" height="190" rx="12" fill="#E8F0FB" stroke="#4268A4" stroke-width="2"/><text x="436" y="346" font-family="Segoe UI,sans-serif" font-size="22" fill="#23332d">Review</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="-80 -80 800 780"><rect x="-80" y="-80" width="800" height="780" fill="#f4f8f5"/>
+<path d="M130,130 L510,130" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M510,130 L130,490" fill="none" stroke="#719a88" stroke-width="5"/>
+<path d="M130,490 L510,490" fill="none" stroke="#719a88" stroke-width="5"/>
+<rect x="0" y="0" width="260" height="260" rx="2" fill="#FFF2B0" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="38" fill="#23332d" font-family="sans-serif" font-size="17.333333333333332" font-weight="600">Goal</text>
+<text x="14" y="78" fill="#52675d" font-family="sans-serif" font-size="14">Describe one concrete outcome and </text>
+<rect x="380" y="0" width="260" height="260" rx="2" fill="#E3EFE8" stroke="#809f90" stroke-width="3"/>
+<text x="394" y="38" fill="#23332d" font-family="sans-serif" font-size="17.333333333333332" font-weight="600">Plan</text>
+<text x="394" y="78" fill="#52675d" font-family="sans-serif" font-size="14">Break the outcome into milestones </text>
+<rect x="0" y="360" width="260" height="260" rx="2" fill="#E8F0FB" stroke="#809f90" stroke-width="3"/>
+<text x="14" y="398" fill="#23332d" font-family="sans-serif" font-size="17.333333333333332" font-weight="600">Build</text>
+<text x="14" y="438" fill="#52675d" font-family="sans-serif" font-size="14">Work on one small deliverable and </text>
+<rect x="380" y="360" width="260" height="260" rx="2" fill="#F4E4EF" stroke="#809f90" stroke-width="3"/>
+<text x="394" y="398" fill="#23332d" font-family="sans-serif" font-size="17.333333333333332" font-weight="600">Review</text>
+<text x="394" y="438" fill="#52675d" font-family="sans-serif" font-size="14">Compare the result with the goal, </text>
+</svg>

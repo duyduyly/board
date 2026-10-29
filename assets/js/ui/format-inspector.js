@@ -55,6 +55,7 @@ export function createFormatInspector({ guard, onTab, onGlobal, context }) {
         input.type = 'checkbox';
         input.name = key;
         input.disabled =
+          (key === 'routes' && selected.view === 'mind') ||
           (key === 'arrows' && selected.kind !== 'relation') ||
           (key === 'surface' && selected.kind !== 'card');
         label.append(input, document.createTextNode(t('inspectorBulk' + key)));

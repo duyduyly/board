@@ -63,6 +63,8 @@ test('wide star and deep forest with mixed sizes do not overlap', () => {
 test('layout Apply is one transaction and restores all geometry with undo', async () => {
   const p = await sample(),
     s = new ProjectStore();
+  // The bundled template is already arranged; move a branch before testing Apply.
+  p.extensions['card-atlas:views'].mindMap.positions['english-s-use'].x += 80;
   s.replace(p);
   const before = structuredClone(s.project);
   const a = radialLayout(p);

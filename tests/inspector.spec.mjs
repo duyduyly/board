@@ -1,3 +1,4 @@
+import { projectAction as toolbarProjectAction } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
 test('right inspector formats card, text and edges without modal; global actions skip pins and undo once', async ({
@@ -105,7 +106,7 @@ test('right inspector formats card, text and edges without modal; global actions
   await page.locator('#inspector-close').click();
   await page.locator('#locale').selectOption('en');
   await page.setViewportSize({ width: 1050, height: 780 });
-  await page.locator('#open-inspector').click();
+  await toolbarProjectAction(page, 'inspector');
   await expect(page.locator('#inspector-tabs')).toContainText('Arrows');
   await expect(page.locator('#inspector-global')).toBeVisible();
   await page.screenshot({ path: 'planning/design/inspector-english-1050.png' });

@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
 const snapshot = (page) =>
@@ -84,7 +85,7 @@ test('Shift selection across text/pin and keyboard, group drag is one undo in bo
   page.on('pageerror', (e) => errors.push(e.message));
   await setup(page);
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     await choose(page, 'a');
     await choose(page, 'b', true, true);
     await choose(page, 'c', true, true);
@@ -185,7 +186,7 @@ test('group selection clears for Detail/view and hidden collapsed nodes are excl
   await expect(page.locator('.graph-card.selected')).toHaveCount(1);
   await page.locator('[data-action=close]').click();
   await choose(page, 'c', true);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await expect(page.locator('.graph-card.selected')).toHaveCount(1);
   await card(page, 'a').locator('.branch-toggle').click();
   await expect(card(page, 'b')).toBeHidden();
@@ -229,7 +230,7 @@ test('zoomed group uses graph delta, blank clears, blur and view switch cancel p
   await page.mouse.up();
   expect((await snapshot(page)).p).toEqual(after.p);
   await drag(page, 'a', 35, 15, false);
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await page.mouse.up();
   expect((await snapshot(page)).p).toEqual(after.p);
   await expect(page.locator('.graph-card.selected')).toHaveCount(1);

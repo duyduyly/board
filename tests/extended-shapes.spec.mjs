@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftFontSize } from './overview-test-helpers.mjs';
 import { test, expect } from '@playwright/test';
@@ -13,7 +14,7 @@ test('extended shapes Fit72, shared anchors, active view and safe content round-
   await page.locator('[data-choice=apply]').click();
   await expect(page.locator('.graph-card[data-shape]')).toHaveCount(14);
   for (const view of ['card', 'mind']) {
-    await page.locator('#map-view').selectOption(view);
+    await switchMapView(page, view);
     for (const shape of extended) {
       const card = page.locator('.graph-card[data-id="shape-' + shape + '"]');
       await card.focus();

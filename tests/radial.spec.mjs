@@ -111,7 +111,7 @@ test('preview locks mutations, drag, export and keyboard history; Escape cancels
   const before = await state(page);
   await projectAction(page, 'layout');
   await expect(page.locator('[data-action=export]')).toBeDisabled();
-  await expect(page.locator('[data-action=add]')).toBeDisabled();
+  await expect(page.locator('[data-palette-kind=card]')).toBeDisabled();
   expect(await page.locator('#panel-body').evaluate((e) => e.inert)).toBe(true);
   const box = await page.locator('.graph-card[data-id=english-overview]').boundingBox();
   await page.mouse.move(box.x + 30, box.y + 30);

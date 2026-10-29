@@ -1,3 +1,4 @@
+import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 
@@ -28,9 +29,9 @@ test('Learning Atlas is available in learning examples and opens both views with
     await fs.readFile('assets/data/templates/learning-atlas.json', 'utf8'),
   );
   expect(before.cards.map((c) => c.content)).toEqual(original.cards.map((c) => c.content));
-  await page.locator('#map-view').selectOption('mind');
+  await switchMapView(page, 'mind');
   await expect(page.locator('.graph-card')).toHaveCount(14);
-  await page.locator('#map-view').selectOption('card');
+  await switchMapView(page, 'card');
   const after = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { serialize, stage } = await import('/assets/js/json/validator.js');
