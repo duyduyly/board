@@ -255,8 +255,15 @@ for (const item of catalog) {
       w = b.size.width,
       h = b.size.height;
     const image = c.extensions?.['card-atlas:images']?.[nodeStyle(c).coverImageId];
+    const appearance = c.extensions?.['card-atlas:appearance'];
+    const fill = mind
+      ? '#ffffff'
+      : appearance?.backgroundTransparent
+        ? 'none'
+        : esc(c.style?.backgroundColor || '#FFF2B0');
+    const stroke = !mind && appearance?.borderTransparent ? 'none' : '#809f90';
     svg.push(
-      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${mind ? 22 : 2}" fill="${mind ? '#ffffff' : esc(c.style?.backgroundColor || '#FFF2B0')}" stroke="#809f90" stroke-width="3"/>`,
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${mind ? 22 : 2}" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`,
     );
     if (image)
       svg.push(

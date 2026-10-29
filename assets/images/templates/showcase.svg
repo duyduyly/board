@@ -19,7 +19,7 @@
 <path d="M2610,4020 L3140,4470" fill="none" stroke="#719a88" stroke-width="5"/>
 <path d="M3140,4470 L3670,4020" fill="none" stroke="#719a88" stroke-width="5"/>
 <path d="M3670,4020 L4200,4470" fill="none" stroke="#719a88" stroke-width="5"/>
-<rect x="100" y="120" width="2000" height="150" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="120" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="158" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 · Spaced Study Plan</text>
 <rect x="100" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
 <text x="114" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Mục tiêu</text>
@@ -33,9 +33,9 @@
 <rect x="1690" y="520" width="420" height="300" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
 <text x="1704" y="558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Áp dụng mới</text>
 <text x="1704" y="598" fill="#52675d" font-family="sans-serif" font-size="14">Dùng kiến thức vào một bài chưa là</text>
-<rect x="100" y="1520" width="2000" height="140" rx="2" fill="#e3f0e9" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="1520" width="2000" height="140" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="1558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
-<rect x="2400" y="120" width="2000" height="150" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="120" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="158" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">02 · Concept &amp; Comparison Map</text>
 <rect x="2400" y="670" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
 <text x="2414" y="708" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Java List</text>
@@ -49,9 +49,9 @@
 <rect x="3850" y="670" width="420" height="300" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
 <text x="3864" y="708" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Chọn theo workload</text>
 <text x="3864" y="748" fill="#52675d" font-family="sans-serif" font-size="14">Truy cập? Chèn ở đâu? Bộ nhớ?</text>
-<rect x="2400" y="1520" width="2000" height="140" rx="2" fill="#e7effa" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="1520" width="2000" height="140" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="1558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
-<rect x="100" y="1820" width="2000" height="150" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="1820" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="1858" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">03 · Worked Example → Try</text>
 <rect x="100" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
 <text x="114" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 / Xem lời giải</text>
@@ -65,9 +65,9 @@
 <rect x="1660" y="2300" width="420" height="300" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
 <text x="1674" y="2338" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / Biến thể</text>
 <text x="1674" y="2378" fill="#52675d" font-family="sans-serif" font-size="14">Nếu mảng rỗng thì sao? Nếu có nhiề</text>
-<rect x="100" y="3220" width="2000" height="140" rx="2" fill="#fff0d6" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="3220" width="2000" height="140" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="3258" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
-<rect x="2400" y="1820" width="2000" height="150" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="1820" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="1858" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / CORNELL STUDY LAB</text>
 <rect x="2400" y="2080" width="430" height="580" rx="2" fill="#e9eff7" stroke="#809f90" stroke-width="3"/>
 <text x="2414" y="2118" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">01 / CÂU HỎI GỢI NHỚ</text>
@@ -82,9 +82,9 @@ Lin</text>
 Giải thích cho</text>
 <rect x="2400" y="2770" width="2000" height="210" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
 <text x="2414" y="2808" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">04 / ÔN CÁCH QUÃNG</text>
-<rect x="2400" y="3100" width="2000" height="200" rx="2" fill="#fffdf8" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="3100" width="2000" height="200" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="3138" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">TÓM TẮT BẰNG LỜI MÌNH</text>
-<rect x="100" y="3520" width="2000" height="150" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="3520" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="3558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">05 · Closed-book Recall Map</text>
 <rect x="900" y="4070" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
 <text x="914" y="4108" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Chủ đề cần nhớ</text>
@@ -101,9 +101,9 @@ Giải thích cho</text>
 <rect x="1600" y="4520" width="420" height="300" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
 <text x="1614" y="4558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Còn thiếu gì?</text>
 <text x="1614" y="4598" fill="#52675d" font-family="sans-serif" font-size="14">Mở nguồn, sửa lỗi rồi hẹn một lần </text>
-<rect x="100" y="4920" width="2000" height="140" rx="2" fill="#eae5f7" stroke="#809f90" stroke-width="3"/>
+<rect x="100" y="4920" width="2000" height="140" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="114" y="4958" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
-<rect x="2400" y="3520" width="2000" height="150" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="3520" width="2000" height="150" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="3558" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">06 · Mistake → Feedback → Retry</text>
 <rect x="2400" y="3870" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
 <text x="2414" y="3908" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Bài đã thử</text>
@@ -117,6 +117,6 @@ Giải thích cho</text>
 <rect x="3990" y="4320" width="420" height="300" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
 <text x="4004" y="4358" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">Thử lại sau</text>
 <text x="4004" y="4398" fill="#52675d" font-family="sans-serif" font-size="14">Làm biến thể không nhìn lời giải, </text>
-<rect x="2400" y="4920" width="2000" height="140" rx="2" fill="#e3f1f2" stroke="#809f90" stroke-width="3"/>
+<rect x="2400" y="4920" width="2000" height="140" rx="2" fill="none" stroke="none" stroke-width="3"/>
 <text x="2414" y="4958" fill="#23332d" font-family="sans-serif" font-size="24" font-weight="600">KẾT THÚC / TỰ ĐÁNH GIÁ</text>
 </svg>

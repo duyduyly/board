@@ -26,18 +26,38 @@
         "y": 0
       },
       "size": {
-        "width": 600,
-        "height": 240
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
-      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Keep theory cards large, concepts medium, and code examples as small transparent text nodes with a monospace title. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory 420 x 240; concept 320 x 180; code 340 x 100. Topic heading 1900 x 150. Use a 470px column step and leave at least 30px between sibling nodes. Separate topic frames by at least 150px.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Use 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
+        },
+        "card-atlas:appearance": {
+          "shape": "rectangle",
+          "radius": 0,
+          "backgroundTransparent": false,
+          "borderTransparent": false,
+          "borderWidth": 1,
+          "align": "left",
+          "shadow": "none",
+          "sizeMode": "manual"
+        },
+        "card-atlas:typography": {
+          "title": {
+            "fontSize": 20,
+            "fontFamily": "system"
+          },
+          "summary": {
+            "fontSize": 14,
+            "fontFamily": "system"
+          }
         }
       }
     },
@@ -52,7 +72,7 @@
       ],
       "position": {
         "x": 0,
-        "y": 500
+        "y": 1000
       },
       "size": {
         "width": 1900,
@@ -99,16 +119,16 @@
       ],
       "position": {
         "x": 0,
-        "y": 950
+        "y": 1900
       },
       "size": {
-        "width": 420,
-        "height": 240
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
       "extensions": {
@@ -116,22 +136,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 16,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 23,
-            "color": "#255c49"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 15
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -151,16 +172,16 @@
       ],
       "position": {
         "x": 470,
-        "y": 760
+        "y": 1520
       },
       "size": {
-        "width": 320,
-        "height": 180
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
       "extensions": {
@@ -168,21 +189,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 12,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 18
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 13
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -202,16 +225,16 @@
       ],
       "position": {
         "x": 940,
-        "y": 720
+        "y": 1440
       },
       "size": {
-        "width": 340,
-        "height": 100
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#F4E4EF",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
       "extensions": {
@@ -223,18 +246,19 @@
           "borderTransparent": true,
           "shadow": "none",
           "align": "left",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "shape": "rectangle",
+          "radius": 0,
+          "borderWidth": 1
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "mono",
-            "fontSize": 14,
-            "color": "#255c49"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 11,
-            "color": "#255c49"
+            "fontSize": 14,
+            "fontFamily": "system"
           }
         }
       }
@@ -250,16 +274,16 @@
       ],
       "position": {
         "x": 940,
-        "y": 850
+        "y": 1760
       },
       "size": {
-        "width": 340,
-        "height": 100
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Example A2]\n\n```text\n[Alternative example for Concept A]\n```",
       "extensions": {
@@ -271,18 +295,19 @@
           "borderTransparent": true,
           "shadow": "none",
           "align": "left",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "shape": "rectangle",
+          "radius": 0,
+          "borderWidth": 1
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "mono",
-            "fontSize": 14,
-            "color": "#255c49"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 11,
-            "color": "#255c49"
+            "fontSize": 14,
+            "fontFamily": "system"
           }
         }
       }
@@ -298,16 +323,16 @@
       ],
       "position": {
         "x": 470,
-        "y": 1110
+        "y": 2220
       },
       "size": {
-        "width": 320,
-        "height": 180
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Concept B]\n\n[Overview of the concept and its subtopics.]",
       "extensions": {
@@ -315,21 +340,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 12,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 18
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 13
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -349,16 +376,16 @@
       ],
       "position": {
         "x": 940,
-        "y": 1110
+        "y": 2220
       },
       "size": {
-        "width": 320,
-        "height": 180
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Sub-concept B1]\n\n[Detailed theory extracted from Concept B.]",
       "extensions": {
@@ -366,21 +393,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 12,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 18
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 13
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -400,16 +429,16 @@
       ],
       "position": {
         "x": 1410,
-        "y": 1150
+        "y": 2300
       },
       "size": {
-        "width": 340,
-        "height": 100
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#F4E4EF",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Example B1]\n\n```text\n[Code for Sub-concept B1]\n```",
       "extensions": {
@@ -421,18 +450,19 @@
           "borderTransparent": true,
           "shadow": "none",
           "align": "left",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "shape": "rectangle",
+          "radius": 0,
+          "borderWidth": 1
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "mono",
-            "fontSize": 14,
-            "color": "#255c49"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 11,
-            "color": "#255c49"
+            "fontSize": 14,
+            "fontFamily": "system"
           }
         }
       }
@@ -448,16 +478,16 @@
       ],
       "position": {
         "x": 470,
-        "y": 1460
+        "y": 2920
       },
       "size": {
-        "width": 320,
-        "height": 180
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e3f0e9",
-        "textColor": "#255c49",
-        "borderColor": "#255c49"
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Concept C]\n\n[Theory content. Keep this card even when no code example exists.]",
       "extensions": {
@@ -465,21 +495,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 12,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 18
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 13
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -499,7 +531,7 @@
       ],
       "position": {
         "x": 2350,
-        "y": 500
+        "y": 1000
       },
       "size": {
         "width": 1900,
@@ -546,16 +578,16 @@
       ],
       "position": {
         "x": 2350,
-        "y": 850
+        "y": 1700
       },
       "size": {
-        "width": 420,
-        "height": 240
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e7effa",
-        "textColor": "#254a7a",
-        "borderColor": "#254a7a"
+        "backgroundColor": "#E3EFE8",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
       "extensions": {
@@ -563,22 +595,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 16,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 23,
-            "color": "#254a7a"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 15
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -598,16 +631,16 @@
       ],
       "position": {
         "x": 2820,
-        "y": 760
+        "y": 1520
       },
       "size": {
-        "width": 320,
-        "height": 180
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e7effa",
-        "textColor": "#254a7a",
-        "borderColor": "#254a7a"
+        "backgroundColor": "#E8F0FB",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
       "extensions": {
@@ -615,21 +648,23 @@
           "kind": "card"
         },
         "card-atlas:appearance": {
-          "shape": "rounded",
-          "radius": 12,
+          "shape": "rectangle",
+          "radius": 0,
           "borderWidth": 1,
           "align": "left",
           "shadow": "none",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "backgroundTransparent": false,
+          "borderTransparent": false
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "system",
-            "fontSize": 18
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 13
+            "fontSize": 14,
+            "fontFamily": "system"
           },
           "type": {
             "fontFamily": "system",
@@ -649,16 +684,16 @@
       ],
       "position": {
         "x": 3290,
-        "y": 720
+        "y": 1440
       },
       "size": {
-        "width": 340,
-        "height": 100
+        "width": 260,
+        "height": 260
       },
       "style": {
-        "backgroundColor": "#e7effa",
-        "textColor": "#254a7a",
-        "borderColor": "#254a7a"
+        "backgroundColor": "#F4E4EF",
+        "textColor": "#23332D",
+        "borderColor": "#B8B488"
       },
       "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
       "extensions": {
@@ -670,18 +705,19 @@
           "borderTransparent": true,
           "shadow": "none",
           "align": "left",
-          "sizeMode": "manual"
+          "sizeMode": "manual",
+          "shape": "rectangle",
+          "radius": 0,
+          "borderWidth": 1
         },
         "card-atlas:typography": {
           "title": {
-            "fontFamily": "mono",
-            "fontSize": 14,
-            "color": "#254a7a"
+            "fontSize": 20,
+            "fontFamily": "system"
           },
           "summary": {
-            "fontFamily": "system",
-            "fontSize": 11,
-            "color": "#254a7a"
+            "fontSize": 14,
+            "fontFamily": "system"
           }
         }
       }
