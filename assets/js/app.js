@@ -143,6 +143,13 @@ const detailSurface = dialogSurface($('#detail-panel'), {
       : $('#project-name'),
 });
 const inspector = createFormatInspector({
+  dirty: () => overviewEditor.dirty || draftDirty(),
+  canDismiss: () =>
+    !feedback.state &&
+    !layoutPreview &&
+    !adapter.resizing &&
+    !adapter.gesturing &&
+    !adapter.edgeDragging,
   context: () => ({
     kind: selection?.kind,
     view: store.activeView,
@@ -160,6 +167,7 @@ const inspector = createFormatInspector({
     return guardDraft();
   },
   onTab: async (key) => {
+    if (key === 'closed') overviewEditor.close();
     detailSurface.close();
     detailOpen = false;
     if (key === 'text') {

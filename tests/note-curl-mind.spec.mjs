@@ -70,6 +70,7 @@ test('Mind Map image nodes show their cover and double-click opens shared Markdo
       {
         id: 'image',
         title: 'Image lesson',
+        summary: 'Chú thích cho bức ảnh',
         content: '# Image lesson',
         position: { x: 400, y: 0 },
         size: { width: 260, height: 190 },
@@ -88,9 +89,16 @@ test('Mind Map image nodes show their cover and double-click opens shared Markdo
     buffer: Buffer.from(JSON.stringify(p)),
   });
   await page.locator('[data-choice=apply]').click();
+  const caption = page.locator('[data-id=image] .card-summary');
+  await expect(caption).toHaveText('Chú thích cho bức ảnh');
+  await expect(caption).toHaveCSS('text-align', 'center');
   await toolbarProjectAction(page, 'convert-mind');
   await page.locator('[data-choice=apply]').click();
   const node = page.locator('[data-id=image]');
+  await expect(caption).toHaveCSS('text-align', 'center');
+  const imageBox = await node.locator('.node-image-frame').boundingBox();
+  const captionBox = await caption.boundingBox();
+  expect(captionBox.y).toBeGreaterThanOrEqual(imageBox.y + imageBox.height);
   await expect(node.locator('.node-image-frame img')).toBeVisible();
   await node.locator('.node-image-frame img').dblclick();
   await expect(page.locator('#detail-panel')).toBeVisible();

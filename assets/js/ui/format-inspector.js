@@ -1,11 +1,13 @@
 import { t } from '../i18n/index.js';
 import { textFields, fontFamilies } from '../graph/card-typography.js';
 
-export function createFormatInspector({ guard, onTab, onGlobal, context }) {
+export function createFormatInspector({ guard, onTab, onGlobal, context, dirty, canDismiss }) {
   const host = document.querySelector('#format-inspector');
   const tabs = document.querySelector('#inspector-tabs');
   const global = document.querySelector('#inspector-global');
   let active = 'global';
+  let closing = false;
+  let suppressClick = false;
   const typography = Object.fromEntries(
     textFields.map((field) => [
       field,
@@ -133,12 +135,58 @@ export function createFormatInspector({ guard, onTab, onGlobal, context }) {
     document.querySelector('#inspector-fields').hidden = !['card', 'edge'].includes(key);
     sync();
   }
-  async function close() {
-    if (!(await guard())) return;
+  function hide() {
     onTab('closed');
     host.hidden = true;
     document.documentElement.classList.remove('inspector-open');
   }
+  async function close() {
+    if (closing) return;
+    closing = true;
+    try {
+      if (await guard()) hide();
+    } finally {
+      closing = false;
+    }
+  }
+  function dismissOutside(event) {
+    if (
+      host.hidden ||
+      host.contains(event.target) ||
+      document.querySelector('dialog:modal') ||
+      !canDismiss()
+    )
+      return;
+    if (dirty()) {
+      // One click asks about the draft; it must not also run an outside command.
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      suppressClick = event.type === 'pointerdown';
+      void close();
+    } else {
+      // Close synchronously so a deliberate outside control can run normally.
+      hide();
+    }
+  }
+  document.addEventListener(
+    'pointerdown',
+    (event) => {
+      suppressClick = false;
+      if (event.button === 0) dismissOutside(event);
+    },
+    true,
+  );
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (suppressClick && !document.querySelector('dialog:modal')) {
+        suppressClick = false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      } else if (event.detail === 0) dismissOutside(event);
+    },
+    true,
+  );
   document.querySelector('#inspector-close').onclick = close;
   async function activate(key) {
     if (!(await guard())) return;

@@ -1,5 +1,16 @@
 # Card Atlas — Version 1.0.0
 
+Giao diện **Sổ tay chì** dùng nền giấy ngà, nét graphite và màu xanh sage; chế độ tối
+dùng giấy charcoal. Chữ viết tay dành cho tiêu đề giao diện và node chưa chọn font
+riêng. Nội dung Markdown, code và trường nhập giữ font dễ đọc; màu, hình dạng và font
+đã lưu trong JSON vẫn được tôn trọng. Không tải font mạng hoặc thêm dependency.
+
+Bảng **Định dạng** gom tùy chọn theo nhóm, dùng grid cho các trường ngắn. Bấm ra ngoài
+để đóng; nếu có bản nháp chưa áp dụng, hộp xác nhận cho phép giữ hoặc xử lý bản nháp.
+
+Tóm tắt của node ảnh nằm giữa phía dưới ảnh như chú thích, dùng chung cho Note Board,
+Mind Map và bản xem trước; tiêu đề và nội dung đầy đủ vẫn giữ trong Detail.
+
 ## Khung nhóm, đường nối và bộ mẫu học tập
 
 Thanh trên dùng hai nút liền nhau **Note Board | Mind Map**; chế độ hiện tại tô xanh. Bấm Mind Map lần đầu sẽ hỏi note gốc khi cần tạo bố cục. Menu **?** cạnh ngôn ngữ chứa hướng dẫn và công cụ dự án, gồm **Định dạng** và chuyển đổi lại Mind Map. Thêm note bằng thư viện bên trái, tạo đường nối bằng cách kéo chấm nối trên note. Trên Canvas, con trỏ là bút chì vàng ở Note Board và bút chì xanh ở Mind Map; nút bấm, ô nhập và resize giữ con trỏ theo chức năng.

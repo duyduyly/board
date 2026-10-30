@@ -111,6 +111,9 @@ export function editorFields({
         .join('') +
       '</div></details>';
   } else if (kind === 'relation') {
+    const section = (key) =>
+      '<section class="format-section inspector-relation-section"><h3>' + esc(t(key)) + '</h3>';
+    fields += section('inspectorRoutingGroup');
     if (d.source !== d.target && ['curved', 'orthogonal'].includes(edgeRoute(d)))
       fields +=
         '<button type="button" data-action="edge-adjust">' +
@@ -129,21 +132,14 @@ export function editorFields({
         '<p class="muted">' +
         esc(t('edgeModeHelp')) +
         '</p>';
+    fields += '</section>' + section('inspectorLineGroup');
     fields += labelField('relationKind', 'mind-kind', relationKind(d), {
       options: ['reference', 'branch'].map((value) => ({ value, label: t(value) })),
     });
     fields += labelField('mindColor', 'mind-color', d.extensions?.[MIND]?.color || d.style.color, {
       color: true,
     });
-    for (const field of ['source', 'target'])
-      fields += labelField(field, field, d[field], {
-        options: cards.map((c) => ({ value: c.id, label: c.title })),
-      });
-    fields +=
-      labelField('label', 'label', d.label) +
-      labelField('type', 'type', d.type) +
-      labelField('description', 'description', d.description, { textarea: true }) +
-      labelField('color', 'color', d.style.color, { color: true });
+    fields += labelField('color', 'color', d.style.color, { color: true });
     for (const [field, values] of [
       ['line', ['solid', 'dashed', 'dotted']],
       ['arrow', ['none', 'start', 'end', 'both']],
@@ -151,6 +147,18 @@ export function editorFields({
       fields += labelField(field, field, d.style[field], {
         options: values.map((v) => ({ value: v, label: t(v) })),
       });
+    fields += '</section>' + section('inspectorEndpointsGroup');
+    for (const field of ['source', 'target'])
+      fields += labelField(field, field, d[field], {
+        options: cards.map((c) => ({ value: c.id, label: c.title })),
+      });
+    fields +=
+      '</section>' +
+      section('inspectorInformationGroup') +
+      labelField('label', 'label', d.label) +
+      labelField('type', 'type', d.type) +
+      labelField('description', 'description', d.description, { textarea: true }) +
+      '</section>';
   } else
     fields =
       labelField('title', 'title', d.title) +

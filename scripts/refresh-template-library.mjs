@@ -235,7 +235,7 @@ for (const item of catalog) {
   const width = Math.max(...list.map((b) => b.position.x + b.size.width)) - left + 80,
     height = Math.max(...list.map((b) => b.position.y + b.size.height)) - top + 80;
   const svg = [
-    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="${left} ${top} ${width} ${height}"><rect x="${left}" y="${top}" width="${width}" height="${height}" fill="#f4f8f5"/>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="${left} ${top} ${width} ${height}"><rect x="${left}" y="${top}" width="${width}" height="${height}" fill="#f8f5ec"/>`,
   ];
   for (const edge of p.relations) {
     const a = boxes.get(edge.source),

@@ -1,0 +1,361 @@
+/* E047: approved Pencil Notebook surface. Session presentation, never project data.
+   Keep card geometry, authored fonts/colors/radius and shape outlines authoritative. */
+:root {
+  --surface: #fffdf7;
+  --soft: #f0eee3;
+  --hover: #eceee1;
+  --canvas: #f8f5ec;
+  --grid: #c8ccbd;
+  --ink: #343c34;
+  --muted: #6d7365;
+  --accent: #45654e;
+  --on-accent: #fffdf7;
+  --border: #c8cab9;
+  --active-background: #e6ecdf;
+  --active-ink: #36523e;
+  --hand-font: 'Segoe Print', 'Comic Sans MS', cursive;
+  --sketch-radius: 3px 2px 5px 2px / 3px 5px 2px 4px;
+  --pencil-shadow: 3px 4px 0 #343c340c;
+  --pencil-stroke: #343c3445;
+}
+:root[data-theme='dark'] {
+  --surface: #272b25;
+  --soft: #30352d;
+  --hover: #3a4235;
+  --canvas: #20251f;
+  --grid: #3f483b;
+  --ink: #ececdd;
+  --muted: #b1b6a5;
+  --accent: #b2cba4;
+  --on-accent: #202b20;
+  --border: #535c4b;
+  --active-background: #394531;
+  --active-ink: #dce9cf;
+  --pencil-shadow: 3px 4px 0 #0003;
+  --pencil-stroke: #ececdd45;
+}
+
+/* Chrome stays readable; handwriting is reserved for headings and accents. */
+button,
+select,
+.editor input,
+.editor textarea,
+.format-grid,
+.search-wrap,
+.new-project-label input,
+#template-search,
+.image-tools,
+.document-contents,
+.image-preview,
+.format-card-preview,
+.selection-tools,
+.auto-route-status,
+#modal,
+.toast,
+.project-menu-body,
+.kind-palette button,
+.shape-palette button,
+.pinned-lock-notice {
+  border-radius: var(--sketch-radius);
+}
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible,
+summary:focus-visible {
+  outline-color: var(--accent);
+}
+button:hover {
+  border-color: var(--pencil-stroke);
+}
+.primary,
+.primary:hover,
+button.primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.primary:not(:disabled) {
+  box-shadow: 2px 2px 0 var(--pencil-stroke);
+}
+.toolbar {
+  border-bottom-color: var(--pencil-stroke);
+}
+.brand-mark {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+}
+.brand-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.brand,
+.project-name,
+.panel-header button,
+.text-button,
+.card-open,
+.card-pin,
+.shape-choice,
+.image-preview-header button {
+  box-shadow: none;
+}
+.project-name {
+  border-radius: 0;
+  font-size: 13px;
+}
+#map-view {
+  border-color: var(--pencil-stroke);
+  border-radius: var(--sketch-radius);
+  background: var(--soft);
+}
+#map-view button {
+  border-radius: var(--sketch-radius);
+}
+#map-view button[aria-pressed='true'],
+#inspector-tabs .active {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 1px 1px 0 var(--pencil-stroke);
+}
+.toolbar-actions .quick-help-button,
+.project-menu > .quick-help-button {
+  border-radius: 46% 54% 45% 55%;
+}
+.project-menu-body {
+  border-color: var(--pencil-stroke);
+  box-shadow: var(--pencil-shadow);
+}
+input[type='checkbox'],
+input[type='range'] {
+  accent-color: var(--accent);
+}
+.sidebar {
+  background: var(--surface);
+}
+.sidebar-footer,
+.panel-header,
+#format-inspector > header {
+  border-color: var(--border);
+}
+
+/* Home is an open sheet of paper rather than a second app shell. */
+.home-page {
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--grid) 0.6px, transparent 0.6px);
+  background-size: 24px 24px;
+}
+.home-page h1,
+#shape-library > h2,
+#format-inspector > header > h2,
+.detail-panel > .panel-header > h2,
+.modal-inner > h2,
+#mind-view-banner > strong,
+.group-frame-handle {
+  font-family: var(--hand-font);
+  letter-spacing: -0.5px;
+}
+.home-page h1 {
+  font-size: 32px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.gallery-intro {
+  font-size: 14px;
+  line-height: 1.8;
+}
+#template-search {
+  border-color: var(--pencil-stroke);
+  box-shadow: 2px 2px 0 #343c3408;
+}
+.gallery-categories button {
+  border-radius: var(--sketch-radius);
+}
+.gallery-categories [aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.template-tile img,
+.template-skeleton {
+  border-radius: var(--sketch-radius);
+  background: var(--surface);
+}
+.template-tile img {
+  border-color: var(--pencil-stroke);
+  box-shadow: var(--pencil-shadow);
+}
+.template-tile:hover img,
+.template-tile:focus-visible img {
+  border-color: var(--accent);
+  box-shadow: 4px 5px 0 var(--pencil-stroke);
+}
+.template-tile > span {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Decorative paths are deterministic and do not modify any node hit geometry. */
+.graph-card > h3,
+.graph-card > .shape-content > h3 {
+  font-family: var(--hand-font);
+}
+.graph-card.paper-note[data-node-kind='card']:not(.simple-node):not(.shaped-node):not(
+    .transparent-background
+  ):not(.transparent-border)::before {
+  content: '';
+  position: absolute;
+  inset: 3px 2px 2px 3px;
+  border: var(--card-border-width, 1px) solid var(--card-border);
+  border-radius: inherit;
+  opacity: 0.2;
+  pointer-events: none;
+}
+.graph-card.paper-note:not(.simple-node):not(.shaped-node):not(.no-card-shadow):not(
+    .transparent-background
+  ) {
+  box-shadow: var(--pencil-shadow);
+}
+.graph-card.selected,
+:root[data-theme='dark'] .graph-card.selected {
+  outline-style: dashed;
+  outline-offset: 4px;
+}
+.graph-card.mind-node:not(.shaped-node):not(.no-card-shadow):not(.transparent-background) {
+  box-shadow: 2px 3px 0 var(--pencil-stroke);
+}
+.graph-card .type-badge,
+.graph-card .tag-badge {
+  border-radius: 2px 3px 2px 4px;
+}
+.graph-card .type-badge {
+  letter-spacing: 0.8px;
+}
+.group-frame {
+  border: 1px dashed var(--accent);
+  border-radius: var(--sketch-radius);
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
+}
+.group-frame-handle {
+  font-size: 13px;
+}
+.selection-marquee {
+  border-style: dashed;
+}
+.zoom-controls,
+.layout-tools,
+#mind-view-banner,
+.chatgpt-launcher {
+  border-radius: var(--sketch-radius);
+  border-color: var(--pencil-stroke);
+  box-shadow: var(--pencil-shadow);
+}
+#chatgpt-open,
+#chatgpt-hide {
+  border-radius: var(--sketch-radius);
+}
+
+/* Direct-child heading selectors keep node/preview typography out of inspector chrome. */
+#format-inspector {
+  border-left-color: var(--pencil-stroke);
+  box-shadow: -4px 0 0 #343c3405;
+}
+#format-inspector > header {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+#format-inspector > header > h2 {
+  font-size: 19px;
+}
+#inspector-tabs button {
+  border-radius: var(--sketch-radius);
+}
+#inspector-global .inspector-config-group > legend {
+  font-family: var(--hand-font);
+  font-size: 17px;
+}
+#inspector-global .bulk-typography-settings {
+  border-radius: var(--sketch-radius);
+}
+.panel-tabs button.active {
+  border-bottom-style: solid;
+  border-bottom-color: var(--accent);
+}
+dialog.detail-panel,
+#modal,
+#card-overview-editor,
+#card-date-editor,
+.image-preview {
+  border-color: var(--pencil-stroke);
+  border-radius: 5px 3px 6px 2px;
+  box-shadow: 5px 6px 0 #0002;
+}
+dialog.detail-panel.detail-full {
+  border-radius: 0;
+}
+dialog.detail-panel::backdrop,
+#modal::backdrop,
+.image-preview::backdrop {
+  background: #20251f70;
+}
+.markdown {
+  color: var(--ink);
+}
+.markdown blockquote {
+  border-left-color: var(--accent);
+}
+.markdown pre,
+.markdown code {
+  border-radius: var(--sketch-radius);
+}
+.markdown pre {
+  border: 1px dashed var(--border);
+}
+.editor input:focus,
+.editor textarea:focus,
+#template-search:focus {
+  border-color: var(--accent);
+}
+.toast {
+  border: 1px solid var(--pencil-stroke);
+  box-shadow: var(--pencil-shadow);
+}
+.card-row.active,
+.kind-palette button:hover,
+.shape-palette button:hover {
+  background: var(--active-background);
+}
+.kind-palette button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.kind-palette button svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.shape-palette button svg {
+  color: var(--accent);
+}
+@media (max-width: 800px) {
+  .home-page h1 {
+    font-size: 27px;
+  }
+  .brand-mark {
+    width: 24px;
+    height: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .template-tile img {
+    transition: none;
+  }
+}

@@ -5,3 +5,5 @@
 @import url('./focused.css');
 
 @import './shapes.css';
+@import './notebook.css';
+@import './inspector-grid.css';

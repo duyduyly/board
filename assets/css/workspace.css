@@ -507,6 +507,14 @@
 .simple-node[data-node-kind='image-text'] .shape-content {
   gap: 6px;
 }
+/* Image summaries read as centered captions in both views and shared previews. */
+.graph-card[data-node-kind='image'] .card-summary,
+.graph-card[data-node-kind='image-text'] .card-summary {
+  text-align: center;
+  padding-inline: 16px;
+  width: 100%;
+  align-self: center;
+}
 .graph-card.compact-summary.paper-note:not(.shaped-node) {
   padding-top: 28px;
   padding-bottom: 6px;

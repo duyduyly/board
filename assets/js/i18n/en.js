@@ -1,4 +1,8 @@
 export default {
+  inspectorRoutingGroup: 'Routing',
+  inspectorLineGroup: 'Line and arrowheads',
+  inspectorEndpointsGroup: 'Connection endpoints',
+  inspectorInformationGroup: 'Relation information',
   helpAndTools: 'Help and project tools',
   categorymind: 'Mind Map',
   templateMindKnowledge: 'Mind Map — Knowledge map',

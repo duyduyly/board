@@ -1,0 +1,151 @@
+/* E048: grouped settings. Keep these selectors off card previews and Markdown. */
+#format-inspector {
+  container-type: inline-size;
+}
+#format-inspector [hidden] {
+  display: none !important;
+}
+#format-inspector .format-section,
+#inspector-global .inspector-config-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  margin: 0 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--sketch-radius);
+  background: color-mix(in srgb, var(--surface) 75%, var(--soft));
+}
+#format-inspector .format-section > h3,
+#format-inspector .format-section > p,
+#format-inspector .format-section > button,
+#format-inspector .format-section > .format-grid,
+#format-inspector .format-section > .colors,
+#format-inspector .format-section > .format-buttons,
+#format-inspector .format-section > label:has(textarea),
+#format-inspector .format-section > label:has([name='node-imageAlt']),
+#inspector-global .inspector-config-group > legend,
+#inspector-global .inspector-config-group > label,
+#inspector-global .bulk-typography-settings {
+  grid-column: 1 / -1;
+}
+#format-inspector .format-section > h3 {
+  margin: 0 0 3px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--accent);
+}
+#format-inspector .format-section > label,
+#format-inspector .format-grid label,
+#format-inspector .colors label {
+  margin: 0;
+  min-width: 0;
+  line-height: 1.6;
+}
+#format-inspector .format-section input,
+#format-inspector .format-section select,
+#format-inspector .format-section textarea {
+  min-width: 0;
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  font-size: 12px;
+}
+#format-inspector .format-section input[type='checkbox'] {
+  width: auto;
+  margin: 3px 0 0;
+  flex-shrink: 0;
+}
+#format-inspector .format-section .format-grid,
+#format-inspector .format-section .colors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+#format-inspector .format-section .colors > div {
+  min-width: 0;
+}
+#format-inspector .format-section .transparency-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 7px;
+  font-size: 11px;
+}
+#format-inspector .format-section > p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+#inspector-global .inspector-config-group > legend {
+  padding: 0 6px;
+  font-size: 16px;
+}
+#inspector-global .inspector-config-group > label {
+  margin: 4px 0;
+}
+#inspector-global .bulk-typography-settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 6px 0 0;
+  padding: 10px;
+}
+#inspector-global .bulk-typography-settings > p,
+#inspector-global .bulk-typography-settings > h4,
+#inspector-global .bulk-typography-settings > label:has(input[type='color']) {
+  grid-column: 1 / -1;
+}
+#inspector-global .bulk-typography-settings > h4 {
+  margin: 10px 0 0;
+}
+#inspector-global .bulk-typography-settings > label {
+  display: block;
+  margin: 0;
+  min-width: 0;
+}
+#inspector-global .bulk-typography-settings input,
+#inspector-global .bulk-typography-settings select {
+  margin-top: 6px;
+  padding: 8px;
+  min-height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--sketch-radius);
+  background: var(--surface);
+  font-size: 12px;
+}
+.overview-style-grid > div {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+#format-inspector .overview-style-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 14px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--sketch-radius);
+  background: var(--soft);
+}
+#format-inspector .overview-style-grid > div:last-child {
+  grid-column: 1 / -1;
+}
+#format-inspector .overview-style-grid label {
+  margin: 0;
+}
+#format-inspector .format-preview-pane {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--sketch-radius);
+}
+@container (max-width: 320px) {
+  #format-inspector .format-section,
+  #format-inspector .format-section .format-grid,
+  #format-inspector .format-section .colors,
+  #format-inspector .overview-style-grid,
+  #inspector-global .bulk-typography-settings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

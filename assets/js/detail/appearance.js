@@ -46,6 +46,7 @@ export function applyAppearance(el, card) {
   el.style.setProperty('--card-border', card.style.borderColor);
   el.style.borderRadius = a.radius + 'px';
   el.style.borderWidth = a.borderWidth + 'px';
+  el.style.setProperty('--card-border-width', a.borderWidth + 'px');
   el.style.setProperty('--title-font-size', a.titleFontSize + 'px');
   el.style.textAlign = a.align;
   el.dataset.sizeMode = a.sizeMode;

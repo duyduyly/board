@@ -12,7 +12,19 @@
     <div id="app" class="home-mode">
       <header class="toolbar">
         <button class="brand" data-action="home" aria-label="Card Atlas — Home">
-          <span class="brand-mark">✳</span> Card Atlas
+          <span class="brand-mark" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m4 16-1 5 5-1L21 7l-4-4L4 16Zm10-10 4 4M4 16l4 4" />
+            </svg>
+          </span>
+          Card Atlas
         </button>
         <button id="project-name" class="project-name"></button>
         <div class="toolbar-actions">

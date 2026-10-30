@@ -1,5 +1,27 @@
 # Phát triển và mở rộng Card Atlas
 
+E048 adds `inspector-grid.css` after notebook styles, scoped to the Format dock.
+Card controls use existing sections; relation controls have routing/line/endpoints/info
+groups; overview font labels and controls share grid cells. Hidden groups stay hidden,
+and container queries collapse short-field grids on narrow panels. Inspector dismissal
+uses capture outside-pointer/keyboard activation: clean state closes synchronously and
+lets outside controls run; dirty state consumes that activation and calls the existing
+guard once. Modal/active-gesture interactions are excluded; Cancel retains draft and
+Discard/valid Apply closes. No pointer listener per card and no command on clean close.
+
+E047 applies the approved Pencil Notebook appearance through `assets/css/notebook.css`,
+the final CSS import after base/theme/workspace/focused/shapes. Light ivory/graphite/sage
+and dark charcoal tokens style chrome, gallery, inspector, native dialogs and canvas.
+Handwriting uses installed fonts only; explicit typography inline font choices take precedence.
+Shared `overviewElement`/measurement see the same heading CSS. `--card-border-width` mirrors
+the existing appearance border width so decorative paper contours respect zero-width borders;
+they are omitted on shaped/simple/transparent nodes and never change hit geometry. Authored
+radius, shadows, font, colors and JSON are retained. Theme selection/edge labels read CSS tokens,
+while actual relation colors/routes remain model data. Palette and pushpin use deterministic
+local SVGs. No renderer library or schema changes. Original concepts are archived locally at
+`wordspace/tasks/02_big_change UI/pencil-ui/`; do not force-add ignored planning/workspace files
+or make tracked tests depend on those local artifacts. User requested no commit/push.
+
 E043 replaces the top view select with native pressed-state buttons (data-map-view), no hidden compatibility select. Rootless Mind click invokes explicit root conversion; existing maps switch views after draft guard, preview cancels before switching. Project details menu is now the single ? summary beside locale, with Help/Format/Convert entries. Top Add/Connect/Format/Convert removed; palette and node connectors remain. Header stacking keeps the menu above the right inspector; nonmodal dialog Escape delegates to the same close guard. Local32px pencil SVG cursors use hotspot3,29 on canvas, yellow for Note Board/green for Mind; buttons/input/resize cursor semantics preserved. UI tests use native button/menu helpers and updated pressed-state assertions, never dispatch hidden events.
 
 E042: catalog supports category mind and optional view card|mind, purely gallery metadata. onOpen passes initial view to loadExample; replacement guard runs before view switch. Existing JSON contract unchanged. Fit calls cy.resize before measuring so a graph opened from the hidden Home canvas fits correctly. Existing image Mind entry plus generated knowledge/project examples open directly in Mind. Pipeline generate-showcase then refresh-template-library validates outputs, keeps specialized layouts, adds scoped UI guidance, independent Mind geometry and SVG previews. Starter personal/architecture/roadmap/journal notes260square with matching typography. Current open projects never migrate implicitly.

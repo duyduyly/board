@@ -1,4 +1,8 @@
 export default {
+  inspectorRoutingGroup: 'Đường đi',
+  inspectorLineGroup: 'Nét và đầu mũi tên',
+  inspectorEndpointsGroup: 'Hai đầu kết nối',
+  inspectorInformationGroup: 'Thông tin liên kết',
   helpAndTools: 'Hướng dẫn và công cụ dự án',
   categorymind: 'Mind Map',
   templateMindKnowledge: 'Mind Map — Bản đồ kiến thức',

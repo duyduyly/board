@@ -627,18 +627,21 @@ export class GraphAdapter {
   }
   setTheme(theme) {
     const dark = theme === 'dark';
+    const surface = window.getComputedStyle(this.region);
+    const accent = surface.getPropertyValue('--accent').trim() || (dark ? '#9bd9bc' : '#28594b');
     this.cy
       .style()
       .selector('edge')
       .style({
-        color: dark ? '#b7c8c0' : '#52645b',
-        'text-background-color': dark ? '#2a342e' : '#f5f7f5',
+        color: surface.getPropertyValue('--muted').trim() || (dark ? '#b7c8c0' : '#52645b'),
+        'text-background-color':
+          surface.getPropertyValue('--canvas').trim() || (dark ? '#2a342e' : '#f5f7f5'),
       })
       .selector('edge.selected')
       .style({
-        'line-color': dark ? '#9bd9bc' : '#28594b',
-        'target-arrow-color': dark ? '#9bd9bc' : '#28594b',
-        'source-arrow-color': dark ? '#9bd9bc' : '#28594b',
+        'line-color': accent,
+        'target-arrow-color': accent,
+        'source-arrow-color': accent,
       })
       .update();
   }

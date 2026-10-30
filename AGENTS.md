@@ -1,5 +1,18 @@
 # Hướng dẫn agents cho Visual Card Graph Editor
 
+## E047 — 02_big_change UI / Sổ tay chì
+
+User chọn bản notebook và giao triển khai ngày 2026-10-30. Task và preview gốc ở
+`wordspace/tasks/02_big_change UI/` (ignored, không force-add). Đọc
+`planning/notebook-ui-plan.md` và evidence trước khi sửa. `assets/css/notebook.css`
+là lớp presentation cuối cascade: giấy ngà/graphite/sage và dark charcoal, font viết
+tay local cho heading; Markdown/forms/code giữ dễ đọc. Font/card appearance do JSON
+chỉ định vẫn ưu tiên. Double contour chỉ decorative cho paper đủ điều kiện, không
+rotate/filter/path ngẫu nhiên hay đổi geometry/hit/Fit. Palette SVG và pin local;
+edge label/selection lấy màu theme, không đổi màu/route relation trong model.
+Giữ shared overview measurement, pin/draft/Undo/vi-en/transparent/shapes và JSON1.0.
+Không thêm dependency/backend/persistence, không tự commit/push.
+
 ## E020 — ChatGPT launcher đơn giản
 
 User yêu cầu gỡ E019 ngày2026-10-16 vì phức tạp. Extension/bridge/ZIP/hướng dẫn cài đã loại khỏi scope hiện hành; không tự tích hợp lại. Giữ E018: mở cửa sổ ChatGPT riêng, hide/show phiên và link tab mới, vi/en; không API/backend hoặc tác động model/history/draft. Evidence E019 chỉ còn lịch sử, bị thay thế bởi E020.

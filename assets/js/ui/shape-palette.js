@@ -1,6 +1,12 @@
 import { shapes, shapePoints } from '../graph/shape-registry.js';
 import { t, getLocale } from '../i18n/index.js';
 import { escapeHTML as esc } from '../common/html.js';
+const kindIcons = {
+  card: 'M4 3 20 4 19 20 4 21V3Zm1 13 4 4M8 8h8M8 12h6',
+  text: 'M4 5V3h16v2M12 3v18M8 21h8',
+  image: 'M3 4 21 3v18L3 20V4Zm0 12 6-6 5 5 3-3 4 5M16 8h.01',
+  'image-text': 'M3 3h18v13H3V3Zm0 10 6-6 6 6 3-3 3 3M4 20h16',
+};
 export function createShapePalette({ host, region, onCreate, locked }) {
   const file = document.createElement('input');
   file.type = 'file';
@@ -78,7 +84,12 @@ export function createShapePalette({ host, region, onCreate, locked }) {
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.paletteKind = kind;
-      button.textContent = t(key);
+      button.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' +
+        kindIcons[kind] +
+        '"/></svg><span>' +
+        esc(t(key)) +
+        '</span>';
       wire(button, { kind });
       host.querySelector('.kind-palette').append(button);
     }
