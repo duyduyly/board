@@ -31,10 +31,13 @@ test('pushpin hover preserves transparent SVG in both themes and views', async (
       await expect(pin).toHaveAttribute('aria-pressed', 'true');
       await pin.hover();
       expect(await pin.evaluate((el) => window.getComputedStyle(el).backgroundImage)).toContain(
-        'pushpin.svg',
+        'pushpin-red.svg',
       );
       await page.locator('[data-action=undo]').first().click();
       await expect(pin).toHaveAttribute('aria-pressed', 'false');
+      expect(await pin.evaluate((el) => window.getComputedStyle(el).backgroundImage)).toContain(
+        'pushpin.svg',
+      );
       await expect(page.locator('#detail-panel')).not.toBeVisible();
     }
   }
