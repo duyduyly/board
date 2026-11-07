@@ -14,6 +14,7 @@ test('every bundled gallery template imports independently with valid relations 
     const result = stage(text);
     assert.deepEqual(result.errors, [], item.id);
     assert.ok(result.project.cards.length);
+    assert.ok(result.project.cards.every((card) => card.extensions?.['card-atlas:document']?.format === 'html-bs5'), item.id);
     const again = stage(JSON.stringify(result.project));
     assert.deepEqual(again.project, result.project);
     assert.ok((await fs.stat(item.preview)).size);

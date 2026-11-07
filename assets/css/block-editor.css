@@ -1,0 +1,200 @@
+.block-editor-mode {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: var(--soft);
+}
+.editor-icon-action {
+  min-width: 38px;
+  font-size: 17px;
+}
+#block-editor > [hidden] {
+  display: none !important;
+}
+.block-editor-mode button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--surface);
+}
+.block-editor-mode button {
+  min-width: 40px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.editor .block-editor-source {
+  width: 100%;
+  min-height: 420px;
+  font: 14px/1.6 monospace;
+  tab-size: 2;
+  border: 1px solid var(--border);
+}
+.block-editor-source .cm-editor { min-height: 420px; }
+.block-editor-source .cm-scroller { overflow: auto; font-family: monospace; }
+.block-editor-source .cm-content { min-height: 420px; }
+.block-editor-source-hint {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.block-editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px;
+  background: var(--soft);
+  border: 1px solid var(--border);
+}
+.block-editor-tools button {
+  font-size: 16px;
+  padding: 5px 8px;
+}
+.block-editor-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.block-editor-group-title {
+  width: 100%;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.block-editor-group button {
+  min-width: 34px;
+  min-height: 32px;
+}
+.block-editor-group select {
+  max-width: 120px;
+  font-size: 12px;
+}
+.block-editor-tools [hidden] {
+  display: none !important;
+}
+.block-editor-link,
+.block-editor-link label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.block-editor-link input {
+  max-width: 220px;
+}
+.block-editor-layout,
+.block-editor-layout label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+.block-component-controls,
+.block-component-controls label,
+.block-table-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+.block-code-controls,
+.block-code-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+.block-code-controls {
+  width: 100%;
+}
+.block-code-controls textarea {
+  width: 100%;
+  font-family: monospace;
+  resize: vertical;
+}
+.block-image-controls,
+.block-image-controls label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+.block-image-controls input {
+  max-width: 160px;
+}
+.block-html-import {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.block-html-import label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.block-html-import textarea,
+.block-html-import pre {
+  width: 100%;
+  font-family: monospace;
+}
+.block-html-import pre {
+  max-height: 180px;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+.block-editor-layout,
+.block-component-controls,
+.block-image-controls {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+}
+.block-editor-layout > strong,
+.block-component-controls > strong,
+.block-image-controls > strong {
+  color: var(--ink);
+  margin-right: 6px;
+}
+.block-editor-notice:not(:empty) {
+  padding: 8px 12px;
+  margin: 0;
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 12px;
+}
+.block-editor-notice:empty {
+  display: none;
+}
+.block-editor-canvas {
+  --gjs-color-blue: var(--accent);
+  --gjs-primary-color: var(--soft);
+  --gjs-secondary-color: var(--ink);
+  --gjs-tertiary-color: var(--accent);
+}
+.block-editor-canvas {
+  border: 1px solid var(--border);
+  min-height: 580px;
+}
+.block-editor-canvas .gjs-cv-canvas {
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+.html-document-frame {
+  width: 100%;
+  min-height: 65vh;
+  border: 0;
+  display: block;
+  background: var(--surface);
+}

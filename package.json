@@ -15,12 +15,19 @@
     "benchmark": "node scripts/benchmark.mjs"
   },
   "dependencies": {
+    "@codemirror/lang-html": "6.4.12",
+    "@codemirror/language": "6.13.1",
+    "@codemirror/lint": "6.9.7",
+    "@codemirror/search": "6.7.2",
+    "@codemirror/state": "6.7.6",
     "ajv": "8.20.0",
+    "bootstrap": "5.3.8",
+    "codemirror": "6.0.2",
     "cytoscape": "3.34.3",
-    "dompurify": "3.4.16",
+    "dompurify": "3.4.17",
+    "grapesjs": "0.23.9",
     "highlight.js": "11.12.0",
-    "marked": "18.1.0",
-    "mermaid": "12.1.0"
+    "marked": "18.1.0"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",

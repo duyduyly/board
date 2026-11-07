@@ -35,10 +35,192 @@
         "textColor": "#23332D",
         "borderColor": "#28594B"
       },
-      "content": "# English Endings: -s/-es & -ed\n\nMục tiêu của mind map này là trả lời **4 câu hỏi**:\n\n1. **Khi nào dùng?**\n2. **Viết như thế nào?**\n3. **Đọc như thế nào?**\n4. **Làm sao tránh lỗi thường gặp?**\n\n> Quy tắc quan trọng nhất khi phát âm: nhìn vào **âm cuối của từ gốc**, không chỉ nhìn chữ cái cuối.\n\n## Lộ trình học\n\n**-s/-es → -ed → Common Mistakes → Practice**\n\nKhông cần học thuộc tất cả cùng lúc. Hãy mở từng nhánh và luyện với ví dụ.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "content": "English Endings: -s/-es & -ed\nMục tiêu của mind map này là trả lời 4 câu hỏi:\nKhi nào dùng?\nViết như thế nào?\nĐọc như thế nào?\nLàm sao tránh lỗi thường gặp?\n\nQuy tắc quan trọng nhất khi phát âm: nhìn vào âm cuối của từ gốc, không chỉ nhìn chữ cái cuối.\n\nLộ trình học\n-s/-es → -ed → Common Mistakes → Practice\nKhông cần học thuộc tất cả cùng lúc. Hãy mở từng nhánh và luyện với ví dụ.\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "English Endings: -s/-es & -ed"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Mục tiêu của mind map này là trả lời ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "4 câu hỏi"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Khi nào dùng?"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Viết như thế nào?"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Đọc như thế nào?"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Làm sao tránh lỗi thường gặp?"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Quy tắc quan trọng nhất khi phát âm: nhìn vào ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "âm cuối của từ gốc"
+                      ]
+                    },
+                    ", không chỉ nhìn chữ cái cuối."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Lộ trình học"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "-s/-es → -ed → Common Mistakes → Practice"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Không cần học thuộc tất cả cùng lúc. Hãy mở từng nhánh và luyện với ví dụ."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Workspace guide"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -65,10 +247,254 @@
         "textColor": "#23332D",
         "borderColor": "#4268A4"
       },
-      "content": "# -s / -es\n\nĐuôi **-s/-es** thường xuất hiện trong hai trường hợp chính:\n\n- **Động từ hiện tại đơn** với **he / she / it**.\n- **Danh từ đếm được số nhiều**.\n\nBa phần cần học riêng:\n\n- **Usage** — khi nào dùng.\n- **Spelling** — thêm `s`, `es`, hay đổi `y → ies`.\n- **Pronunciation** — đọc `/s/`, `/z/`, hay `/ɪz/`.\n\nVí dụ:\n\n- She **works** here.\n- He **watches** TV.\n- two **books**\n- three **boxes**",
+      "content": "-s / -es\nĐuôi -s/-es thường xuất hiện trong hai trường hợp chính:\nĐộng từ hiện tại đơn với he / she / it.\nDanh từ đếm được số nhiều.\n\nBa phần cần học riêng:\nUsage — khi nào dùng.\nSpelling — thêm s, es, hay đổi y → ies.\nPronunciation — đọc /s/, /z/, hay /ɪz/.\n\nVí dụ:\nShe works here.\nHe watches TV.\ntwo books\nthree boxes",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "-s / -es"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đuôi ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "-s/-es"
+                  ]
+                },
+                " thường xuất hiện trong hai trường hợp chính:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Động từ hiện tại đơn"
+                      ]
+                    },
+                    " với ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "he / she / it"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Danh từ đếm được số nhiều"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ba phần cần học riêng:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Usage"
+                      ]
+                    },
+                    " — khi nào dùng."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Spelling"
+                      ]
+                    },
+                    " — thêm ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "s"
+                      ]
+                    },
+                    ", ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "es"
+                      ]
+                    },
+                    ", hay đổi ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "y → ies"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Pronunciation"
+                      ]
+                    },
+                    " — đọc ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "/s/"
+                      ]
+                    },
+                    ", ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "/z/"
+                      ]
+                    },
+                    ", hay ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "/ɪz/"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "She ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "works"
+                      ]
+                    },
+                    " here."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "He ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "watches"
+                      ]
+                    },
+                    " TV."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "two ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "books"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "three ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "boxes"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -96,10 +522,391 @@
         "textColor": "#23332D",
         "borderColor": "#4268A4"
       },
-      "content": "# Khi nào dùng -s/-es?\n\n## 1. Hiện tại đơn — động từ thường\n\n### Khẳng định\n\n- **I / You / We / They + V**\n- **He / She / It + V-s/es**\n\nVí dụ:\n\n- I work every day.\n- She **works** every day.\n- He **watches** TV at night.\n\n### Phủ định\n\n- I/You/We/They **do not + V**\n- He/She/It **does not + V**\n\n✅ She **does not like** coffee.  \n❌ She does not likes coffee.\n\n### Câu hỏi\n\n- **Do + I/you/we/they + V?**\n- **Does + he/she/it + V?**\n\n✅ Does he **play** football?\n\n> Sau **does / does not**, động từ trở về **nguyên mẫu**.\n\n## 2. Danh từ số nhiều\n\nDanh từ đếm được thường thêm **-s/-es**:\n\n- book → books\n- car → cars\n- box → boxes\n\nMột số danh từ bất quy tắc phải học riêng:\n\n- child → children\n- man → men\n- woman → women\n- mouse → mice\n\n## Lưu ý\n\nĐộng từ **be** dùng dạng riêng: `am / is / are`.\n\nNguồn tham khảo: Cambridge Dictionary — Present simple.",
+      "content": "Khi nào dùng -s/-es?\n1. Hiện tại đơn — động từ thường\nKhẳng định\nI / You / We / They + V\nHe / She / It + V-s/es\n\nVí dụ:\nI work every day.\nShe works every day.\nHe watches TV at night.\n\nPhủ định\nI/You/We/They do not + V\nHe/She/It does not + V\n\n✅ She does not like coffee.\n❌ She does not likes coffee.\nCâu hỏi\nDo + I/you/we/they + V?\nDoes + he/she/it + V?\n\n✅ Does he play football?\nSau does / does not, động từ trở về nguyên mẫu.\n\n2. Danh từ số nhiều\nDanh từ đếm được thường thêm -s/-es:\nbook → books\ncar → cars\nbox → boxes\n\nMột số danh từ bất quy tắc phải học riêng:\nchild → children\nman → men\nwoman → women\nmouse → mice\n\nLưu ý\nĐộng từ be dùng dạng riêng: am / is / are.\nNguồn tham khảo: Cambridge Dictionary — Present simple.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Khi nào dùng -s/-es?"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "1. Hiện tại đơn — động từ thường"
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Khẳng định"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "I / You / We / They + V"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "He / She / It + V-s/es"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "I work every day."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "She ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "works"
+                      ]
+                    },
+                    " every day."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "He ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "watches"
+                      ]
+                    },
+                    " TV at night."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Phủ định"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "I/You/We/They ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "do not + V"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "He/She/It ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "does not + V"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "✅ She ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "does not like"
+                  ]
+                },
+                " coffee.",
+                {
+                  "tag": "br",
+                  "attributes": {},
+                  "children": []
+                },
+                "❌ She does not likes coffee."
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Câu hỏi"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Do + I/you/we/they + V?"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Does + he/she/it + V?"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "✅ Does he ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "play"
+                  ]
+                },
+                " football?"
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Sau ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "does / does not"
+                      ]
+                    },
+                    ", động từ trở về ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "nguyên mẫu"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "2. Danh từ số nhiều"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Danh từ đếm được thường thêm ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "-s/-es"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "book → books"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "car → cars"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "box → boxes"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Một số danh từ bất quy tắc phải học riêng:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "child → children"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "man → men"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "woman → women"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "mouse → mice"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Lưu ý"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Động từ ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "be"
+                  ]
+                },
+                " dùng dạng riêng: ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "am / is / are"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo: Cambridge Dictionary — Present simple."
+              ]
+            }
+          ]
         }
       }
     },
@@ -127,10 +934,393 @@
         "textColor": "#23332D",
         "borderColor": "#4268A4"
       },
-      "content": "# Cách viết -s/-es\n\n| Trường hợp | Quy tắc | Ví dụ |\n|---|---|---|\n| Phần lớn từ | + **s** | work → works, book → books |\n| s, ss, sh, ch, x, z | + **es** | wash → washes, box → boxes |\n| phụ âm + y | **y → ies** | study → studies, baby → babies |\n| nguyên âm + y | + **s** | play → plays, boy → boys |\n\n## Động từ thường gặp cần nhớ\n\n- go → **goes**\n- do → **does**\n- have → **has**\n\n## Một số ngoại lệ danh từ\n\nKhông phải mọi từ kết thúc bằng `o` đều giống nhau:\n\n- potato → potatoes\n- tomato → tomatoes\n- photo → photos\n\nMột số từ `-f/-fe` đổi thành `-ves`:\n\n- knife → knives\n- wife → wives\n\nNhưng không phải tất cả:\n\n- roof → roofs\n\n**Mẹo:** học quy tắc chính trước; khi gặp ngoại lệ, kiểm tra từ điển.\n\nNguồn tham khảo: Cambridge Dictionary — Spelling.",
+      "content": "Cách viết -s/-es\nTrường hợpQuy tắcVí dụ\n\nPhần lớn từ+ swork → works, book → books\ns, ss, sh, ch, x, z+ eswash → washes, box → boxes\nphụ âm + yy → iesstudy → studies, baby → babies\nnguyên âm + y+ splay → plays, boy → boys\n\n\nĐộng từ thường gặp cần nhớ\ngo → goes\ndo → does\nhave → has\n\nMột số ngoại lệ danh từ\nKhông phải mọi từ kết thúc bằng o đều giống nhau:\npotato → potatoes\ntomato → tomatoes\nphoto → photos\n\nMột số từ -f/-fe đổi thành -ves:\nknife → knives\nwife → wives\n\nNhưng không phải tất cả:\nroof → roofs\n\nMẹo: học quy tắc chính trước; khi gặp ngoại lệ, kiểm tra từ điển.\nNguồn tham khảo: Cambridge Dictionary — Spelling.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Cách viết -s/-es"
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Trường hợp"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Quy tắc"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Ví dụ"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Phần lớn từ"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "s"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "work → works, book → books"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "s, ss, sh, ch, x, z"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "es"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "wash → washes, box → boxes"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "phụ âm + y"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "y → ies"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "study → studies, baby → babies"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "nguyên âm + y"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "s"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "play → plays, boy → boys"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Động từ thường gặp cần nhớ"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "go → ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "goes"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "do → ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "does"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "have → ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "has"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Một số ngoại lệ danh từ"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Không phải mọi từ kết thúc bằng ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "o"
+                  ]
+                },
+                " đều giống nhau:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "potato → potatoes"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "tomato → tomatoes"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "photo → photos"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Một số từ ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-f/-fe"
+                  ]
+                },
+                " đổi thành ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-ves"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "knife → knives"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "wife → wives"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nhưng không phải tất cả:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "roof → roofs"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "Mẹo:"
+                  ]
+                },
+                " học quy tắc chính trước; khi gặp ngoại lệ, kiểm tra từ điển."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo: Cambridge Dictionary — Spelling."
+              ]
+            }
+          ]
         }
       }
     },
@@ -157,10 +1347,347 @@
         "textColor": "#23332D",
         "borderColor": "#7955A0"
       },
-      "content": "# Phát âm -s/-es\n\n> Hãy nghe **âm cuối của từ gốc**, không chỉ nhìn chữ cuối.\n\n| Âm cuối từ gốc | Đọc đuôi | Ví dụ |\n|---|---|---|\n| /p/, /t/, /k/, /f/, /θ/ | **/s/** | cups, cats, books, laughs |\n| /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/ | **/ɪz/** | buses, roses, washes, watches |\n| nguyên âm + phụ âm hữu thanh còn lại | **/z/** | plays, dogs, rooms, loves |\n\n## Cách nhớ nhanh\n\n1. **Âm xuýt / sibilant → /ɪz/**\n2. **Âm vô thanh còn lại → /s/**\n3. **Còn lại → /z/**\n\n### Ví dụ\n\n- book /k/ → books **/s/**\n- dog /g/ → dogs **/z/**\n- watch /tʃ/ → watches **/ɪz/**\n\n`/ɪz/` tạo thêm **một âm tiết**.\n\n![Bảng tham khảo phát âm -s/-es](https://www.aland.edu.vn/uploads/images/userfiles/2020/cach-phat-am-s-vs-es-trong-tieng-anh-aland-english-4.jpg)\n\nNguồn ảnh: Aland English.  \nNguồn kiến thức tham khảo: BBC Learning English / Cambridge.",
+      "content": "Phát âm -s/-es\nHãy nghe âm cuối của từ gốc, không chỉ nhìn chữ cuối.\n\nÂm cuối từ gốcĐọc đuôiVí dụ\n\n/p/, /t/, /k/, /f/, /θ//s/cups, cats, books, laughs\n/s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ//ɪz/buses, roses, washes, watches\nnguyên âm + phụ âm hữu thanh còn lại/z/plays, dogs, rooms, loves\n\n\nCách nhớ nhanh\nÂm xuýt / sibilant → /ɪz/\nÂm vô thanh còn lại → /s/\nCòn lại → /z/\n\nVí dụ\nbook /k/ → books /s/\ndog /g/ → dogs /z/\nwatch /tʃ/ → watches /ɪz/\n\n/ɪz/ tạo thêm một âm tiết.\n![Bảng tham khảo phát âm -s/-es](https://www.aland.edu.vn/uploads/images/userfiles/2020/cach-phat-am-s-vs-es-trong-tieng-anh-aland-english-4.jpg)\nNguồn ảnh: Aland English.\nNguồn kiến thức tham khảo: BBC Learning English / Cambridge.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Phát âm -s/-es"
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Hãy nghe ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "âm cuối của từ gốc"
+                      ]
+                    },
+                    ", không chỉ nhìn chữ cuối."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Âm cuối từ gốc"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Đọc đuôi"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Ví dụ"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "/p/, /t/, /k/, /f/, /θ/"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/s/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "cups, cats, books, laughs"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "/s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/ɪz/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "buses, roses, washes, watches"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "nguyên âm + phụ âm hữu thanh còn lại"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/z/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "plays, dogs, rooms, loves"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cách nhớ nhanh"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Âm xuýt / sibilant → /ɪz/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Âm vô thanh còn lại → /s/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Còn lại → /z/"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Ví dụ"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "book /k/ → books ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/s/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "dog /g/ → dogs ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/z/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "watch /tʃ/ → watches ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/ɪz/"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "/ɪz/"
+                  ]
+                },
+                " tạo thêm ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "một âm tiết"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "span",
+                  "attributes": {
+                    "data-origin": "legacy-external-image"
+                  },
+                  "children": [
+                    "![Bảng tham khảo phát âm -s/-es](https://www.aland.edu.vn/uploads/images/userfiles/2020/cach-phat-am-s-vs-es-trong-tieng-anh-aland-english-4.jpg)"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn ảnh: Aland English.",
+                {
+                  "tag": "br",
+                  "attributes": {},
+                  "children": []
+                },
+                "Nguồn kiến thức tham khảo: BBC Learning English / Cambridge."
+              ]
+            }
+          ]
         }
       }
     },
@@ -187,10 +1714,201 @@
         "textColor": "#23332D",
         "borderColor": "#AC7026"
       },
-      "content": "# -ed\n\nĐuôi **-ed** chủ yếu dùng với **động từ có quy tắc**:\n\n- **V2** trong quá khứ đơn.\n- **V3** trong perfect/passive và một số cấu trúc khác.\n\nBa phần cần học:\n\n- **Usage**\n- **Spelling**\n- **Pronunciation**\n\nVí dụ:\n\n- work → worked\n- play → played\n- want → wanted\n\nĐộng từ bất quy tắc không tuân theo quy tắc `V + ed`:\n\n- go → went → gone\n- buy → bought → bought",
+      "content": "-ed\nĐuôi -ed chủ yếu dùng với động từ có quy tắc:\nV2 trong quá khứ đơn.\nV3 trong perfect/passive và một số cấu trúc khác.\n\nBa phần cần học:\nUsage\nSpelling\nPronunciation\n\nVí dụ:\nwork → worked\nplay → played\nwant → wanted\n\nĐộng từ bất quy tắc không tuân theo quy tắc V + ed:\ngo → went → gone\nbuy → bought → bought",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "-ed"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đuôi ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "-ed"
+                  ]
+                },
+                " chủ yếu dùng với ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "động từ có quy tắc"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "V2"
+                      ]
+                    },
+                    " trong quá khứ đơn."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "V3"
+                      ]
+                    },
+                    " trong perfect/passive và một số cấu trúc khác."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ba phần cần học:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Usage"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Spelling"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Pronunciation"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "work → worked"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "play → played"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "want → wanted"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Động từ bất quy tắc không tuân theo quy tắc ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "V + ed"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "go → went → gone"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "buy → bought → bought"
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -218,10 +1936,351 @@
         "textColor": "#23332D",
         "borderColor": "#AC7026"
       },
-      "content": "# Khi nào dùng -ed?\n\n## 1. Quá khứ đơn\n\n### Khẳng định\n\n**S + V2**\n\nVới động từ có quy tắc:\n\n**V2 = V-ed**\n\nVí dụ:\n\n- I **worked** yesterday.\n- She **visited** her friend.\n- They **played** football.\n\n### Phủ định\n\n**S + did not + V nguyên mẫu**\n\n✅ He did not **work** yesterday.  \n❌ He did not worked yesterday.\n\n### Câu hỏi\n\n**Did + S + V nguyên mẫu?**\n\n✅ Did she **visit** you?\n\n> Sau **did / did not**, luôn dùng động từ nguyên mẫu.\n\n## 2. Past participle — V3\n\nVới động từ có quy tắc:\n\n**V3 = V-ed**\n\nVí dụ:\n\n- She has **finished** her work.\n- The door was **closed**.\n\n## Lưu ý\n\nKhông phải mọi động từ đều thêm `-ed`.\n\n- go → went → gone\n- see → saw → seen\n- take → took → taken\n\nNguồn tham khảo: British Council — Past simple regular verbs.",
+      "content": "Khi nào dùng -ed?\n1. Quá khứ đơn\nKhẳng định\nS + V2\nVới động từ có quy tắc:\nV2 = V-ed\nVí dụ:\nI worked yesterday.\nShe visited her friend.\nThey played football.\n\nPhủ định\nS + did not + V nguyên mẫu\n✅ He did not work yesterday.\n❌ He did not worked yesterday.\nCâu hỏi\nDid + S + V nguyên mẫu?\n✅ Did she visit you?\nSau did / did not, luôn dùng động từ nguyên mẫu.\n\n2. Past participle — V3\nVới động từ có quy tắc:\nV3 = V-ed\nVí dụ:\nShe has finished her work.\nThe door was closed.\n\nLưu ý\nKhông phải mọi động từ đều thêm -ed.\ngo → went → gone\nsee → saw → seen\ntake → took → taken\n\nNguồn tham khảo: British Council — Past simple regular verbs.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Khi nào dùng -ed?"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "1. Quá khứ đơn"
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Khẳng định"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "S + V2"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Với động từ có quy tắc:"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "V2 = V-ed"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "I ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "worked"
+                      ]
+                    },
+                    " yesterday."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "She ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "visited"
+                      ]
+                    },
+                    " her friend."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "They ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "played"
+                      ]
+                    },
+                    " football."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Phủ định"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "S + did not + V nguyên mẫu"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "✅ He did not ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "work"
+                  ]
+                },
+                " yesterday.",
+                {
+                  "tag": "br",
+                  "attributes": {},
+                  "children": []
+                },
+                "❌ He did not worked yesterday."
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Câu hỏi"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "Did + S + V nguyên mẫu?"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "✅ Did she ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "visit"
+                  ]
+                },
+                " you?"
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Sau ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "did / did not"
+                      ]
+                    },
+                    ", luôn dùng động từ nguyên mẫu."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "2. Past participle — V3"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Với động từ có quy tắc:"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "V3 = V-ed"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "She has ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "finished"
+                      ]
+                    },
+                    " her work."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "The door was ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "closed"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Lưu ý"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Không phải mọi động từ đều thêm ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-ed"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "go → went → gone"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "see → saw → seen"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "take → took → taken"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo: British Council — Past simple regular verbs."
+              ]
+            }
+          ]
         }
       }
     },
@@ -249,10 +2308,418 @@
         "textColor": "#23332D",
         "borderColor": "#AC7026"
       },
-      "content": "# Cách viết -ed\n\n| Trường hợp | Quy tắc | Ví dụ |\n|---|---|---|\n| Thông thường | + **ed** | work → worked |\n| Tận cùng e | + **d** | live → lived |\n| phụ âm + y | **y → ied** | study → studied |\n| nguyên âm + y | + **ed** | play → played |\n\n## Gấp đôi phụ âm\n\nVới nhiều động từ ngắn có dạng:\n\n**phụ âm + nguyên âm + phụ âm**\n\nthường gấp đôi phụ âm cuối trước `-ed`:\n\n- stop → stopped\n- plan → planned\n\nVới từ nhiều âm tiết, thường gấp đôi khi **âm tiết cuối được nhấn**:\n\n- prefer → preferred\n- admit → admitted\n\nNhưng:\n\n- visit → visited\n\nKhông gấp đôi `w / x / y`:\n\n- snow → snowed\n- fix → fixed\n- play → played\n\nMột số trường hợp đặc biệt:\n\n- panic → panicked\n\nKhác biệt Anh–Mỹ có thể xuất hiện:\n\n- travelled (BrE)\n- traveled (AmE)\n\nNguồn tham khảo: Cambridge Dictionary — Spelling.",
+      "content": "Cách viết -ed\nTrường hợpQuy tắcVí dụ\n\nThông thường+ edwork → worked\nTận cùng e+ dlive → lived\nphụ âm + yy → iedstudy → studied\nnguyên âm + y+ edplay → played\n\n\nGấp đôi phụ âm\nVới nhiều động từ ngắn có dạng:\nphụ âm + nguyên âm + phụ âm\nthường gấp đôi phụ âm cuối trước -ed:\nstop → stopped\nplan → planned\n\nVới từ nhiều âm tiết, thường gấp đôi khi âm tiết cuối được nhấn:\nprefer → preferred\nadmit → admitted\n\nNhưng:\nvisit → visited\n\nKhông gấp đôi w / x / y:\nsnow → snowed\nfix → fixed\nplay → played\n\nMột số trường hợp đặc biệt:\npanic → panicked\n\nKhác biệt Anh–Mỹ có thể xuất hiện:\ntravelled (BrE)\ntraveled (AmE)\n\nNguồn tham khảo: Cambridge Dictionary — Spelling.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Cách viết -ed"
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Trường hợp"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Quy tắc"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Ví dụ"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Thông thường"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "ed"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "work → worked"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Tận cùng e"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "d"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "live → lived"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "phụ âm + y"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "y → ied"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "study → studied"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "nguyên âm + y"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "+ ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "ed"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "play → played"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Gấp đôi phụ âm"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Với nhiều động từ ngắn có dạng:"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "phụ âm + nguyên âm + phụ âm"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "thường gấp đôi phụ âm cuối trước ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-ed"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "stop → stopped"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "plan → planned"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Với từ nhiều âm tiết, thường gấp đôi khi ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "âm tiết cuối được nhấn"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "prefer → preferred"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "admit → admitted"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nhưng:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "visit → visited"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Không gấp đôi ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "w / x / y"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "snow → snowed"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "fix → fixed"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "play → played"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Một số trường hợp đặc biệt:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "panic → panicked"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Khác biệt Anh–Mỹ có thể xuất hiện:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "travelled (BrE)"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "traveled (AmE)"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo: Cambridge Dictionary — Spelling."
+              ]
+            }
+          ]
         }
       }
     },
@@ -279,10 +2746,370 @@
         "textColor": "#23332D",
         "borderColor": "#7955A0"
       },
-      "content": "# Phát âm -ed\n\n> Xét **âm cuối của động từ gốc**.\n\n| Âm cuối từ gốc | Đọc -ed | Ví dụ |\n|---|---|---|\n| /t/ hoặc /d/ | **/ɪd/** | wanted, needed |\n| âm vô thanh khác | **/t/** | worked, washed, laughed |\n| nguyên âm + âm hữu thanh khác | **/d/** | played, cleaned, loved |\n\n## Cách nhớ nhanh\n\n1. **/t/ hoặc /d/ → /ɪd/**\n2. **Vô thanh khác → /t/**\n3. **Còn lại → /d/**\n\n### Ví dụ\n\n- work /k/ → worked **/t/**\n- play /eɪ/ → played **/d/**\n- want /t/ → wanted **/ɪd/**\n- need /d/ → needed **/ɪd/**\n\n`/ɪd/` tạo thêm **một âm tiết**.\n\n### Lưu ý về adjective\n\nMột số tính từ kết thúc bằng `-ed` có cách phát âm cần học theo cả từ, ví dụ `learned` trong một số nghĩa.\n\nNguồn tham khảo: BBC Learning English / British Council.",
+      "content": "Phát âm -ed\nXét âm cuối của động từ gốc.\n\nÂm cuối từ gốcĐọc -edVí dụ\n\n/t/ hoặc /d//ɪd/wanted, needed\nâm vô thanh khác/t/worked, washed, laughed\nnguyên âm + âm hữu thanh khác/d/played, cleaned, loved\n\n\nCách nhớ nhanh\n/t/ hoặc /d/ → /ɪd/\nVô thanh khác → /t/\nCòn lại → /d/\n\nVí dụ\nwork /k/ → worked /t/\nplay /eɪ/ → played /d/\nwant /t/ → wanted /ɪd/\nneed /d/ → needed /ɪd/\n\n/ɪd/ tạo thêm một âm tiết.\nLưu ý về adjective\nMột số tính từ kết thúc bằng -ed có cách phát âm cần học theo cả từ, ví dụ learned trong một số nghĩa.\nNguồn tham khảo: BBC Learning English / British Council.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Phát âm -ed"
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Xét ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "âm cuối của động từ gốc"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Âm cuối từ gốc"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Đọc -ed"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Ví dụ"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "/t/ hoặc /d/"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/ɪd/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "wanted, needed"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "âm vô thanh khác"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/t/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "worked, washed, laughed"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "nguyên âm + âm hữu thanh khác"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "/d/"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "played, cleaned, loved"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cách nhớ nhanh"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/t/ hoặc /d/ → /ɪd/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Vô thanh khác → /t/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Còn lại → /d/"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Ví dụ"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "work /k/ → worked ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/t/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "play /eɪ/ → played ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/d/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "want /t/ → wanted ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/ɪd/"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "need /d/ → needed ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "/ɪd/"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "/ɪd/"
+                  ]
+                },
+                " tạo thêm ",
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "một âm tiết"
+                  ]
+                },
+                "."
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Lưu ý về adjective"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Một số tính từ kết thúc bằng ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-ed"
+                  ]
+                },
+                " có cách phát âm cần học theo cả từ, ví dụ ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "learned"
+                  ]
+                },
+                " trong một số nghĩa."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo: BBC Learning English / British Council."
+              ]
+            }
+          ]
         }
       }
     },
@@ -309,10 +3136,511 @@
         "textColor": "#23332D",
         "borderColor": "#AD545F"
       },
-      "content": "# Common Mistakes\n\n| Sai | Đúng | Lý do |\n|---|---|---|\n| Does she **likes** tea? | Does she **like** tea? | Sau `does` dùng V nguyên mẫu |\n| He did not **watched** TV. | He did not **watch** TV. | Sau `did` dùng V nguyên mẫu |\n| She **study** every day. | She **studies** every day. | She + present simple |\n| They **goed** home. | They **went** home. | `go` là irregular verb |\n| He **watchs** TV. | He **watches** TV. | `ch` → `es` |\n\n## Checklist 4 bước\n\nKhi gặp `-s/-es` hoặc `-ed`:\n\n1. Xác định **ngữ pháp**.\n2. Chọn **dạng từ đúng**.\n3. Áp dụng **quy tắc chính tả**.\n4. Nhìn **âm cuối từ gốc** để phát âm.\n\n### Một lỗi phát âm phổ biến\n\nKhông tự động đọc:\n\n- `worked` thành `work-id`\n- `played` thành `play-id`\n\nChỉ dùng `/ɪd/` sau âm `/t/` hoặc `/d/`.",
+      "content": "Common Mistakes\nSaiĐúngLý do\n\nDoes she likes tea?Does she like tea?Sau does dùng V nguyên mẫu\nHe did not watched TV.He did not watch TV.Sau did dùng V nguyên mẫu\nShe study every day.She studies every day.She + present simple\nThey goed home.They went home.go là irregular verb\nHe watchs TV.He watches TV.ch → es\n\n\nChecklist 4 bước\nKhi gặp -s/-es hoặc -ed:\nXác định ngữ pháp.\nChọn dạng từ đúng.\nÁp dụng quy tắc chính tả.\nNhìn âm cuối từ gốc để phát âm.\n\nMột lỗi phát âm phổ biến\nKhông tự động đọc:\nworked thành work-id\nplayed thành play-id\n\nChỉ dùng /ɪd/ sau âm /t/ hoặc /d/.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Common Mistakes"
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Sai"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Đúng"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Lý do"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Does she ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "likes"
+                              ]
+                            },
+                            " tea?"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Does she ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "like"
+                              ]
+                            },
+                            " tea?"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Sau ",
+                            {
+                              "tag": "code",
+                              "attributes": {},
+                              "children": [
+                                "does"
+                              ]
+                            },
+                            " dùng V nguyên mẫu"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "He did not ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "watched"
+                              ]
+                            },
+                            " TV."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "He did not ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "watch"
+                              ]
+                            },
+                            " TV."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Sau ",
+                            {
+                              "tag": "code",
+                              "attributes": {},
+                              "children": [
+                                "did"
+                              ]
+                            },
+                            " dùng V nguyên mẫu"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "She ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "study"
+                              ]
+                            },
+                            " every day."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "She ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "studies"
+                              ]
+                            },
+                            " every day."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "She + present simple"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "They ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "goed"
+                              ]
+                            },
+                            " home."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "They ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "went"
+                              ]
+                            },
+                            " home."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "code",
+                              "attributes": {},
+                              "children": [
+                                "go"
+                              ]
+                            },
+                            " là irregular verb"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "He ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "watchs"
+                              ]
+                            },
+                            " TV."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "He ",
+                            {
+                              "tag": "strong",
+                              "attributes": {},
+                              "children": [
+                                "watches"
+                              ]
+                            },
+                            " TV."
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "tag": "code",
+                              "attributes": {},
+                              "children": [
+                                "ch"
+                              ]
+                            },
+                            " → ",
+                            {
+                              "tag": "code",
+                              "attributes": {},
+                              "children": [
+                                "es"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Checklist 4 bước"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Khi gặp ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-s/-es"
+                  ]
+                },
+                " hoặc ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "-ed"
+                  ]
+                },
+                ":"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Xác định ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "ngữ pháp"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Chọn ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "dạng từ đúng"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Áp dụng ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "quy tắc chính tả"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Nhìn ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "âm cuối từ gốc"
+                      ]
+                    },
+                    " để phát âm."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h3",
+              "attributes": {},
+              "children": [
+                "Một lỗi phát âm phổ biến"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Không tự động đọc:"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "worked"
+                      ]
+                    },
+                    " thành ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "work-id"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "played"
+                      ]
+                    },
+                    " thành ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "play-id"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Chỉ dùng ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "/ɪd/"
+                  ]
+                },
+                " sau âm ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "/t/"
+                  ]
+                },
+                " hoặc ",
+                {
+                  "tag": "code",
+                  "attributes": {},
+                  "children": [
+                    "/d/"
+                  ]
+                },
+                "."
+              ]
+            }
+          ]
         }
       }
     },
@@ -339,10 +3667,184 @@
         "textColor": "#23332D",
         "borderColor": "#32836B"
       },
-      "content": "# Practice\n\n## A. Điền dạng đúng\n\n1. She ___ (study) English every day.\n2. My brother ___ (wash) his car on Sunday.\n3. He ___ (play) football every weekend.\n4. Does Anna ___ (like) coffee?\n5. We ___ (visit) our teacher yesterday.\n6. The bus ___ (stop) here yesterday.\n7. They did not ___ (watch) TV last night.\n8. I ___ (go) home early yesterday.\n\n## B. Chọn cách phát âm\n\n9. **books** → /s/, /z/, hay /ɪz/?\n10. **watches** → /s/, /z/, hay /ɪz/?\n11. **played** → /t/, /d/, hay /ɪd/?\n12. **wanted** → /t/, /d/, hay /ɪd/?\n\n> Làm xong trước rồi mới mở **Answers**.",
+      "content": "Practice\nA. Điền dạng đúng\nShe ___ (study) English every day.\nMy brother ___ (wash) his car on Sunday.\nHe ___ (play) football every weekend.\nDoes Anna ___ (like) coffee?\nWe ___ (visit) our teacher yesterday.\nThe bus ___ (stop) here yesterday.\nThey did not ___ (watch) TV last night.\nI ___ (go) home early yesterday.\n\nB. Chọn cách phát âm\nbooks → /s/, /z/, hay /ɪz/?\nwatches → /s/, /z/, hay /ɪz/?\nplayed → /t/, /d/, hay /ɪd/?\nwanted → /t/, /d/, hay /ɪd/?\n\nLàm xong trước rồi mới mở Answers.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Practice"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "A. Điền dạng đúng"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "She ___ (study) English every day."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "My brother ___ (wash) his car on Sunday."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "He ___ (play) football every weekend."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Does Anna ___ (like) coffee?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "We ___ (visit) our teacher yesterday."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "The bus ___ (stop) here yesterday."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "They did not ___ (watch) TV last night."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "I ___ (go) home early yesterday."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "B. Chọn cách phát âm"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {
+                "start": "9"
+              },
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "books"
+                      ]
+                    },
+                    " → /s/, /z/, hay /ɪz/?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "watches"
+                      ]
+                    },
+                    " → /s/, /z/, hay /ɪz/?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "played"
+                      ]
+                    },
+                    " → /t/, /d/, hay /ɪd/?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "wanted"
+                      ]
+                    },
+                    " → /t/, /d/, hay /ɪd/?"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "blockquote",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "p",
+                  "attributes": {},
+                  "children": [
+                    "Làm xong trước rồi mới mở ",
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "Answers"
+                      ]
+                    },
+                    "."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -369,10 +3871,339 @@
         "textColor": "#23332D",
         "borderColor": "#32836B"
       },
-      "content": "# Answers\n\n1. **studies** — She + present simple; phụ âm + y → ies.\n2. **washes** — `sh` → thêm `es`.\n3. **plays** — nguyên âm + y → thêm `s`.\n4. **like** — sau `Does` dùng nguyên mẫu.\n5. **visited** — regular past verb.\n6. **stopped** — gấp đôi `p` + ed.\n7. **watch** — sau `did not` dùng nguyên mẫu.\n8. **went** — `go` là irregular verb.\n\n## Pronunciation\n\n9. **books → /s/** — từ gốc kết thúc bằng /k/.\n10. **watches → /ɪz/** — từ gốc kết thúc bằng /tʃ/.\n11. **played → /d/** — `play` kết thúc bằng âm hữu thanh/nguyên âm.\n12. **wanted → /ɪd/** — `want` kết thúc bằng /t/.\n\n## Tự đánh giá\n\n- **10–12 đúng:** rất ổn.\n- **7–9 đúng:** xem lại card mình sai.\n- **≤ 6 đúng:** học lại từng nhánh Usage → Spelling → Pronunciation.",
+      "content": "Answers\nstudies — She + present simple; phụ âm + y → ies.\nwashes — sh → thêm es.\nplays — nguyên âm + y → thêm s.\nlike — sau Does dùng nguyên mẫu.\nvisited — regular past verb.\nstopped — gấp đôi p + ed.\nwatch — sau did not dùng nguyên mẫu.\nwent — go là irregular verb.\n\nPronunciation\nbooks → /s/ — từ gốc kết thúc bằng /k/.\nwatches → /ɪz/ — từ gốc kết thúc bằng /tʃ/.\nplayed → /d/ — play kết thúc bằng âm hữu thanh/nguyên âm.\nwanted → /ɪd/ — want kết thúc bằng /t/.\n\nTự đánh giá\n10–12 đúng: rất ổn.\n7–9 đúng: xem lại card mình sai.\n≤ 6 đúng: học lại từng nhánh Usage → Spelling → Pronunciation.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Answers"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "studies"
+                      ]
+                    },
+                    " — She + present simple; phụ âm + y → ies."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "washes"
+                      ]
+                    },
+                    " — ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "sh"
+                      ]
+                    },
+                    " → thêm ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "es"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "plays"
+                      ]
+                    },
+                    " — nguyên âm + y → thêm ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "s"
+                      ]
+                    },
+                    "."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "like"
+                      ]
+                    },
+                    " — sau ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "Does"
+                      ]
+                    },
+                    " dùng nguyên mẫu."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "visited"
+                      ]
+                    },
+                    " — regular past verb."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "stopped"
+                      ]
+                    },
+                    " — gấp đôi ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "p"
+                      ]
+                    },
+                    " + ed."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "watch"
+                      ]
+                    },
+                    " — sau ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "did not"
+                      ]
+                    },
+                    " dùng nguyên mẫu."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "went"
+                      ]
+                    },
+                    " — ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "go"
+                      ]
+                    },
+                    " là irregular verb."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Pronunciation"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {
+                "start": "9"
+              },
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "books → /s/"
+                      ]
+                    },
+                    " — từ gốc kết thúc bằng /k/."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "watches → /ɪz/"
+                      ]
+                    },
+                    " — từ gốc kết thúc bằng /tʃ/."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "played → /d/"
+                      ]
+                    },
+                    " — ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "play"
+                      ]
+                    },
+                    " kết thúc bằng âm hữu thanh/nguyên âm."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "wanted → /ɪd/"
+                      ]
+                    },
+                    " — ",
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "want"
+                      ]
+                    },
+                    " kết thúc bằng /t/."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "10–12 đúng:"
+                      ]
+                    },
+                    " rất ổn."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "7–9 đúng:"
+                      ]
+                    },
+                    " xem lại card mình sai."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "strong",
+                      "attributes": {},
+                      "children": [
+                        "≤ 6 đúng:"
+                      ]
+                    },
+                    " học lại từng nhánh Usage → Spelling → Pronunciation."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     }

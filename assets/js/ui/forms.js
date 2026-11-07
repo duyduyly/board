@@ -1,11 +1,12 @@
 import { escapeHTML as esc } from '../common/html.js';
 import { t } from '../i18n/index.js';
 import { appearance } from '../detail/appearance.js';
+import { formatPropertyIcon } from './format-property-icons.js';
 export function labelField(
   key,
   name,
   value,
-  { textarea = false, color = false, options = null } = {},
+  { textarea = false, color = false, options = null, icon = false } = {},
 ) {
   let control;
   if (options)
@@ -36,13 +37,19 @@ export function labelField(
       '" value="' +
       esc(value) +
       '">';
-  return '<label>' + esc(t(key)) + control + '</label>';
+  const nameText = esc(t(key));
+  return '<label' + (icon ? ' title="' + nameText + '"' : '') + '>' +
+    (icon ? formatPropertyIcon(key) + '<span class="format-property-name">' + nameText + '</span>' : nameText) +
+    control + '</label>';
 }
-export function cardColorField(card, key) {
+export function cardColorField(card, key, { icon = false } = {}) {
   const flag = key === 'backgroundColor' ? 'backgroundTransparent' : 'borderTransparent';
   return (
     '<div>' +
-    labelField(key, key, card.style[key], { color: true }) +
+    labelField(key, key, card.style[key], { color: true, icon }) +
+    '<label class="color-hex-label">' + esc(t('hexColor')) +
+    '<input type="text" data-hex-for="' + esc(key) + '" value="' + esc(card.style[key]) +
+    '" pattern="#[0-9A-Fa-f]{6}" maxlength="7" required spellcheck="false"></label>' +
     (key === 'textColor'
       ? ''
       : '<label class="transparency-option"><input type="checkbox" name="appearance-' +

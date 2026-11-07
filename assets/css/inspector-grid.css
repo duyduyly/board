@@ -1,6 +1,53 @@
 /* E048: grouped settings. Keep these selectors off card previews and Markdown. */
 #format-inspector {
   container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#format-inspector[hidden] { display: none; }
+#format-inspector > header,
+#inspector-tabs { flex: none; }
+#inspector-tabs button { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; }
+#inspector-tabs .inspector-tab-icon { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.format-property-icon { display: inline-block; width: 14px; height: 14px; margin-inline-end: 6px; vertical-align: -2px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#format-inspector .format-property-name { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+#format-inspector .format-icon-native { position: absolute; width: 1px !important; height: 1px; padding: 0 !important; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+#format-inspector .format-icon-choices { display: flex; gap: 4px; margin-top: 6px; }
+#format-inspector .format-icon-choices button { flex: 1; min-width: 34px; min-height: 34px; padding: 6px; display: inline-flex; align-items: center; justify-content: center; }
+#format-inspector .format-icon-choices button[aria-pressed='true'] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+#format-inspector .format-icon-choices svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#format-inspector .colors input[type='color'] { height: 36px; padding: 3px; }
+#inspector-global,
+#inspector-text,
+#inspector-fields {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#inspector-edge-hint { margin: 16px; color: var(--muted); font-size: 13px; }
+#format-inspector #card-overview-editor { overflow: visible; }
+#format-inspector .format-draft-status { flex: 1 0 100%; color: var(--muted); font-size: 12px; }
+#format-inspector .editor .editor-actions:has(button[type='submit']) {
+  bottom: 0;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+#inspector-global .inspector-scope { grid-column: 1 / -1; margin: 0; color: var(--muted); }
+#inspector-global form > .inspector-global-actions {
+  position: sticky;
+  bottom: -16px;
+  z-index: 2;
+  margin: 0 -16px -16px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 #format-inspector [hidden] {
   display: none !important;
@@ -16,6 +63,35 @@
   border: 1px solid var(--border);
   border-radius: var(--sketch-radius);
   background: color-mix(in srgb, var(--surface) 75%, var(--soft));
+}
+#format-inspector details.format-disclosure {
+  display: block;
+}
+#format-inspector .format-disclosure > summary,
+#format-inspector .format-preview-pane > summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+#format-inspector .format-section-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 12px;
+}
+#format-inspector .format-section-content > p,
+#format-inspector .format-section-content > button,
+#format-inspector .format-section-content > .format-grid,
+#format-inspector .format-section-content > .colors,
+#format-inspector .format-section-content > .format-buttons,
+#format-inspector .format-section-content > label:has([name='node-imageAlt']) {
+  grid-column: 1 / -1;
+}
+#format-inspector .format-section-content > label {
+  min-width: 0;
+  margin: 0;
 }
 #format-inspector .format-section > h3,
 #format-inspector .format-section > p,
@@ -140,8 +216,63 @@
   border: 1px dashed var(--border);
   border-radius: var(--sketch-radius);
 }
+.card-overview-editor .overview-editor-section > h3 { display: none; }
+#format-inspector .overview-editor-section {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--sketch-radius);
+}
+#format-inspector .overview-editor-section > h3 {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 14px;
+}
+#format-inspector .overview-editor-section .overview-style-grid {
+  padding: 0;
+  margin: 0 0 10px;
+  border: 0;
+  background: transparent;
+}
+/* Compact editing controls in the dock; keep the standalone Detail form intact. */
+#format-inspector .format-section,
+#inspector-global .inspector-config-group {
+  padding: 10px;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+#format-inspector .format-section-content {
+  gap: 8px;
+  padding-top: 8px;
+}
+#format-inspector .format-section input:not([type='checkbox']):not([type='color']),
+#format-inspector .format-section select:not(.format-icon-native),
+#inspector-global .bulk-typography-settings input:not([type='color']),
+#inspector-global .bulk-typography-settings select,
+#format-inspector .overview-style-grid input:not([type='color']),
+#format-inspector .overview-style-grid select {
+  min-height: 32px;
+  margin-top: 4px;
+  padding: 5px 7px;
+}
+#format-inspector .format-section input[type='number'],
+#format-inspector .overview-style-grid input[type='number'] {
+  max-width: 120px;
+}
+#format-inspector .format-icon-choices { gap: 3px; margin-top: 4px; }
+#format-inspector .format-icon-choices button { flex: 0 0 34px; }
+#format-inspector .format-section .colors > div {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 4px 6px;
+  align-items: end;
+}
+#format-inspector .colors input[type='color'] { width: 34px; height: 32px; margin-top: 4px; }
+#format-inspector .colors .transparency-option { grid-column: 1 / -1; }
 @container (max-width: 320px) {
   #format-inspector .format-section,
+  #format-inspector .format-section-content,
   #format-inspector .format-section .format-grid,
   #format-inspector .format-section .colors,
   #format-inspector .overview-style-grid,

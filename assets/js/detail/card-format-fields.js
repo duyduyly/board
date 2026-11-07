@@ -5,17 +5,20 @@ import { labelField, cardColorField } from '../ui/forms.js';
 import { appearance } from './appearance.js';
 import { IMAGE_NAMESPACE } from './attachments.js';
 import { nodeStyle } from '../graph/mind-map.js';
+import { formatPropertyIcon } from '../ui/format-property-icons.js';
+const formatField = (key, name, value, options = {}) =>
+  labelField(key, name, value, { ...options, icon: true });
 const group = (key, content, attrs = '') =>
-  '<section class="format-section" ' +
+  '<details class="format-section format-disclosure" data-format-group="' + key + '" open ' +
   attrs +
-  '><h3>' +
-  esc(t(key)) +
-  '</h3>' +
+  '><summary>' +
+  formatPropertyIcon(key) + esc(t(key)) +
+  '</summary><div class="format-section-content">' +
   content +
-  '</section>';
+  '</div></details>';
 const numberField = (key, name, value, min, max) =>
-  '<label>' +
-  esc(t(key)) +
+  '<label title="' + esc(t(key)) + '">' +
+  formatPropertyIcon(key) + '<span class="format-property-name">' + esc(t(key)) + '</span>' +
   '<input type="number" name="' +
   name +
   '" value="' +
@@ -30,7 +33,7 @@ export function cardFormatFields(card, view, mindSize) {
     config = nodeStyle(card),
     size = view === 'mind' ? mindSize : card.size;
   const display =
-    labelField('nodeKind', 'node-kind', config.kind, {
+    formatField('nodeKind', 'node-kind', config.kind, {
       options: ['card', 'text', 'image', 'image-text'].map((value) => ({
         value,
         label: t(
@@ -40,7 +43,7 @@ export function cardFormatFields(card, view, mindSize) {
         ),
       })),
     }) +
-    labelField('cardShape', 'appearance-shape', a.shape || '', {
+    formatField('cardShape', 'appearance-shape', a.shape || '', {
       options: [
         { value: '', label: t('legacyShape') },
         ...Object.keys(shapes).map((value) => ({ value, label: t(value) })),
@@ -50,7 +53,7 @@ export function cardFormatFields(card, view, mindSize) {
     esc(t('shapeHint')) +
     '</p>';
   const images =
-    labelField('coverImage', 'node-coverImageId', config.coverImageId || '', {
+    formatField('coverImage', 'node-coverImageId', config.coverImageId || '', {
       options: [
         { value: '', label: t('noCover') },
         ...Object.entries(card.extensions?.[IMAGE_NAMESPACE] || {}).map(([value, img]) => ({
@@ -59,12 +62,12 @@ export function cardFormatFields(card, view, mindSize) {
         })),
       ],
     }) +
-    labelField('imageFit', 'node-imageFit', config.imageFit, {
+    formatField('imageFit', 'node-imageFit', config.imageFit, {
       options: ['contain', 'cover'].map((value) => ({ value, label: t(value) })),
     }) +
-    labelField('imageAlt', 'node-imageAlt', config.imageAlt || '');
+    formatField('imageAlt', 'node-imageAlt', config.imageAlt || '');
   const sizing =
-    labelField('sizeMode', 'appearance-sizeMode', a.sizeMode, {
+    formatField('sizeMode', 'appearance-sizeMode', a.sizeMode, {
       options: [
         { value: 'manual', label: t('manual') },
         { value: 'fit', label: t('fitSizing') },
@@ -78,16 +81,16 @@ export function cardFormatFields(card, view, mindSize) {
     '</p><p id="fit-warning" class="form-errors" role="status"></p>';
   const surface =
     '<div class="colors">' +
-    ['backgroundColor', 'borderColor'].map((k) => cardColorField(card, k)).join('') +
+    ['backgroundColor', 'borderColor'].map((k) => cardColorField(card, k, { icon: true })).join('') +
     '</div><div class="format-grid"><div data-radius-field>' +
     numberField('radius', 'appearance-radius', a.radius, 0, 100) +
     '</div>' +
     numberField('borderWidth', 'appearance-borderWidth', a.borderWidth, 0, 8) +
     '</div>' +
-    labelField('align', 'appearance-align', a.align, {
+    formatField('align', 'appearance-align', a.align, {
       options: ['left', 'center', 'right'].map((value) => ({ value, label: t(value) })),
     }) +
-    labelField('shadow', 'appearance-shadow', a.shadow, {
+    formatField('shadow', 'appearance-shadow', a.shadow, {
       options: ['none', 'soft'].map((value) => ({ value, label: t(value) })),
     });
   const advanced =
@@ -96,7 +99,7 @@ export function cardFormatFields(card, view, mindSize) {
     '</summary><p class="muted">' +
     esc(t('legacyColorHint')) +
     '</p>' +
-    cardColorField(card, 'textColor') +
+    cardColorField(card, 'textColor', { icon: true }) +
     '</details>';
   const mind =
     view === 'mind'
@@ -121,14 +124,14 @@ export function cardFormatFields(card, view, mindSize) {
     esc(t('resetFrame')) +
     '</button><p class="muted">' +
     esc(t('resetFrameHint')) +
-    '</p></div><aside class="format-preview-pane"><h3>' +
+    '</p></div><details class="format-preview-pane" data-format-group="preview" open><summary>' +
     esc(t('formatPreviewTitle')) +
-    '</h3><p class="muted">' +
+    '</summary><p class="muted">' +
     esc(t('formatPreview')) +
     '</p><div id="format-card-preview" class="format-card-preview"></div><button type="button" id="edit-card-overview">' +
     esc(t('editCardOverview')) +
     '</button><p class="muted">' +
     esc(t('overviewHint')) +
-    '</p></aside></div>'
+    '</p></details></div>'
   );
 }

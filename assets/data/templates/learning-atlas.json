@@ -34,7 +34,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# Reusable learning atlas template\n\n## Structure\n\nTopic container > theory lesson > concept > optional sub-concept > code example.\n\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\n\n## How to reuse\n\n1. Copy this JSON under a new filename and replace metadata.title / description.\n2. Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\n3. Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\n4. Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\n5. Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\n6. Use 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail.\n7. Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\n8. Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\n9. Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\n10. Validate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\n## Sample branches\n\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\n\n## Presentation sizes\n\nTheory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry.\n\n## Limits\n\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\n\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "content": "Reusable learning atlas template\nStructure\nTopic container > theory lesson > concept > optional sub-concept > code example.\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\nHow to reuse\nCopy this JSON under a new filename and replace metadata.title / description.\nReplace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\nDuplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\nAttach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\nConcepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\nUse 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail.\nKeep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\nReposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\nAdd real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\nValidate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\nSample branches\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\nPresentation sizes\nTheory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry.\nLimits\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -58,6 +58,213 @@
             "fontSize": 14,
             "fontFamily": "system"
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Reusable learning atlas template"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Structure"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Topic container > theory lesson > concept > optional sub-concept > code example."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "The topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "How to reuse"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Copy this JSON under a new filename and replace metadata.title / description."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Duplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Attach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Concepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Use 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Keep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Reposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Add real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Validate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Sample branches"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Topic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Presentation sizes"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Theory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Limits"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "JSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Workspace guide"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -83,7 +290,7 @@
         "textColor": "#255c49",
         "borderColor": "#255c49"
       },
-      "content": "# [Topic name]\n\nDescribe the scope and list its theory lessons.",
+      "content": "[Topic name]\nDescribe the scope and list its theory lessons.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -105,6 +312,26 @@
             "fontFamily": "system",
             "fontSize": 15
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Topic name]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Describe the scope and list its theory lessons."
+              ]
+            }
+          ]
         }
       }
     },
@@ -130,7 +357,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
+      "content": "[Theory lesson]\nKeep the complete lesson here.\nConcept A\n[Explanation]\nConcept B\n[Explanation]\nSources\n[Add verified source links]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -158,6 +385,68 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Theory lesson]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Keep the complete lesson here."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Concept A"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explanation]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Concept B"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explanation]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Sources"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Add verified source links]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -183,7 +472,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
+      "content": "[Concept A]\nDefinition\n[Explain the concept.]\nRules\n[Describe its rules.]\nSource\n[Link to the original lesson.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -211,6 +500,61 @@
             "fontFamily": "system",
             "fontSize": 10
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Concept A]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Definition"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explain the concept.]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Rules"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Describe its rules.]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Source"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Link to the original lesson.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -236,7 +580,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
+      "content": "[Example A1]\nReplace the fenced block language with the actual language.\n[Code demonstrating Concept A]\nExpected result\n[Explain the output.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -260,6 +604,55 @@
             "fontSize": 14,
             "fontFamily": "system"
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Example A1]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Replace the fenced block language with the actual language."
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-text"
+                  },
+                  "children": [
+                    "[Code demonstrating Concept A]"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Expected result"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explain the output.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -285,7 +678,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Example A2]\n\n```text\n[Alternative example for Concept A]\n```",
+      "content": "[Example A2]\n[Alternative example for Concept A]",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -309,6 +702,34 @@
             "fontSize": 14,
             "fontFamily": "system"
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Example A2]"
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-text"
+                  },
+                  "children": [
+                    "[Alternative example for Concept A]"
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -334,7 +755,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Concept B]\n\n[Overview of the concept and its subtopics.]",
+      "content": "[Concept B]\n[Overview of the concept and its subtopics.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -362,6 +783,26 @@
             "fontFamily": "system",
             "fontSize": 10
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Concept B]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Overview of the concept and its subtopics.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -387,7 +828,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Sub-concept B1]\n\n[Detailed theory extracted from Concept B.]",
+      "content": "[Sub-concept B1]\n[Detailed theory extracted from Concept B.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -415,6 +856,26 @@
             "fontFamily": "system",
             "fontSize": 10
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Sub-concept B1]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Detailed theory extracted from Concept B.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -440,7 +901,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Example B1]\n\n```text\n[Code for Sub-concept B1]\n```",
+      "content": "[Example B1]\n[Code for Sub-concept B1]",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -464,6 +925,34 @@
             "fontSize": 14,
             "fontFamily": "system"
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Example B1]"
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-text"
+                  },
+                  "children": [
+                    "[Code for Sub-concept B1]"
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -489,7 +978,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Concept C]\n\n[Theory content. Keep this card even when no code example exists.]",
+      "content": "[Concept C]\n[Theory content. Keep this card even when no code example exists.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -517,6 +1006,26 @@
             "fontFamily": "system",
             "fontSize": 10
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Concept C]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Theory content. Keep this card even when no code example exists.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -542,7 +1051,7 @@
         "textColor": "#254a7a",
         "borderColor": "#254a7a"
       },
-      "content": "# [Topic name]\n\nDescribe the scope and list its theory lessons.",
+      "content": "[Topic name]\nDescribe the scope and list its theory lessons.",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -564,6 +1073,26 @@
             "fontFamily": "system",
             "fontSize": 15
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Topic name]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Describe the scope and list its theory lessons."
+              ]
+            }
+          ]
         }
       }
     },
@@ -589,7 +1118,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Theory lesson]\n\nKeep the complete lesson here.\n\n## Concept A\n[Explanation]\n\n## Concept B\n[Explanation]\n\n## Sources\n[Add verified source links]",
+      "content": "[Theory lesson]\nKeep the complete lesson here.\nConcept A\n[Explanation]\nConcept B\n[Explanation]\nSources\n[Add verified source links]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -617,6 +1146,68 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Theory lesson]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Keep the complete lesson here."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Concept A"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explanation]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Concept B"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explanation]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Sources"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Add verified source links]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -642,7 +1233,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Concept A]\n\n## Definition\n[Explain the concept.]\n\n## Rules\n[Describe its rules.]\n\n## Source\n[Link to the original lesson.]",
+      "content": "[Concept A]\nDefinition\n[Explain the concept.]\nRules\n[Describe its rules.]\nSource\n[Link to the original lesson.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -670,6 +1261,61 @@
             "fontFamily": "system",
             "fontSize": 10
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Concept A]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Definition"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explain the concept.]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Rules"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Describe its rules.]"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Source"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Link to the original lesson.]"
+              ]
+            }
+          ]
         }
       }
     },
@@ -695,7 +1341,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# [Example A1]\n\nReplace the fenced block language with the actual language.\n\n```text\n[Code demonstrating Concept A]\n```\n\n## Expected result\n[Explain the output.]",
+      "content": "[Example A1]\nReplace the fenced block language with the actual language.\n[Code demonstrating Concept A]\nExpected result\n[Explain the output.]",
       "extensions": {
         "card-atlas:node": {
           "kind": "text"
@@ -719,6 +1365,55 @@
             "fontSize": 14,
             "fontFamily": "system"
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "[Example A1]"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Replace the fenced block language with the actual language."
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-text"
+                  },
+                  "children": [
+                    "[Code demonstrating Concept A]"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Expected result"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "[Explain the output.]"
+              ]
+            }
+          ]
         }
       }
     }

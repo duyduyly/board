@@ -105,3 +105,38 @@ test('uniform styles skip locked cards and layout preview/apply preserves their 
   assert.deepEqual(store.project.cards[0], original);
   assert.deepEqual(stage(serialize(store.project)).errors, []);
 });
+
+test('HTML document changes respect pins, incident relations and atomic history', () => {
+  const store = sample();
+  const id = store.project.cards[0].id;
+  const relations = structuredClone(store.project.relations);
+  const doc = {
+    version: 1,
+    format: 'html-bs5',
+    components: [{ tag: 'p', attributes: {}, children: ['New HTML content'] }],
+  };
+  const before = serialize(store.project);
+  assert.throws(
+    () =>
+      store.commit((p) => {
+        p.cards[0].content = 'New HTML content';
+        p.cards[0].extensions['card-atlas:document'] = doc;
+      }),
+    /pinnedCardLocked/,
+  );
+  assert.equal(serialize(store.project), before);
+  assert.deepEqual(store.project.relations, relations);
+  store.commit((p) => togglePinned(p.cards[0]));
+  const prior = serialize(store.project);
+  store.commit((p) => {
+    p.cards[0].content = 'New HTML content';
+    p.cards[0].extensions['card-atlas:document'] = doc;
+  });
+  assert.deepEqual(store.project.relations, relations);
+  assert.equal(store.project.cards[0].id, id);
+  store.undo();
+  assert.equal(serialize(store.project), prior);
+  store.redo();
+  assert.deepEqual(store.project.cards[0].extensions['card-atlas:document'], doc);
+  assert.deepEqual(store.project.relations, relations);
+});

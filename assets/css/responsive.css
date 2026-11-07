@@ -1,0 +1,63 @@
+/* Keep workspace controls reachable on small screens without changing the model. */
+@media (max-width: 800px) {
+  #app:not(.home-mode) {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  #app:not(.home-mode) > .toolbar {
+    flex: none;
+    height: auto;
+    min-height: 0;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    padding: 8px 10px;
+  }
+  #app:not(.home-mode) .toolbar-actions {
+    flex: 1 0 100%;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  #app:not(.home-mode) .workspace {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+  .workspace > .sidebar {
+    width: 92px;
+    flex-basis: 92px;
+    padding: 10px 6px;
+    gap: 10px;
+  }
+  .workspace .kind-palette,
+  .workspace .shape-palette {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .workspace .library-hint { display: none; }
+  .workspace .search-drawer {
+    left: 92px;
+    width: min(300px, calc(100vw - 92px));
+  }
+  #format-inspector {
+    inset: 0 0 0 auto;
+    width: min(380px, 100vw);
+    max-width: 100vw;
+    z-index: 70;
+  }
+  .inspector-open #canvas-region { margin-right: 0; }
+  .project-menu-body { max-width: calc(100vw - 20px); }
+  .zoom-controls {
+    left: 6px;
+    bottom: 8px;
+    max-width: calc(100% - 12px);
+    flex-wrap: wrap;
+  }
+  .zoom-controls button,
+  .zoom-controls .view-button { padding: 5px; }
+  .zoom-controls #zoom-value { min-width: 42px; }
+}
+@media (max-width: 500px) {
+  .zoom-controls .view-button > span:last-child { display: none; }
+}

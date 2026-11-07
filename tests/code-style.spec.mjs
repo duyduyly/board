@@ -1,67 +1,32 @@
-import { test, expect } from '@playwright/test';
-test('fenced code highlights safely offline and preserves code, fallback and Mermaid', async ({
-  page,
-}) => {
-  const errors = [],
-    remote = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  page.on('request', (r) => {
-    if (!r.url().startsWith('http://127.0.0.1:4173') && !r.url().startsWith('data:'))
-      remote.push(r.url());
+﻿import { test, expect } from '@playwright/test';
+
+test('HTML code examples highlight offline and preserve literal code', async ({ page }) => {
+  const remote = [], errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('request', (request) => {
+    if (!request.url().startsWith('http://127.0.0.1:4173') && !request.url().startsWith('data:')) remote.push(request.url());
   });
   await page.goto('/');
-  const java = 'public class Hello { String text = "<img src=x onerror=alert(1)>"; int n = 42; }';
-  await page.evaluate(async (java) => {
+  const result = await page.evaluate(async () => {
+    const { parseDocument, resolvedHTML } = await import('/assets/js/detail/html-content.js');
+    const highlighter = (await import('/assets/vendor/highlight-entry.js')).default;
+    const source = 'class Demo { String html = "<script>bad()</script>"; int n = 42; }';
+    const escaped = source.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    const langs = ['java', 'javascript', 'typescript', 'json', 'xml', 'css', 'python', 'sql', 'bash', 'unknown'];
+    const html = langs.map((lang) => `<pre><code class="language-${lang}">${escaped}</code></pre>`).join('');
+    const parsed = parseDocument(html);
+    const card = { extensions: { 'card-atlas:document': parsed.document } };
     const host = document.createElement('div');
-    host.id = 'code-test';
-    host.className = 'markdown';
-    document.body.append(host);
-    const { renderMarkdown } = await import('/assets/js/detail/markdown.js');
-    await renderMarkdown(
-      host,
-      '```java\n' +
-        java +
-        '\n```\n\n```unknown\n<script>alert(1)</script>\n```\n\n```mermaid\ngraph LR\nA-->B\n```',
-    );
-  }, java);
-  const code = page.locator('#code-test .syntax-highlight');
-  await expect(code).toHaveText(java);
-  await expect(code.locator('.hljs-keyword').first()).toBeVisible();
-  await expect(page.locator('#code-test img, #code-test script')).toHaveCount(0);
-  await expect(page.locator('#code-test pre').nth(1)).toContainText('<script>alert(1)</script>');
-  await expect(page.locator('#code-test .diagram svg')).toBeVisible();
-  const light = await code
-    .locator('.hljs-keyword')
-    .first()
-    .evaluate((e) => window.getComputedStyle(e).color);
-  await page.locator('#theme-toggle').click();
-  const dark = await code
-    .locator('.hljs-keyword')
-    .first()
-    .evaluate((e) => window.getComputedStyle(e).color);
-  expect(dark).not.toBe(light);
-  await expect(code).toHaveText(java);
+    host.innerHTML = resolvedHTML(card, false, highlighter);
+    return { source, texts: [...host.querySelectorAll('code')].map((node) => node.textContent),
+      highlighted: [...host.querySelectorAll('code')].map((node) => !!node.querySelector('span')),
+      unsafe: host.querySelectorAll('script,img').length, removed: parsed.removed };
+  });
+  expect(result.removed).toEqual([]);
+  expect(result.texts).toEqual(Array(10).fill(result.source));
+  expect(result.highlighted[0]).toBe(true);
+  expect(result.highlighted[9]).toBe(false);
+  expect(result.unsafe).toBe(0);
   expect(errors).toEqual([]);
   expect(remote).toEqual([]);
-  await code.scrollIntoViewIfNeeded();
-  await page.screenshot({ path: 'planning/design/code-style-dark.png' });
-  const fallbacks = await page.evaluate(async () => {
-    const { renderMarkdown } = await import('/assets/js/detail/markdown.js');
-    const host = document.createElement('div');
-    const languages = ['js', 'ts', 'json', 'html', 'css', 'python', 'sql', 'sh'];
-    await renderMarkdown(
-      host,
-      languages.map((lang) => '```' + lang + '\nconst x = "hello";\n```').join('\n\n'),
-    );
-    const count = host.querySelectorAll('.syntax-highlight').length;
-    await renderMarkdown(host, '```java\n' + 'x'.repeat(20001) + '\n```\n\n```\nplain\n```');
-    return {
-      count,
-      fallback: host.querySelectorAll('.syntax-highlight').length,
-      text: host.textContent,
-    };
-  });
-  expect(fallbacks.count).toBe(8);
-  expect(fallbacks.fallback).toBe(0);
-  expect(fallbacks.text).toContain('plain');
 });

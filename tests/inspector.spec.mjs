@@ -65,7 +65,7 @@ test('right inspector formats card, text and edges without modal; global actions
     async () => (await import('/assets/js/app.js')).store.undoStack.length,
   );
   await page.locator('[name=bulk-title-fontSize]').fill('0');
-  await page.locator('#inspector-global button').click();
+  await expect(page.locator('#inspector-global button[type=submit]')).toBeDisabled();
   expect(
     await page.evaluate(async () => (await import('/assets/js/app.js')).store.undoStack.length),
   ).toBe(beforeBulk);
@@ -73,7 +73,8 @@ test('right inspector formats card, text and edges without modal; global actions
   await page.locator('[name=bulk-title-fontFamily]').selectOption('serif');
   await page.locator('[name=bulk-summary-fontSize]').fill('13');
   await page.screenshot({ path: 'planning/design/inspector-bulk-typography.png' });
-  await page.locator('#inspector-global button').click();
+  await page.locator('#inspector-global button[type=submit]').click();
+  await page.locator('#modal [data-choice=apply]').click();
   const snapshot = () =>
     page.evaluate(async () => {
       const { store } = await import('/assets/js/app.js');

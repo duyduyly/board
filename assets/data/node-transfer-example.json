@@ -34,7 +34,7 @@
         "textColor": "#23332D",
         "borderColor": "#28594B"
       },
-      "content": "# English endings\n\nKeep grammar, spelling and pronunciation separate.\n\n![Pronunciation reference](attachment:pronunciation)\n\n## Practice\n\nRead books, watches, played and wanted aloud.",
+      "content": "English endings\nKeep grammar, spelling and pronunciation separate.\nPronunciation reference\nPractice\nRead books, watches, played and wanted aloud.",
       "extensions": {
         "card-atlas:node": {
           "kind": "image-text",
@@ -50,6 +50,54 @@
         "example:source": {
           "kind": "illustrative",
           "note": "Standalone example; import Update or Add."
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "English endings"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Keep grammar, spelling and pronunciation separate."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "img",
+                  "attributes": {
+                    "src": "attachment:pronunciation",
+                    "alt": "Pronunciation reference"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Practice"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Read books, watches, played and wanted aloud."
+              ]
+            }
+          ]
         }
       }
     }

@@ -6,12 +6,12 @@ import { ProjectStore } from '../assets/js/store/project-store.js';
 import { NODE, MIND, VIEWS, geometry } from '../assets/js/graph/mind-map.js';
 import { APPEARANCE } from '../assets/js/detail/appearance.js';
 import { IMAGE_NAMESPACE } from '../assets/js/detail/attachments.js';
-import { markdownDocument } from '../assets/js/detail/writing.js';
 import {
+  markdownDocument,
   decodeDocument,
   stageMarkdown,
   markdownCandidate,
-} from '../assets/js/detail/markdown-import.js';
+} from '../scripts/legacy-markdown-import.js';
 import {
   nodeFile,
   stageNode,
@@ -21,7 +21,7 @@ import {
   addNodeProject,
 } from '../assets/js/json/node-transfer.js';
 
-const fixture = stage(await fs.readFile('assets/data/mind-map-example.json', 'utf8')).project;
+const fixture = stage(await fs.readFile('tests/fixtures/legacy/mind-map-example.json', 'utf8')).project;
 const image = (name = 'image.gif') => ({
   name,
   mimeType: 'image/gif',
@@ -236,4 +236,33 @@ test('portable example round-trips and merged attachments enforce canonical proj
   function gifPayload() {
     return image().data + 'A'.repeat(5 * 1024 * 1024);
   }
+});
+
+test('HTML node transfer remaps actual attachment attributes but preserves literal code text', () => {
+  const { project, card } = setup();
+  const incoming = structuredClone(card);
+  incoming.id = 'foreign';
+  incoming.extensions[IMAGE_NAMESPACE] = { cover: image(), used: image('foreign.gif') };
+  incoming.extensions['card-atlas:document'] = {
+    version: 1,
+    format: 'html-bs5',
+    components: [
+      { tag: 'p', attributes: {}, children: ['Literal attachment:not-an-image'] },
+      { tag: 'img', attributes: { src: 'attachment:used', alt: 'Image' }, children: [] },
+      { tag: 'a', attributes: { href: 'attachment:used' }, children: ['Download'] },
+    ],
+  };
+  incoming.content = 'Literal attachment:not-an-image';
+  const result = mergeNode(card, incoming);
+  const doc = result.card.extensions['card-atlas:document'];
+  assert.match(doc.components[1].attributes.src, /^attachment:used-import-/);
+  assert.equal(doc.components[2].attributes.href, doc.components[1].attributes.src);
+  assert.equal(doc.components[0].children[0], 'Literal attachment:not-an-image');
+  const temporary = structuredClone(project);
+  temporary.cards[0] = result.card;
+  const portable = stageNode(nodeFile(temporary, result.card, { includeUnused: false }));
+  assert.equal(
+    portable.project.cards[0].extensions['card-atlas:document'].components[0].children[0],
+    'Literal attachment:not-an-image',
+  );
 });

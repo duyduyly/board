@@ -78,7 +78,6 @@ export function createShapePalette({ host, region, onCreate, locked }) {
     for (const [kind, key] of [
       ['card', 'kindCard'],
       ['text', 'kindText'],
-      ['image', 'kindImage'],
       ['image-text', 'kindImageText'],
     ]) {
       const button = document.createElement('button');

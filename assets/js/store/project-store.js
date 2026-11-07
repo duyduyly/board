@@ -1,4 +1,5 @@
 import { stampCreated } from '../graph/card-metadata.js';
+import { DOCUMENT, documentText } from '../graph/html-document.js';
 import { cleanupGroups } from '../graph/card-groups.js';
 import { assertPinnedUnchanged } from '../graph/card-lock.js';
 import { clone } from '../common/data.js';
@@ -183,7 +184,10 @@ export function newCard(position, title = 'New note') {
     position,
     size: { ...DEFAULT_CARD_SIZE },
     style: { backgroundColor: '#FFF2B0', textColor: '#23332D', borderColor: '#C8B76B' },
-    extensions: { 'card-atlas:typography': { title: { fontSize: 20 }, summary: { fontSize: 14 } } },
+    extensions: {
+      'card-atlas:typography': { title: { fontSize: 20 }, summary: { fontSize: 14 } },
+      [DOCUMENT]: { version: 1, format: 'html-bs5', components: [] },
+    },
   });
 }
 export function newRelation(source, target) {
@@ -213,14 +217,18 @@ export function remove(p, selection) {
 export function search(cards, query) {
   const q = query.toLocaleLowerCase().trim();
   return cards.filter((c) =>
-    [c.title, c.summary, c.type, ...c.tags, c.content].some((s) =>
+    [c.title, c.summary, c.type, ...c.tags, searchContent(c)].some((s) =>
       s.toLocaleLowerCase().includes(q),
     ),
   );
 }
 
+function searchContent(card) {
+  return card.extensions?.[DOCUMENT] ? documentText(card.extensions[DOCUMENT]) : card.content || '';
+}
+
 export function searchExcerpt(card, query) {
-  const text = (card.content || '').replace(/\s+/g, ' ');
+  const text = searchContent(card).replace(/\s+/g, ' ');
   const q = query.toLocaleLowerCase().trim();
   const index = text.toLocaleLowerCase().indexOf(q);
   if (!q || index < 0) return '';

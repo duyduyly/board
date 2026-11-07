@@ -1,5 +1,21 @@
 # Phát triển và mở rộng Card Atlas
 
+## Chuyển dự án Markdown cũ sang editor HTML
+
+Trình chuyển đổi chạy cục bộ bằng Node.js, không tải dữ liệu lên mạng. Trong thư mục
+repository, chạy `npm ci`, sau đó dùng:
+
+```powershell
+node scripts/convert-markdown-files.mjs --out "D:/duong-dan/thu-muc-ket-qua-moi" "D:/duong-dan/du-an-cu.json"
+```
+
+Thư mục kết quả phải chưa tồn tại. Công cụ không ghi đè tệp đầu vào: `backup/` chứa
+bản gốc đúng từng byte, `converted/` chứa JSON đã chuyển đổi, và `report.json` ghi
+SHA-256 cùng cảnh báo theo từng note. Mở tệp trong `converted/` bằng chức năng nhập
+JSON và kiểm tra trước khi thay bản đang dùng. Mermaid được giữ dưới dạng mã nguồn;
+HTML cũ và ảnh ngoài được giữ dưới dạng nguồn có chú thích, không tự thực thi hoặc
+tải ảnh. Không xóa bản gốc trước khi đã kiểm tra kết quả.
+
 E048 adds `inspector-grid.css` after notebook styles, scoped to the Format dock.
 Card controls use existing sections; relation controls have routing/line/endpoints/info
 groups; overview font labels and controls share grid cells. Hidden groups stay hidden,
@@ -30,7 +46,7 @@ E040/E041: paper curl is pointer-transparent CSS decoration scoped to nontranspa
 
 E038/E039: removed unreferenced obsolete qa-capture/qa-enhancements/prototype-radial one-off scripts; ignored paths untouched. All tracked nonvendor runtime assets still have reference hits; retain tests/build/benchmarks/fixture and showcase generators. newCard owns DEFAULT_CARD_SIZE260square and paper colors/title20/summary14 via existing typography. Palette, toolbar and connector creation center on those dimensions and seed separate Mind size for new notes only; image/text palette defaults preserved. Card captions render title/summary then type/tags, with dock/Fit using shared overview. Note Board/Note paper are labels only; JSON card enums unchanged. Legacy geometry is not migrated.
 
-E037: Markdown lazily imports local highlight.js11.12.0 core with9grammars from scripts/highlight-entry.js, bundled separately to assets/vendor/highlight-entry.js (67,401 bytes uncompressed). Explicit fenced language only, aliases via grammar registry, no auto detection; unknown/unlabeled/over20k code stays plain. Highlight markup goes through existing DOMPurify sanitation; raw HTML stays escaped. Mermaid uses its existing independent renderer. isCurrent checked after import, normal renderer fallback if local import fails. CSS token palette adapts to existing app theme only, without changing card colors. Build copies the BSD license beside the local bundle. Official docs: https://highlightjs.org/ and https://highlightjs.readthedocs.io/en/latest/api.html.
+Code examples in HTML documents use the locally bundled highlight.js registry from scripts/highlight-entry.js. An explicit supported language is required; unknown languages and code over 20,000 characters remain plain. Mermaid diagrams from older Markdown projects are preserved as labelled source by the offline converter; the web app no longer bundles a Mermaid renderer. CSS token colors adapt to the existing theme. Official docs: https://highlightjs.org/ and https://highlightjs.readthedocs.io/en/latest/api.html.
 
 E035: ui/format-inspector owns the right dock and explicit global-action form. Detail's existing Format/relation renderer is moved into the dock and opened as a nonmodal dialog; content Overview/Edit remains modal. Do not append an already open dialog to the same parent: reparenting removes native top-layer modality while retaining open. Text typography uses the existing overview editor inside the dock. Header Format is a shortcut, not a second format form. Bulk colors/type/routes/arrow style use one command, skip pins/incident edges, and preserve active-view Fit validation and inactive-view geometry. Global checkboxes are one-shot actions for existing elements, not persisted defaults.
 
@@ -101,7 +117,7 @@ home/detailOpen/expanded/image viewer thuộc session. Thay project thành công
 
 ## Document/node transfer
 
-json/node-transfer giữ transforms thuần: one-card serializer/staging, reference checks, namespace filtering, conflict/attachment merge, Add/Update geometry. detail/markdown-import decodeUTF8 fatal và stageMarkdown/dataURI→attachments, không DOM/fetch. ui/document-transfer sở hữu file/preview/options và nhận ports context/isCurrent/useDraft/addNode/dialog/toast; không import app/store. app chỉ nối draft/geometry/guards/command. Preview render sau khi dialog mount, isCurrent loại kết quả async cũ. File size kiểm trước arrayBuffer; candidate validate trước use/commit. Update không Apply ngầm; export không gọi store.exported.
+json/node-transfer giữ transforms thuần: one-card serializer/staging, reference checks, namespace filtering, conflict/attachment merge, Add/Update geometry. Markdown import cũ chỉ còn trong scripts/legacy-markdown-import.js để kiểm thử lịch sử; chuyển đổi dữ liệu cũ dùng công cụ offline scripts/markdown-convert.mjs. ui/document-transfer sở hữu file/preview/options và nhận ports context/isCurrent/useDraft/addNode/dialog/toast; không import app/store. app chỉ nối draft/geometry/guards/command. Preview render sau khi dialog mount, isCurrent loại kết quả async cũ. File size kiểm trước arrayBuffer; candidate validate trước use/commit. Update không Apply ngầm; export không gọi store.exported.
 
 ## Shapes và đo tổng quan
 

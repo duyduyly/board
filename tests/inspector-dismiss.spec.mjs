@@ -14,6 +14,11 @@ test('inspector outside dismissal preserves drafts, modal controls and grouped l
   await expect(page.locator('.bulk-typography-settings')).toBeVisible();
   await expect(page.locator('#format-inspector')).toBeVisible();
   await page.locator('#canvas-region').click({ position: { x: 12, y: 100 } });
+  await expect(page.locator('#modal')).toBeVisible();
+  await page.locator('[data-choice=cancel]').click();
+  await expect(page.locator('#inspector-global [name=typography]')).toBeChecked();
+  await page.locator('#canvas-region').click({ position: { x: 12, y: 100 } });
+  await page.locator('[data-choice=discard]').click();
   await expect(page.locator('#format-inspector')).not.toBeVisible();
   await page.locator('.graph-card').first().locator('h3').click();
   await expect(page.locator('#overview-text')).toBeVisible();

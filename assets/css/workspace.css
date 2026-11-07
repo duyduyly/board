@@ -515,6 +515,12 @@
   width: 100%;
   align-self: center;
 }
+/* Preserve room for the image in small manually sized shapes. Fit measurement
+   remains unrestricted so it can grow to accommodate the full caption. */
+.graph-card[data-node-kind='image-text'][data-size-mode='manual'] .card-summary {
+  max-height: 40%;
+  overflow: hidden;
+}
 .graph-card.compact-summary.paper-note:not(.shaped-node) {
   padding-top: 28px;
   padding-bottom: 6px;

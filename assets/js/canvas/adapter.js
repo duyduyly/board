@@ -292,6 +292,14 @@ export class GraphAdapter {
           const edit = (e) => {
             e.stopPropagation();
             if (this.activeView === 'mind') {
+              if (
+                target.dataset.overviewField === 'title' &&
+                !isPinned(c) &&
+                !this.callbacks.locked()
+              ) {
+                this.callbacks.overview(c.id, target, 'title');
+                return;
+              }
               if (e.type === 'keydown') this.callbacks.open({ kind: 'card', id: c.id });
               else this.callbacks.select({ kind: 'card', id: c.id });
               return;

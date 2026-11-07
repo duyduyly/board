@@ -72,10 +72,26 @@ async function choose(page, id, shift = false, text = false) {
   });
 }
 async function drag(page, id, dx, dy, finish = true) {
-  const box = await card(page, id).boundingBox();
-  await page.mouse.move(box.x + 25, box.y + box.height - 24);
+  const start = await card(page, id).evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    for (let y = 6; y < rect.height - 6; y += 6) {
+      for (let x = 6; x < rect.width - 6; x += 6) {
+        const target = document.elementFromPoint(rect.left + x, rect.top + y);
+        if (target?.closest('.graph-card') !== element) continue;
+        if (
+          target.closest(
+            '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, [data-overview-field]',
+          )
+        )
+          continue;
+        return { x: rect.left + x, y: rect.top + y };
+      }
+    }
+    throw new Error('No draggable blank area on card');
+  });
+  await page.mouse.move(start.x, start.y);
   await page.mouse.down();
-  await page.mouse.move(box.x + 25 + dx, box.y + box.height - 24 + dy, { steps: 8 });
+  await page.mouse.move(start.x + dx, start.y + dy, { steps: 8 });
   if (finish) await page.mouse.up();
 }
 test('Shift selection across text/pin and keyboard, group drag is one undo in both views', async ({
@@ -146,6 +162,7 @@ test('reverse marquee at zoom adds visible nodes without panning or history, Esc
   await expect(page.locator('.graph-card.selected')).toHaveCount(3);
   expect(await snapshot(page)).toEqual(before);
   await drag(page, 'a', 40, 25, false);
+  await expect(page.locator('.group-drag-layer')).toHaveCount(1);
   await page.keyboard.press('Escape');
   await page.mouse.up();
   expect(await snapshot(page)).toEqual(before);
@@ -230,7 +247,11 @@ test('zoomed group uses graph delta, blank clears, blur and view switch cancel p
   await page.mouse.up();
   expect((await snapshot(page)).p).toEqual(after.p);
   await drag(page, 'a', 35, 15, false);
-  await switchMapView(page, 'mind');
+  await expect(page.locator('.group-drag-layer')).toHaveCount(1);
+  // Pointer capture owns the held mouse button, so a second mouse click cannot
+  // activate the toolbar. Dispatch the native button action without releasing it.
+  await page.locator('[data-map-view="mind"]').evaluate((button) => button.click());
+  await expect(page.locator('[data-map-view="mind"]')).toHaveAttribute('aria-pressed', 'true');
   await page.mouse.up();
   expect((await snapshot(page)).p).toEqual(after.p);
   await expect(page.locator('.graph-card.selected')).toHaveCount(1);
@@ -240,10 +261,10 @@ test('zoomed group uses graph delta, blank clears, blur and view switch cancel p
   await expect(page.locator('.graph-card.selected')).toHaveCount(0);
   await choose(page, 'a');
   await choose(page, 'c', true);
-  await card(page, 'a').locator('h3').click();
-  await expect(page.locator('#card-overview-editor')).toBeVisible();
+  await card(page, 'a').locator('h3').dblclick();
+  await expect(page.locator('#detail-panel')).toBeVisible();
   await expect(page.locator('.graph-card.selected')).toHaveCount(1);
-  await page.keyboard.press('Escape');
+  await page.locator('[data-action=close]').click();
   const captured = await snapshot(page);
   expect(captured.p).toEqual(after.p);
   expect(captured.history).toBe(after.history);

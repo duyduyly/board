@@ -126,7 +126,7 @@ Bấm **Xuất dự án** để tải file JSON. Khi có bản nháp, chọn áp
 
 Ảnh được mã hóa Base64 và lưu trong extensions của card dưới namespace **card-atlas:images**, cùng tên file và mimeType. Nội dung Markdown tham chiếu bằng dạng **![Mô tả](attachment:image-ID)**; ứng dụng tự tạo ID và dữ liệu khi upload. Base64 làm file lớn hơn khoảng 33%; toàn bộ JSON vẫn giới hạn 10 MiB.
 
-Ảnh nhúng hiển thị tự động, không cần nút cho phép tải ảnh ngoài và không gửi request ngoài. Ảnh URL qua Markdown vẫn được hỗ trợ nhưng phải bật tải ảnh ngoài. SVG và ảnh hỏng không được chèn. **Hủy** bỏ ảnh chưa áp dụng; **Xóa ảnh** trong editor gỡ file nhúng và tham chiếu do ứng dụng tạo. Nếu bạn đã tự sửa caption/link, hãy xóa dòng tham chiếu đó khỏi Markdown khi gỡ ảnh. Undo/Redo phục hồi thao tác áp dụng/xóa ảnh.
+Ảnh nhúng nằm trong JSON và dùng được offline. Nội dung HTML cũng hỗ trợ ảnh từ URL HTTP(S): trình duyệt tải trực tiếp từ máy chủ ảnh, nên ảnh phụ thuộc mạng và có thể không hiển thị nếu nguồn chặn hoặc xóa ảnh. SVG và ảnh hỏng không được chèn từ máy. **Hủy** bỏ ảnh chưa áp dụng; Undo/Redo phục hồi thay đổi đã áp dụng.
 
 Ví dụ tiếng Anh đã có một ảnh minh họa được lưu ngay trong JSON; mở card **Đuôi -s/-es và -ed** để xem.
 

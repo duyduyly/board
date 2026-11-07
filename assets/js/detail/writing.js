@@ -1,4 +1,5 @@
 import { t } from '../i18n/index.js';
+import { escapeHTML } from '../common/html.js';
 export function captureEditor(host) {
   const fields = [...host.querySelectorAll('[name]')].map((el) => ({
     name: el.name,
@@ -42,7 +43,7 @@ export function addContents(host) {
   });
   host.prepend(nav);
 }
-export function template(kind) {
+function templateTitles(kind) {
   const vi = document.documentElement.lang === 'vi';
   const titles = vi
     ? {
@@ -55,26 +56,18 @@ export function template(kind) {
         api: ['API', 'Purpose', 'Request', 'Response', 'Common errors'],
         note: ['Note', 'Context', 'Details', 'Conclusion', 'References'],
       };
+  return titles[kind];
+}
+export function htmlTemplate(kind) {
+  const titles = templateTitles(kind);
+  if (!titles) return '';
   return (
-    '\n\n# ' +
-    titles[kind][0] +
-    '\n\n' +
-    titles[kind]
+    '<h1>' +
+    escapeHTML(titles[0]) +
+    '</h1>' +
+    titles
       .slice(1)
-      .map((title) => '## ' + title + '\n\n')
+      .map((title) => '<h2>' + escapeHTML(title) + '</h2><p>...</p>')
       .join('')
   );
-}
-export function markdownDocument(card) {
-  let body = card.content || '';
-  const images = card.extensions?.['card-atlas:images'] || {};
-  let size = body.length;
-  body = body.replace(/attachment:([A-Za-z0-9_-]+)/g, (all, id) => {
-    if (!images[id]) return all;
-    const value = 'data:' + images[id].mimeType + ';base64,' + images[id].data;
-    size += value.length - all.length;
-    if (size > 10 * 1024 * 1024) throw new Error('Markdown image size');
-    return value;
-  });
-  return '# ' + card.title + '\n\n' + (card.summary ? card.summary + '\n\n' : '') + body + '\n';
 }

@@ -13,7 +13,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Chủ đề đang học\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "content": "Chủ đề đang học\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.\n\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "position": {
         "x": 0,
         "y": 0
@@ -38,6 +38,102 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Chủ đề đang học"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Workspace guide"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -49,7 +145,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Hiểu bản chất\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Hiểu bản chất\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 360,
         "y": 0
@@ -74,6 +170,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Hiểu bản chất"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -85,7 +229,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Giải thích bằng lời mình\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Giải thích bằng lời mình\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 720,
         "y": 0
@@ -110,6 +254,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Giải thích bằng lời mình"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -121,7 +313,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Ví dụ cụ thể\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.\n\n```json\n{\"idea\": \"one clear example\", \"reviewed\": false}\n```",
+      "content": "Ví dụ cụ thể\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.\n\n{\"idea\": \"one clear example\", \"reviewed\": false}",
       "position": {
         "x": 1080,
         "y": 0
@@ -146,6 +338,69 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ví dụ cụ thể"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-json"
+                  },
+                  "children": [
+                    "{\"idea\": \"one clear example\", \"reviewed\": false}"
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -157,7 +412,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Ghi nhớ\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Ghi nhớ\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 0,
         "y": 360
@@ -182,6 +437,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ghi nhớ"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -193,7 +496,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Tự kiểm tra không nhìn tài liệu\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Tự kiểm tra không nhìn tài liệu\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 360,
         "y": 360
@@ -218,6 +521,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự kiểm tra không nhìn tài liệu"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -229,7 +580,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Lịch ôn cách quãng\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Lịch ôn cách quãng\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 720,
         "y": 360
@@ -254,6 +605,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Lịch ôn cách quãng"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -265,7 +664,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Áp dụng\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Áp dụng\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 1080,
         "y": 360
@@ -290,6 +689,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Áp dụng"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -301,7 +748,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Bài tập nhỏ\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Bài tập nhỏ\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 0,
         "y": 720
@@ -326,6 +773,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Bài tập nhỏ"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -337,7 +832,7 @@
       "tags": [
         "mind-knowledge"
       ],
-      "content": "# Phản hồi và sửa lỗi\n\n## Ý chính\n\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\n\n## Bước tiếp theo\n\n- [ ] Thêm một ví dụ hoặc hành động cụ thể.",
+      "content": "Phản hồi và sửa lỗi\nÝ chính\nViết lời giải thích ngắn bằng ngôn ngữ của bạn.\nBước tiếp theo\n[ ] Thêm một ví dụ hoặc hành động cụ thể.",
       "position": {
         "x": 360,
         "y": 720
@@ -362,6 +857,54 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Phản hồi và sửa lỗi"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Ý chính"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết lời giải thích ngắn bằng ngôn ngữ của bạn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Bước tiếp theo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "[ ] ",
+                    "Thêm một ví dụ hoặc hành động cụ thể."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     }

@@ -35,7 +35,7 @@ test('pinned card is read-only in both views, unpin unlocks and Undo restores lo
   expect(await snapshot(page)).toBe(before);
   await card.locator('h3').click();
   await expect(page.locator('#detail-panel')).toBeVisible();
-  await expect(page.locator('#panel-body .markdown')).toContainText('User Service');
+  await expect(page.frameLocator('.html-document-frame').locator('body')).toContainText('User Service');
   await expect(page.locator('#panel-tabs button').nth(1)).toBeDisabled();
   await expect(page.locator('#panel-tabs button').nth(2)).toBeDisabled();
   await expect(page.locator('#card-overview-editor')).not.toBeVisible();

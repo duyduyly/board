@@ -23,7 +23,7 @@ test('uniform style on Canvas preserves other text, is undo atomic and survives 
   await expect(page.locator('#overview-uniform')).toBeChecked();
   await expect
     .poll(async () => {
-      const r = await page.locator('#card-overview-editor').boundingBox();
+        const r = await page.locator('[data-overview-apply]').boundingBox();
       return r.y + r.height;
     })
     .toBeLessThanOrEqual(890);
@@ -51,7 +51,9 @@ test('uniform style on Canvas preserves other text, is undo atomic and survives 
   await switchMapView(page, 'mind');
   for (const title of await page.locator('.graph-card h3').all())
     await expect(title).toHaveCSS('font-size', '24px');
+  await switchMapView(page, 'card');
   await source(page).locator('h3').click();
+  await expect(page.locator('#card-overview-editor')).toBeVisible();
   await expect(page.locator('#overview-uniform')).not.toBeChecked();
   await page.locator('#overview-uniform').check();
   await page.locator('#overview-size').fill('30');

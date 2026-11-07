@@ -222,7 +222,7 @@ test('canonical file size prevents edits that cannot reimport', () => {
 });
 
 test('Mermaid policy blocks configuration and resources before render', async () => {
-  const { isSafeDiagramSource } = await import('../assets/js/detail/mermaid-policy.js');
+  const { isSafeDiagramSource } = await import('../scripts/legacy-mermaid-policy.js');
   assert.equal(isSafeDiagramSource('flowchart LR\n A --> B'), true);
   for (const code of [
     '%%{init: {"themeCSS":"@import url(https://example.com/a)"}}%%\nflowchart LR\n A-->B',
@@ -306,7 +306,7 @@ test('invalid embedded images fail closed without accepting SVG or malformed bas
 });
 
 test('Markdown downloads inline attachment images and bound repeated expansion', async () => {
-  const { markdownDocument } = await import('../assets/js/detail/writing.js');
+  const { markdownDocument } = await import('../scripts/legacy-markdown-import.js');
   const card = {
     title: 'Document',
     summary: 'Overview',

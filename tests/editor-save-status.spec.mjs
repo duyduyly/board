@@ -1,0 +1,52 @@
+import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+
+test('editor shows draft status and enables Save only for valid changes', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('[data-template=personal]').click();
+  await page.locator('[data-palette-kind=card]').click();
+  await page.keyboard.press('Enter');
+  await page.locator('#panel-tabs button').nth(1).click();
+  const save = page.locator('#panel-body button[type=submit]');
+  const status = page.locator('#panel-save-status');
+  await expect(status).toContainText('Đã lưu vào dự án');
+  await expect(save).toBeDisabled();
+  await page.locator('[data-editor-mode=html]').click();
+  await expect(save).toBeDisabled();
+  const code = page.locator('[data-editor-source]');
+  await code.fill('<script>alert(1)</script>');
+  await expect(status).toContainText('Chưa lưu');
+  await expect(save).toBeDisabled();
+  await code.fill('<p>Đã kiểm tra</p>');
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(page.locator('#detail-panel')).not.toBeVisible();
+  await expect(page.locator('#toast')).toContainText('Đã lưu nội dung vào dự án');
+  const card = await page.evaluate(async () => (await import('/assets/js/app.js')).store.project.cards.at(-1));
+  expect(card.content).toBe('Đã kiểm tra');
+});
+
+test('opening and switching an existing document does not create a change', async ({ page }) => {
+  const project = JSON.parse(await readFile('assets/data/example.json', 'utf8'));
+  await page.goto('/');
+  await page.locator('#file-input').setInputFiles({ name: 'example.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(project)) });
+  await page.locator('#modal [data-choice=apply]').click();
+  await page.locator('[data-id=card-user-service]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#panel-tabs button').first()).toHaveClass(/active/);
+  await page.locator('#panel-tabs button').nth(1).click();
+  const save = page.locator('#panel-body button[type=submit]');
+  await expect(save).toBeDisabled();
+  await page.locator('[data-editor-mode=html]').click();
+  await expect(save).toBeDisabled();
+  await page.locator('[data-editor-mode=visual]').click();
+  await expect(save).toBeDisabled();
+  const paragraph = page.frameLocator('#block-editor .gjs-frame').locator('p').first();
+  await paragraph.dblclick();
+  await page.locator('[data-editor-mode=html]').click();
+  await expect(save).toBeDisabled();
+  await page.locator('#detail-panel [data-action=close]').click();
+  await expect(page.locator('#detail-panel')).not.toBeVisible();
+  const current = await page.evaluate(async () => (await import('/assets/js/app.js')).store.project.cards.find((c) => c.id === 'card-user-service'));
+  expect(current.extensions['card-atlas:document']).toEqual(project.cards.find((c) => c.id === current.id).extensions['card-atlas:document']);
+});

@@ -33,11 +33,31 @@
         "textColor": "#263329",
         "borderColor": "#FAFAF7"
       },
-      "content": "# Ý tưởng\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "content": "Ý tưởng\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
       "extensions": {
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-14T08:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ý tưởng"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung."
+              ]
+            }
+          ]
         }
       }
     },
@@ -62,11 +82,31 @@
         "textColor": "#263329",
         "borderColor": "#B6EAA4"
       },
-      "content": "# Học tập\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "content": "Học tập\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
       "extensions": {
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-14T08:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Học tập"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung."
+              ]
+            }
+          ]
         }
       }
     },
@@ -91,11 +131,31 @@
         "textColor": "#263329",
         "borderColor": "#FFF183"
       },
-      "content": "# Việc tiếp theo\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "content": "Việc tiếp theo\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
       "extensions": {
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-14T08:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Việc tiếp theo"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung."
+              ]
+            }
+          ]
         }
       }
     },
@@ -120,11 +180,31 @@
         "textColor": "#263329",
         "borderColor": "#A6D6ED"
       },
-      "content": "# Nghiên cứu\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "content": "Nghiên cứu\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
       "extensions": {
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-14T08:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Nghiên cứu"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung."
+              ]
+            }
+          ]
         }
       }
     },
@@ -149,11 +229,31 @@
         "textColor": "#263329",
         "borderColor": "#F8ADB9"
       },
-      "content": "# Ghi nhớ\n\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
+      "content": "Ghi nhớ\nGhim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung.",
       "extensions": {
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-14T08:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ghi nhớ"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghim đánh dấu card quan trọng. Ngày tạo được lưu trong file JSON và không thay đổi khi sửa nội dung."
+              ]
+            }
+          ]
         }
       }
     }

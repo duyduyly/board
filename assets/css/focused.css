@@ -111,8 +111,8 @@ dialog.detail-panel {
   position: fixed;
   inset: 0;
   margin: auto;
-  width: 75vw;
-  max-width: 1120px;
+  width: 86vw;
+  max-width: 1280px;
   height: 90vh;
   max-height: 90vh;
   padding: 0;
@@ -154,6 +154,11 @@ dialog.detail-panel.detail-full {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.panel-save-status {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
 .detail-panel .panel-tabs {
   flex: none;
   padding: 0 24px;
@@ -173,6 +178,7 @@ dialog.detail-panel.detail-full {
   margin-right: auto;
 }
 .detail-panel .markdown {
+  max-width: 1120px !important;
   font-size: 16px;
   line-height: 1.65;
 }
@@ -184,12 +190,20 @@ dialog.detail-panel.detail-full {
   object-fit: contain;
   cursor: zoom-in;
 }
+.document-details {
+  max-width: 900px;
+  margin: 16px auto 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.document-details > summary { cursor: pointer; font-weight: 600; }
 .writing-mode .workspace {
   grid-template-columns: 234px minmax(0, 1fr);
 }
 .writing-mode dialog.detail-panel {
-  width: 75vw;
-  max-width: 1120px;
+  width: 86vw;
+  max-width: 1280px;
 }
 .writing-mode dialog.detail-panel.detail-full {
   width: 100vw;
@@ -284,7 +298,8 @@ dialog.detail-panel.detail-full {
     display: flex;
     flex-wrap: wrap;
   }
-  dialog.detail-panel {
+  dialog.detail-panel,
+  .writing-mode dialog.detail-panel:not(.detail-full) {
     width: 95vw;
   }
 }

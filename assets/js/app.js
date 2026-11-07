@@ -1,4 +1,5 @@
 import { createFormatInspector } from './ui/format-inspector.js';
+import { installFormatChoiceIcons } from './ui/format-choice-icons.js';
 import { convertMind } from './graph/convert-mind.js';
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
 import { quickHelpBody } from './ui/quick-help.js';
@@ -65,11 +66,9 @@ import {
   captureEditor,
   restoreEditor,
   addContents,
-  template,
-  markdownDocument,
 } from './detail/writing.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
-import { IMAGE_NAMESPACE, IMAGE_MIME_TYPES, imageReference } from './detail/attachments.js';
+import { IMAGE_NAMESPACE } from './detail/attachments.js';
 import {
   ProjectStore,
   newId,
@@ -81,7 +80,13 @@ import {
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
 import { t, setLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
-import { renderMarkdown } from './detail/markdown.js';
+import { renderLegacySource } from './detail/legacy-source.js';
+import { DOCUMENT, documentText } from './graph/html-document.js';
+import { mountBlockEditor } from './detail/block-editor.js';
+import { renderHTMLDocument, standaloneHTMLDocument } from './detail/html-content.js';
+let blockEditor = null;
+let blockEditorDraft = null;
+let pendingEditorRecovery = null;
 const uniformDrafts = new WeakMap();
 export const store = new ProjectStore();
 export let layoutPreview = null;
@@ -93,7 +98,7 @@ let selection = null,
   connectSource = null,
   connectMode = false,
   query = '',
-  allowImages = false,
+  allowImages = true,
   panelVersion = 0,
   detailOpen = false,
   home = true,
@@ -102,9 +107,7 @@ let selection = null,
   expanded = false,
   lastExport = false,
   theme = 'light',
-  imageUploadPending = false,
   writing = false,
-  previewDraft = false,
   previousPanelKey = null,
   sourceEditorState = null,
   recoveryPending = recoveryEnabled(),
@@ -144,6 +147,14 @@ const detailSurface = dialogSurface($('#detail-panel'), {
 });
 const inspector = createFormatInspector({
   dirty: () => overviewEditor.dirty || draftDirty(),
+  guardGlobal: async () => (await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
+    ['cancel', 'cancel'], ['discard', 'discard'],
+  ])) === 'discard',
+  onSwitch: async () => {
+    if (feedback.state || layoutPreview || adapter.resizing || adapter.gesturing || adapter.edgeDragging) return false;
+    if (blockEditor && !(await guardDraft())) return false;
+    return true;
+  },
   canDismiss: () =>
     !feedback.state &&
     !layoutPreview &&
@@ -154,6 +165,9 @@ const inspector = createFormatInspector({
     kind: selection?.kind,
     view: store.activeView,
     locked: selectionLocked(store.project, selection),
+    eligibleCards: store.project.cards.filter((card) => !isPinned(card)).length,
+    eligibleEdges: store.project.relations.filter((relation) => !selectionLocked(store.project, { kind: 'relation', id: relation.id })).length,
+    eligibleRoutes: store.activeView === 'mind' ? 0 : store.project.relations.filter((relation) => relation.extensions?.[EDGE]?.route === 'orthogonal' && !selectionLocked(store.project, { kind: 'relation', id: relation.id })).length,
   }),
   guard: async () => {
     if (overviewEditor.dirty) {
@@ -167,6 +181,21 @@ const inspector = createFormatInspector({
     return guardDraft();
   },
   onTab: async (key) => {
+    const keepFormatDraft = key !== 'closed' && detailOpen && draft &&
+      ((selection?.kind === 'card' && tab === 'format') ||
+        (selection?.kind === 'relation' && tab === 'edit'));
+    if (keepFormatDraft) {
+      if (key === 'text' && selection?.kind === 'card' && !isPinned(entity())) {
+        $('#inspector-text').append($('#card-overview-editor'));
+        overviewEditor.show(selection.id, $('#inspector-tabs'));
+        overviewEditor.syncLocale();
+      }
+      updateStatus();
+      return;
+    }
+    blockEditor?.destroy();
+    blockEditor = null;
+    blockEditorDraft = null;
     if (key === 'closed') overviewEditor.close();
     detailSurface.close();
     detailOpen = false;
@@ -174,8 +203,10 @@ const inspector = createFormatInspector({
       $('#inspector-text').append($('#card-overview-editor'));
       if (selection?.kind === 'card' && !isPinned(entity()))
         overviewEditor.show(selection.id, $('#inspector-tabs'));
+      if (overviewEditor.open) overviewEditor.syncLocale();
     } else if (key === 'card' || key === 'edge') {
       if (selection?.kind !== (key === 'card' ? 'card' : 'relation')) return;
+      if (selectionLocked(store.project, selection)) return;
       detailOpen = true;
       tab = key === 'card' ? 'format' : 'edit';
       beginDraft();
@@ -183,6 +214,11 @@ const inspector = createFormatInspector({
     }
   },
   onGlobal: async (options, typographyProfile) => {
+    if (overviewEditor.dirty) {
+      toast('inspectorResolveTextDraft');
+      return false;
+    }
+    if (overviewEditor.open) overviewEditor.close();
     if (home || !(await guardDraft())) return;
     const source = selection?.kind === 'card' ? entity() : null;
     const edgeSource = selection?.kind === 'relation' ? entity() : null;
@@ -191,6 +227,18 @@ const inspector = createFormatInspector({
       return;
     }
     if (!Object.values(options).some(Boolean)) return;
+    const affectedCards = options.surface || options.typography ? store.project.cards.filter((card) => !isPinned(card)).length : 0;
+    const affectedEdges = options.routes || options.arrows ? store.project.relations.filter((relation) =>
+      !selectionLocked(store.project, { kind: 'relation', id: relation.id }) &&
+      (options.arrows || (store.activeView !== 'mind' && relation.extensions?.[EDGE]?.route === 'orthogonal')),
+    ).length : 0;
+    if ((await dialog('inspectorBulkConfirmTitle', () =>
+      '<p>' + esc(t('inspectorBulkConfirmBody')) + '</p><p>' +
+      esc(t('inspectorEligibleCards').replace('{count}', number(affectedCards))) + '<br>' +
+      esc(t('inspectorEligibleEdges').replace('{count}', number(affectedEdges))) + '</p>', [
+      ['cancel', 'cancel'],
+      ['apply', 'apply', true],
+    ])) !== 'apply') return;
     if (
       change((p) => {
         if (options.routes)
@@ -222,7 +270,9 @@ const inspector = createFormatInspector({
     ) {
       render();
       announceApplied(true);
+      return true;
     }
+    return false;
   },
 });
 const gallery = createTemplateGallery({
@@ -317,7 +367,9 @@ function entity() {
 function draftDirty() {
   return (
     draft &&
-    (uniformDrafts.has(draftOriginal) ||
+    (blockEditor?.hasPending() ||
+      Boolean(document.querySelector('#panel-body [data-hex-for]:invalid')) ||
+      uniformDrafts.has(draftOriginal) ||
       JSON.stringify(draft) !== JSON.stringify(draftOriginal) ||
       JSON.stringify(draftMindSize) !== JSON.stringify(originalMindSize))
   );
@@ -335,6 +387,28 @@ function translate(root = document) {
   }
 }
 function updateStatus() {
+  const editingContent = detailOpen && selection?.kind === 'card' && tab === 'edit' && Boolean(draft?.extensions?.[DOCUMENT]);
+  const panelStatus = $('#panel-save-status');
+  panelStatus.hidden = !editingContent;
+  if (editingContent) {
+    const changed = Boolean(draftDirty());
+    panelStatus.textContent = t(changed ? 'editorUnsaved' : 'editorSaved');
+    const save = $('#panel-body form button[type=submit]');
+    if (save) save.disabled = !changed || blockEditor?.canSave() === false;
+  }
+  const formatting = detailOpen && (tab === 'format' || selection?.kind === 'relation');
+  const formatStatus = $('#format-draft-status');
+  if (formatStatus && formatting) {
+    const changed = Boolean(draftDirty());
+    formatStatus.textContent = t(changed ? 'editorUnsaved' : 'editorSaved');
+    const form = $('#panel-body form');
+    const save = form?.querySelector('button[type=submit]');
+    if (save) {
+      const pendingText = overviewEditor.dirty && inspector.active !== 'text';
+      save.disabled = !changed || !form.checkValidity() || pendingText;
+      save.title = pendingText ? t('inspectorResolveTextDraft') : '';
+    }
+  }
   const key = draftDirty()
     ? 'draftState'
     : store.dirty
@@ -393,8 +467,10 @@ const dateEditor = createCardDateEditor({
   },
 });
 const overviewEditor = createCardOverviewEditor({
+  onClose: () => updateStatus(),
   context: () => ({
     draft: Boolean(detailOpen && draft),
+    combined: Boolean(detailOpen && draft && tab === 'format' && !$('#format-inspector').hidden && inspector.active === 'text'),
     count: store.project.cards.filter((c) => !isPinned(c)).length,
   }),
   isShared: () => Boolean(draftOriginal && uniformDrafts.has(draftOriginal)),
@@ -444,10 +520,24 @@ const overviewEditor = createCardOverviewEditor({
     }
     if (validate(project).errors.length) return false;
     if (editing) {
+      const previousDraft = draft;
+      const previousMindSize = clone(draftMindSize);
+      const previousProfile = uniformDrafts.get(draftOriginal);
+      const hadProfile = uniformDrafts.has(draftOriginal);
       if (shared) uniformDrafts.set(draftOriginal, profile);
       else uniformDrafts.delete(draftOriginal);
       draft = project.cards[index];
       if (store.activeView === 'mind') draftMindSize = clone(geometry(project, draft, 'mind').size);
+      const combined = tab === 'format' && !$('#format-inspector').hidden && inspector.active === 'text';
+      if (combined) {
+        if (applyDraft()) return announceApplied(true);
+        draft = previousDraft;
+        draftMindSize = previousMindSize;
+        if (hadProfile) uniformDrafts.set(draftOriginal, previousProfile);
+        else uniformDrafts.delete(draftOriginal);
+        updateStatus();
+        return false;
+      }
       renderPanel();
       updateStatus();
       scheduleRecovery();
@@ -486,10 +576,12 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
   groupLocked: () => adapter.callbacks.locked() || connectMode || home,
   date: (id, anchor) => {
+    if (inspector.hasPending()) { void inspector.close(); return; }
     selectMany([id]);
     dateEditor.show(id, anchor);
   },
   overview: (id, anchor, field) => {
+    if (inspector.hasPending()) { void inspector.close(); return; }
     selectMany([id]);
     inspector.show('text');
     $('#inspector-text').append($('#card-overview-editor'));
@@ -685,6 +777,7 @@ async function select(next, edit = false, open = false) {
     }
     return true;
   }
+  if (JSON.stringify(selection) !== JSON.stringify(next) && !(await inspector.beforeSelectionChange())) return false;
   if (!(await guardDraft())) return false;
   revealSelection(next);
   selection = next;
@@ -709,6 +802,10 @@ async function select(next, edit = false, open = false) {
 }
 function selectMany(ids) {
   if (adapter.callbacks.groupLocked()) return false;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return false;
+  }
   selectedCards = new Set(
     ids.filter((id) => adapter.cards.has(id) && !adapter.cards.get(id).hidden),
   );
@@ -723,7 +820,23 @@ function selectMany(ids) {
 function renderPanel() {
   const body = $('#panel-body');
   const key = selection?.kind + ':' + selection?.id + ':' + tab;
+  if (
+    blockEditor &&
+    blockEditorDraft === draft &&
+    previousPanelKey === key &&
+    detailOpen &&
+    body.querySelector('#block-editor')
+  ) {
+    blockEditor.translate();
+    return;
+  }
   const state = previousPanelKey === key ? captureEditor(body) : null;
+  const formatGroups = state
+    ? new Map([...body.querySelectorAll('details[data-format-group]')].map((group) => [group.dataset.formatGroup, group.open]))
+    : null;
+  const formatHexValues = state
+    ? new Map([...body.querySelectorAll('[data-hex-for]')].map((input) => [input.dataset.hexFor, input.value]))
+    : null;
   const transferToolsOpen = Boolean(state && body.querySelector('.node-transfer-tools')?.open);
   const advancedOpen = Boolean(state && body.querySelector('.format-advanced')?.open);
   const imageOpen =
@@ -734,14 +847,13 @@ function renderPanel() {
         }
       : null;
   if (previousPanelKey !== key) {
-    previewDraft = false;
     sourceEditorState = null;
   }
   if (state && body.querySelector('.writing-source[hidden]') && sourceEditorState)
     state.fields = sourceEditorState.fields;
   else if (state && body.querySelector('.writing-source')) sourceEditorState = state;
-  previousPanelKey = key;
   renderPanelContent();
+  previousPanelKey = selection?.kind + ':' + selection?.id + ':' + tab;
   if (
     detailOpen &&
     !home &&
@@ -762,6 +874,12 @@ function renderPanel() {
     body.querySelector('.node-transfer-tools').open = transferToolsOpen;
   if (body.querySelector('.format-advanced'))
     body.querySelector('.format-advanced').open = advancedOpen;
+  if (formatGroups)
+    for (const group of body.querySelectorAll('details[data-format-group]'))
+      if (formatGroups.has(group.dataset.formatGroup)) group.open = formatGroups.get(group.dataset.formatGroup);
+  if (formatHexValues)
+    for (const input of body.querySelectorAll('[data-hex-for]'))
+      if (formatHexValues.has(input.dataset.hexFor)) input.value = formatHexValues.get(input.dataset.hexFor);
   if (
     imageOpen &&
     body.querySelector('.image-tools') &&
@@ -777,6 +895,9 @@ function renderPanel() {
   );
 }
 function renderPanelContent() {
+  blockEditor?.destroy();
+  blockEditor = null;
+  blockEditorDraft = null;
   closeImagePreview();
   const version = ++panelVersion,
     panel = $('#detail-panel'),
@@ -809,12 +930,19 @@ function renderPanelContent() {
   if (selection.kind === 'card')
     for (const mode of ['overview', 'edit', 'format']) {
       const button = document.createElement('button');
-      button.textContent = t(mode === 'format' ? 'inspectorTitle' : mode);
+      button.textContent = t(
+        mode === 'format'
+          ? 'inspectorTitle'
+          : mode === 'edit' && e.extensions?.[DOCUMENT]
+            ? 'blockEditor'
+            : mode,
+      );
       button.className = tab === mode ? 'active' : '';
       button.disabled = readOnly && mode !== 'overview';
       button.onclick = async () => {
         if (mode === tab) return;
         const editing = ['edit', 'format'].includes(tab) && ['edit', 'format'].includes(mode);
+        if (editing && (await blockEditor?.flush()) === false) return;
         if (!editing && !(await guardDraft())) return;
         tab = mode;
         if (!editing) {
@@ -836,30 +964,29 @@ function renderPanelContent() {
           esc(t('unpinCard')) +
           '</button></div>'
         : '') +
-      '<p class="summary">' +
+      '<div class="markdown"></div><details class="document-details"><summary>' + esc(t('metadata')) + '</summary><p class="summary">' +
       esc(e.summary) +
       '</p><div class="type-tags">' +
       [...new Set([e.type, ...e.tags])]
         .filter(Boolean)
         .map((v) => '<span>' + esc(v) + '</span>')
         .join('') +
-      '</div><div class="markdown"></div><div class="image-opt"><p class="muted">' +
+      '</div><div class="image-opt"><p class="muted">' +
       esc(t('imageNotice')) +
       '</p><button id="allow-images">' +
       esc(t('loadImages')) +
-      '</button></div><div id="relations-list" class="relations-section"></div>';
+      '</button></div><div id="relations-list" class="relations-section"></div></details>';
     const unpin = body.querySelector('#detail-unpin');
     if (unpin)
       unpin.onclick = async () => {
         if (await guardDraft()) change((p) => togglePinned(p.cards.find((c) => c.id === e.id)));
       };
     const host = body.querySelector('.markdown');
-    if (e.content)
-      renderMarkdown(host, e.content, {
-        allowImages,
-        images: e.extensions?.[IMAGE_NAMESPACE] || {},
-        isCurrent: () => version === panelVersion,
-      })
+    if (e.content || e.extensions?.[DOCUMENT])
+      (e.extensions?.[DOCUMENT]
+        ? renderHTMLDocument(host, e, { allowImages })
+        : Promise.resolve(renderLegacySource(host, e.content))
+      )
         .then(() => {
           if (version === panelVersion) addContents(host);
         })
@@ -910,14 +1037,19 @@ function renderPanelContent() {
     mindSize: draftMindSize,
     cards: store.project.cards,
     writing,
-    previewDraft,
-    imageUploadPending,
   });
+  const iconActions = selection.kind === 'card' && tab === 'edit' && Boolean(d.extensions?.[DOCUMENT]);
+  const actionContent = (key, icon) =>
+    iconActions ? '<span aria-hidden="true">' + icon + '</span>' : esc(t(key));
+  const actionLabel = (key) =>
+    iconActions ? ' aria-label="' + esc(t(key)) + '" title="' + esc(t(key)) + '"' : '';
   body.innerHTML =
     '<form class="editor">' +
     fields +
-    '<div class="form-errors" role="alert"></div><div class="editor-actions"><button class="primary" type="submit">' +
-    esc(t('apply')) +
+    '<div class="form-errors" role="alert"></div><div class="editor-actions">' +
+    ((tab === 'format' || selection.kind === 'relation') ? '<span id="format-draft-status" class="format-draft-status" role="status"></span>' : '') +
+    '<button class="primary" type="submit">' +
+    esc(t(iconActions ? 'editorSaveChanges' : 'apply')) +
     '</button><button type="button" id="cancel-draft">' +
     esc(t('cancel')) +
     '</button></div>' +
@@ -925,13 +1057,44 @@ function renderPanelContent() {
       ? ''
       : '<div class="editor-actions">' +
         (selection.kind === 'card'
-          ? '<button type="button" id="duplicate">' + esc(t('duplicate')) + '</button>'
+          ? '<button type="button" id="duplicate"' + actionLabel('duplicate') + '>' + actionContent('duplicate', '⧉') + '</button>'
           : '') +
-        '<button type="button" id="delete" class="danger">' +
-        esc(t('delete')) +
+        '<button type="button" id="delete" class="danger"' + actionLabel('delete') + '>' +
+        actionContent('delete', '⌫') +
         '</button></div>') +
     '</form>';
   const form = body.querySelector('form');
+  if (body.querySelector('#block-editor')) {
+    mountBlockEditor(
+      body.querySelector('#block-editor'),
+      draft,
+      (document, text, images) => {
+        draft.extensions[DOCUMENT] = document;
+        if (Object.keys(images).length) draft.extensions[IMAGE_NAMESPACE] = images;
+        draft.content = text;
+        updateStatus();
+        scheduleRecovery();
+      },
+      () => version === panelVersion,
+      () => {
+        updateStatus();
+        scheduleRecovery();
+      },
+    )
+      .then((editor) => {
+        if (version !== panelVersion) editor?.destroy();
+        else {
+          blockEditor = editor;
+          blockEditorDraft = draft;
+          if (editor && pendingEditorRecovery) {
+            editor.restoreRecovery(pendingEditorRecovery);
+            pendingEditorRecovery = null;
+          }
+          updateStatus();
+        }
+      })
+      .catch(() => toast('errorImport'));
+  }
   if (selection.kind === 'relation' && store.activeView === 'mind') {
     for (const input of form.querySelectorAll('[name=edge-route],[name=edge-mode]')) {
       input.disabled = true;
@@ -958,8 +1121,23 @@ function renderPanelContent() {
       radius.hidden = !['', 'rectangle', 'rounded', 'square'].includes(
         appearance(draft).shape || '',
       );
+    const autoSize = appearance(draft).sizeMode === 'fit';
+    for (const input of form.querySelectorAll('[name=width], [name=height]'))
+      input.disabled = autoSize;
   }
   syncFormatContext();
+  const syncIconChoices = docked ? installFormatChoiceIcons(form) : () => {};
+  for (const hex of form.querySelectorAll('[data-hex-for]')) {
+    const picker = form.elements[hex.dataset.hexFor];
+    if (!picker) continue;
+    hex.addEventListener('input', () => {
+      if (/^#[0-9a-f]{6}$/i.test(hex.value)) {
+        picker.value = hex.value;
+        picker.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+    picker.addEventListener('input', () => { hex.value = picker.value; });
+  }
   form.oninput = (event) => {
     for (const input of form.querySelectorAll('[name]')) {
       const name = input.name;
@@ -1035,6 +1213,7 @@ function renderPanelContent() {
       form.elements['appearance-radius'].value = draft.extensions[APPEARANCE].radius;
     }
     syncFormatContext();
+    syncIconChoices();
     updateFormatPreview();
     if (
       selection.kind === 'card' &&
@@ -1047,6 +1226,8 @@ function renderPanelContent() {
   };
   form.onsubmit = async (ev) => {
     ev.preventDefault();
+    const savingContent = selection.kind === 'card' && tab === 'edit' && Boolean(draft?.extensions?.[DOCUMENT]);
+    if ((await blockEditor?.flush()) === false) return;
     if (
       selection.kind === 'card' &&
       appearance(draft).sizeMode === 'fit' &&
@@ -1056,7 +1237,10 @@ function renderPanelContent() {
       return;
     if (applyDraft()) {
       await detailSurface.requestClose();
-      if (!detailOpen) announceApplied(true);
+      if (!detailOpen) {
+        if (savingContent) toast('editorSaveSuccess', { position: 'top' });
+        else announceApplied(true);
+      }
     }
   };
   $('#cancel-draft').onclick = () => {
@@ -1122,156 +1306,41 @@ function renderPanelContent() {
       updateStatus();
     };
   }
-  for (const button of body.querySelectorAll('[data-text-format]')) {
-    button.onpointerdown = (event) => event.preventDefault();
-    button.onclick = () => {
-      const input = body.querySelector('textarea[name=content]');
-      if (!input) return;
-      const start = input.selectionStart,
-        end = input.selectionEnd;
-      const selected = input.value.slice(start, end) || t('content');
-      const mode = button.dataset.textFormat;
-      const pair =
-        mode === 'bold'
-          ? ['**', '**']
-          : mode === 'italic'
-            ? ['*', '*']
-            : mode === 'inlineCode'
-              ? [String.fromCharCode(96), String.fromCharCode(96)]
-              : ['[', ']{color:' + $('#inline-text-color').value + '}'];
-      input.setRangeText(pair[0] + selected + pair[1], start, end, 'select');
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.focus();
-    };
-  }
-  if ($('#writing-toggle')) {
-    $('#writing-toggle').onclick = () => {
+  if ($('#html-writing-toggle')) {
+    $('#html-writing-toggle').onclick = async () => {
+      if ((await blockEditor?.flush()) === false) return;
       writing = !writing;
-      renderPanel();
-      const metadata = body.querySelector('.editor-metadata');
-      if (metadata) metadata.open = !writing;
+      document.documentElement.classList.toggle('writing-mode', writing);
+      $('#writing-exit').hidden = !writing;
+      $('#html-writing-toggle').setAttribute('aria-label', t(writing ? 'exitWriting' : 'writingMode'));
+      $('#html-writing-toggle').title = t(writing ? 'exitWriting' : 'writingMode');
       body.scrollTop = 0;
       adapter.cy.resize();
     };
-    $('#draft-preview-toggle').onclick = () => {
-      previewDraft = !previewDraft;
-      renderPanel();
-    };
-    $('#download-markdown').onclick = () => {
+    $('#download-html').onclick = async () => {
       try {
+        if ((await blockEditor?.flush()) === false) return;
         download(
-          markdownDocument(draft),
-          filename(draft.title).replace(/\.json$/, '.md'),
-          'text/markdown;charset=utf-8',
+          await standaloneHTMLDocument(draft),
+          filename(draft.title).replace(/\.json$/, '.html'),
+          'text/html;charset=utf-8',
         );
       } catch {
         toast('errorExport');
       }
     };
-    $('#template-select').onchange = (event) => {
-      if (!event.target.value) return;
-      draft.content += template(event.target.value);
-      renderPanel();
-      updateStatus();
-      scheduleRecovery();
-    };
-    if (previewDraft) {
-      const host = body.querySelector('.draft-preview .markdown');
-      renderMarkdown(host, draft.content, {
-        allowImages,
-        images: draft.extensions?.[IMAGE_NAMESPACE] || {},
-        isCurrent: () => version === panelVersion,
-      })
-        .then(() => {
-          if (version === panelVersion) addContents(host);
-        })
-        .catch(() => {
-          if (version === panelVersion) host.textContent = t('errorDiagram');
-        });
-    }
-  }
-  if ($('#insert-image')) {
-    $('#insert-image').onclick = () => $('#embedded-image-input').click();
-    $('#embedded-image-input').onchange = (event) => {
-      const file = event.target.files[0];
-      event.target.value = '';
-      insertImage(file);
-    };
-    for (const button of form.querySelectorAll('[data-remove-image]'))
-      button.onclick = () => {
-        const id = button.dataset.removeImage;
-        const image = draft.extensions?.[IMAGE_NAMESPACE]?.[id];
-        if (!image) return;
-        if (nodeStyle(draft).coverImageId === id) {
-          toast('coverDeleteGuard');
-          return;
-        }
-        draft.content = draft.content.split(imageReference(id, image.name)).join('');
-        delete draft.extensions[IMAGE_NAMESPACE][id];
-        if (!Object.keys(draft.extensions[IMAGE_NAMESPACE]).length)
-          delete draft.extensions[IMAGE_NAMESPACE];
-        if (!Object.keys(draft.extensions).length) delete draft.extensions;
-        renderPanel();
-        updateStatus();
-      };
   }
   if ($('#duplicate')) $('#duplicate').onclick = duplicate;
   if ($('#delete')) $('#delete').onclick = deleteSelected;
 }
-async function insertImage(file) {
-  if (!file || imageUploadPending || selection?.kind !== 'card' || !draft) return;
-  if (!IMAGE_MIME_TYPES.includes(file.type)) {
-    toast('errorImageAttachment');
-    return;
-  }
-  if (file.size > LIMITS.file) {
-    toast('errorFileLimit');
-    return;
-  }
-  const target = draft;
-  const cardId = selection.id;
-  const textarea = $('textarea[name=content]');
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const originalContent = target.content;
-  imageUploadPending = true;
-  $('#insert-image').disabled = true;
-  try {
-    const image = await readImageFile(file, LIMITS.file);
-    if (draft !== target || selection?.id !== cardId || selection?.kind !== 'card') return;
-    const candidate = clone(target);
-    const id = newId('image');
-    candidate.extensions = {
-      ...candidate.extensions,
-      [IMAGE_NAMESPACE]: { ...candidate.extensions?.[IMAGE_NAMESPACE], [id]: image },
-    };
-    const reference = '\n\n' + imageReference(id, image.name) + '\n\n';
-    candidate.content =
-      target.content === originalContent
-        ? target.content.slice(0, start) + reference + target.content.slice(end)
-        : target.content + reference;
-    const project = clone(store.project);
-    project.cards = project.cards.map((card) => (card.id === cardId ? candidate : card));
-    const result = validate(project);
-    if (result.errors.length) {
-      $('#panel-body .form-errors').textContent = errorLines(result.errors);
-      return;
-    }
-    draft = candidate;
-    renderPanel();
-    updateStatus();
-    toast('imageInserted');
-  } catch {
-    if (draft === target && selection?.id === cardId) toast('errorImageAttachment');
-  } finally {
-    imageUploadPending = false;
-    const button = $('#insert-image');
-    if (button) button.disabled = false;
-  }
-}
 function applyDraft() {
   if (selectionLocked(store.project, selection)) {
     toast('pinnedCardLocked');
+    return false;
+  }
+  const form = document.querySelector('#panel-body form');
+  if (form && !form.checkValidity()) {
+    toast('inspectorInvalidDraft');
     return false;
   }
   if (!draft) return true;
@@ -1337,6 +1406,7 @@ function applyDraft() {
   return true;
 }
 async function guardDraft() {
+  const flushed = await blockEditor?.flush();
   if (adapter.resizing || adapter.gesturing || adapter.edgeDragging) return false;
   if (layoutPreview) return false;
   if (!draftDirty()) return true;
@@ -1346,7 +1416,7 @@ async function guardDraft() {
     ['apply', 'apply', true],
   ]);
   if (choice === 'cancel') return false;
-  if (choice === 'apply' && !applyDraft()) return false;
+  if (choice === 'apply' && (flushed === false || !applyDraft())) return false;
   draft = null;
   draftOriginal = null;
   return true;
@@ -1426,6 +1496,8 @@ async function createPaletteNode(option, point, file) {
     ),
   );
   card.size = size;
+  // Text nodes start with just a title; existing card descriptions remain untouched.
+  if (option.kind === 'text') card.summary = '';
   if (option.kind !== 'card') {
     card.style = { backgroundColor: '#FFFFFF', textColor: '#0F172A', borderColor: '#CBD5E1' };
     delete card.extensions['card-atlas:typography'];
@@ -1448,7 +1520,11 @@ async function createPaletteNode(option, point, file) {
       card.extensions[IMAGE_NAMESPACE] = { [id]: image };
       card.extensions[NODE].coverImageId = id;
       card.extensions[NODE].imageFit = 'contain';
-      card.content = imageReference(id, image.name);
+      if (option.kind === 'image-text') card.summary = t('imageTextExample');
+      card.extensions[DOCUMENT].components = [
+        { tag: 'img', attributes: { src: 'attachment:' + id, alt: image.name }, children: [] },
+      ];
+      card.content = documentText(card.extensions[DOCUMENT]);
     } catch {
       toast('errorImageAttachment');
       return;
@@ -1554,6 +1630,7 @@ function recoverySnapshot() {
     selection: clone(selection),
     draft: clone(draft),
     draftOriginal: clone(draftOriginal),
+    editorSource: blockEditor?.recoveryState() || null,
     uniformStyles: clone(uniformDrafts.get(draftOriginal) || null),
     tab,
     time: Date.now(),
@@ -1638,6 +1715,10 @@ async function restoreRecovery() {
   tab = ['edit', 'format'].includes(snapshot.tab) ? snapshot.tab : 'overview';
   draft = snapshot.draft;
   draftOriginal = snapshot.draftOriginal;
+  pendingEditorRecovery =
+    selection?.kind === 'card' && draft?.extensions?.[DOCUMENT] && snapshot.tab === 'edit'
+      ? snapshot.editorSource
+      : null;
   if (draftOriginal && snapshot.uniformStyles)
     uniformDrafts.set(draftOriginal, clone(snapshot.uniformStyles));
   draftMindSize =
@@ -1650,6 +1731,7 @@ async function restoreRecovery() {
     selection = null;
     draft = null;
     draftOriginal = null;
+    pendingEditorRecovery = null;
     tab = 'overview';
   }
   lastExport = false;
@@ -1685,7 +1767,8 @@ async function exportProject() {
       ['applyExport', 'apply', true],
     ]);
     if (choice === 'cancel') return false;
-    if (choice === 'apply' && !applyDraft()) return false;
+    if (choice === 'apply' && ((await blockEditor?.flush()) === false || !applyDraft()))
+      return false;
   }
   try {
     const text = serialize(store.project, store.viewport, store.viewports);
@@ -1778,6 +1861,7 @@ async function importFile(file) {
     return;
   }
   const body = () => {
+    const legacyCount = result.project?.cards.filter((card) => !card.extensions?.[DOCUMENT]).length || 0;
     let html = result.project
       ? '<p>' +
         esc(result.project.metadata.title) +
@@ -1791,6 +1875,8 @@ async function importFile(file) {
         t('relations') +
         '</p>'
       : '';
+    if (legacyCount)
+      html += '<p class="transfer-warning">' + esc(t('legacyProjectNotice').replace('{count}', number(legacyCount))) + '</p>';
     for (const [key, issues] of [
       ['errors', result.errors],
       ['warnings', result.warnings],
@@ -1852,6 +1938,8 @@ async function switchMapView(targetView) {
     return;
   }
   if (targetView === store.activeView) return;
+  // Cancel a transient group drag before evaluating the view's draft guard.
+  if (adapter.gesturing) adapter.cancelGesture?.();
   if (layoutPreview) {
     cancelLayout();
     toast('previewCancelledSwitch');
@@ -2163,6 +2251,12 @@ const actions = {
   recovery: recoveryDialog,
   'writing-exit': () => {
     writing = false;
+    document.documentElement.classList.remove('writing-mode');
+    $('#writing-exit').hidden = true;
+    if ($('#html-writing-toggle')) {
+      $('#html-writing-toggle').setAttribute('aria-label', t('writingMode'));
+      $('#html-writing-toggle').title = t('writingMode');
+    }
     renderPanel();
     adapter.cy.resize();
   },
@@ -2221,8 +2315,12 @@ document.addEventListener('keydown', (e) => {
     document.querySelector('.image-preview[open]')
   )
     return;
-  if (detailOpen && e.key === 'Escape') return;
-  if (detailOpen && e.code === 'Space') return;
+  // GrapesJS forwards iframe keystrokes to the parent; keep them in the editor.
+  // Vietnamese input methods can use Backspace while replacing a letter.
+  if (detailOpen && (e.key === 'Escape' || e.code === 'Space' || e.target.closest('#block-editor iframe')))
+    return;
+  // Native controls must receive Space for keyboard activation, including the inspector tabs.
+  if (e.code === 'Space' && e.target.closest('button,a[href],summary')) return;
   if (e.code === 'Space') {
     e.preventDefault();
     adapter.space = true;

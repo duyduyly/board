@@ -2,11 +2,11 @@ import { escapeHTML as esc } from '../common/html.js';
 import { download } from '../common/download.js';
 import { t, issueMessage, dictionaries, getLocale } from '../i18n/index.js';
 import { filename, LIMITS } from '../json/validator.js';
-import { renderMarkdown } from '../detail/markdown.js';
+import { renderLegacySource } from '../detail/legacy-source.js';
+import { renderHTMLDocument } from '../detail/html-content.js';
+import { DOCUMENT } from '../graph/html-document.js';
 import { IMAGE_NAMESPACE, attachmentDataURL } from '../detail/attachments.js';
-import { decodeDocument, stageMarkdown, markdownCandidate } from '../detail/markdown-import.js';
 import {
-  assertProject,
   nodeFile,
   stageNode,
   excludedProjectNamespaces,
@@ -16,6 +16,15 @@ import {
   addNodeProject,
   transferError,
 } from '../json/node-transfer.js';
+
+function decodeDocument(buffer) {
+  if (buffer.byteLength > LIMITS.file) throw transferError('errorFileLimit');
+  try {
+    return new globalThis.TextDecoder('utf-8', { fatal: true }).decode(buffer);
+  } catch {
+    throw transferError('transferEncoding');
+  }
+}
 
 // Owns file/preview UI only. Session drafts, geometry and commands stay behind ports.
 export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, dialog, toast }) {
@@ -58,11 +67,9 @@ export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, 
     // The dialog builder returns a detached element; render after Feedback mounts it.
     Promise.resolve()
       .then(() =>
-        renderMarkdown(content, card.content, {
-          allowImages: false,
-          images: card.extensions?.[IMAGE_NAMESPACE] || {},
-          isCurrent: () => content.isConnected,
-        }),
+        card.extensions?.[DOCUMENT]
+          ? renderHTMLDocument(content, card)
+          : renderLegacySource(content, card.content),
       )
       .catch(() => {
         if (content.isConnected) content.textContent = t('errorDiagram');
@@ -114,68 +121,6 @@ export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, 
   function syncButton(disabled) {
     const button = document.querySelector('#modal [data-choice=accept]');
     if (button) button.disabled = disabled;
-  }
-  async function importMarkdown(file) {
-    const ctx = context();
-    if (!ctx) return;
-    if (file.size > LIMITS.file) throw transferError('errorFileLimit');
-    if (!/\.md$/i.test(file.name)) throw transferError('transferMarkdownFile');
-    const staged = stageMarkdown(decodeDocument(await file.arrayBuffer()), ctx.current);
-    await decodeImages(staged.embedded);
-    fresh(ctx);
-    let mode = 'replace',
-      candidate = null,
-      error = null;
-    const body = () => {
-      const host = document.createElement('div');
-      host.innerHTML = '<p>' + esc(t('transferDraftNotice')) + '</p>';
-      const refresh = () => {
-        host.querySelector('.transfer-result')?.remove();
-        const result = document.createElement('div');
-        result.className = 'transfer-result';
-        host.append(result);
-        try {
-          candidate = markdownCandidate(ctx.current, staged, mode);
-          assertProject({
-            ...ctx.draftProject,
-            cards: ctx.draftProject.cards.map((c) => (c.id === ctx.id ? candidate : c)),
-          });
-          error = null;
-          preview(result, candidate);
-        } catch (e) {
-          error = e;
-          result.textContent = message(e);
-        }
-        syncButton(Boolean(error));
-      };
-      host.append(
-        selector(
-          'transfer-md-mode',
-          [
-            ['replace', 'transferReplace'],
-            ['append', 'transferAppend'],
-          ],
-          mode,
-          (value) => {
-            mode = value;
-            refresh();
-          },
-        ),
-      );
-      list(host, t('transferRelativeImages'), staged.missing);
-      list(host, t('transferRemoteImages'), staged.remote);
-      refresh();
-      return host;
-    };
-    const choice = await dialog('transferMarkdownTitle', body, [
-      ['cancel', 'cancel'],
-      ['transferUseDraft', 'accept', true, () => Boolean(error)],
-    ]);
-    if (choice === 'accept' && candidate && !error) {
-      fresh(ctx);
-      useDraft(candidate);
-      toast('transferDraftReady');
-    }
   }
   async function exportNode() {
     const ctx = context();
@@ -410,7 +355,6 @@ export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, 
       '<summary>' + esc(t('transferTools')) + '</summary><div class="node-transfer-actions"></div>';
     const actions = tools.querySelector('div');
     for (const [id, key, accept, action] of [
-      ['import-markdown', 'transferImportMarkdown', '.md', importMarkdown],
       ['import-node', 'transferImportNode', '.json', importNode],
       ['export-node', 'transferExportNode', null, exportNode],
     ]) {

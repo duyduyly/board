@@ -10,7 +10,7 @@ export function closeImagePreview() {
   source = null;
   surface = null;
 }
-function show(image) {
+export function showImagePreview(image) {
   if (!image.complete || !image.naturalWidth || !image.currentSrc) return;
   if (source === image) return;
   closeImagePreview();
@@ -75,13 +75,13 @@ export function installImagePreview(host) {
   new window.MutationObserver(enhance).observe(host, { childList: true, subtree: true });
   host.addEventListener('click', (e) => {
     const image = e.target.closest('.markdown img');
-    if (image) show(image);
+    if (image) showImagePreview(image);
   });
   host.addEventListener('keydown', (e) => {
     if (e.target.matches('.markdown img') && ['Enter', ' '].includes(e.key)) {
       e.preventDefault();
       e.stopPropagation();
-      show(e.target);
+      showImagePreview(e.target);
     }
   });
 }

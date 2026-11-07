@@ -34,7 +34,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# User API\n\nIllustrative API boundary.\n\n## Endpoints\n\n- `POST /users`\n- `GET /users/{id}`\n\n## Responsibility\n\nValidate request shape and delegate user operations to User Service.\n\n## Workspace guide\n\n- Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\n- Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\n- Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\n- Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\n- Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.\n",
+      "content": "User API\nIllustrative API boundary.\nEndpoints\nPOST /users\nGET /users/{id}\n\nResponsibility\nValidate request shape and delegate user operations to User Service.\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:typography": {
           "title": {
@@ -43,6 +43,127 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "User API"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Illustrative API boundary."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Endpoints"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "POST /users"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "code",
+                      "attributes": {},
+                      "children": [
+                        "GET /users/{id}"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Responsibility"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Validate request shape and delegate user operations to User Service."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Workspace guide"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Note Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Convert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Apply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened."
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -68,7 +189,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# User Service\n\nIllustrative application service.\n\n## Responsibilities\n\n- Apply user account rules.\n- Coordinate reads and writes.\n\n## Request flow\n\n```mermaid\nflowchart LR\n    API[User API] --> Service[User Service]\n    Service --> DB[(Database)]\n```\n\n## Open question\n\nHow should duplicate account requests be handled? The diagram does not establish that rule.",
+      "content": "User Service\nIllustrative application service.\nResponsibilities\nApply user account rules.\nCoordinate reads and writes.\n\nRequest flow\nflowchart LR\n    API[User API] --> Service[User Service]\n    Service --> DB[(Database)]\nOpen question\nHow should duplicate account requests be handled? The diagram does not establish that rule.",
       "extensions": {
         "example:source": {
           "kind": "illustrative",
@@ -81,6 +202,90 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "User Service"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Illustrative application service."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Responsibilities"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Apply user account rules."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Coordinate reads and writes."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Request flow"
+              ]
+            },
+            {
+              "tag": "pre",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "code",
+                  "attributes": {
+                    "class": "language-mermaid",
+                    "data-origin": "legacy-mermaid"
+                  },
+                  "children": [
+                    "flowchart LR\n    API[User API] --> Service[User Service]\n    Service --> DB[(Database)]"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Open question"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "How should duplicate account requests be handled? The diagram does not establish that rule."
+              ]
+            }
+          ]
         }
       }
     },
@@ -106,7 +311,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "# Database\n\nIllustrative persistence component.\n\nActual tables, constraints and transactions must be documented from the target project's evidence.",
+      "content": "Database\nIllustrative persistence component.\nActual tables, constraints and transactions must be documented from the target project's evidence.",
       "extensions": {
         "card-atlas:typography": {
           "title": {
@@ -115,6 +320,33 @@
           "summary": {
             "fontSize": 14
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Database"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Illustrative persistence component."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Actual tables, constraints and transactions must be documented from the target project's evidence."
+              ]
+            }
+          ]
         }
       }
     }

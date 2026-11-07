@@ -57,9 +57,82 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "01 · Spaced Study Plan"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Lập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Current workspace"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Note Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 01 · Spaced Study Plan\n\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động.\n\n## Current workspace\n\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy.\n"
+      "content": "01 · Spaced Study Plan\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động.\nCurrent workspace\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
     },
     {
       "id": "roadmap-0",
@@ -108,9 +181,68 @@
         "card-atlas:metadata": {
           "createdAt": "2026-10-28T00:00:00.000Z",
           "createdDate": "2026-10-20"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Mục tiêu"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Viết một mục tiêu quan sát được, ví dụ: chọn cấu trúc dữ liệu và giải thích trade-off. Chọn 3 câu hỏi kiểm tra tương ứng."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Mục tiêu\n\nViết một mục tiêu quan sát được, ví dụ: chọn cấu trúc dữ liệu và giải thích trade-off. Chọn 3 câu hỏi kiểm tra tương ứng.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Mục tiêu\nViết một mục tiêu quan sát được, ví dụ: chọn cấu trúc dữ liệu và giải thích trade-off. Chọn 3 câu hỏi kiểm tra tương ứng.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "roadmap-1",
@@ -159,9 +291,68 @@
         "card-atlas:metadata": {
           "createdAt": "2026-10-28T00:00:00.000Z",
           "createdDate": "2026-10-21"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Học lần đầu"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ: đọc về get(index), viết một ví dụ sử dụng rồi đóng tài liệu. Không chỉ đánh dấu màu."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Học lần đầu\n\nVí dụ: đọc về get(index), viết một ví dụ sử dụng rồi đóng tài liệu. Không chỉ đánh dấu màu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Học lần đầu\nVí dụ: đọc về get(index), viết một ví dụ sử dụng rồi đóng tài liệu. Không chỉ đánh dấu màu.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "roadmap-2",
@@ -210,9 +401,68 @@
         "card-atlas:metadata": {
           "createdAt": "2026-10-28T00:00:00.000Z",
           "createdDate": "2026-10-22"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ôn có khoảng cách"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Tự điền ngày ôn. Nếu sai hoặc thiếu, xem lại rồi thử tiếp ở một thời điểm sau. Không có lịch tối ưu cố định cho mọi nội dung."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Ôn có khoảng cách\n\nTự điền ngày ôn. Nếu sai hoặc thiếu, xem lại rồi thử tiếp ở một thời điểm sau. Không có lịch tối ưu cố định cho mọi nội dung.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Ôn có khoảng cách\nTự điền ngày ôn. Nếu sai hoặc thiếu, xem lại rồi thử tiếp ở một thời điểm sau. Không có lịch tối ưu cố định cho mọi nội dung.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "roadmap-3",
@@ -261,9 +511,68 @@
         "card-atlas:metadata": {
           "createdAt": "2026-10-28T00:00:00.000Z",
           "createdDate": "2026-10-23"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Áp dụng mới"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đổi dữ kiện hoặc ngữ cảnh, giải thích vì sao lựa chọn vẫn đúng. Nếu không giải được, quay lại câu hỏi cụ thể còn yếu."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Áp dụng mới\n\nĐổi dữ kiện hoặc ngữ cảnh, giải thích vì sao lựa chọn vẫn đúng. Nếu không giải được, quay lại câu hỏi cụ thể còn yếu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Áp dụng mới\nĐổi dữ kiện hoặc ngữ cảnh, giải thích vì sao lựa chọn vẫn đúng. Nếu không giải được, quay lại câu hỏi cụ thể còn yếu.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "roadmap-note",
@@ -310,9 +619,95 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều đã làm được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Bằng chứng (câu trả lời / bài giải): …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều cần sửa: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ngày thử lại: …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Tự đánh giá\nĐiều đã làm được: …\nBằng chứng (câu trả lời / bài giải): …\nĐiều cần sửa: …\nNgày thử lại: …\n\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-intro",
@@ -359,9 +754,68 @@
             "fontFamily": "mono",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "02 · Concept & Comparison Map"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nhãn đường nối phải giải thích quan hệ. Dùng sơ đồ để hiểu, sau đó tự dựng lại khi đã đóng nguồn."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 02 · Concept & Comparison Map\n\nNhãn đường nối phải giải thích quan hệ. Dùng sơ đồ để hiểu, sau đó tự dựng lại khi đã đóng nguồn.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "02 · Concept & Comparison Map\nNhãn đường nối phải giải thích quan hệ. Dùng sơ đồ để hiểu, sau đó tự dựng lại khi đã đóng nguồn.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-0",
@@ -406,9 +860,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Java List"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Câu hỏi: cùng hợp đồng List nhưng vì sao chi phí thao tác khác nhau? Phân biệt giao diện với triển khai."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Java List\n\nCâu hỏi: cùng hợp đồng List nhưng vì sao chi phí thao tác khác nhau? Phân biệt giao diện với triển khai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Java List\nCâu hỏi: cùng hợp đồng List nhưng vì sao chi phí thao tác khác nhau? Phân biệt giao diện với triển khai.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-1",
@@ -453,9 +966,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "ArrayList"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Truy cập theo index nhanh; chèn giữa phải dịch phần tử. Viết một ví dụ workload phù hợp."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# ArrayList\n\nTruy cập theo index nhanh; chèn giữa phải dịch phần tử. Viết một ví dụ workload phù hợp.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "ArrayList\nTruy cập theo index nhanh; chèn giữa phải dịch phần tử. Viết một ví dụ workload phù hợp.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-2",
@@ -500,9 +1072,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "LinkedList"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Nối node tại iterator đã có có thể O(1); tìm node theo index vẫn tốn O(n). Không suy ra thêm/xóa luôn nhanh hơn ArrayList."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# LinkedList\n\nNối node tại iterator đã có có thể O(1); tìm node theo index vẫn tốn O(n). Không suy ra thêm/xóa luôn nhanh hơn ArrayList.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "LinkedList\nNối node tại iterator đã có có thể O(1); tìm node theo index vẫn tốn O(n). Không suy ra thêm/xóa luôn nhanh hơn ArrayList.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-3",
@@ -547,9 +1178,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Chọn theo workload"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Giải thích lựa chọn cho: đọc ngẫu nhiên nhiều; duyệt tuần tự; chèn/xóa khi đã có iterator. Đo trong ngữ cảnh thực tế khi cần."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Chọn theo workload\n\nGiải thích lựa chọn cho: đọc ngẫu nhiên nhiều; duyệt tuần tự; chèn/xóa khi đã có iterator. Đo trong ngữ cảnh thực tế khi cần.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Chọn theo workload\nGiải thích lựa chọn cho: đọc ngẫu nhiên nhiều; duyệt tuần tự; chèn/xóa khi đã có iterator. Đo trong ngữ cảnh thực tế khi cần.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "architecture-note",
@@ -596,9 +1286,95 @@
             "fontFamily": "mono",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều đã làm được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Bằng chứng (câu trả lời / bài giải): …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều cần sửa: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ngày thử lại: …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Tự đánh giá\nĐiều đã làm được: …\nBằng chứng (câu trả lời / bài giải): …\nĐiều cần sửa: …\nNgày thử lại: …\n\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-intro",
@@ -645,9 +1421,68 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "03 · Worked Example → Try"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Xen kẽ lời giải mẫu với bài tự làm; giảm gợi ý khi người học đã vững. Đây là tiến trình luyện tập, không phải sơ đồ trang trí."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 03 · Worked Example → Try\n\nXen kẽ lời giải mẫu với bài tự làm; giảm gợi ý khi người học đã vững. Đây là tiến trình luyện tập, không phải sơ đồ trang trí.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "03 · Worked Example → Try\nXen kẽ lời giải mẫu với bài tự làm; giảm gợi ý khi người học đã vững. Đây là tiến trình luyện tập, không phải sơ đồ trang trí.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-0",
@@ -692,9 +1527,75 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "01 / Xem lời giải"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Khởi tạo max=3. So sánh 1: giữ 3. So sánh 4: cập nhật 4. Kết quả 4."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Vì sao khởi tạo bằng phần tử đầu? Với toàn số âm, max=0 sẽ sai."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 01 / Xem lời giải\n\nKhởi tạo max=3. So sánh 1: giữ 3. So sánh 4: cập nhật 4. Kết quả 4.\n\nVì sao khởi tạo bằng phần tử đầu? Với toàn số âm, max=0 sẽ sai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "01 / Xem lời giải\nKhởi tạo max=3. So sánh 1: giữ 3. So sánh 4: cập nhật 4. Kết quả 4.\nVì sao khởi tạo bằng phần tử đầu? Với toàn số âm, max=0 sẽ sai.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-1",
@@ -739,9 +1640,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "02 / Giải thích"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bất biến: sau mỗi bước, max là giá trị lớn nhất trong phần đã xét. Thử giải thích bằng lời mình trước khi đối chiếu lời giải."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 02 / Giải thích\n\nBất biến: sau mỗi bước, max là giá trị lớn nhất trong phần đã xét. Thử giải thích bằng lời mình trước khi đối chiếu lời giải.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "02 / Giải thích\nBất biến: sau mỗi bước, max là giá trị lớn nhất trong phần đã xét. Thử giải thích bằng lời mình trước khi đối chiếu lời giải.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-2",
@@ -786,9 +1746,75 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "03 / Tự làm"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Đối chiếu sau khi thử"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Khởi tạo -8 → gặp -3 cập nhật → gặp -5 giữ nguyên. Kết quả -3. Nếu ra 0, kiểm tra khởi tạo."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 03 / Tự làm\n\n## Đối chiếu sau khi thử\n\nKhởi tạo -8 → gặp -3 cập nhật → gặp -5 giữ nguyên. Kết quả -3. Nếu ra 0, kiểm tra khởi tạo.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "03 / Tự làm\nĐối chiếu sau khi thử\nKhởi tạo -8 → gặp -3 cập nhật → gặp -5 giữ nguyên. Kết quả -3. Nếu ra 0, kiểm tra khởi tạo.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-3",
@@ -833,9 +1859,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "04 / Biến thể"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Xác định yêu cầu trước khi code: báo lỗi hay giá trị optional cho mảng rỗng? Chỉ trả giá trị hay cả index? Quyết định này tùy bài toán, không tự bịa đặc tả."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 04 / Biến thể\n\nXác định yêu cầu trước khi code: báo lỗi hay giá trị optional cho mảng rỗng? Chỉ trả giá trị hay cả index? Quyết định này tùy bài toán, không tự bịa đặc tả.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "04 / Biến thể\nXác định yêu cầu trước khi code: báo lỗi hay giá trị optional cho mảng rỗng? Chỉ trả giá trị hay cả index? Quyết định này tùy bài toán, không tự bịa đặc tả.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "process-note",
@@ -882,9 +1967,95 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều đã làm được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Bằng chứng (câu trả lời / bài giải): …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều cần sửa: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ngày thử lại: …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Tự đánh giá\nĐiều đã làm được: …\nBằng chứng (câu trả lời / bài giải): …\nĐiều cần sửa: …\nNgày thử lại: …\n\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "story-intro",
@@ -927,9 +2098,87 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "04 / CORNELL STUDY LAB"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục này áp dụng cấu trúc Cornell kết hợp retrieval practice và spaced practice. Không khẳng định đây là phương pháp tốt nhất cho mọi môn. Ví dụ cụ thể: phân biệt Java ArrayList và LinkedList."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# 04 / CORNELL STUDY LAB\n\nBố cục này áp dụng cấu trúc Cornell kết hợp retrieval practice và spaced practice. Không khẳng định đây là phương pháp tốt nhất cho mọi môn. Ví dụ cụ thể: phân biệt Java ArrayList và LinkedList.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "04 / CORNELL STUDY LAB\nBố cục này áp dụng cấu trúc Cornell kết hợp retrieval practice và spaced practice. Không khẳng định đây là phương pháp tốt nhất cho mọi môn. Ví dụ cụ thể: phân biệt Java ArrayList và LinkedList.\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "story-0",
@@ -974,9 +2223,121 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "01 / CÂU HỎI GỢI NHỚ"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Trước khi xem đáp án"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Đóng tài liệu, trả lời từng câu bằng lời của bạn."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Viết một ví dụ hoặc giải thích thành tiếng."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Mở card Ghi chú cốt lõi để đối chiếu."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ghi câu trả lời sai vào nhật ký lỗi."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# 01 / CÂU HỎI GỢI NHỚ\n\n## Trước khi xem đáp án\n\n1. Đóng tài liệu, trả lời từng câu bằng lời của bạn.\n2. Viết một ví dụ hoặc giải thích thành tiếng.\n3. Mở card Ghi chú cốt lõi để đối chiếu.\n4. Ghi câu trả lời sai vào nhật ký lỗi.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "01 / CÂU HỎI GỢI NHỚ\nTrước khi xem đáp án\nĐóng tài liệu, trả lời từng câu bằng lời của bạn.\nViết một ví dụ hoặc giải thích thành tiếng.\nMở card Ghi chú cốt lõi để đối chiếu.\nGhi câu trả lời sai vào nhật ký lỗi.\n\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "story-1",
@@ -1021,9 +2382,236 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "02 / GHI CHÚ CỐT LÕI"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "ArrayList vs LinkedList"
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Khía cạnh"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "ArrayList"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "LinkedList"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Cấu trúc"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Mảng động chứa tham chiếu"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Các node liên kết hai chiều"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "get(index)"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "O(1)"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "O(n)"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Chèn ở giữa theo index"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Dịch phần tử O(n)"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Tìm node O(n), nối node O(1)"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "strong",
+                  "attributes": {},
+                  "children": [
+                    "Ví dụ:"
+                  ]
+                },
+                " đọc phần tử ngẫu nhiên nhiều thường nghiêng về ArrayList. Không kết luận LinkedList luôn nhanh hơn khi thêm/xóa: phải tính cả chi phí tìm vị trí và ngữ cảnh sử dụng."
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đây là ghi chú mẫu; khi học thực tế hãy bổ sung nguồn của bài học."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# 02 / GHI CHÚ CỐT LÕI\n\n## ArrayList vs LinkedList\n\n| Khía cạnh | ArrayList | LinkedList |\n| --- | --- | --- |\n| Cấu trúc | Mảng động chứa tham chiếu | Các node liên kết hai chiều |\n| get(index) | O(1) | O(n) |\n| Chèn ở giữa theo index | Dịch phần tử O(n) | Tìm node O(n), nối node O(1) |\n\n**Ví dụ:** đọc phần tử ngẫu nhiên nhiều thường nghiêng về ArrayList. Không kết luận LinkedList luôn nhanh hơn khi thêm/xóa: phải tính cả chi phí tìm vị trí và ngữ cảnh sử dụng.\n\nĐây là ghi chú mẫu; khi học thực tế hãy bổ sung nguồn của bài học.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "02 / GHI CHÚ CỐT LÕI\nArrayList vs LinkedList\nKhía cạnhArrayListLinkedList\n\nCấu trúcMảng động chứa tham chiếuCác node liên kết hai chiều\nget(index)O(1)O(n)\nChèn ở giữa theo indexDịch phần tử O(n)Tìm node O(n), nối node O(1)\n\n\nVí dụ: đọc phần tử ngẫu nhiên nhiều thường nghiêng về ArrayList. Không kết luận LinkedList luôn nhanh hơn khi thêm/xóa: phải tính cả chi phí tìm vị trí và ngữ cảnh sử dụng.\nĐây là ghi chú mẫu; khi học thực tế hãy bổ sung nguồn của bài học.\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "story-2",
@@ -1068,9 +2656,155 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "03 / TỰ KIỂM TRA"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Mini quiz"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Cần get(i) nhiều: bạn ưu tiên gì và vì sao?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "LinkedList.add(index,x) có luôn O(1)?"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Chỉ biết Big-O đã đủ để chọn cấu trúc chưa?"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Đối chiếu sau khi trả lời"
+              ]
+            },
+            {
+              "tag": "ol",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Thường là ArrayList: truy cập index O(1)."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Không, tìm vị trí theo index có thể O(n)."
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Chưa: cần xem cách truy cập, bộ nhớ và workload."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đánh dấu: Đúng / Thiếu / Sai; viết lại lời giải cho câu sai."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# 03 / TỰ KIỂM TRA\n\n## Mini quiz\n\n1. Cần get(i) nhiều: bạn ưu tiên gì và vì sao?\n2. LinkedList.add(index,x) có luôn O(1)?\n3. Chỉ biết Big-O đã đủ để chọn cấu trúc chưa?\n\n## Đối chiếu sau khi trả lời\n\n1. Thường là ArrayList: truy cập index O(1).\n2. Không, tìm vị trí theo index có thể O(n).\n3. Chưa: cần xem cách truy cập, bộ nhớ và workload.\n\nĐánh dấu: Đúng / Thiếu / Sai; viết lại lời giải cho câu sai.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "03 / TỰ KIỂM TRA\nMini quiz\nCần get(i) nhiều: bạn ưu tiên gì và vì sao?\nLinkedList.add(index,x) có luôn O(1)?\nChỉ biết Big-O đã đủ để chọn cấu trúc chưa?\n\nĐối chiếu sau khi trả lời\nThường là ArrayList: truy cập index O(1).\nKhông, tìm vị trí theo index có thể O(n).\nChưa: cần xem cách truy cập, bộ nhớ và workload.\n\nĐánh dấu: Đúng / Thiếu / Sai; viết lại lời giải cho câu sai.\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "story-3",
@@ -1115,9 +2849,238 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "04 / ÔN CÁCH QUÃNG"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nhật ký ôn"
+              ]
+            },
+            {
+              "tag": "table",
+              "attributes": {
+                "class": "table table-bordered"
+              },
+              "children": [
+                {
+                  "tag": "thead",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Lần"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Ngày dự kiến"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Kết quả"
+                          ]
+                        },
+                        {
+                          "tag": "th",
+                          "attributes": {},
+                          "children": [
+                            "Câu còn sai"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "1"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Tự điền"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "2"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Tự điền"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "tr",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "3"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": [
+                            "Tự điền"
+                          ]
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        },
+                        {
+                          "tag": "td",
+                          "attributes": {},
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Lịch 1–3–7 chỉ là ví dụ thực hành, không phải khoảng cách tối ưu được chứng minh cho mọi người. Chọn khoảng cách theo độ khó, mức nhớ và ngày cần sử dụng. Đây là bảng ghi thủ công, app không tự nhắc lịch."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# 04 / ÔN CÁCH QUÃNG\n\n## Nhật ký ôn\n\n| Lần | Ngày dự kiến | Kết quả | Câu còn sai |\n| --- | --- | --- | --- |\n| 1 | Tự điền | | |\n| 2 | Tự điền | | |\n| 3 | Tự điền | | |\n\nLịch 1–3–7 chỉ là ví dụ thực hành, không phải khoảng cách tối ưu được chứng minh cho mọi người. Chọn khoảng cách theo độ khó, mức nhớ và ngày cần sử dụng. Đây là bảng ghi thủ công, app không tự nhắc lịch.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "04 / ÔN CÁCH QUÃNG\nNhật ký ôn\nLầnNgày dự kiếnKết quảCâu còn sai\n\n1Tự điền\n2Tự điền\n3Tự điền\n\n\nLịch 1–3–7 chỉ là ví dụ thực hành, không phải khoảng cách tối ưu được chứng minh cho mọi người. Chọn khoảng cách theo độ khó, mức nhớ và ngày cần sử dụng. Đây là bảng ghi thủ công, app không tự nhắc lịch.\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "story-note",
@@ -1160,9 +3123,121 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "TÓM TẮT BẰNG LỜI MÌNH"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Tự tổng kết"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ý chính tôi giải thích được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Tôi từng nhầm …; nay sửa thành …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Tôi vẫn chưa hiểu …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đừng chỉ chép lại ghi chú. Thử nhớ trước rồi mới đối chiếu. Tóm tắt là phần kết thúc buổi học, không thay thế tự kiểm tra."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Nguồn tham khảo"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/"
+                      },
+                      "children": [
+                        "Cornell Note Taking System"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                      },
+                      "children": [
+                        "Dunlosky et al., 2013: learning techniques"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "tag": "a",
+                      "attributes": {
+                        "href": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html"
+                      },
+                      "children": [
+                        "CMU: spaced practice"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
-      "content": "# TÓM TẮT BẰNG LỜI MÌNH\n\n## Tự tổng kết\n\n- Ý chính tôi giải thích được: …\n- Tôi từng nhầm …; nay sửa thành …\n- Tôi vẫn chưa hiểu …\n\nĐừng chỉ chép lại ghi chú. Thử nhớ trước rồi mới đối chiếu. Tóm tắt là phần kết thúc buổi học, không thay thế tự kiểm tra.\n\n## Nguồn tham khảo\n\n- [Cornell Note Taking System](https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/)\n- [Dunlosky et al., 2013: learning techniques](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n- [CMU: spaced practice](https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/spacedopractice/index.html)"
+      "content": "TÓM TẮT BẰNG LỜI MÌNH\nTự tổng kết\nÝ chính tôi giải thích được: …\nTôi từng nhầm …; nay sửa thành …\nTôi vẫn chưa hiểu …\n\nĐừng chỉ chép lại ghi chú. Thử nhớ trước rồi mới đối chiếu. Tóm tắt là phần kết thúc buổi học, không thay thế tự kiểm tra.\nNguồn tham khảo\nCornell Note Taking System\nDunlosky et al., 2013: learning techniques\nCMU: spaced practice"
     },
     {
       "id": "learning-intro",
@@ -1209,9 +3284,68 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "05 · Closed-book Recall Map"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Đóng tài liệu rồi tự điền các nhánh. Sau đó đối chiếu và đánh dấu phần thiếu; không dùng hình phức tạp để chứa chữ."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 05 · Closed-book Recall Map\n\nĐóng tài liệu rồi tự điền các nhánh. Sau đó đối chiếu và đánh dấu phần thiếu; không dùng hình phức tạp để chứa chữ.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "05 · Closed-book Recall Map\nĐóng tài liệu rồi tự điền các nhánh. Sau đó đối chiếu và đánh dấu phần thiếu; không dùng hình phức tạp để chứa chữ.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-0",
@@ -1256,9 +3390,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Chủ đề cần nhớ"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Trước khi bắt đầu: đóng ghi chú, đặt thời gian ngắn vừa sức. Tự dựng lại các ý, không sao chép mẫu."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Chủ đề cần nhớ\n\nTrước khi bắt đầu: đóng ghi chú, đặt thời gian ngắn vừa sức. Tự dựng lại các ý, không sao chép mẫu.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Chủ đề cần nhớ\nTrước khi bắt đầu: đóng ghi chú, đặt thời gian ngắn vừa sức. Tự dựng lại các ý, không sao chép mẫu.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-1",
@@ -1303,9 +3496,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Định nghĩa?"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Tự điền: khái niệm là gì? Có đặc điểm nào bắt buộc?"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Định nghĩa?\n\nTự điền: khái niệm là gì? Có đặc điểm nào bắt buộc?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Định nghĩa?\nTự điền: khái niệm là gì? Có đặc điểm nào bắt buộc?\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-2",
@@ -1350,9 +3602,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Ví dụ?"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Tự điền: ví dụ nào thỏa định nghĩa? Trường hợp gần giống nhưng không thỏa là gì?"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Ví dụ?\n\nTự điền: ví dụ nào thỏa định nghĩa? Trường hợp gần giống nhưng không thỏa là gì?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Ví dụ?\nTự điền: ví dụ nào thỏa định nghĩa? Trường hợp gần giống nhưng không thỏa là gì?\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-3",
@@ -1397,9 +3708,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Vì sao / khi nào?"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Tự điền: khi nào dùng được? Khi nào không? Có giả định nào cần kiểm tra?"
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Vì sao / khi nào?\n\nTự điền: khi nào dùng được? Khi nào không? Có giả định nào cần kiểm tra?\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Vì sao / khi nào?\nTự điền: khi nào dùng được? Khi nào không? Có giả định nào cần kiểm tra?\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-4",
@@ -1444,9 +3814,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Còn thiếu gì?"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ghi rõ điều thiếu hoặc sai và cách sửa. Lần ôn sau trả lời lại từ trí nhớ. Không tự đánh giá chỉ dựa trên cảm giác quen mắt."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Còn thiếu gì?\n\nGhi rõ điều thiếu hoặc sai và cách sửa. Lần ôn sau trả lời lại từ trí nhớ. Không tự đánh giá chỉ dựa trên cảm giác quen mắt.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Còn thiếu gì?\nGhi rõ điều thiếu hoặc sai và cách sửa. Lần ôn sau trả lời lại từ trí nhớ. Không tự đánh giá chỉ dựa trên cảm giác quen mắt.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "learning-note",
@@ -1493,9 +3922,95 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều đã làm được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Bằng chứng (câu trả lời / bài giải): …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều cần sửa: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ngày thử lại: …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Tự đánh giá\nĐiều đã làm được: …\nBằng chứng (câu trả lời / bài giải): …\nĐiều cần sửa: …\nNgày thử lại: …\n\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-intro",
@@ -1542,9 +4057,68 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "06 · Mistake → Feedback → Retry"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Biến lỗi thành câu hỏi để thử lại. Zigzag diễn tả các vòng sửa; lịch sử lỗi ghi thủ công, không tự chấm điểm."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# 06 · Mistake → Feedback → Retry\n\nBiến lỗi thành câu hỏi để thử lại. Zigzag diễn tả các vòng sửa; lịch sử lỗi ghi thủ công, không tự chấm điểm.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "06 · Mistake → Feedback → Retry\nBiến lỗi thành câu hỏi để thử lại. Zigzag diễn tả các vòng sửa; lịch sử lỗi ghi thủ công, không tự chấm điểm.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-0",
@@ -1593,9 +4167,68 @@
         "card-atlas:metadata": {
           "pinned": true,
           "createdAt": "2026-10-28T00:00:00.000Z"
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Bài đã thử"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ: tìm max của mảng số âm, nhưng kết quả ban đầu là 0. Card được ghim như đề gốc; bỏ ghim nếu cần sửa."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Bài đã thử\n\nVí dụ: tìm max của mảng số âm, nhưng kết quả ban đầu là 0. Card được ghim như đề gốc; bỏ ghim nếu cần sửa.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Bài đã thử\nVí dụ: tìm max của mảng số âm, nhưng kết quả ban đầu là 0. Card được ghim như đề gốc; bỏ ghim nếu cần sửa.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-1",
@@ -1640,9 +4273,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Phân tích lỗi"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ: khởi tạo max=0 thay vì phần tử đầu. Viết lý do lỗi xảy ra và một cách nhận ra lỗi tương tự."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Phân tích lỗi\n\nVí dụ: khởi tạo max=0 thay vì phần tử đầu. Viết lý do lỗi xảy ra và một cách nhận ra lỗi tương tự.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Phân tích lỗi\nVí dụ: khởi tạo max=0 thay vì phần tử đầu. Viết lý do lỗi xảy ra và một cách nhận ra lỗi tương tự.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-2",
@@ -1687,9 +4379,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Phản hồi / sửa"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ: với mảng không rỗng, khởi tạo từ phần tử đầu rồi duyệt phần còn lại. Ghi nguồn đáp án hoặc hỏi người hướng dẫn nếu chưa chắc."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Phản hồi / sửa\n\nVí dụ: với mảng không rỗng, khởi tạo từ phần tử đầu rồi duyệt phần còn lại. Ghi nguồn đáp án hoặc hỏi người hướng dẫn nếu chưa chắc.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Phản hồi / sửa\nVí dụ: với mảng không rỗng, khởi tạo từ phần tử đầu rồi duyệt phần còn lại. Ghi nguồn đáp án hoặc hỏi người hướng dẫn nếu chưa chắc.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-3",
@@ -1734,9 +4485,68 @@
             "fontFamily": "system",
             "fontSize": 18
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Thử lại sau"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Ví dụ: [-10,-2,-7]. Đáp án -2 chỉ xem sau khi làm. Tự điền ngày thử lại và kết quả; lặp nếu còn sai."
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Thử lại sau\n\nVí dụ: [-10,-2,-7]. Đáp án -2 chỉ xem sau khi làm. Tự điền ngày thử lại và kết quả; lặp nếu còn sai.\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Thử lại sau\nVí dụ: [-10,-2,-7]. Đáp án -2 chỉ xem sau khi làm. Tự điền ngày thử lại và kết quả; lặp nếu còn sai.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     },
     {
       "id": "sprint-note",
@@ -1783,9 +4593,95 @@
             "fontFamily": "system",
             "fontSize": 11
           }
+        },
+        "card-atlas:document": {
+          "version": 1,
+          "format": "html-bs5",
+          "components": [
+            {
+              "tag": "h1",
+              "attributes": {},
+              "children": [
+                "Tự đánh giá"
+              ]
+            },
+            {
+              "tag": "ul",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều đã làm được: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Bằng chứng (câu trả lời / bài giải): …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Điều cần sửa: …"
+                  ]
+                },
+                {
+                  "tag": "li",
+                  "attributes": {},
+                  "children": [
+                    "Ngày thử lại: …"
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attributes": {},
+              "children": [
+                "Cơ sở phương pháp"
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://ies.ed.gov/ncee/wwc/PracticeGuide/1"
+                  },
+                  "children": [
+                    "IES: Organizing Instruction and Study to Improve Student Learning"
+                  ]
+                },
+                " · ",
+                {
+                  "tag": "a",
+                  "attributes": {
+                    "href": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html"
+                  },
+                  "children": [
+                    "Tổng quan Dunlosky et al."
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attributes": {},
+              "children": [
+                "Bố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+              ]
+            }
+          ]
         }
       },
-      "content": "# Tự đánh giá\n\n- Điều đã làm được: …\n- Bằng chứng (câu trả lời / bài giải): …\n- Điều cần sửa: …\n- Ngày thử lại: …\n\n## Cơ sở phương pháp\n\n[IES: Organizing Instruction and Study to Improve Student Learning](https://ies.ed.gov/ncee/wwc/PracticeGuide/1) · [Tổng quan Dunlosky et al.](https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html)\n\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
+      "content": "Tự đánh giá\nĐiều đã làm được: …\nBằng chứng (câu trả lời / bài giải): …\nĐiều cần sửa: …\nNgày thử lại: …\n\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động."
     }
   ],
   "relations": [

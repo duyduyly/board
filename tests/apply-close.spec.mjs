@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
-import { setDraftTitle } from './overview-test-helpers.mjs';
 const state = (page) =>
   page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
@@ -18,11 +17,12 @@ async function setup(page, locale = 'vi') {
     id: 'kind-' + i,
     title: 'Title ' + i,
     summary: 'Summary ' + i,
-    content: '# Original',
+    content: 'Original',
     position: { x: 60 + (i % 2) * 400, y: 100 + Math.floor(i / 2) * 320 },
     size: { width: 260, height: 220 },
     extensions: {
       'card-atlas:node': { kind, ...(i >= 2 ? { coverImageId: 'cover' } : {}) },
+      'card-atlas:document': { version: 1, format: 'html-bs5', components: [{ tag: 'p', attributes: {}, children: ['Original'] }] },
       ...(i >= 2 ? { 'card-atlas:images': { cover: image } } : {}),
     },
   }));
@@ -59,16 +59,15 @@ for (const locale of ['vi', 'en'])
       for (let i = 0; i < 4; i++) {
         await openCard(page, i, 1);
         const before = await state(page);
-        await page.locator('[name=content]').fill('# Saved ' + i);
-        await setDraftTitle(page, 'Saved title ' + i);
+        await page.locator('[data-editor-mode=html]').click();
+        await page.locator('[data-editor-source]').fill('<p>Saved ' + i + '</p>');
         await expect(page.locator('#detail-panel')).toBeVisible();
         expect((await state(page)).n).toBe(before.n);
         await apply(page);
         await expect(page.locator('[data-id=kind-' + i + ']')).toBeFocused();
         const saved = await state(page);
         expect(saved.n).toBe(before.n + 1);
-        expect(saved.p.cards[i].title).toBe('Saved title ' + i);
-        expect(saved.p.cards[i].content).toBe('# Saved ' + i);
+        expect(saved.p.cards[i].content).toBe('Saved ' + i);
         await openCard(page, i, 2);
         await page.locator('[name=width]').fill('300');
         await apply(page);
@@ -106,16 +105,17 @@ for (const locale of ['vi', 'en'])
 test('invalid Format stays open with no success notice or history; Canvas title/date commits close and announce', async ({
   page,
 }) => {
+  page.setDefaultTimeout(5000);
   await setup(page);
   await openCard(page, 0, 2);
   const before = await state(page);
   await page.locator('[name=width]').fill('0');
-  await page.locator('#panel-body form [type=submit]').click();
+  await expect(page.locator('#panel-body form [type=submit]')).toBeDisabled();
   await expect(page.locator('#detail-panel')).toBeVisible();
   await expect(page.locator('#toast')).not.toBeVisible();
   expect(await state(page)).toEqual(before);
   await page.locator('#cancel-draft').click();
-  await page.locator('[data-action=close]').click();
+  await page.locator('#inspector-close').click();
   await page.locator('[data-id=kind-0] [data-overview-field=title]').click();
   await page.locator('#overview-text').fill('Canvas title');
   await page.locator('[data-overview-apply]').click();

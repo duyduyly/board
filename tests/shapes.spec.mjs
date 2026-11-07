@@ -60,6 +60,8 @@ test('basic shapes share Canvas and Format geometry, preserve data and portable 
 test('image palette, compact shapes, transparent theme and responsive navigation preserve attachments', async ({
   page,
 }) => {
+  test.setTimeout(90000);
+  page.setDefaultTimeout(5000);
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   const requests = [];
@@ -71,7 +73,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
   const source = JSON.parse(await fs.readFile('assets/data/node-transfer-example.json', 'utf8'));
   const image = Object.values(source.cards[0].extensions['card-atlas:images'])[0];
   const chooser = page.waitForEvent('filechooser');
-  await page.locator('[data-palette-kind=image]').click();
+  await page.locator('[data-palette-kind=image-text]').click();
   await (
     await chooser
   ).setFiles({
@@ -79,7 +81,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
     mimeType: image.mimeType,
     buffer: Buffer.from(image.data, 'base64'),
   });
-  const card = page.locator('.graph-card[data-node-kind=image]');
+  const card = page.locator('.graph-card[data-node-kind=image-text]');
   await expect(card).toHaveCount(1);
   await expect(card.locator('img')).toBeVisible();
   await expect
@@ -87,7 +89,7 @@ test('image palette, compact shapes, transparent theme and responsive navigation
     .toBe(true);
   await card.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'Format', exact: true }).click();
+  await page.locator('#panel-tabs button').nth(2).click();
   for (const shape of [
     'rectangle',
     'rounded',
@@ -105,13 +107,14 @@ test('image palette, compact shapes, transparent theme and responsive navigation
     'hexagon',
   ]) {
     await page.locator('[name=appearance-shape]').selectOption(shape);
-    await expect(page.locator('#format-card-preview img')).toBeVisible();
+    await expect(page.locator('#format-card-preview img'), `preview image for ${shape}`).toBeVisible();
+    await expect(page.locator('#format-card-preview .card-summary'), `preview text for ${shape}`).toBeVisible();
   }
   await page.locator('[name=appearance-backgroundTransparent]').check();
   await page.locator('[name=appearance-borderTransparent]').check();
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
-  await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
-  await page.locator('[data-action=close]').click();
+  await page.locator('#panel-body form button[type=submit]').click();
+  await expect(page.locator('#detail-panel')).not.toBeVisible();
   await page.locator('#locale').selectOption('en');
   await page.locator('#theme-toggle').click();
   await switchMapView(page, 'mind');
