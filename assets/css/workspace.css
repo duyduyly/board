@@ -121,6 +121,12 @@
 .selection-tools[hidden] {
   display: none;
 }
+.selection-tools { flex-wrap: wrap; gap: 6px; }
+.selection-json { position: static; }
+.selection-json > summary { cursor: pointer; padding: 6px 9px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+.selection-json-menu { position: absolute; z-index: 2; bottom: calc(100% + 8px); left: 0; box-sizing: border-box; width: 240px; max-width: 100%; padding: 10px; display: grid; gap: 6px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); box-shadow: 0 4px 14px #0002; }
+.selection-json-menu p { margin: 0; line-height: 1.4; }
+.selection-json-menu button { text-align: left; }
 .canvas-hint {
   max-width: calc(100% - 340px);
   text-align: right;

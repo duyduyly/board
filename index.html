@@ -193,6 +193,14 @@
           <div id="selection-tools" class="selection-tools" hidden>
             <span id="selection-count" role="status" aria-live="polite"></span>
             <button type="button" data-action="group-create" data-i18n="groupCreate"></button>
+            <details id="selection-json" class="selection-json">
+              <summary data-i18n="selectionJsonMenu"></summary>
+              <div class="selection-json-menu">
+                <p data-i18n="selectionJsonScope"></p>
+                <button type="button" data-action="selection-copy-json" data-i18n="selectionJsonCopy"></button>
+                <button type="button" data-action="selection-download-json" data-i18n="selectionJsonDownload"></button>
+              </div>
+            </details>
             <button type="button" data-action="clear-selection" data-i18n="clearSelection"></button>
           </div>
           <div id="mind-view-banner" hidden>

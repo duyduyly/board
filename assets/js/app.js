@@ -78,6 +78,7 @@ import {
   DEFAULT_CARD_SIZE,
 } from './store/project-store.js';
 import { blank, stage, validate, serialize, filename, LIMITS } from './json/validator.js';
+import { selectionFile } from './json/selection-export.js';
 import { t, setLocale, issueMessage, number } from './i18n/index.js';
 import { GraphAdapter } from './canvas/adapter.js';
 import { renderLegacySource } from './detail/legacy-source.js';
@@ -92,6 +93,7 @@ export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
   selectedCards = new Set(),
+  singleMarqueeId = null,
   tab = 'overview',
   draft = null,
   draftOriginal = null,
@@ -571,7 +573,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       ),
     ),
   select: (s, edit = false, open = false) => select(s, edit, open),
-  selectMany: (ids) => selectMany(ids),
+  selectMany: (ids, options) => selectMany(ids, options),
   groupAction: (id, action) =>
     action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
   groupLocked: () => adapter.callbacks.locked() || connectMode || home,
@@ -674,10 +676,12 @@ function render() {
     collapsed: store.collapsed,
     selectedCards,
   });
-  $('#selection-tools').hidden = selectedCards.size < 2;
+  $('#selection-tools').hidden = selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
+  if ($('#selection-tools').hidden) $('#selection-json').open = false;
   $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
   const groupedCards = new Set(cardGroups(store.project).flatMap((group) => group.cardIds));
   const createGroupButton = $('[data-action=group-create]');
+  createGroupButton.hidden = selectedCards.size < 2;
   createGroupButton.disabled = [...selectedCards].some((id) => groupedCards.has(id));
   createGroupButton.title = t(createGroupButton.disabled ? 'groupAlreadyAssigned' : 'groupCreate');
   $('#mind-map-tools').hidden = store.activeView !== 'mind';
@@ -782,6 +786,7 @@ async function select(next, edit = false, open = false) {
   revealSelection(next);
   selection = next;
   selectedCards = new Set(next?.kind === 'card' ? [next.id] : []);
+  singleMarqueeId = null;
   detailOpen = Boolean(next && (open || edit || next.kind === 'relation' || detailOpen));
   tab = next?.kind === 'relation' || edit || next?.kind === 'project' ? 'edit' : 'overview';
   if (
@@ -800,7 +805,7 @@ async function select(next, edit = false, open = false) {
   render();
   return true;
 }
-function selectMany(ids) {
+function selectMany(ids, { marquee = false } = {}) {
   if (adapter.callbacks.groupLocked()) return false;
   if (inspector.hasPending()) {
     void inspector.close();
@@ -809,6 +814,7 @@ function selectMany(ids) {
   selectedCards = new Set(
     ids.filter((id) => adapter.cards.has(id) && !adapter.cards.get(id).hidden),
   );
+  singleMarqueeId = marquee && selectedCards.size === 1 ? [...selectedCards][0] : null;
   const id = selectedCards.has(selection?.id) ? selection.id : [...selectedCards][0];
   selection = id ? { kind: 'card', id } : null;
   tab = 'overview';
@@ -1759,6 +1765,45 @@ async function initializeRecovery() {
   }
 }
 
+async function exportSelectionJSON(mode) {
+  if (adapter.callbacks.groupLocked() || !selectedCards.size) return;
+  const project = store.project;
+  const ids = [...selectedCards];
+  let result;
+  try {
+    result = selectionFile(project, ids, { viewport: store.viewport, viewports: store.viewports });
+  } catch {
+    toast('selectionJsonFailed');
+    return;
+  }
+  if (result.excludedNamespaces.length || result.partialGroups.length) {
+    const choice = await dialog('selectionJsonWarningTitle', () =>
+      (result.partialGroups.length
+        ? '<p>' + esc(t('selectionJsonPartialGroups', { count: result.partialGroups.length })) + '</p>'
+        : '') +
+      (result.excludedNamespaces.length
+        ? '<p>' + esc(t('selectionJsonExcluded')) + '</p><ul>' + result.excludedNamespaces.map((name) => '<li>' + esc(name) + '</li>').join('') + '</ul>'
+        : ''),
+    [['cancel', 'cancel'], ['selectionJsonContinue', 'continue', true]]);
+    if (choice !== 'continue') return;
+    if (store.project !== project || ids.length !== selectedCards.size || ids.some((id) => !selectedCards.has(id))) {
+      toast('selectionJsonChanged');
+      return;
+    }
+  }
+  try {
+    if (mode === 'copy') {
+      await navigator.clipboard.writeText(result.text);
+      toast('selectionJsonCopied');
+    } else {
+      download(result.text, filename(project.metadata.title + '-selection'));
+      toast('exportHint');
+    }
+  } catch {
+    toast(mode === 'copy' ? 'selectionJsonCopyFailed' : 'selectionJsonFailed');
+  }
+}
+
 async function exportProject() {
   if (draftDirty()) {
     const choice = await dialog('exportDraftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
@@ -1955,6 +2000,7 @@ async function switchMapView(targetView) {
   }
   store.switchView(targetView);
   selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
+  singleMarqueeId = null;
   previousPanelKey = null;
   render();
   adapter.setViewport(store.viewport);
@@ -2207,6 +2253,8 @@ const actions = {
   },
 
   'clear-selection': () => selectMany([]),
+  'selection-copy-json': () => exportSelectionJSON('copy'),
+  'selection-download-json': () => exportSelectionJSON('download'),
   'group-create': () => {
     if (!adapter.callbacks.groupLocked()) editGroup(null, [...selectedCards]);
   },
@@ -2288,10 +2336,17 @@ document.addEventListener('click', (e) => {
   const button = e.target.closest('[data-action],[data-panel-action]');
   if (button && !button.disabled && !feedback.state)
     actions[button.dataset.action || button.dataset.panelAction]?.();
+  if (!e.target.closest('#selection-json') || button) $('#selection-json').open = false;
   if (!e.target.closest('#project-menu') || button) $('#project-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
   if (dateEditor.open || overviewEditor.open) return;
+  if (e.key === 'Escape' && !feedback.state && $('#selection-json').open) {
+    e.preventDefault();
+    $('#selection-json').open = false;
+    $('#selection-json > summary').focus();
+    return;
+  }
   if (e.key === 'Escape' && !detailOpen && !feedback.state && !$('#search-drawer').hidden) {
     e.preventDefault();
     closeSearch();

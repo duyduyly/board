@@ -2,7 +2,8 @@
 /.idea/
 /.vscode/
 /.agents/
-/.codex/
+/.codex/*
+!/.codex/config.toml
 
 # Local planning, research and workspace copies
 /planning/
@@ -15,6 +16,10 @@
 /scripts/vendor-src/
 /dist/
 /coverage/
+/.cache/
+/.nyc_output/
+/.eslintcache
+*.tsbuildinfo
 
 # Test output
 /test-results/

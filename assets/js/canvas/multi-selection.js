@@ -263,7 +263,7 @@ function startMarquee(adapter, event) {
     },
     finish() {
       box.remove();
-      if (moved) adapter.callbacks.selectMany(ids);
+      if (moved) adapter.callbacks.selectMany(ids, { marquee: true });
     },
   });
 }

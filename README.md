@@ -97,7 +97,8 @@ Badge phía trên hiển thị type; số quan hệ nằm trong tooltip của n�
 - **Shift + kéo vùng trống** để quét chọn thêm các khối giao với khung. Chỉ chọn khối đang hiển thị; quét theo hướng nào cũng được.
 - Kéo vùng trống trên một khối chưa ghim đã chọn để dịch cả nhóm. **Khối đã ghim đứng yên**. Mỗi lần kéo là một bước Undo; chỉ vị trí trong view hiện tại thay đổi.
 - **Escape** khi đang kéo hủy lần kéo; nhấn lại để bỏ chọn. Nút **Bỏ chọn** hoặc click vùng trống cũng xóa nhóm. Click khối ngoài nhóm thay selection; click khối trong nhóm giữ nhóm.
-- Nhóm hiện chỉ dùng để kéo; chọn một khối để sửa/xóa. Mở Detail, sửa chữ/ngày, bật Kết nối hoặc chuyển Card/Mind đưa nhóm về một khối. Nhóm chọn chỉ tồn tại trong phiên, không lưu trong JSON.
+- Sau khi quét chọn, mở **JSON** để sao chép hoặc tải các card đã chọn. File giữ ảnh đính kèm, vị trí hai view và các đường nối có cả hai đầu được chọn; có thể nhập lại vào Board. Nhóm bị chọn một phần chỉ giữ thành viên đã chọn. Nếu có dữ liệu mở rộng cấp dự án không thể lọc an toàn, ứng dụng thông báo trước khi xuất.
+- Chọn một khối để sửa/xóa. Mở Detail, sửa chữ/ngày, bật Kết nối hoặc chuyển Card/Mind đưa nhóm về một khối. Trạng thái chọn chỉ tồn tại trong phiên, không lưu trong JSON; sao chép hoặc tải vùng chọn không đánh dấu toàn dự án đã lưu.
 
 ### Điều hướng sơ đồ
 
