@@ -1063,7 +1063,7 @@
     },
     {
       "id": "branch-square",
-      "source": "shape-rectangle",
+      "source": "shape-rounded",
       "target": "shape-square",
       "label": "",
       "type": "default",
@@ -1081,7 +1081,7 @@
     },
     {
       "id": "branch-circle",
-      "source": "shape-rectangle",
+      "source": "shape-square",
       "target": "shape-circle",
       "label": "",
       "type": "default",
@@ -1117,7 +1117,7 @@
     },
     {
       "id": "branch-diamond",
-      "source": "shape-rectangle",
+      "source": "shape-ellipse",
       "target": "shape-diamond",
       "label": "",
       "type": "default",
@@ -1135,7 +1135,7 @@
     },
     {
       "id": "branch-triangle",
-      "source": "shape-rectangle",
+      "source": "shape-diamond",
       "target": "shape-triangle",
       "label": "",
       "type": "default",
@@ -1153,7 +1153,7 @@
     },
     {
       "id": "branch-hexagon",
-      "source": "shape-rectangle",
+      "source": "shape-triangle",
       "target": "shape-hexagon",
       "label": "",
       "type": "default",
@@ -1171,7 +1171,7 @@
     },
     {
       "id": "branch-star",
-      "source": "shape-rectangle",
+      "source": "shape-ellipse",
       "target": "shape-star",
       "label": "",
       "type": "default",
@@ -1189,7 +1189,7 @@
     },
     {
       "id": "branch-heart",
-      "source": "shape-rectangle",
+      "source": "shape-star",
       "target": "shape-heart",
       "label": "",
       "type": "default",
@@ -1207,7 +1207,7 @@
     },
     {
       "id": "branch-octagon",
-      "source": "shape-rectangle",
+      "source": "shape-heart",
       "target": "shape-octagon",
       "label": "",
       "type": "default",
@@ -1225,7 +1225,7 @@
     },
     {
       "id": "branch-arrow",
-      "source": "shape-rectangle",
+      "source": "shape-star",
       "target": "shape-arrow",
       "label": "",
       "type": "default",
@@ -1243,7 +1243,7 @@
     },
     {
       "id": "branch-isosceles-triangle",
-      "source": "shape-rectangle",
+      "source": "shape-arrow",
       "target": "shape-isosceles-triangle",
       "label": "",
       "type": "default",
@@ -1261,7 +1261,7 @@
     },
     {
       "id": "branch-right-triangle",
-      "source": "shape-rectangle",
+      "source": "shape-isosceles-triangle",
       "target": "shape-right-triangle",
       "label": "",
       "type": "default",

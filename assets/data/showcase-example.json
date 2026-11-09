@@ -126,13 +126,13 @@
               "tag": "p",
               "attributes": {},
               "children": [
-                "Note Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
+                "Note Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens the shared content, and Edit opens the HTML block editor; code with a supported language is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
               ]
             }
           ]
         }
       },
-      "content": "01 · Spaced Study Plan\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động.\nCurrent workspace\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens shared Markdown; fenced code is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
+      "content": "01 · Spaced Study Plan\nLập kế hoạch theo việc có thể làm được; quay lại tự kiểm tra ở các buổi khác nhau.\nCơ sở phương pháp\nIES: Organizing Instruction and Study to Improve Student Learning · Tổng quan Dunlosky et al.\nBố cục và bảng ghi lỗi là cách áp dụng trong mẫu, không phải bằng chứng rằng Card Atlas đã được thử nghiệm. Không có chấm điểm, nhắc lịch hoặc che đáp án tự động.\nCurrent workspace\nNote Board uses paper notes; right Format sidebar edits text/tags/card/arrows. Page actions apply to existing unlocked elements. Double-click opens the shared content, and Edit opens the HTML block editor; code with a supported language is colored. Convert to Mind Map asks for a root and keeps Note Board geometry. Mind Map uses compact nodes and curved branches. Export JSON to save your copy."
     },
     {
       "id": "roadmap-0",

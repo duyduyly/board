@@ -35,7 +35,7 @@
         "textColor": "#23332D",
         "borderColor": "#28594B"
       },
-      "content": "Đuôi -s/-es và -ed\nBài học cơ bản: cách dùng, chính tả và phát âm là ba câu hỏi khác nhau.\nNhómKhi dùngVí dụ\n\n-s/-esĐộng từ hiện tại đơn, chủ ngữ he/she/itShe reads.\n-s/-esDanh từ đếm được số nhiềutwo books\n-edV2/V3 của động từ có quy tắcworked\n\n\nLộ trình: mở nhánh -s/-es trước, rồi nhánh -ed, sau đó làm bài tập và xem đáp án.\nPhát âm dựa vào âm cuối của từ gốc, không chỉ chữ cuối. Nội dung học giữ nguyên khi chuyển ngôn ngữ giao diện.\nflowchart LR\n    A[English endings] --> B[s / es]\n    A --> C[ed]\n    B --> D[Usage and spelling]\n    B --> E[s - z - iz]\n    C --> F[Usage and spelling]\n    C --> G[t - d - id]\nBảng nhớ bằng ảnh\nẢnh này nằm trong file JSON, không cần tải từ website khác.\nBảng nhớ phát âm đuôi tiếng Anh\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
+      "content": "Đuôi -s/-es và -ed\nBài học cơ bản: cách dùng, chính tả và phát âm là ba câu hỏi khác nhau.\nNhómKhi dùngVí dụ\n\n-s/-esĐộng từ hiện tại đơn, chủ ngữ he/she/itShe reads.\n-s/-esDanh từ đếm được số nhiềutwo books\n-edV2/V3 của động từ có quy tắcworked\n\n\nLộ trình: mở nhánh -s/-es trước, rồi nhánh -ed, sau đó làm bài tập và xem đáp án.\nPhát âm dựa vào âm cuối của từ gốc, không chỉ chữ cuối. Nội dung học giữ nguyên khi chuyển ngôn ngữ giao diện.\nflowchart LR\n    A[English endings] --> B[s / es]\n    A --> C[ed]\n    B --> D[Usage and spelling]\n    B --> E[s - z - iz]\n    C --> F[Usage and spelling]\n    C --> G[t - d - id]\nBảng nhớ bằng ảnh\nẢnh này nằm trong file JSON, không cần tải từ website khác.\nBảng nhớ phát âm đuôi tiếng Anh\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:images": {
           "image-endings-chart": {
@@ -293,7 +293,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                    "Double-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted."
                   ]
                 },
                 {
@@ -307,7 +307,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview."
                   ]
                 },
                 {
@@ -2509,48 +2509,48 @@
             "y": 0
           },
           "english-s-use": {
-            "x": -263.0673991501857,
-            "y": -296.1077823398812
+            "x": 390,
+            "y": 157
           },
           "english-s-spelling": {
-            "x": -546.3818402245392,
-            "y": -592.4739873611802
+            "x": 740,
+            "y": 157
           },
           "english-s-sounds": {
-            "x": -816.9296892487978,
-            "y": -875.4854674253113
+            "x": 1090,
+            "y": 157
           },
           "english-ed-use": {
-            "x": 429.22737000677944,
-            "y": -16.562785968932644
+            "x": 390,
+            "y": -192
           },
           "english-ed-spelling": {
-            "x": 586.3818402245391,
-            "y": -592.4739873611802
+            "x": 740,
+            "y": -261
           },
           "english-ed-sounds": {
-            "x": 856.9296892487977,
-            "y": -875.4854674253114
+            "x": 1090,
+            "y": -261
           },
           "english-mistakes": {
-            "x": -288.5480283608201,
-            "y": 269.45330842011117
+            "x": -350,
+            "y": 0
           },
           "english-practice": {
-            "x": -597.3653364015091,
-            "y": 539.1417773143191
+            "x": -700,
+            "y": 0
           },
           "english-answers": {
-            "x": -892.2668532992775,
-            "y": 796.6776617870239
+            "x": -1050,
+            "y": 0
           },
           "illustration": {
-            "x": 586.3818402245392,
-            "y": 557.4739873611801
+            "x": 740,
+            "y": -87
           },
           "detached-note": {
-            "x": 1256.9296892487978,
-            "y": -875.4854674253114
+            "x": 20,
+            "y": 365
           }
         },
         "sizes": {

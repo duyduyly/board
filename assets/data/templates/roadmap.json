@@ -33,7 +33,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "Goal\nDefine who benefits, the deliverable, and observable acceptance criteria. Keep the scope small enough to review.\nYour notes\n[ ] Replace this prompt with your own material.\n\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
+      "content": "Goal\nDefine who benefits, the deliverable, and observable acceptance criteria. Keep the scope small enough to review.\nYour notes\n[ ] Replace this prompt with your own material.\n\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:typography": {
           "title": {
@@ -104,7 +104,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                    "Double-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted."
                   ]
                 },
                 {
@@ -118,7 +118,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview."
                   ]
                 },
                 {

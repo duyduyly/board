@@ -7,8 +7,8 @@
   "canvas": {
     "zoom": 0.5,
     "position": {
-      "x": 70,
-      "y": 50
+      "x": 120,
+      "y": 120
     }
   },
   "cards": [
@@ -23,7 +23,7 @@
       ],
       "position": {
         "x": 0,
-        "y": 0
+        "y": -340
       },
       "size": {
         "width": 260,
@@ -34,7 +34,7 @@
         "textColor": "#23332D",
         "borderColor": "#B8B488"
       },
-      "content": "Reusable learning atlas template\nStructure\nTopic container > theory lesson > concept > optional sub-concept > code example.\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\nHow to reuse\nCopy this JSON under a new filename and replace metadata.title / description.\nReplace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\nDuplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\nAttach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\nConcepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\nUse 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail.\nKeep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\nReposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\nAdd real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\nValidate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\nSample branches\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\nPresentation sizes\nTheory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry.\nLimits\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card.\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
+      "content": "Reusable learning atlas template\nStructure\nTopic container > theory lesson > concept > optional sub-concept > code example.\nThe topic title is a visual heading inside a native group frame. It does not need arrows to every lesson. Arrows only connect related learning cards inside the same topic.\nHow to reuse\nCopy this JSON under a new filename and replace metadata.title / description.\nReplace the bracketed titles, summaries and content with your actual material. Keep complete theory in the lesson card; put each section in its concept card.\nDuplicate a whole topic group to add a subject. Give every copied card, group and relation a unique ID. Update relation source / target, group cardIds and both Mind Map geometry dictionaries.\nAttach each example to its most specific concept. Each card has at most one incoming branch. Do not duplicate arrows from lesson to example when the example already belongs to a concept.\nConcepts may have no examples. Do not invent examples or theory that are absent from the source. Broad examples covering a whole lesson can stay directly beneath that lesson.\nUse 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code stays in the HTML Detail.\nKeep route=orthogonal for relations. Use separate topic frames; a card may belong to only one native group. Nested concepts use arrows and spacing, not nested native containers.\nReposition copied cards to avoid overlapping nodes and frames. Group bounds are derived from card positions; do not add unsupported container geometry.\nAdd real source links to the relevant content. Remove unused sample cards, references and template instructions before delivery.\nValidate with Card Atlas and import using Note Board. For a different Mind Map root, update card-atlas:mind-map.rootId to an existing card.\n\nSample branches\nTopic 01: theory > concept A > two examples; theory > concept B > sub-concept > example; theory > concept C without an example.\nTopic 02: another independent theory/concept/example group.\nPresentation sizes\nTheory and concept notes: 260 x 260, title 20px, summary 14px. Code examples: transparent 260 x 260 cards without borders or shadows. Topic heading: 1900 x 150. Use a 470px column step and leave at least 60px between notes. Separate topic frames by at least 150px. Mind Map keeps its independent compact geometry.\nLimits\nJSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Content at most 100000 characters per card.\nWorkspace guide\nNote Board: select a note, then use Format on the right for text, tags, paper and arrows. Page settings apply only to existing unlocked elements.\nDouble-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted.\nConvert to Mind Map: choose a root note; outgoing links become branches, extra/cycle links stay references. Note Board positions remain unchanged.\nMind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview.\nApply saves and shows success feedback. Undo reverses a command. Export JSON to keep your work; examples are fresh copies when reopened.",
       "extensions": {
         "card-atlas:node": {
           "kind": "card"
@@ -113,7 +113,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Replace the bracketed titles, summaries and Markdown with your actual material. Keep complete theory in the lesson card; put each section in its concept card."
+                    "Replace the bracketed titles, summaries and content with your actual material. Keep complete theory in the lesson card; put each section in its concept card."
                   ]
                 },
                 {
@@ -141,7 +141,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Use 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code remains in Markdown Detail."
+                    "Use 260 x 260 Note paper for theory and concepts; code examples use transparent cards without borders or shadows. Keep topic headings as text inside native group frames. Full code stays in the HTML Detail."
                   ]
                 },
                 {
@@ -213,7 +213,7 @@
               "tag": "p",
               "attributes": {},
               "children": [
-                "JSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Markdown at most 100000 characters per card."
+                "JSON version 1.0; at most 500 cards and 2000 relations; project at most 10 MiB; Content at most 100000 characters per card."
               ]
             },
             {
@@ -238,7 +238,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Double-click a note or image to read or edit its Markdown. Fenced code with a language such as java or json is syntax highlighted."
+                    "Double-click a note or use ↗ to read its content; Edit opens the HTML block editor. Code with a supported language such as java or json is syntax highlighted."
                   ]
                 },
                 {
@@ -252,7 +252,7 @@
                   "tag": "li",
                   "attributes": {},
                   "children": [
-                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same Markdown. Use Arrange Mind Map for a layout preview."
+                    "Mind Map: compact text/image nodes and curved branches. Double-click opens the same content. Use Arrange Mind Map for a layout preview."
                   ]
                 },
                 {
@@ -279,10 +279,10 @@
       ],
       "position": {
         "x": 0,
-        "y": 1000
+        "y": 0
       },
       "size": {
-        "width": 1900,
+        "width": 1460,
         "height": 150
       },
       "style": {
@@ -346,7 +346,7 @@
       ],
       "position": {
         "x": 0,
-        "y": 1900
+        "y": 590
       },
       "size": {
         "width": 260,
@@ -460,8 +460,8 @@
         "concept"
       ],
       "position": {
-        "x": 470,
-        "y": 1520
+        "x": 400,
+        "y": 190
       },
       "size": {
         "width": 260,
@@ -568,8 +568,8 @@
         "java-example"
       ],
       "position": {
-        "x": 940,
-        "y": 1440
+        "x": 800,
+        "y": 190
       },
       "size": {
         "width": 260,
@@ -666,8 +666,8 @@
         "java-example"
       ],
       "position": {
-        "x": 940,
-        "y": 1760
+        "x": 800,
+        "y": 490
       },
       "size": {
         "width": 260,
@@ -743,8 +743,8 @@
         "concept"
       ],
       "position": {
-        "x": 470,
-        "y": 2220
+        "x": 400,
+        "y": 790
       },
       "size": {
         "width": 260,
@@ -816,8 +816,8 @@
         "concept"
       ],
       "position": {
-        "x": 940,
-        "y": 2220
+        "x": 800,
+        "y": 790
       },
       "size": {
         "width": 260,
@@ -889,8 +889,8 @@
         "java-example"
       ],
       "position": {
-        "x": 1410,
-        "y": 2300
+        "x": 1200,
+        "y": 790
       },
       "size": {
         "width": 260,
@@ -966,8 +966,8 @@
         "concept"
       ],
       "position": {
-        "x": 470,
-        "y": 2920
+        "x": 400,
+        "y": 1090
       },
       "size": {
         "width": 260,
@@ -1039,11 +1039,11 @@
         "topic"
       ],
       "position": {
-        "x": 2350,
-        "y": 1000
+        "x": 1700,
+        "y": 0
       },
       "size": {
-        "width": 1900,
+        "width": 1060,
         "height": 150
       },
       "style": {
@@ -1106,8 +1106,8 @@
         "lesson"
       ],
       "position": {
-        "x": 2350,
-        "y": 1700
+        "x": 1700,
+        "y": 190
       },
       "size": {
         "width": 260,
@@ -1221,8 +1221,8 @@
         "concept"
       ],
       "position": {
-        "x": 2820,
-        "y": 1520
+        "x": 2100,
+        "y": 190
       },
       "size": {
         "width": 260,
@@ -1329,8 +1329,8 @@
         "java-example"
       ],
       "position": {
-        "x": 3290,
-        "y": 1440
+        "x": 2500,
+        "y": 190
       },
       "size": {
         "width": 260,
