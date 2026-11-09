@@ -20,6 +20,10 @@ export function t(key, params = {}) {
   return value.replace(/\{(\w+)\}/g, (_, name) => String(params[name] ?? '{' + name + '}'));
 }
 export function issueMessage(issue) {
+  if (issue.code === 'syntax' && issue.line && issue.column)
+    return t('errorSyntaxAt', { line: issue.line, column: issue.column });
+  if (issue.code === 'const' && issue.params && 'allowedValue' in issue.params)
+    return t('errorConst', { value: JSON.stringify(issue.params.allowedValue) });
   const key = {
     syntax: 'errorSyntax',
     mindMap: 'errorMindMap',

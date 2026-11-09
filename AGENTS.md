@@ -1,5 +1,14 @@
 # Hướng dẫn agents cho Visual Card Graph Editor
 
+## Quy trình lập kế hoạch và thực thi song song
+
+- Với công việc triển khai nhiều bước, agent điều phối khảo sát yêu cầu, code và trạng thái trước khi sửa; lập kế hoạch có ID, mô tả, dependencies, khả năng chạy song song, files dự kiến, acceptance, tests và trạng thái. Biểu diễn đồ thị dependencies và xác định tài nguyên hoặc files có thể xung đột. Với sửa đổi nhỏ, điều chỉnh mức chi tiết cho phù hợp; không tự mở rộng phạm vi đã giao.
+- Agent điều phối ưu tiên `gpt-6.1-sol` với reasoning `medium`; subagent thực hiện ưu tiên `gpt-6.1-terra` với reasoning `medium`. Cấu hình dự án đặt các giá trị mặc định trong `.codex/config.toml`; lựa chọn tường minh của người dùng, giới hạn nền tảng hoặc chính sách ưu tiên cao hơn vẫn có hiệu lực. Không khẳng định model đã đổi giữa lượt đang chạy.
+- Chỉ giao song song các việc độc lập, với tối đa 3 subagent hoạt động đồng thời, không tính agent điều phối. Phân định chủ sở hữu files và tài nguyên; không cho hai worker sửa cùng file đồng thời. Ưu tiên worktree riêng khi an toàn, nhưng worktree mới không tự chứa thay đổi chưa commit: kiểm tra và bảo toàn trạng thái hiện có, không tự stash/reset/commit để tạo worktree. Nếu không cô lập được an toàn thì điều phối tuần tự; không vượt giới hạn môi trường. Chỉ agent điều phối cập nhật master checklist, các bản trích và tích hợp kết quả.
+- Chỉ bắt đầu task phụ thuộc khi dependencies đã được kiểm chứng. Sau mỗi task, kiểm tra acceptance và chạy các tests/build/lint/typecheck phù hợp; nếu lỗi, tìm nguyên nhân, sửa và chạy lại tối đa 3 vòng. Nếu vẫn lỗi, ghi BLOCKED cùng bằng chứng và tiếp tục task độc lập khác. Không xóa, bỏ qua hoặc làm yếu test để lấy PASS; không đánh DONE khi chưa kiểm chứng. Tích hợp xong chạy regression liên quan, review correctness/security và mở lại task nếu phát hiện lỗi.
+- Trong plan mới có thể dùng PENDING/RUNNING/DONE/BLOCKED; master `planning/implementation-checklist.csv` vẫn giữ 14 cột và trạng thái TODO/IN_PROGRESS/DONE/BLOCKED/BACKLOG hiện có (PENDING tương ứng TODO, RUNNING tương ứng IN_PROGRESS). BACKLOG ngoài phạm vi không tự trở thành công việc bắt buộc. Tuân thủ các quy tắc cập nhật CSV bên dưới.
+- Bảo toàn thay đổi đang dở; không xóa tính năng, đổi nghiệp vụ ngoài yêu cầu, deploy hay sửa dữ liệu production khi chưa được phép. Không tự commit/push. Khi kết thúc báo số task hoàn tất/bị chặn, công việc song song, files, kết quả kiểm thử và rủi ro; chỉ báo PASS khi toàn bộ acceptance đã được xác minh.
+
 ## E047 — 02_big_change UI / Sổ tay chì
 
 User chọn bản notebook và giao triển khai ngày 2026-10-30. Task và preview gốc ở

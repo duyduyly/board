@@ -131,6 +131,12 @@
   max-width: calc(100% - 340px);
   text-align: right;
 }
+#modal .modal-body label:has(> select) {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding-bottom: 4px;
+}
 /* Separate-window ChatGPT shortcut */
 .graph-card.pinned-card {
   cursor: default;
@@ -277,8 +283,16 @@
   position: sticky;
   bottom: -20px;
   background: var(--surface);
+  border-top: 1px solid var(--border);
   padding: 12px 0;
   z-index: 2;
+  justify-content: flex-end;
+}
+.editor .editor-actions:has(button[type='submit']) .format-draft-status {
+  margin-inline-end: auto;
+}
+dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
+  bottom: -24px;
 }
 .document-contents {
   padding: 12px;
@@ -409,6 +423,9 @@
   margin: 0;
   text-align: center;
 }
+#canvas-region[data-view='mind'] .canvas-hint {
+  display: none;
+}
 #mind-view-banner {
   position: absolute;
   bottom: 20px;
@@ -421,6 +438,13 @@
   background: var(--surface);
   color: var(--ink);
   box-shadow: 0 2px 8px #132d2309;
+  max-width: calc(100% - 32px);
+}
+/* Canvas hẹp (dock Format mở): zoom bar rộng ~366px chiếm hết đáy, nên banner nổi lên trên nó. */
+@media (max-width: 1150px) {
+  #mind-view-banner {
+    bottom: 84px;
+  }
 }
 #mind-view-banner strong {
   display: block;
@@ -629,11 +653,24 @@
 .project-menu > summary::-webkit-details-marker {
   display: none;
 }
-.project-menu-body > button {
+.menu-group > button {
   display: block;
   width: 100%;
   text-align: left;
   margin-bottom: 6px;
+}
+.menu-group + .menu-group {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.menu-group-title {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 #canvas-region {
   --workspace-cursor: url('../images/cursors/note.svg') 3 29, default;
@@ -726,6 +763,38 @@
   border-color: var(--branch-color);
   background: var(--surface);
   cursor: pointer;
+}
+/* Collapsed branch: presentation only, geometry of the toggle stays as above. */
+.branch-toggle[aria-expanded='false'] {
+  background: color-mix(in srgb, var(--branch-color) 22%, var(--surface));
+  color: var(--ink);
+  text-shadow:
+    0.35px 0 currentColor,
+    -0.35px 0 currentColor;
+  box-shadow:
+    0 0 0 1.5px var(--surface),
+    0 0 0 3px var(--branch-color);
+}
+.branch-toggle[aria-expanded='false']:hover {
+  background: color-mix(in srgb, var(--branch-color) 34%, var(--surface));
+}
+.branch-toggle[aria-expanded='false']:focus-visible {
+  box-shadow:
+    0 0 0 1.5px var(--surface),
+    0 0 0 3px var(--branch-color),
+    0 0 0 5px var(--accent);
+}
+
+/* Focus branch (session state): dimmed cards stay interactive. */
+.graph-card.focus-dimmed {
+  opacity: 0.25;
+}
+[data-action='focus'][aria-pressed='true'],
+[data-panel-action='focus'][aria-pressed='true'] {
+  background: var(--active-background);
+  color: var(--active-ink);
+  /* Inset ring: the zoom-bar button has no border, and the ring must not change its box. */
+  box-shadow: inset 0 0 0 1.5px var(--accent);
 }
 
 /* Explicit transparent options override theme tinting and branch borders. */

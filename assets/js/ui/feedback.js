@@ -4,9 +4,9 @@ import { t } from '../i18n/index.js';
 export function createFeedback() {
   let modalState = null,
     toastTimer = null;
-  function toast(key, { position = 'bottom', detail = null } = {}) {
+  function toast(key, { position = 'bottom', detail = null, params = {} } = {}) {
     clearTimeout(toastTimer);
-    $('#toast').textContent = t(key) + (detail ? ' ' + t(detail) : '');
+    $('#toast').textContent = t(key, params) + (detail ? ' ' + t(detail) : '');
     $('#toast').dataset.position = position;
     $('#toast').hidden = false;
     toastTimer = setTimeout(() => ($('#toast').hidden = true), 5000);

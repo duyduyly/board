@@ -4,12 +4,12 @@ for (const { locale, viewport, hint } of [
   {
     locale: 'vi',
     viewport: { width: 1440, height: 900 },
-    hint: 'Mũi tên nối với card đã ghim đang bị khóa.',
+    hint: 'Mũi tên nối với note đã ghim đang bị khóa.',
   },
   {
     locale: 'en',
     viewport: { width: 390, height: 844 },
-    hint: 'This connector is locked because it touches a pinned card.',
+    hint: 'This connector is locked because it touches a pinned note.',
   },
 ]) {
   test(`locked connector shows its explanation in ${locale} at ${viewport.width}px`, async ({

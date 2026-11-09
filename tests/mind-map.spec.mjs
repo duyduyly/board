@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
@@ -140,7 +141,7 @@ test('cover picker style Apply Cancel and referenced attachment deletion guard',
   await format(page);
   await page.locator('select[name=node-kind]').selectOption('image-text');
   await page.locator('select[name=node-imageFit]').selectOption('cover');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect(page.locator('select[name=node-kind]')).toHaveValue('image');
   await page.locator('select[name=node-kind]').selectOption('image-text');
   await applyAndContinue(page, page.locator('.editor button[type=submit]'));
@@ -239,7 +240,7 @@ test('opt-in recovery restores Mind Map draft and geometry; disable removes stor
   await page.locator('[data-choice=restore]').click();
   await expect(page.locator('#map-view')).toHaveAttribute('data-active-view', 'mind');
   await expect(page.locator('input[name=width]')).toHaveValue('360');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await projectAction(page, 'recovery');
   await page.locator('[data-choice=disable]').click();
   expect(await page.evaluate(() => localStorage.length)).toBe(0);
@@ -261,7 +262,7 @@ test('relation branch validation rejects second parent; image connector stays at
       'card-atlas:mind-map'
     ].kind,
   ).toBe('reference');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await openRow(page, page.locator('.card-row[data-card-id=illustration]'));
   await projectAction(page, 'focus');
   const before = await data(page);

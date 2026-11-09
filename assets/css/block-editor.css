@@ -1,13 +1,41 @@
 .block-editor-mode {
   display: flex;
   gap: 4px;
-  padding: 8px;
+  padding: 2px 8px;
   border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--soft);
 }
 .editor-icon-action {
   min-width: 38px;
-  font-size: 17px;
+  font-size: 16px;
+}
+/* The icon actions share the mode bar row without a DOM change: their row is zero-height and overlays it. */
+@media (min-width: 701px) {
+  .writing-tools {
+    position: relative;
+    z-index: 1;
+    height: 0;
+    margin: 0;
+    padding-inline-end: 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+  .writing-tools .editor-icon-action {
+    position: relative;
+    top: 2px;
+  }
+  .writing-tools + #block-editor .block-editor-mode {
+    padding-inline-end: 96px;
+  }
+}
+.writing-tools .editor-icon-action {
+  min-width: 40px;
+  min-height: 30px;
+  padding-block: 2px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
 }
 #block-editor > [hidden] {
   display: none !important;
@@ -18,7 +46,10 @@
 }
 .block-editor-mode button {
   min-width: 40px;
-  font-size: 17px;
+  min-height: 30px;
+  padding-block: 2px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
   font-weight: 600;
 }
 .editor .block-editor-source {
@@ -31,6 +62,10 @@
 .block-editor-source .cm-editor { min-height: 420px; }
 .block-editor-source .cm-scroller { overflow: auto; font-family: monospace; }
 .block-editor-source .cm-content { min-height: 420px; }
+.editor:has(#block-editor) .editor-actions {
+  margin-block: 8px;
+  padding-block: 8px;
+}
 .block-editor-source-hint {
   margin: 8px 0;
   color: var(--muted);
@@ -40,36 +75,42 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 6px;
-  padding: 12px;
+  gap: 4px;
+  padding: 3px 8px;
   background: var(--soft);
   border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 .block-editor-tools button {
+  border-radius: var(--radius-sm);
   font-size: 16px;
-  padding: 5px 8px;
+  padding: 1px 6px;
 }
 .block-editor-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 4px;
-  padding: 5px 8px;
+  padding: 3px 6px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
 }
 .block-editor-group-title {
-  width: 100%;
+  margin-inline-end: 2px;
+  white-space: nowrap;
   color: var(--muted);
   font-size: 11px;
   font-weight: 600;
 }
 .block-editor-group button {
-  min-width: 34px;
-  min-height: 32px;
+  min-width: 30px;
+  min-height: 28px;
 }
 .block-editor-group select {
+  min-height: 28px;
+  margin: 0;
+  padding-block: 2px;
   max-width: 120px;
   font-size: 12px;
 }
@@ -173,7 +214,8 @@
   color: var(--ink);
   font-size: 12px;
 }
-.block-editor-notice:empty {
+.block-editor-notice:empty,
+.block-editor-legacy-status:empty {
   display: none;
 }
 .block-editor-canvas {

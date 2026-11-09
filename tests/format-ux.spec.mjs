@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -74,7 +75,7 @@ test('display context, integrated rounded preset, Auto Fit and responsive dark p
   ).toBeLessThanOrEqual(1);
   await page.locator('#detail-theme').click();
   await page.screenshot({ path: 'planning/design/format-ux-dark-1050.png' });
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.locator('[data-action=close]').click();
   await switchMapView(page, 'mind');
   await page.locator('.graph-card[data-id=card-user-service] .card-open').click();

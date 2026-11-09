@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { discardDraft } from './ui-driver.mjs';
 
 test('insert a row at the selected cell and preserve it through save and undo', async ({ page }) => {
   await page.goto('/');
@@ -116,7 +117,7 @@ test('undo restores cell content and cancel leaves the saved document unchanged'
   await expect(table.locator('th').last()).toHaveText('Header B');
   await table.locator('td').first().click();
   await page.locator('[data-table-delete-row]').click();
-  await page.locator('#panel-body button[type=button]').filter({ hasText: /Hủy/ }).last().click();
+  await discardDraft(page);
   const after = await page.evaluate(async (id) => (await import('/assets/js/app.js')).store.project.cards.find((card) => card.id === id), before.id);
   expect(after).toEqual(before);
 });

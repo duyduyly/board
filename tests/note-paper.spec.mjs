@@ -29,7 +29,7 @@ test('note paper reference surface and muted dates preserve controls/fit in both
   await card.locator('.card-pin').click();
   await card.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'Format', exact: true }).click();
+  await page.getByRole('button', { name: 'Định dạng', exact: true }).click();
   await setDraftFontSize(page, '48');
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));
@@ -70,7 +70,7 @@ test('five paper colors match reference; date badge stays inside and transparent
   await c.locator('.card-pin').click();
   await c.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'Format', exact: true }).click();
+  await page.getByRole('button', { name: 'Định dạng', exact: true }).click();
   await page.locator('[name=appearance-shape]').selectOption('rectangle');
   await page.locator('[name=appearance-backgroundTransparent]').check();
   await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));

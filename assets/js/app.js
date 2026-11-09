@@ -2,6 +2,8 @@ import { createFormatInspector } from './ui/format-inspector.js';
 import { installFormatChoiceIcons } from './ui/format-choice-icons.js';
 import { convertMind } from './graph/convert-mind.js';
 import { installChatGPTLauncher } from './ui/chatgpt-launcher.js';
+import { createPetController, resolvePet } from './ui/pixel-cat.js';
+import { createPetChat } from './ui/pet-chat.js';
 import { quickHelpBody } from './ui/quick-help.js';
 import {
   EDGE,
@@ -54,7 +56,7 @@ import {
   setRoot,
   relationKind,
 } from './graph/mind-map.js';
-import { APPEARANCE, appearance } from './detail/appearance.js';
+import { APPEARANCE, appearance, appearanceWith } from './detail/appearance.js';
 import {
   recoveryEnabled,
   readRecovery,
@@ -62,11 +64,7 @@ import {
   enableRecovery,
   disableRecovery,
 } from './store/recovery.js';
-import {
-  captureEditor,
-  restoreEditor,
-  addContents,
-} from './detail/writing.js';
+import { captureEditor, restoreEditor, addContents } from './detail/writing.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
 import { IMAGE_NAMESPACE } from './detail/attachments.js';
 import {
@@ -92,6 +90,7 @@ const uniformDrafts = new WeakMap();
 export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
+  focusBranch = false,
   selectedCards = new Set(),
   singleMarqueeId = null,
   tab = 'overview',
@@ -109,6 +108,7 @@ let selection = null,
   expanded = false,
   lastExport = false,
   theme = 'light',
+  themeSwitchFrame = 0,
   writing = false,
   previousPanelKey = null,
   sourceEditorState = null,
@@ -149,11 +149,20 @@ const detailSurface = dialogSurface($('#detail-panel'), {
 });
 const inspector = createFormatInspector({
   dirty: () => overviewEditor.dirty || draftDirty(),
-  guardGlobal: async () => (await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
-    ['cancel', 'cancel'], ['discard', 'discard'],
-  ])) === 'discard',
+  guardGlobal: async () =>
+    (await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
+      ['cancel', 'cancel'],
+      ['discard', 'discard'],
+    ])) === 'discard',
   onSwitch: async () => {
-    if (feedback.state || layoutPreview || adapter.resizing || adapter.gesturing || adapter.edgeDragging) return false;
+    if (
+      feedback.state ||
+      layoutPreview ||
+      adapter.resizing ||
+      adapter.gesturing ||
+      adapter.edgeDragging
+    )
+      return false;
     if (blockEditor && !(await guardDraft())) return false;
     return true;
   },
@@ -168,8 +177,17 @@ const inspector = createFormatInspector({
     view: store.activeView,
     locked: selectionLocked(store.project, selection),
     eligibleCards: store.project.cards.filter((card) => !isPinned(card)).length,
-    eligibleEdges: store.project.relations.filter((relation) => !selectionLocked(store.project, { kind: 'relation', id: relation.id })).length,
-    eligibleRoutes: store.activeView === 'mind' ? 0 : store.project.relations.filter((relation) => relation.extensions?.[EDGE]?.route === 'orthogonal' && !selectionLocked(store.project, { kind: 'relation', id: relation.id })).length,
+    eligibleEdges: store.project.relations.filter(
+      (relation) => !selectionLocked(store.project, { kind: 'relation', id: relation.id }),
+    ).length,
+    eligibleRoutes:
+      store.activeView === 'mind'
+        ? 0
+        : store.project.relations.filter(
+            (relation) =>
+              relation.extensions?.[EDGE]?.route === 'orthogonal' &&
+              !selectionLocked(store.project, { kind: 'relation', id: relation.id }),
+          ).length,
   }),
   guard: async () => {
     if (overviewEditor.dirty) {
@@ -183,7 +201,10 @@ const inspector = createFormatInspector({
     return guardDraft();
   },
   onTab: async (key) => {
-    const keepFormatDraft = key !== 'closed' && detailOpen && draft &&
+    const keepFormatDraft =
+      key !== 'closed' &&
+      detailOpen &&
+      draft &&
       ((selection?.kind === 'card' && tab === 'format') ||
         (selection?.kind === 'relation' && tab === 'edit'));
     if (keepFormatDraft) {
@@ -229,18 +250,38 @@ const inspector = createFormatInspector({
       return;
     }
     if (!Object.values(options).some(Boolean)) return;
-    const affectedCards = options.surface || options.typography ? store.project.cards.filter((card) => !isPinned(card)).length : 0;
-    const affectedEdges = options.routes || options.arrows ? store.project.relations.filter((relation) =>
-      !selectionLocked(store.project, { kind: 'relation', id: relation.id }) &&
-      (options.arrows || (store.activeView !== 'mind' && relation.extensions?.[EDGE]?.route === 'orthogonal')),
-    ).length : 0;
-    if ((await dialog('inspectorBulkConfirmTitle', () =>
-      '<p>' + esc(t('inspectorBulkConfirmBody')) + '</p><p>' +
-      esc(t('inspectorEligibleCards').replace('{count}', number(affectedCards))) + '<br>' +
-      esc(t('inspectorEligibleEdges').replace('{count}', number(affectedEdges))) + '</p>', [
-      ['cancel', 'cancel'],
-      ['apply', 'apply', true],
-    ])) !== 'apply') return;
+    const affectedCards =
+      options.surface || options.typography
+        ? store.project.cards.filter((card) => !isPinned(card)).length
+        : 0;
+    const affectedEdges =
+      options.routes || options.arrows
+        ? store.project.relations.filter(
+            (relation) =>
+              !selectionLocked(store.project, { kind: 'relation', id: relation.id }) &&
+              (options.arrows ||
+                (store.activeView !== 'mind' &&
+                  relation.extensions?.[EDGE]?.route === 'orthogonal')),
+          ).length
+        : 0;
+    if (
+      (await dialog(
+        'inspectorBulkConfirmTitle',
+        () =>
+          '<p>' +
+          esc(t('inspectorBulkConfirmBody')) +
+          '</p><p>' +
+          esc(t('inspectorEligibleCards').replace('{count}', number(affectedCards))) +
+          '<br>' +
+          esc(t('inspectorEligibleEdges').replace('{count}', number(affectedEdges))) +
+          '</p>',
+        [
+          ['cancel', 'cancel'],
+          ['apply', 'apply', true],
+        ],
+      )) !== 'apply'
+    )
+      return;
     if (
       change((p) => {
         if (options.routes)
@@ -383,13 +424,19 @@ function translate(root = document) {
     el.title = t(el.dataset.i18nTitle);
     el.setAttribute('aria-label', t(el.dataset.i18nTitle));
   }
+  for (const el of root.querySelectorAll('[data-i18n-aria]'))
+    el.setAttribute('aria-label', t(el.dataset.i18nAria));
   for (const el of root.querySelectorAll('[data-i18n-placeholder]')) {
     el.placeholder = t(el.dataset.i18nPlaceholder);
     el.setAttribute('aria-label', t(el.dataset.i18nPlaceholder));
   }
 }
 function updateStatus() {
-  const editingContent = detailOpen && selection?.kind === 'card' && tab === 'edit' && Boolean(draft?.extensions?.[DOCUMENT]);
+  const editingContent =
+    detailOpen &&
+    selection?.kind === 'card' &&
+    tab === 'edit' &&
+    Boolean(draft?.extensions?.[DOCUMENT]);
   const panelStatus = $('#panel-save-status');
   panelStatus.hidden = !editingContent;
   if (editingContent) {
@@ -472,7 +519,13 @@ const overviewEditor = createCardOverviewEditor({
   onClose: () => updateStatus(),
   context: () => ({
     draft: Boolean(detailOpen && draft),
-    combined: Boolean(detailOpen && draft && tab === 'format' && !$('#format-inspector').hidden && inspector.active === 'text'),
+    combined: Boolean(
+      detailOpen &&
+      draft &&
+      tab === 'format' &&
+      !$('#format-inspector').hidden &&
+      inspector.active === 'text',
+    ),
     count: store.project.cards.filter((c) => !isPinned(c)).length,
   }),
   isShared: () => Boolean(draftOriginal && uniformDrafts.has(draftOriginal)),
@@ -530,7 +583,8 @@ const overviewEditor = createCardOverviewEditor({
       else uniformDrafts.delete(draftOriginal);
       draft = project.cards[index];
       if (store.activeView === 'mind') draftMindSize = clone(geometry(project, draft, 'mind').size);
-      const combined = tab === 'format' && !$('#format-inspector').hidden && inspector.active === 'text';
+      const combined =
+        tab === 'format' && !$('#format-inspector').hidden && inspector.active === 'text';
       if (combined) {
         if (applyDraft()) return announceApplied(true);
         draft = previousDraft;
@@ -578,18 +632,41 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
   groupLocked: () => adapter.callbacks.locked() || connectMode || home,
   date: (id, anchor) => {
-    if (inspector.hasPending()) { void inspector.close(); return; }
+    if (inspector.hasPending()) {
+      void inspector.close();
+      return;
+    }
     selectMany([id]);
     dateEditor.show(id, anchor);
   },
   overview: (id, anchor, field) => {
-    if (inspector.hasPending()) { void inspector.close(); return; }
+    if (inspector.hasPending()) {
+      void inspector.close();
+      return;
+    }
     selectMany([id]);
     inspector.show('text');
     $('#inspector-text').append($('#card-overview-editor'));
     overviewEditor.show(id, anchor, field);
   },
+  connectFrom: async (id) => {
+    if (selectionLocked(store.project, { kind: 'card', id })) {
+      toast('pinnedCardLocked');
+      return;
+    }
+    if (feedback.state || layoutPreview) return;
+    if (!(await guardDraft())) return;
+    connectMode = true;
+    connectSource = id;
+    selectedCards = new Set([id]);
+    render();
+    adapter.cards.get(id)?.focus({ preventScroll: true });
+  },
   open: async (s) => {
+    if (connectMode && connectSource) {
+      await select(s);
+      return;
+    }
     if (!(await guardDraft())) return;
     connectMode = false;
     connectSource = null;
@@ -609,7 +686,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       setGeometry(p, id, store.activeView, 'size', size);
       const card = p.cards.find((c) => c.id === id);
       card.extensions ||= {};
-      card.extensions[APPEARANCE] = { ...appearance(card), sizeMode: 'manual' };
+      card.extensions[APPEARANCE] = appearanceWith(card, { sizeMode: 'manual' });
     }),
   connection: (source, target, pos) => connection(source, target, pos),
   viewport: (zoom, position) => {
@@ -664,7 +741,14 @@ function render() {
   themeButton.querySelector('[data-i18n]').dataset.i18n =
     theme === 'dark' ? 'darkTheme' : 'lightTheme';
   themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
-  $('[data-action=focus]').disabled = !['card', 'relation'].includes(selection?.kind);
+  // Branch focus is session-only: it only makes sense while a card is selected.
+  if (selection?.kind !== 'card') focusBranch = false;
+  for (const el of document.querySelectorAll('[data-action=focus],[data-panel-action=focus]')) {
+    el.setAttribute('aria-pressed', String(focusBranch));
+    el.dataset.i18nTitle = focusBranch ? 'focusBranchExit' : 'focus';
+  }
+  $('[data-action=focus]').disabled =
+    !focusBranch && !['card', 'relation'].includes(selection?.kind);
   if (selection && !entity()) {
     selection = null;
     draft = null;
@@ -675,8 +759,10 @@ function render() {
     positions: layoutPreview?.result.positions,
     collapsed: store.collapsed,
     selectedCards,
+    focusRoot: focusBranch ? selection.id : null,
   });
-  $('#selection-tools').hidden = selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
+  $('#selection-tools').hidden =
+    selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
   if ($('#selection-tools').hidden) $('#selection-json').open = false;
   $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
   const groupedCards = new Set(cardGroups(store.project).flatMap((group) => group.cardIds));
@@ -781,7 +867,11 @@ async function select(next, edit = false, open = false) {
     }
     return true;
   }
-  if (JSON.stringify(selection) !== JSON.stringify(next) && !(await inspector.beforeSelectionChange())) return false;
+  if (
+    JSON.stringify(selection) !== JSON.stringify(next) &&
+    !(await inspector.beforeSelectionChange())
+  )
+    return false;
   if (!(await guardDraft())) return false;
   revealSelection(next);
   selection = next;
@@ -838,10 +928,20 @@ function renderPanel() {
   }
   const state = previousPanelKey === key ? captureEditor(body) : null;
   const formatGroups = state
-    ? new Map([...body.querySelectorAll('details[data-format-group]')].map((group) => [group.dataset.formatGroup, group.open]))
+    ? new Map(
+        [...body.querySelectorAll('details[data-format-group]')].map((group) => [
+          group.dataset.formatGroup,
+          group.open,
+        ]),
+      )
     : null;
   const formatHexValues = state
-    ? new Map([...body.querySelectorAll('[data-hex-for]')].map((input) => [input.dataset.hexFor, input.value]))
+    ? new Map(
+        [...body.querySelectorAll('[data-hex-for]')].map((input) => [
+          input.dataset.hexFor,
+          input.value,
+        ]),
+      )
     : null;
   const transferToolsOpen = Boolean(state && body.querySelector('.node-transfer-tools')?.open);
   const advancedOpen = Boolean(state && body.querySelector('.format-advanced')?.open);
@@ -882,10 +982,12 @@ function renderPanel() {
     body.querySelector('.format-advanced').open = advancedOpen;
   if (formatGroups)
     for (const group of body.querySelectorAll('details[data-format-group]'))
-      if (formatGroups.has(group.dataset.formatGroup)) group.open = formatGroups.get(group.dataset.formatGroup);
+      if (formatGroups.has(group.dataset.formatGroup))
+        group.open = formatGroups.get(group.dataset.formatGroup);
   if (formatHexValues)
     for (const input of body.querySelectorAll('[data-hex-for]'))
-      if (formatHexValues.has(input.dataset.hexFor)) input.value = formatHexValues.get(input.dataset.hexFor);
+      if (formatHexValues.has(input.dataset.hexFor))
+        input.value = formatHexValues.get(input.dataset.hexFor);
   if (
     imageOpen &&
     body.querySelector('.image-tools') &&
@@ -970,7 +1072,9 @@ function renderPanelContent() {
           esc(t('unpinCard')) +
           '</button></div>'
         : '') +
-      '<div class="markdown"></div><details class="document-details"><summary>' + esc(t('metadata')) + '</summary><p class="summary">' +
+      '<div class="markdown"></div><details class="document-details"><summary>' +
+      esc(t('metadata')) +
+      '</summary><p class="summary">' +
       esc(e.summary) +
       '</p><div class="type-tags">' +
       [...new Set([e.type, ...e.tags])]
@@ -1044,7 +1148,8 @@ function renderPanelContent() {
     cards: store.project.cards,
     writing,
   });
-  const iconActions = selection.kind === 'card' && tab === 'edit' && Boolean(d.extensions?.[DOCUMENT]);
+  const iconActions =
+    selection.kind === 'card' && tab === 'edit' && Boolean(d.extensions?.[DOCUMENT]);
   const actionContent = (key, icon) =>
     iconActions ? '<span aria-hidden="true">' + icon + '</span>' : esc(t(key));
   const actionLabel = (key) =>
@@ -1053,19 +1158,27 @@ function renderPanelContent() {
     '<form class="editor">' +
     fields +
     '<div class="form-errors" role="alert"></div><div class="editor-actions">' +
-    ((tab === 'format' || selection.kind === 'relation') ? '<span id="format-draft-status" class="format-draft-status" role="status"></span>' : '') +
-    '<button class="primary" type="submit">' +
-    esc(t(iconActions ? 'editorSaveChanges' : 'apply')) +
-    '</button><button type="button" id="cancel-draft">' +
-    esc(t('cancel')) +
+    (tab === 'format' || selection.kind === 'relation'
+      ? '<span id="format-draft-status" class="format-draft-status" role="status"></span>'
+      : '') +
+    '<button type="button" id="cancel-draft">' +
+    esc(t('discardChanges')) +
+    '</button><button class="primary" type="submit">' +
+    esc(t('apply')) +
     '</button></div>' +
     (selection.kind === 'project'
       ? ''
       : '<div class="editor-actions">' +
         (selection.kind === 'card'
-          ? '<button type="button" id="duplicate"' + actionLabel('duplicate') + '>' + actionContent('duplicate', '⧉') + '</button>'
+          ? '<button type="button" id="duplicate"' +
+            actionLabel('duplicate') +
+            '>' +
+            actionContent('duplicate', '⧉') +
+            '</button>'
           : '') +
-        '<button type="button" id="delete" class="danger"' + actionLabel('delete') + '>' +
+        '<button type="button" id="delete" class="danger"' +
+        actionLabel('delete') +
+        '>' +
         actionContent('delete', '⌫') +
         '</button></div>') +
     '</form>';
@@ -1142,7 +1255,9 @@ function renderPanelContent() {
         picker.dispatchEvent(new Event('input', { bubbles: true }));
       }
     });
-    picker.addEventListener('input', () => { hex.value = picker.value; });
+    picker.addEventListener('input', () => {
+      hex.value = picker.value;
+    });
   }
   form.oninput = (event) => {
     for (const input of form.querySelectorAll('[name]')) {
@@ -1181,6 +1296,12 @@ function renderPanelContent() {
       } else if (name.startsWith('appearance-')) {
         const key = name.slice(11);
         draft.extensions ||= {};
+        if (
+          key === 'radius' &&
+          event.target !== input &&
+          draft.extensions[APPEARANCE]?.radius === undefined
+        )
+          continue;
         draft.extensions[APPEARANCE] ||= {};
         if (key === 'shape' && !value) {
           delete draft.extensions[APPEARANCE].shape;
@@ -1202,7 +1323,7 @@ function renderPanelContent() {
           : { ...size };
       if (['width', 'height'].includes(event.target.name)) {
         draft.extensions ||= {};
-        draft.extensions[APPEARANCE] = { ...appearance(draft), sizeMode: 'manual' };
+        draft.extensions[APPEARANCE] = appearanceWith(draft, { sizeMode: 'manual' });
         if (form.elements['appearance-sizeMode'])
           form.elements['appearance-sizeMode'].value = 'manual';
       }
@@ -1232,7 +1353,8 @@ function renderPanelContent() {
   };
   form.onsubmit = async (ev) => {
     ev.preventDefault();
-    const savingContent = selection.kind === 'card' && tab === 'edit' && Boolean(draft?.extensions?.[DOCUMENT]);
+    const savingContent =
+      selection.kind === 'card' && tab === 'edit' && Boolean(draft?.extensions?.[DOCUMENT]);
     if ((await blockEditor?.flush()) === false) return;
     if (
       selection.kind === 'card' &&
@@ -1249,7 +1371,14 @@ function renderPanelContent() {
       }
     }
   };
-  $('#cancel-draft').onclick = () => {
+  $('#cancel-draft').onclick = async () => {
+    if (draftDirty()) {
+      const choice = await dialog('draftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
+        ['cancel', 'cancel'],
+        ['discard', 'discard'],
+      ]);
+      if (choice !== 'discard') return;
+    }
     beginDraft();
     renderPanel();
     updateStatus();
@@ -1318,7 +1447,10 @@ function renderPanelContent() {
       writing = !writing;
       document.documentElement.classList.toggle('writing-mode', writing);
       $('#writing-exit').hidden = !writing;
-      $('#html-writing-toggle').setAttribute('aria-label', t(writing ? 'exitWriting' : 'writingMode'));
+      $('#html-writing-toggle').setAttribute(
+        'aria-label',
+        t(writing ? 'exitWriting' : 'writingMode'),
+      );
       $('#html-writing-toggle').title = t(writing ? 'exitWriting' : 'writingMode');
       body.scrollTop = 0;
       adapter.cy.resize();
@@ -1617,7 +1749,17 @@ async function deleteSelected() {
   }
   if (!selection || selection.kind === 'project' || !(await guardDraft())) return;
   const s = clone(selection);
+  const index = projectIndex(store.project);
+  const deleted =
+    s.kind === 'card'
+      ? { title: index.cards.get(s.id)?.title ?? '', count: index.degrees.get(s.id) || 0 }
+      : null;
   if (!change((p) => remove(p, s))) return;
+  if (deleted)
+    toast(deleted.count ? 'deletedCard' : 'deletedCardOnly', {
+      params: { title: deleted.title, count: number(deleted.count) },
+    });
+  else toast('deletedRelation');
   selection = null;
   detailOpen = false;
   draft = null;
@@ -1777,16 +1919,32 @@ async function exportSelectionJSON(mode) {
     return;
   }
   if (result.excludedNamespaces.length || result.partialGroups.length) {
-    const choice = await dialog('selectionJsonWarningTitle', () =>
-      (result.partialGroups.length
-        ? '<p>' + esc(t('selectionJsonPartialGroups', { count: result.partialGroups.length })) + '</p>'
-        : '') +
-      (result.excludedNamespaces.length
-        ? '<p>' + esc(t('selectionJsonExcluded')) + '</p><ul>' + result.excludedNamespaces.map((name) => '<li>' + esc(name) + '</li>').join('') + '</ul>'
-        : ''),
-    [['cancel', 'cancel'], ['selectionJsonContinue', 'continue', true]]);
+    const choice = await dialog(
+      'selectionJsonWarningTitle',
+      () =>
+        (result.partialGroups.length
+          ? '<p>' +
+            esc(t('selectionJsonPartialGroups', { count: result.partialGroups.length })) +
+            '</p>'
+          : '') +
+        (result.excludedNamespaces.length
+          ? '<p>' +
+            esc(t('selectionJsonExcluded')) +
+            '</p><ul>' +
+            result.excludedNamespaces.map((name) => '<li>' + esc(name) + '</li>').join('') +
+            '</ul>'
+          : ''),
+      [
+        ['cancel', 'cancel'],
+        ['selectionJsonContinue', 'continue', true],
+      ],
+    );
     if (choice !== 'continue') return;
-    if (store.project !== project || ids.length !== selectedCards.size || ids.some((id) => !selectedCards.has(id))) {
+    if (
+      store.project !== project ||
+      ids.length !== selectedCards.size ||
+      ids.some((id) => !selectedCards.has(id))
+    ) {
       toast('selectionJsonChanged');
       return;
     }
@@ -1906,7 +2064,8 @@ async function importFile(file) {
     return;
   }
   const body = () => {
-    const legacyCount = result.project?.cards.filter((card) => !card.extensions?.[DOCUMENT]).length || 0;
+    const legacyCount =
+      result.project?.cards.filter((card) => !card.extensions?.[DOCUMENT]).length || 0;
     let html = result.project
       ? '<p>' +
         esc(result.project.metadata.title) +
@@ -1921,23 +2080,33 @@ async function importFile(file) {
         '</p>'
       : '';
     if (legacyCount)
-      html += '<p class="transfer-warning">' + esc(t('legacyProjectNotice').replace('{count}', number(legacyCount))) + '</p>';
-    for (const [key, issues] of [
-      ['errors', result.errors],
-      ['warnings', result.warnings],
-      ['adjustments', result.adjustments],
-    ])
-      if (issues?.length)
-        html +=
-          '<h3>' +
-          esc(t(key)) +
-          ' (' +
-          number(issues.length) +
-          ')</h3><ul class="issues">' +
-          issues
-            .map((e) => '<li><code>' + esc(e.path) + '</code> — ' + esc(issueMessage(e)) + '</li>')
-            .join('') +
-          '</ul>';
+      html +=
+        '<p class="transfer-warning">' +
+        esc(t('legacyProjectNotice').replace('{count}', number(legacyCount))) +
+        '</p>';
+    const shownPath = (path) => (path === '$file' ? file.name : path);
+    const section = (key, issues) =>
+      '<h3>' +
+      esc(t(key)) +
+      ' (' +
+      number(issues.length) +
+      ')</h3><ul class="issues">' +
+      issues
+        .map(
+          (e) =>
+            '<li><code>' + esc(shownPath(e.path)) + '</code> — ' + esc(issueMessage(e)) + '</li>',
+        )
+        .join('') +
+      '</ul>';
+    if (result.errors?.length) html += section('errors', result.errors);
+    if (result.warnings?.length) html += section('warnings', result.warnings);
+    if (result.adjustments?.length)
+      html +=
+        '<details class="import-technical"><summary>' +
+        esc(t('importTechnicalDetails', { count: number(result.adjustments.length) })) +
+        '</summary>' +
+        section('adjustments', result.adjustments) +
+        '</details>';
     return html;
   };
   const choice = await dialog('importPreview', body, [
@@ -2122,7 +2291,7 @@ const actions = {
         ? selection.id
         : store.project.cards.find((c) => !isPinned(c))?.id;
     if (!rootId) {
-      toast('mindConvertFailed');
+      toast(store.project.cards.length ? 'mindAllPinned' : 'mindNoCards');
       return;
     }
     const choice = await dialog(
@@ -2320,16 +2489,37 @@ const actions = {
   'zoom-reset': () => adapter.resetZoom(),
   fit: () => adapter.fit(),
   focus: () => {
+    if (selection?.kind === 'card' && focusBranch) {
+      focusBranch = false;
+      render();
+      return;
+    }
+    if (selection?.kind === 'card') {
+      focusBranch = true;
+      revealSelection(selection);
+      render();
+      adapter.focus(selection.id);
+      return;
+    }
     if (revealSelection(selection)) render();
-    if (selection?.kind === 'card') adapter.focus(selection.id);
     if (selection?.kind === 'relation') adapter.focusRelation(selection.id);
   },
   'detail-theme': () => actions.theme(),
   theme: () => {
     theme = theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = theme;
+    // Controls must not ease between theme tokens (flash on the new background); the class
+    // suppresses transitions until the new theme has painted.
+    const root = document.documentElement;
+    window.cancelAnimationFrame(themeSwitchFrame);
+    root.classList.add('theme-switching');
+    root.dataset.theme = theme;
     adapter.setTheme(theme);
     render();
+    themeSwitchFrame = window.requestAnimationFrame(() => {
+      themeSwitchFrame = window.requestAnimationFrame(() =>
+        root.classList.remove('theme-switching'),
+      );
+    });
   },
 };
 document.addEventListener('click', (e) => {
@@ -2372,13 +2562,22 @@ document.addEventListener('keydown', (e) => {
     return;
   // GrapesJS forwards iframe keystrokes to the parent; keep them in the editor.
   // Vietnamese input methods can use Backspace while replacing a letter.
-  if (detailOpen && (e.key === 'Escape' || e.code === 'Space' || e.target.closest('#block-editor iframe')))
+  if (
+    detailOpen &&
+    (e.key === 'Escape' || e.code === 'Space' || e.target.closest('#block-editor iframe'))
+  )
     return;
   // Native controls must receive Space for keyboard activation, including the inspector tabs.
   if (e.code === 'Space' && e.target.closest('button,a[href],summary')) return;
   if (e.code === 'Space') {
     e.preventDefault();
     adapter.space = true;
+  }
+  if (e.key === 'Escape' && focusBranch && !connectMode) {
+    e.preventDefault();
+    focusBranch = false;
+    render();
+    return;
   }
   if (e.key === 'Escape') {
     if (layoutPreview) {
@@ -2417,6 +2616,18 @@ window.addEventListener('beforeunload', (e) => {
 });
 installImagePreview($('#panel-body'));
 installChatGPTLauncher();
+// Thú cưng: lựa chọn chỉ giữ trong phiên (không storage); ?pet=cat|dog|off đặt giá trị khởi đầu.
+const petChat = createPetChat({
+  getPet: () => pets.get(),
+  speak: (text, duration, pause) => pets.speak(text, duration, pause),
+  t,
+});
+const pets = createPetController({
+  initial: resolvePet(new window.URLSearchParams(window.location.search).get('pet')),
+  onClick: () => petChat.click(),
+});
+$('#pet-choice').value = pets.get();
+$('#pet-choice').addEventListener('change', (e) => pets.set(e.target.value));
 store.subscribe(render);
 setLocale('vi');
 render();

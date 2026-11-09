@@ -19,7 +19,7 @@ test('extended shapes Fit72, shared anchors, active view and safe content round-
       const card = page.locator('.graph-card[data-id="shape-' + shape + '"]');
       await card.focus();
       await page.keyboard.press('Enter');
-      await page.getByRole('button', { name: 'Format', exact: true }).click();
+      await page.getByRole('button', { name: 'Định dạng', exact: true }).click();
       await setDraftFontSize(page, '72', 'summary', 'Fit');
       await page.locator('[name=appearance-sizeMode]').selectOption('fit');
       await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));

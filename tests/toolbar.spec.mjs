@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 
 test('compact toolbar has help tools and native segmented views; cursor/guards follow mode', async ({
@@ -42,7 +43,7 @@ test('compact toolbar has help tools and native segmented views; cursor/guards f
   await page.locator('[data-choice=cancel]').click();
   await expect(page.locator('[data-map-view=card]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('[name=width]')).toHaveValue('280');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.locator('#inspector-close').click();
   await page.locator('#locale').selectOption('en');
   await expect(page.locator('#quick-help')).toHaveAttribute('aria-label', 'Help and project tools');

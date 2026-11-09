@@ -22,7 +22,7 @@ test('pin and date shared views, keyboard, locale, undo and safe shapes', async 
   await expect(legacy.locator('.card-pin')).toHaveAttribute('aria-pressed', 'true');
   await page.locator('#locale').selectOption('en');
   await expect(legacy.locator('time')).toHaveText('Creation date unavailable');
-  await expect(legacy.locator('.card-pin')).toHaveAttribute('aria-label', 'Unpin card');
+  await expect(legacy.locator('.card-pin')).toHaveAttribute('aria-label', 'Unpin note');
   await switchMapView(page, 'mind');
   await expect(legacy.locator('.card-pin')).toHaveAttribute('aria-pressed', 'true');
   await page.locator('[data-palette-shape=heart]').click();

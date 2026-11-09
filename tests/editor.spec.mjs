@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, expectDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
@@ -240,8 +241,8 @@ test('connector drag, relation editor endpoints and style, self-loop rejected', 
   expect(edited.relations.at(-1).style).toMatchObject({ line: 'dashed', arrow: 'both' });
   await page.locator('select[name=target]').selectOption(edited.relations.at(-1).source);
   await applyAndContinue(page, page.getByRole('button', { name: 'Áp dụng', exact: true }));
-  await expect(page.locator('.form-errors')).toContainText('chính thẻ');
-  await page.locator('#cancel-draft').click();
+  await expect(page.locator('.form-errors')).toContainText('chính note');
+  await discardDraft(page);
   await page.locator('#delete').click();
   expect((await exportData(page)).relations).toHaveLength(2);
 });
@@ -328,7 +329,7 @@ test('English workflow import, edit, search and export guards', async ({ page })
   await expect(page.locator('#modal')).toContainText('Export with unapplied edits?');
   await page.locator('#modal').getByRole('button', { name: 'Cancel', exact: true }).click();
   await expect(page.locator('textarea[name=content]')).toHaveValue('# New English Draft');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   const data = await exportData(page);
   expect(data.cards.find((c) => c.id === 'card-database').title).toBe('Database Updated');
   await expect(page.locator('#save-state')).toContainText('Export initiated');
@@ -489,7 +490,7 @@ test('Badges, theme and Fit/Focus preserve project, history and drafts', async (
   await theme(page);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   expect(await snapshot()).toEqual(baseline);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await expect(page.locator('.graph-card')).toHaveCount(0);
@@ -661,7 +662,7 @@ test('embedded image drafts cancel, removal undoes and SVG upload is rejected', 
     .locator('#embedded-image-input')
     .setInputFiles({ name: 'chart.png', mimeType: 'image/png', buffer: png });
   await expect(page.locator('.attachment-row')).toHaveCount(1);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect(page.locator('.attachment-row')).toHaveCount(0);
   await expect(page.locator('textarea[name=content]')).toHaveValue(original);
   await page.locator('textarea[name=content]').fill('# Chart');
@@ -901,7 +902,7 @@ test('Local recovery is opt-in, restores draft after reload and deletes data whe
   await page.locator('[data-choice=restore]').click();
   await expect(page.locator('textarea[name=content]')).toHaveValue('# Unapplied recovery draft');
   await expect(page.locator('.graph-card')).toHaveCount(3);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect
     .poll(() =>
       page.evaluate(async () => {
@@ -971,12 +972,12 @@ test('Format shares draft, previews appearance and applies one undo with portabl
   ).toBe(24);
   await page.locator('#panel-tabs button').nth(2).click();
   await page.locator('[name=appearance-radius]').fill('40');
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect(page.locator('[name=appearance-radius]')).toHaveValue('24');
   await locale(page, 'en');
   await theme(page);
   await page.screenshot({ path: 'planning/design/detail-format-dark.png' });
-  await expect(page.locator('#panel-tabs button').nth(2)).toHaveText('Format');
+  await expect(page.locator('#panel-tabs button').nth(2)).toHaveText('Định dạng');
 });
 
 test('Text toolbar formats selection and colored text remains safe in preview and overview', async ({

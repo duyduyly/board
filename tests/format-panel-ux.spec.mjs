@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import { projectAction } from './ui-driver.mjs';
 import { tmpdir } from 'node:os';
@@ -18,13 +19,14 @@ test('bulk formatting shows scope, confirms overwrites and remains undoable', as
   await page.locator('#modal [data-choice=apply]').click();
   await projectAction(page, 'inspector');
   const global = page.locator('#inspector-global');
-  await expect(global).toContainText('2 card chưa ghim');
+  await expect(global).toContainText('2 note chưa ghim');
   await expect(global).toContainText('1 mũi tên không bị khóa');
   const apply = global.locator('button[type=submit]');
   await expect(apply).toBeDisabled();
   await global.locator('[name=typography]').check();
   await expect(apply).toBeEnabled();
   await global.locator('.inspector-global-actions button[type=button]').click();
+  await page.locator('#modal [data-choice=discard]').click();
   await expect(global.locator('[name=typography]')).not.toBeChecked();
   await expect(apply).toBeDisabled();
   await global.locator('[name=typography]').check();
@@ -330,6 +332,6 @@ test('card sections collapse and HEX edits update only the preview until Apply',
   await page.locator('[name=appearance-sizeMode]').selectOption('manual');
   await expect(page.locator('[name=width]')).toBeEnabled();
   await page.screenshot({ path: join(tmpdir(), 'card-atlas-format-card-' + info.project.name + '.png') });
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   expect(await page.evaluate(async () => JSON.stringify((await import('/assets/js/app.js')).store.project))).toBe(before);
 });

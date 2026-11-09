@@ -149,14 +149,43 @@ export function normalize(raw) {
   });
   return { project: p, adjustments };
 }
+function lineColumn(text, offset) {
+  const before = text.slice(0, offset).split('\n');
+  return { line: before.length, column: before[before.length - 1].length + 1 };
+}
+// Best-effort 1-based position from engine-specific JSON.parse messages; {} when unknown.
+function syntaxLocation(text, error) {
+  const message = String(error?.message ?? '');
+  const lc = /line (\d+) column (\d+)/.exec(message);
+  if (lc) return { line: Number(lc[1]), column: Number(lc[2]) };
+  const pos = /position (\d+)/.exec(message);
+  if (pos) return lineColumn(text, Math.min(Number(pos[1]), text.length));
+  if (/end of JSON input/i.test(message)) return lineColumn(text, text.length);
+  // V8 shows the snippet as ..."text"... (dots outside the quotes); error sits 10 chars in when cut at the start.
+  const token = /Unexpected token '(.+?)', (\.\.\.)?"(.*)"(?:\.\.\.)? is not valid JSON/s.exec(
+    message,
+  );
+  if (token) {
+    const snippet = token[3];
+    const base = text.indexOf(snippet);
+    const exact = token[2] && snippet.startsWith(token[1], 10) ? 10 : -1;
+    const at = exact >= 0 ? exact : snippet.indexOf(token[1]);
+    if (base >= 0 && at >= 0) return lineColumn(text, base + at);
+  }
+  return {};
+}
 export function stage(text, bytes = new TextEncoder().encode(text).length) {
   if (bytes > LIMITS.file)
     return { errors: [{ path: '$file', code: 'fileLimit' }], warnings: [], adjustments: [] };
   let raw;
   try {
     raw = JSON.parse(text);
-  } catch {
-    return { errors: [{ path: '$file', code: 'syntax' }], warnings: [], adjustments: [] };
+  } catch (error) {
+    return {
+      errors: [{ path: '$file', code: 'syntax', ...syntaxLocation(text, error) }],
+      warnings: [],
+      adjustments: [],
+    };
   }
   const result = validate(raw);
   if (result.errors.length) return { ...result, adjustments: [] };

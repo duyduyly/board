@@ -1,5 +1,8 @@
 import { shapes } from '../graph/shape-registry.js';
 export const APPEARANCE = 'card-atlas:appearance';
+export const PLAIN_CARD_RADIUS = 6;
+// Góc vuông/Hình vuông không bo; tách khỏi PLAIN_CARD_RADIUS để card thường mềm hơn.
+export const SQUARE_SHAPE_RADIUS = 2;
 export const appearanceDefaults = {
   radius: 10,
   borderWidth: 1,
@@ -12,9 +15,19 @@ export const appearanceDefaults = {
 };
 export function appearance(card) {
   const value = card.extensions?.[APPEARANCE];
-  const radius =
-    !value?.shape || ['rectangle', 'square'].includes(value.shape) ? 2 : appearanceDefaults.radius;
+  const radius = !value?.shape
+    ? PLAIN_CARD_RADIUS
+    : ['rectangle', 'square'].includes(value.shape)
+      ? SQUARE_SHAPE_RADIUS
+      : appearanceDefaults.radius;
   return { ...appearanceDefaults, radius, ...value };
+}
+// Giữ radius mặc định ngoài JSON: chỉ ghi radius khi card đã lưu hoặc patch chủ ý đặt.
+export function appearanceWith(card, patch) {
+  const next = { ...appearance(card), ...patch };
+  if (card.extensions?.[APPEARANCE]?.radius === undefined && !('radius' in patch))
+    delete next.radius;
+  return next;
 }
 export function appearanceIssues(card, path) {
   const value = card.extensions?.[APPEARANCE];

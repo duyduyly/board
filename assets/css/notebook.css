@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Patrick Hand';
+  src: url('../fonts/PatrickHand-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
 /* E047: approved Pencil Notebook surface. Session presentation, never project data.
    Keep card geometry, authored fonts/colors/radius and shape outlines authoritative. */
 :root {
@@ -7,16 +13,29 @@
   --canvas: #f8f5ec;
   --grid: #c8ccbd;
   --ink: #343c34;
-  --muted: #6d7365;
+  --muted: #646a5c;
   --accent: #45654e;
   --on-accent: #fffdf7;
   --border: #c8cab9;
   --active-background: #e6ecdf;
   --active-ink: #36523e;
   --hand-font: 'Segoe Print', 'Comic Sans MS', cursive;
-  --sketch-radius: 3px 2px 5px 2px / 3px 5px 2px 4px;
+  --chrome-hand-font: 'Patrick Hand', var(--hand-font);
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-segment: 11px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-pill: 999px;
+  --sketch-radius: var(--radius-md);
   --pencil-shadow: 3px 4px 0 #343c340c;
   --pencil-stroke: #343c3445;
+  --surface-shadow: 0 1px 2px #343c340c, 0 6px 16px #343c340c;
+  --dialog-shadow: 0 2px 6px #0002, 0 16px 40px #0002;
+  --control-shadow: 0 1px 2px var(--pencil-stroke);
+  --motion-fast: 140ms;
+  --motion-ease: ease-out;
 }
 :root[data-theme='dark'] {
   --surface: #272b25;
@@ -33,6 +52,7 @@
   --active-ink: #dce9cf;
   --pencil-shadow: 3px 4px 0 #0003;
   --pencil-stroke: #ececdd45;
+  --surface-shadow: 0 1px 2px #0003, 0 6px 16px #0003;
 }
 
 /* Chrome stays readable; handwriting is reserved for headings and accents. */
@@ -66,6 +86,16 @@ select:focus-visible,
 summary:focus-visible {
   outline-color: var(--accent);
 }
+/* One focus frame: fields already turn their border accent, so the ring hugs the border. */
+button:focus-visible,
+summary:focus-visible {
+  outline-offset: 2px;
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-offset: 0;
+}
 button:hover {
   border-color: var(--pencil-stroke);
 }
@@ -77,20 +107,27 @@ button.primary:hover {
   color: var(--on-accent);
 }
 .primary:not(:disabled) {
-  box-shadow: 2px 2px 0 var(--pencil-stroke);
+  box-shadow: var(--control-shadow);
 }
 .toolbar {
   border-bottom-color: var(--pencil-stroke);
 }
+/* Logo bút chì + la bàn: ảnh WebP động nền trong suốt (vẽ xong thì nghỉ vài giây rồi lặp). */
 .brand-mark {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
 }
-.brand-mark svg {
+.brand-mark img {
   display: block;
-  width: 100%;
   height: 100%;
+  width: auto;
+}
+.brand-mark .brand-still {
+  display: none;
+}
+:root[data-theme='dark'] .brand-mark img {
+  filter: invert(0.9);
 }
 .brand,
 .project-name,
@@ -108,25 +145,37 @@ button.primary:hover {
 }
 #map-view {
   border-color: var(--pencil-stroke);
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-segment);
   background: var(--soft);
 }
 #map-view button {
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-sm);
 }
 #map-view button[aria-pressed='true'],
 #inspector-tabs .active {
   background: var(--accent);
   color: var(--on-accent);
-  box-shadow: 1px 1px 0 var(--pencil-stroke);
+  box-shadow: var(--control-shadow);
 }
 .toolbar-actions .quick-help-button,
 .project-menu > .quick-help-button {
-  border-radius: 46% 54% 45% 55%;
+  border-radius: var(--radius-pill);
 }
 .project-menu-body {
   border-color: var(--pencil-stroke);
-  box-shadow: var(--pencil-shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--surface-shadow);
+}
+/* Menu groups: one button style; legacy margins from the flat menu are reset. */
+#project-menu .menu-group > .recovery-button {
+  margin: 0 0 6px;
+}
+#project-menu .menu-group > .recovery-status {
+  margin: 0 0 8px;
+}
+.menu-group > .chatgpt-settings {
+  border-top: 0;
+  padding: 8px 0 0;
 }
 input[type='checkbox'],
 input[type='range'] {
@@ -150,9 +199,14 @@ input[type='range'] {
 .home-page h1,
 #shape-library > h2,
 #format-inspector > header > h2,
-.detail-panel > .panel-header > h2,
 .modal-inner > h2,
-#mind-view-banner > strong,
+#mind-view-banner > strong {
+  font-family: var(--chrome-hand-font);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+/* Detail title is the card title and the group legend is user text: both keep the card font. */
+.detail-panel > .panel-header > h2,
 .group-frame-handle {
   font-family: var(--hand-font);
   letter-spacing: -0.5px;
@@ -168,7 +222,7 @@ input[type='range'] {
 }
 #template-search {
   border-color: var(--pencil-stroke);
-  box-shadow: 2px 2px 0 #343c3408;
+  box-shadow: 0 1px 2px #343c3408;
 }
 .gallery-categories button {
   border-radius: var(--sketch-radius);
@@ -179,17 +233,19 @@ input[type='range'] {
 }
 .template-tile img,
 .template-skeleton {
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-lg);
   background: var(--surface);
 }
 .template-tile img {
   border-color: var(--pencil-stroke);
-  box-shadow: var(--pencil-shadow);
+  box-shadow: var(--surface-shadow);
 }
 .template-tile:hover img,
 .template-tile:focus-visible img {
   border-color: var(--accent);
-  box-shadow: 4px 5px 0 var(--pencil-stroke);
+  box-shadow:
+    0 2px 6px var(--pencil-stroke),
+    var(--surface-shadow);
 }
 .template-tile > span {
   font-size: 14px;
@@ -227,7 +283,7 @@ input[type='range'] {
 }
 .graph-card .type-badge,
 .graph-card .tag-badge {
-  border-radius: 2px 3px 2px 4px;
+  border-radius: var(--radius-xs);
 }
 .graph-card .type-badge {
   letter-spacing: 0.8px;
@@ -247,9 +303,9 @@ input[type='range'] {
 .layout-tools,
 #mind-view-banner,
 .chatgpt-launcher {
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-lg);
   border-color: var(--pencil-stroke);
-  box-shadow: var(--pencil-shadow);
+  box-shadow: var(--surface-shadow);
 }
 #chatgpt-open,
 #chatgpt-hide {
@@ -259,7 +315,7 @@ input[type='range'] {
 /* Direct-child heading selectors keep node/preview typography out of inspector chrome. */
 #format-inspector {
   border-left-color: var(--pencil-stroke);
-  box-shadow: -4px 0 0 #343c3405;
+  box-shadow: -4px 0 12px #343c3405;
 }
 #format-inspector > header {
   padding-top: 18px;
@@ -272,11 +328,13 @@ input[type='range'] {
   border-radius: var(--sketch-radius);
 }
 #inspector-global .inspector-config-group > legend {
-  font-family: var(--hand-font);
+  font-family: var(--chrome-hand-font);
+  font-weight: 400;
   font-size: 17px;
+  letter-spacing: 0;
 }
 #inspector-global .bulk-typography-settings {
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-md);
 }
 .panel-tabs button.active {
   border-bottom-style: solid;
@@ -288,8 +346,8 @@ dialog.detail-panel,
 #card-date-editor,
 .image-preview {
   border-color: var(--pencil-stroke);
-  border-radius: 5px 3px 6px 2px;
-  box-shadow: 5px 6px 0 #0002;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--dialog-shadow);
 }
 dialog.detail-panel.detail-full {
   border-radius: 0;
@@ -307,7 +365,7 @@ dialog.detail-panel::backdrop,
 }
 .markdown pre,
 .markdown code {
-  border-radius: var(--sketch-radius);
+  border-radius: var(--radius-xs);
 }
 .markdown pre {
   border: 1px dashed var(--border);
@@ -319,7 +377,8 @@ dialog.detail-panel::backdrop,
 }
 .toast {
   border: 1px solid var(--pencil-stroke);
-  box-shadow: var(--pencil-shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--surface-shadow);
 }
 .card-row.active,
 .kind-palette button:hover,
@@ -345,17 +404,157 @@ dialog.detail-panel::backdrop,
 .shape-palette button svg {
   color: var(--accent);
 }
+/* Soft state changes on chrome controls only; card contents, canvas fields and transforms never animate. */
+button:not(.graph-card *):not([data-overview-field]),
+input:not(.graph-card *):not([data-overview-field]),
+select:not(.graph-card *):not([data-overview-field]),
+textarea:not(.graph-card *):not([data-overview-field]),
+summary:not(.graph-card *):not([data-overview-field]),
+.template-tile img,
+[role='button']:not(.graph-card):not(.graph-card *):not([data-overview-field]) {
+  transition:
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) var(--motion-ease);
+}
+/* Undo/Redo: the button keeps the toolbar button metrics (so its height always equals the
+   neighbouring buttons: 8px padding above 1350px, 7px below) and only the glyph is enlarged.
+   aspect-ratio does not apply to a content-sized flex item, so the width is spelled out. */
+.history-buttons {
+  --history-pad: 8px;
+  --glyph-drop: calc(0.35 * (22px - 1em));
+  align-items: flex-start;
+}
+.history-buttons button {
+  padding: calc(var(--history-pad) + var(--glyph-drop)) 0
+    calc(var(--history-pad) - var(--glyph-drop));
+  width: calc(1lh + 2px + 2 * var(--history-pad));
+}
+@media (min-width: 1351px) {
+  .history-buttons button {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1350px) {
+  .history-buttons {
+    --history-pad: 7px;
+  }
+}
+.history-buttons button::first-letter {
+  font-size: 22px;
+  line-height: 0;
+}
+.history-buttons button:disabled {
+  color: var(--muted);
+  opacity: 0.75;
+  border-color: color-mix(in srgb, var(--border) 60%, transparent);
+}
+#panel-title:focus-visible {
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.panel-tabs button {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.session-note,
+.document-details {
+  border-radius: var(--radius-md);
+}
+.card-created-date,
+.paper-note .card-created-date {
+  border-radius: var(--radius-xs);
+}
+.selection-json > summary {
+  border-radius: var(--radius-sm);
+}
+.selection-json-menu {
+  border-radius: var(--radius-md);
+  box-shadow: var(--surface-shadow);
+}
 @media (max-width: 800px) {
   .home-page h1 {
     font-size: 27px;
   }
   .brand-mark {
-    width: 24px;
-    height: 24px;
+    height: 40px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .template-tile img {
+  button:not(.graph-card *):not([data-overview-field]),
+  input:not(.graph-card *):not([data-overview-field]),
+  select:not(.graph-card *):not([data-overview-field]),
+  textarea:not(.graph-card *):not([data-overview-field]),
+  summary:not(.graph-card *):not([data-overview-field]),
+  .template-tile img,
+  [role='button']:not(.graph-card):not(.graph-card *):not([data-overview-field]) {
     transition: none;
+  }
+}
+
+/* R4: pencil-style card icons. The stroked SVG is a mask on ::before so the control keeps its box,
+   hit area and outline (a mask on the button itself would clip the focus ring). Colours come from
+   tokens; the glyph text of .card-open stays in the DOM (card ink via currentColor) but is not painted. */
+.card-open {
+  position: relative;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.8;
+}
+.card-open::before,
+.graph-card .connector::before,
+.resize-handle::before {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+.card-open::before {
+  inset: 3px;
+  background-color: currentColor;
+  mask-image: url('../images/icons/card-open.svg');
+  -webkit-mask-image: url('../images/icons/card-open.svg');
+}
+.graph-card .connector {
+  border-color: var(--surface);
+  background: var(--surface);
+}
+.graph-card .connector::before {
+  inset: -2px;
+  background-color: var(--accent);
+  mask-image: url('../images/icons/connector.svg');
+  -webkit-mask-image: url('../images/icons/connector.svg');
+}
+.resize-handle {
+  background: var(--surface);
+}
+.resize-handle::before {
+  inset: -2px;
+  background-color: var(--accent);
+  mask-image: url('../images/icons/resize.svg');
+  -webkit-mask-image: url('../images/icons/resize.svg');
+}
+/* Date chip: a graphite underline only; no glyph and no border-width change. */
+.card-created-date {
+  box-shadow: inset 0 -1px 0 var(--pencil-stroke);
+}
+.card-created-date[aria-disabled='false'] {
+  border-bottom-color: var(--pencil-stroke);
+  box-shadow: none;
+}
+.card-created-date[aria-disabled='false']:hover {
+  border-bottom-color: currentColor;
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark .brand-anim {
+    display: none;
+  }
+  .brand-mark .brand-still {
+    display: block;
   }
 }

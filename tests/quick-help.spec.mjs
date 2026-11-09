@@ -37,7 +37,7 @@ test('small help button beside locale explains gestures, switches language and p
   await button.click();
   await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toHaveAccessibleName('Quick help');
-  await expect(page.locator('.quick-help-content')).toContainText('Pinned cards are read-only');
+  await expect(page.locator('.quick-help-content')).toContainText('Pinned notes are read-only');
   await page.keyboard.press('Escape');
   await expect(page.locator('#modal')).not.toBeVisible();
   await expect(button).toBeFocused();

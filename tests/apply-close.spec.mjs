@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 const state = (page) =>
@@ -114,7 +115,7 @@ test('invalid Format stays open with no success notice or history; Canvas title/
   await expect(page.locator('#detail-panel')).toBeVisible();
   await expect(page.locator('#toast')).not.toBeVisible();
   expect(await state(page)).toEqual(before);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.locator('#inspector-close').click();
   await page.locator('[data-id=kind-0] [data-overview-field=title]').click();
   await page.locator('#overview-text').fill('Canvas title');

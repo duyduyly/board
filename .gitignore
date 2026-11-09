@@ -4,6 +4,9 @@
 /.agents/
 /.codex/*
 !/.codex/config.toml
+/.claude/settings.local.json
+/.claude
+/CLAUDE.md
 
 # Local planning, research and workspace copies
 /planning/

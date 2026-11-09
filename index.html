@@ -11,20 +11,16 @@
   <body>
     <div id="app" class="home-mode">
       <header class="toolbar">
-        <button class="brand" data-action="home" aria-label="Card Atlas — Home">
+        <button
+          class="brand"
+          data-action="home"
+          data-i18n-aria="brandHome"
+          aria-label="Card Atlas — Home"
+        >
           <span class="brand-mark" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="m4 16-1 5 5-1L21 7l-4-4L4 16Zm10-10 4 4M4 16l4 4" />
-            </svg>
+            <img class="brand-anim" src="assets/images/brand/logo-anim.webp" alt="" />
+            <img class="brand-still" src="assets/images/brand/logo-still.webp" alt="" />
           </span>
-          Card Atlas
         </button>
         <button id="project-name" class="project-name"></button>
         <div class="toolbar-actions">
@@ -71,39 +67,63 @@
               <span aria-hidden="true">?</span>
             </summary>
             <div class="project-menu-body">
-              <button data-action="help" data-i18n="quickHelpTitle"></button>
-              <button data-action="inspector" data-i18n="inspectorTitle"></button>
-              <button data-action="convert-mind" data-i18n="convertMind"></button>
-              <div id="counts"></div>
-              <p id="save-state" class="save-state"></p>
-              <button data-action="format" class="text-button" data-i18n="format"></button>
-              <button
-                data-action="auto-route-all"
-                class="text-button"
-                data-i18n="autoRouteAll"
-              ></button>
-              <p class="session-note" data-i18n="session"></p>
-
-              <button data-action="recovery" class="recovery-button" data-i18n="recovery"></button>
-              <p id="recovery-status" class="muted recovery-status" role="status"></p>
-              <div class="chatgpt-settings">
-                <label>
-                  <input
-                    id="chatgpt-visible"
-                    type="checkbox"
-                    checked
-                    aria-controls="chatgpt-launcher"
-                  />
-                  <span data-i18n="chatgptShowButton"></span>
+              <section class="menu-group" aria-labelledby="menu-group-help">
+                <h3 id="menu-group-help" class="menu-group-title" data-i18n="menuGroupHelp"></h3>
+                <button data-action="help" data-i18n="quickHelpTitle"></button>
+                <button data-action="format" data-i18n="format"></button>
+              </section>
+              <section class="menu-group" aria-labelledby="menu-group-project">
+                <h3
+                  id="menu-group-project"
+                  class="menu-group-title"
+                  data-i18n="menuGroupProject"
+                ></h3>
+                <button data-action="inspector" data-i18n="inspectorTitle"></button>
+                <button data-action="convert-mind" data-i18n="convertMind"></button>
+                <div id="counts"></div>
+                <p id="save-state" class="save-state"></p>
+                <button data-action="auto-route-all" data-i18n="autoRouteAll"></button>
+              </section>
+              <section class="menu-group" aria-labelledby="menu-group-session">
+                <h3
+                  id="menu-group-session"
+                  class="menu-group-title"
+                  data-i18n="menuGroupSession"
+                ></h3>
+                <p class="session-note" data-i18n="session"></p>
+                <button
+                  data-action="recovery"
+                  class="recovery-button"
+                  data-i18n="recovery"
+                ></button>
+                <p id="recovery-status" class="muted recovery-status" role="status"></p>
+                <div class="chatgpt-settings">
+                  <label>
+                    <input
+                      id="chatgpt-visible"
+                      type="checkbox"
+                      checked
+                      aria-controls="chatgpt-launcher"
+                    />
+                    <span data-i18n="chatgptShowButton"></span>
+                  </label>
+                  <a
+                    href="https://chatgpt.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-i18n="chatgptOpenTab"
+                  ></a>
+                  <p id="chatgpt-help" class="muted" data-i18n="chatgptHelp"></p>
+                </div>
+                <label class="pet-choice" for="pet-choice">
+                  <span data-i18n="petLabel"></span>
+                  <select id="pet-choice">
+                    <option value="cat" data-i18n="petCat"></option>
+                    <option value="dog" data-i18n="petDog"></option>
+                    <option value="off" data-i18n="petOff"></option>
+                  </select>
                 </label>
-                <a
-                  href="https://chatgpt.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-i18n="chatgptOpenTab"
-                ></a>
-                <p id="chatgpt-help" class="muted" data-i18n="chatgptHelp"></p>
-              </div>
+              </section>
             </div>
           </details>
         </div>
@@ -197,8 +217,16 @@
               <summary data-i18n="selectionJsonMenu"></summary>
               <div class="selection-json-menu">
                 <p data-i18n="selectionJsonScope"></p>
-                <button type="button" data-action="selection-copy-json" data-i18n="selectionJsonCopy"></button>
-                <button type="button" data-action="selection-download-json" data-i18n="selectionJsonDownload"></button>
+                <button
+                  type="button"
+                  data-action="selection-copy-json"
+                  data-i18n="selectionJsonCopy"
+                ></button>
+                <button
+                  type="button"
+                  data-action="selection-download-json"
+                  data-i18n="selectionJsonDownload"
+                ></button>
               </div>
             </details>
             <button type="button" data-action="clear-selection" data-i18n="clearSelection"></button>
@@ -216,7 +244,7 @@
             <h2 id="inspector-title" data-i18n="inspectorTitle"></h2>
             <button id="inspector-close" data-i18n-title="close">×</button>
           </header>
-          <nav id="inspector-tabs" aria-label="Format"></nav>
+          <nav id="inspector-tabs" data-i18n-aria="inspectorTabsLabel" aria-label="Format"></nav>
           <div id="inspector-global" hidden></div>
           <div id="inspector-text" hidden></div>
           <p id="inspector-edge-hint" hidden></p>

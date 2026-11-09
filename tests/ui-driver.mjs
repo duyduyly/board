@@ -129,3 +129,12 @@ export async function openSearch(page) {
   if (!(await page.locator('#search-drawer').isVisible()))
     await page.locator('[data-action=search]').click();
 }
+
+// Discard the Detail draft: dirty drafts ask for confirmation first (Cancel keeps, Discard resets).
+export async function discardDraft(page) {
+  await page.locator('#cancel-draft').click();
+  if (await page.locator('#modal').isVisible()) {
+    await page.locator('#modal [data-choice=discard]').click();
+    await expect(page.locator('#modal')).not.toBeVisible();
+  }
+}

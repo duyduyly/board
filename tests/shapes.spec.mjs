@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { setDraftTitle, setDraftFontSize } from './overview-test-helpers.mjs';
@@ -16,7 +17,7 @@ test('basic shapes share Canvas and Format geometry, preserve data and portable 
   await open(page);
   await page.locator('.graph-card[data-id=card-user-service]').focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'Format', exact: true }).click();
+  await page.getByRole('button', { name: 'Định dạng', exact: true }).click();
   for (const shape of [
     'rectangle',
     'rounded',
@@ -291,7 +292,7 @@ test('font72 Fit text is atomic, survives locale/theme and round-trip; overflow 
       return store.undoStack.length;
     }),
   ).toBe(applied.history);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.locator('[data-action=close]').click();
   await page.locator('[data-action=fit]').click();
   await page.screenshot({ path: 'planning/design/feedback-03-fit-dark.png' });
@@ -345,7 +346,7 @@ test('bundled shapes import, polygon edges and corner hit areas match; Mind Fit 
   const card = page.locator('.graph-card[data-id=shape-circle]');
   await card.focus();
   await page.keyboard.press('Enter');
-  await page.getByRole('button', { name: 'Format', exact: true }).click();
+  await page.getByRole('button', { name: 'Định dạng', exact: true }).click();
   await setDraftFontSize(page, '72');
   await page.locator('[name=appearance-sizeMode]').selectOption('fit');
   await applyAndContinue(page, page.locator('#panel-body form button[type=submit]'));

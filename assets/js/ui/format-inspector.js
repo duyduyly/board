@@ -16,6 +16,7 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
   let active = 'global';
   let closing = false;
   let suppressClick = false;
+  let opener = null;
   const typography = Object.fromEntries(
     textFields.map((field) => [
       field,
@@ -48,7 +49,10 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
       path.setAttribute('d', tabIcons[key]);
       icon.append(path);
       const label = t('inspector' + key);
-      button.append(icon);
+      const text = document.createElement('span');
+      text.className = 'inspector-tab-label';
+      text.textContent = label;
+      button.append(icon, text);
       button.setAttribute('aria-label', label);
       button.title = label;
       button.className = key === active ? 'active' : '';
@@ -168,12 +172,13 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
     state.setAttribute('role', 'status');
     const cancel = document.createElement('button');
     cancel.type = 'button';
-    cancel.textContent = t('cancel');
-    cancel.onclick = () => {
+    cancel.textContent = t('discardChanges');
+    cancel.onclick = async () => {
+      if (globalDirty() && !(await guardGlobal())) return;
       resetGlobal();
       sync();
     };
-    actions.append(state, apply, cancel);
+    actions.append(state, cancel, apply);
     form.append(actions);
     const updateApply = () => {
       const eligible = { routes: selected.eligibleRoutes, arrows: selected.eligibleEdges, surface: selected.eligibleCards, typography: selected.eligibleCards };
@@ -237,6 +242,7 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
     if (
       host.hidden ||
       host.contains(event.target) ||
+      event.target.closest?.('[data-action=theme]') ||
       document.querySelector('dialog:modal') ||
       !canDismiss()
     )
@@ -272,10 +278,39 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
     true,
   );
   document.querySelector('#inspector-close').onclick = close;
+  const visible = (element) => element?.isConnected && element.checkVisibility();
+  function restoreFocus() {
+    const target = [
+      opener,
+      opener?.closest('details')?.querySelector(':scope > summary'),
+      document.querySelector('#quick-help'),
+    ].find(visible);
+    opener = null;
+    target?.focus();
+  }
+  host.addEventListener('keydown', async (event) => {
+    if (
+      event.key !== 'Escape' ||
+      event.defaultPrevented ||
+      event.target.closest('select') ||
+      document.querySelector('dialog:modal') ||
+      document.querySelector('dialog.card-date-editor[open]') ||
+      !canDismiss()
+    )
+      return;
+    // Keep the global Escape handler from clearing the selection behind the dock.
+    event.preventDefault();
+    event.stopPropagation();
+    await close();
+    if (host.hidden) restoreFocus();
+  });
   async function activate(key) {
     if (!(await guard())) return;
+    const caller = document.activeElement;
+    if (host.hidden && caller !== document.body) opener = caller;
     show(key);
     onTab(key);
+    tabs.querySelector('button.active')?.focus();
   }
   return {
     activate,

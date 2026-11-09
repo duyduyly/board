@@ -10,6 +10,7 @@ import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
 import { projectIndex } from '../graph/project-index.js';
 import { visibility } from '../graph/radial-layout.js';
+import { branchCards } from '../graph/branch-focus.js';
 import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mind-map.js';
 import { applyAppearance } from '../detail/appearance.js';
 import cytoscape from '../../vendor/cytoscape-entry.js';
@@ -83,6 +84,7 @@ export class GraphAdapter {
           selector: 'edge.reference-edge',
           style: { 'line-style': 'dashed', opacity: 0.55, width: 1.3 },
         },
+        { selector: 'edge.focus-dimmed', style: { opacity: 0.15 } },
         { selector: 'edge.viewport-moving, edge.group-preview', style: { visibility: 'hidden' } },
         { selector: 'edge.selected', style: { width: 3, 'line-color': '#28594b' } },
         { selector: 'edge.route-straight', style: { 'curve-style': 'straight' } },
@@ -145,6 +147,7 @@ export class GraphAdapter {
     }
     if (this.lastProject === project) {
       this.paintSelection(this.selectedCards);
+      this.syncFocus(project, view, options, false);
       if (this.lastSelection?.kind === 'relation')
         this.cy.getElementById(rid(this.lastSelection.id)).removeClass('selected');
       if (selection?.kind === 'relation')
@@ -291,25 +294,18 @@ export class GraphAdapter {
           };
           const edit = (e) => {
             e.stopPropagation();
-            if (this.activeView === 'mind') {
-              if (
-                target.dataset.overviewField === 'title' &&
-                !isPinned(c) &&
-                !this.callbacks.locked()
-              ) {
-                this.callbacks.overview(c.id, target, 'title');
-                return;
-              }
-              if (e.type === 'keydown') this.callbacks.open({ kind: 'card', id: c.id });
-              else this.callbacks.select({ kind: 'card', id: c.id });
-              return;
-            }
             if (isPinned(c)) {
               this.callbacks.open({ kind: 'card', id: c.id });
               return;
             }
-            if (!this.callbacks.locked())
+            if (!this.callbacks.locked()) {
               this.callbacks.overview(c.id, target, target.dataset.overviewField);
+              return;
+            }
+            // Mind keeps its pre-existing fallback while connect/feedback/preview locks the canvas.
+            if (this.activeView !== 'mind') return;
+            if (e.type === 'keydown') this.callbacks.open({ kind: 'card', id: c.id });
+            else this.callbacks.select({ kind: 'card', id: c.id });
           };
           target.onclick = edit;
           target.onkeydown = (e) => {
@@ -377,6 +373,12 @@ export class GraphAdapter {
         connector.addEventListener('pointerdown', (e) => {
           e.stopPropagation();
           this.connectorStart(e, c.id);
+        });
+        connector.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          e.stopPropagation();
+          this.callbacks.connectFrom(c.id);
         });
         const config = nodeStyle(c),
           simple = view === 'mind' || config.kind !== 'card';
@@ -466,6 +468,8 @@ export class GraphAdapter {
         const data = {
           id: rid(r.id),
           appId: r.id,
+          appSource: r.source,
+          appTarget: r.target,
           source: cid(r.source),
           target: cid(r.target),
           label: r.label,
@@ -498,6 +502,7 @@ export class GraphAdapter {
     });
     this.lastLocale = getLocale();
     this.paintedSelection = new Set(this.selectedCards);
+    this.syncFocus(project, view, options, true);
     this.groupFrames.sync(project, this.hiddenNodes);
     this.edgeEditor.sync(project, selection);
     this.view();
@@ -510,6 +515,36 @@ export class GraphAdapter {
       el?.setAttribute('aria-pressed', String(ids.has(id)));
     }
     this.paintedSelection = new Set(ids);
+  }
+  // Session-only dimming; recompute the branch only when its memo key changes (CC-31).
+  syncFocus(project, view, options, rebuilt) {
+    const root = options.focusRoot || null;
+    if (!root && !this.focusIds) return;
+    const key = this.focusKey;
+    if (
+      !rebuilt &&
+      key?.project === project &&
+      key.view === view &&
+      key.root === root &&
+      key.collapsed === options.collapsed
+    )
+      return;
+    this.focusKey = { project, view, root, collapsed: options.collapsed };
+    const follow = view === 'mind' ? (r) => relationKind(r) === 'branch' : undefined;
+    const ids = root ? branchCards(project, root, follow) : null;
+    this.paintFocus(ids?.size ? ids : null);
+  }
+  paintFocus(ids) {
+    this.focusIds = ids;
+    for (const [id, el] of this.cards)
+      el.classList.toggle('focus-dimmed', Boolean(ids) && !ids.has(id));
+    this.cy.batch(() => {
+      for (const edge of this.cy.edges())
+        edge.toggleClass(
+          'focus-dimmed',
+          Boolean(ids) && !(ids.has(edge.data('appSource')) && ids.has(edge.data('appTarget'))),
+        );
+    });
   }
   deferEdges() {
     if (this.cy.edges().length < 1000) return;

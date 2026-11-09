@@ -134,7 +134,7 @@ test('Shift selection across text/pin and keyboard, group drag is one undo in bo
     await page.keyboard.press('Control+Shift+z');
     expect((await snapshot(page)).p).toEqual(after.p);
     await page.locator('#locale').selectOption('en');
-    await expect(page.locator('#selection-count')).toContainText('3 cards selected');
+    await expect(page.locator('#selection-count')).toContainText('3 notes selected');
     await page.keyboard.press('Delete');
     expect((await snapshot(page)).p).toEqual(after.p);
     await page.locator('[data-action=clear-selection]').click();

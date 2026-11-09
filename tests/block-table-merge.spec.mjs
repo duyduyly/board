@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { discardDraft } from './ui-driver.mjs';
 
 async function openTable(page, html) {
   await page.goto('/');
@@ -83,7 +84,7 @@ test('cancel discards a merge of an already saved table', async ({ page }) => {
   await table.locator('td').first().click();
   await page.locator('[data-table-merge-right]').click();
   await expect(table.locator('td')).toHaveCount(1);
-  await page.locator('#panel-body button[type=button]').filter({ hasText: /Hủy/ }).last().click();
+  await discardDraft(page);
   const after = await page.evaluate(
     async (id) =>
       (await import('/assets/js/app.js')).store.project.cards.find((card) => card.id === id),

@@ -16,7 +16,7 @@ import {
   remove,
   search,
 } from '../assets/js/store/project-store.js';
-import { dictionaries, setLocale, t } from '../assets/js/i18n/index.js';
+import { dictionaries, setLocale, t, issueMessage } from '../assets/js/i18n/index.js';
 const example = JSON.parse(await fs.readFile('assets/data/example.json', 'utf8'));
 const input = () => structuredClone(example);
 test('example contract and schema asset agree', async () => {
@@ -204,6 +204,23 @@ test('filename sanitized and locale does not alter project', () => {
   assert.deepEqual(Object.keys(dictionaries.en).sort(), Object.keys(dictionaries.vi).sort());
   assert.ok(t('errorSchema', { code: 'type' }).includes('type'));
 });
+test('syntax issue carries line/column and const issue names allowed value', () => {
+  const syntax = stage('{\n "a": }').errors[0];
+  assert.equal(syntax.code, 'syntax');
+  assert.equal(syntax.path, '$file');
+  assert.equal(syntax.line, 2);
+  assert.ok(syntax.column >= 1);
+  const version = stage(JSON.stringify({ ...input(), version: '2.0' })).errors.find(
+    (e) => e.code === 'const',
+  );
+  for (const locale of ['vi', 'en']) {
+    setLocale(locale);
+    assert.ok(issueMessage(version).includes('"1.0"'), locale);
+    assert.ok(issueMessage(syntax).includes('2'), locale);
+  }
+  setLocale('vi');
+  assert.equal(issueMessage({ path: '$file', code: 'syntax' }), t('errorSyntax'));
+});
 test('search includes full Markdown and case-insensitive fields', () => {
   const p = input();
   assert.equal(search(p.cards, 'USER').length, 3);
@@ -355,4 +372,22 @@ test('Appearance is bounded, portable and restored atomically with card size', (
     p.cards[0].extensions['card-atlas:appearance'] = bad;
     assert.ok(validate(p).errors.some((e) => e.path.includes('card-atlas:appearance')));
   }
+});
+test('syntax location survives V8 elided snippet in long multi-line files', () => {
+  const rows = (p) =>
+    Array.from({ length: 12 }, (_, i) => `  "${p}${i}": "valueeeeeeeeeeeeeeee${i}"`).join(',\n');
+  for (const bad of ['"a": ,', '"a": “x”']) {
+    const text = `{\n${rows('k')},\n  ${bad},\n${rows('z')}\n}`;
+    assert.ok(text.length > 200);
+    const line = text.slice(0, text.indexOf(bad)).split('\n').length;
+    const issue = stage(text).errors[0];
+    assert.equal(issue.code, 'syntax');
+    assert.equal(issue.line, line);
+    assert.ok(issue.column >= 1);
+  }
+  // Engines that already report line/column or position keep working for // comments.
+  const comment = `{\n${rows('k')},\n  // note\n${rows('z')}\n}`;
+  const found = stage(comment).errors[0];
+  assert.equal(found.line, comment.slice(0, comment.indexOf('// note')).split('\n').length);
+  assert.ok(found.column >= 1);
 });

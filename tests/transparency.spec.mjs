@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
@@ -79,7 +80,7 @@ test('Cancel and reset transparent draft keep applied colors', async ({ page }) 
   await page.locator('#panel-tabs button').nth(2).click();
   const bg = page.locator('[name=appearance-backgroundTransparent]');
   await bg.check();
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect(bg).not.toBeChecked();
   await bg.check();
   await page.locator('#reset-appearance').click();

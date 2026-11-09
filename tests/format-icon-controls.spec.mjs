@@ -24,11 +24,14 @@ for (const [locale, width] of [
     expect((await picker.boundingBox()).width).toBeLessThanOrEqual(40);
     await expect(label).toHaveAttribute('title', locale === 'vi' ? 'Căn chữ' : 'Text alignment');
     await expect(label.locator('.format-property-icon')).toBeVisible();
-    expect(
-      await label
-        .locator('.format-property-name')
-        .evaluate((el) => window.getComputedStyle(el).clipPath),
-    ).toBe('inset(50%)');
+    // U5: the name is visible above the 320px dock breakpoint and screen-reader only at or below it.
+    const name = label.locator('.format-property-name');
+    if (width <= 320) {
+      expect(await name.evaluate((el) => window.getComputedStyle(el).clipPath)).toBe('inset(50%)');
+    } else {
+      await expect(name).toBeVisible();
+      expect(await name.evaluate((el) => window.getComputedStyle(el).clipPath)).toBe('none');
+    }
     await expect(center).toHaveAttribute('aria-pressed', 'false');
     await expect(center).toHaveAttribute('title', /.+/);
     await center.focus();

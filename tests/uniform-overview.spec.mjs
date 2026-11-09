@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { view as switchMapView } from './ui-driver.mjs';
 import { applyAndContinue } from './ui-driver.mjs';
 import { projectAction } from './ui-driver.mjs';
@@ -75,7 +76,7 @@ test('uniform Detail draft waits for Apply and Cancel discards all-card changes'
   await page.locator('#edit-card-overview').click();
   await expect(page.locator('#overview-uniform')).toBeChecked();
   await page.locator('[data-overview-cancel]').click();
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await page.locator('#edit-card-overview').click();
   await expect(page.locator('#overview-uniform')).not.toBeChecked();
   await page.locator('#overview-uniform').check();

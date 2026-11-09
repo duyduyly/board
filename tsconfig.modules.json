@@ -12,6 +12,7 @@
   "include": [
     "assets/js/common/data.js",
     "assets/js/common/html.js",
-    "assets/js/graph/project-index.js"
+    "assets/js/graph/project-index.js",
+    "assets/js/graph/branch-focus.js"
   ]
 }

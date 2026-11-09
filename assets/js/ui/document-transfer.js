@@ -29,17 +29,25 @@ function decodeDocument(buffer) {
 // Owns file/preview UI only. Session drafts, geometry and commands stay behind ports.
 export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, dialog, toast }) {
   let busy = false;
-  const message = (error) =>
+  // '$file' is an internal token; show the user's file name instead (esc/textContent only).
+  const message = (error, fileName) =>
     error.issues?.length
-      ? error.issues.map((issue) => issue.path + ': ' + issueMessage(issue)).join('\n')
+      ? error.issues
+          .map(
+            (issue) =>
+              (issue.path === '$file' && fileName ? fileName : issue.path) +
+              ': ' +
+              issueMessage(issue),
+          )
+          .join('\n')
       : t(Object.hasOwn(dictionaries[getLocale()], error.message) ? error.message : 'errorRead');
-  async function run(action) {
+  async function run(action, fileName) {
     if (busy) return;
     busy = true;
     try {
       await action();
     } catch (error) {
-      await dialog('transferErrorTitle', () => '<pre>' + esc(message(error)) + '</pre>', [
+      await dialog('transferErrorTitle', () => '<pre>' + esc(message(error, fileName)) + '</pre>', [
         ['close', 'cancel'],
       ]);
     } finally {
@@ -372,7 +380,7 @@ export function createDocumentTransfer({ context, isCurrent, useDraft, addNode, 
         input.onchange = () => {
           const file = input.files[0];
           input.value = '';
-          if (file) run(() => action(file));
+          if (file) run(() => action(file), file.name);
         };
         button.onclick = () => input.click();
         actions.append(input);

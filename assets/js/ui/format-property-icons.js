@@ -29,6 +29,8 @@ const paths = {
   borderWidth: 'M4 4h16v16H4zM8 8h8v8H8zM11 4v4',
   fontSize: 'M3 18 8 5l5 13M5 13h6M15 18l3-8 3 8M16 15h4',
   fontFamily: 'M4 5V3h16v2M12 3v18M8 21h8',
+  textColor: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 3v18M12 7h3M12 12h5M12 17h3',
+  resetTextStyle: 'M4 12a8 8 0 1 0 2.5-5.8M4 4v5h5',
   sizeMode: 'M4 4h16v16H4zM8 12h8M12 8v8',
   edgeMode: 'M4 18h6V6h10M16 3l4 3-4 3',
   relationKind: 'M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4',

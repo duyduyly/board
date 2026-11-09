@@ -411,7 +411,7 @@ select:focus-visible,
   bottom: 27px;
   right: 18px;
   font-size: 10px;
-  color: #829086;
+  color: var(--muted);
   pointer-events: none;
 }
 .connect-hint {
@@ -738,7 +738,7 @@ select:focus-visible,
 .toast {
   position: fixed;
   pointer-events: none;
-  bottom: 24px;
+  bottom: 84px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -881,4 +881,11 @@ dialog::backdrop {
   .toolbar-actions {
     gap: 3px;
   }
+}
+
+/* Theme switches repaint instantly; the class is set by app.js around the data-theme change. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
 }

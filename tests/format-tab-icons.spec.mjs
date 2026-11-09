@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { projectAction } from './ui-driver.mjs';
 
 for (const locale of ['vi', 'en']) {
-  test(`format tabs show icons with accessible names in ${locale}`, async ({ page }) => {
+  test(`format tabs show icons and text labels matching accessible names in ${locale}`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 700 });
     await page.goto('/');
     await page.locator('[data-template=personal]').click();
@@ -17,7 +17,10 @@ for (const locale of ['vi', 'en']) {
       await expect(button.locator('svg[aria-hidden=true]')).toHaveCount(1);
       await expect(button).toHaveAttribute('aria-label', /\S/);
       await expect(button).toHaveAttribute('title', /\S/);
-      await expect(button).toHaveText('');
+      await expect(button.locator('svg')).toHaveClass(/inspector-tab-icon/);
+      const name = await button.getAttribute('aria-label');
+      await expect(button.locator('.inspector-tab-label')).toHaveText(name);
+      await expect(button).toHaveAttribute('title', new RegExp('^' + name));
     }
     await expect(tabs.first()).toHaveAttribute('aria-pressed', 'true');
     await tabs.last().focus();

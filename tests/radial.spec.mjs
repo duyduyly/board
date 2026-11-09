@@ -1,3 +1,4 @@
+import { discardDraft } from './ui-driver.mjs';
 import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
 import { openSearch } from './ui-driver.mjs';
 import { projectAction, locale, theme, view, openRow } from './ui-driver.mjs';
@@ -217,7 +218,7 @@ test('keyboard collapse, preview locale Escape and compact desktop controls', as
   await page.keyboard.press('Enter');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   await locale(page, 'vi');
-  await expect(toggle).toHaveAttribute('aria-label', 'Mở nhánh: -s/-es · Công thức (2 node ẩn)');
+  await expect(toggle).toHaveAttribute('aria-label', 'Mở nhánh: -s/-es · Công thức (2 note ẩn)');
   await toggle.focus();
   await page.keyboard.press('Enter');
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
@@ -260,7 +261,7 @@ test('collapsed recovery restores full graph and draft; relation Focus reveals b
   await expectDraftTitle(page, 'Recovered collapsed draft');
   expect((await state(page)).collapsed).toEqual([]);
   expect((await state(page)).project.cards).toHaveLength(12);
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await projectAction(page, 'recovery');
   await page.locator('[data-choice=disable]').click();
 });

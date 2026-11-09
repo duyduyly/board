@@ -1,4 +1,5 @@
-﻿import { test, expect } from '@playwright/test';
+import { discardDraft } from './ui-driver.mjs';
+import { test, expect } from '@playwright/test';
 
 async function openNew(page) {
   await page.goto('/');
@@ -70,7 +71,7 @@ test('cancel button restores the original draft without changing project history
   const history = await page.evaluate(
     async () => (await import('/assets/js/app.js')).store.undoStack.length,
   );
-  await page.locator('#cancel-draft').click();
+  await discardDraft(page);
   await expect(page.locator('#block-editor .gjs-frame')).toBeVisible();
   await expect(page.frameLocator('#block-editor .gjs-frame').locator('p')).toHaveCount(0);
   expect(

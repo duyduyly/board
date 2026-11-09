@@ -1,0 +1,188 @@
+/* Thú cưng trang trí (mèo/chó). Mọi selector có tiền tố .pixel-cat để không rò sang ứng dụng.
+   z-index 30: trên canvas và zoom bar (tối đa 26) nhưng DƯỚI Format dock (40/70), toolbar và menu ? (60),
+   toast (1000), image-preview (1200); dialog modal ở top layer nên luôn phủ lên. Phải thấp hơn dock và
+   menu: thú đè lên nút "Áp dụng" của dock sẽ nhận click, bị coi là bấm ra ngoài dock và mở hộp thoại
+   bỏ bản nháp thay vì áp dụng. */
+.pixel-cat-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+.pixel-cat {
+  position: absolute;
+  left: 0;
+  bottom: var(--cat-bottom, 16px);
+  width: var(--cat-size, 48px);
+  height: var(--cat-size, 48px);
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+.pixel-cat-body {
+  width: 100%;
+  height: 100%;
+}
+.pixel-cat-body.is-jumping {
+  animation: pixel-cat-jump var(--cat-jump-ms, 400ms) ease-out 1;
+}
+.pixel-cat-sprite {
+  width: 100%;
+  height: 100%;
+  background-image: var(--cat-sprite);
+  background-repeat: no-repeat;
+  background-size: calc(var(--cat-size, 48px) * var(--cat-frames, 7)) 100%;
+  background-position-x: 0;
+  image-rendering: pixelated;
+}
+.pixel-cat-sprite[data-render='smooth'] {
+  image-rendering: auto;
+}
+.pixel-cat-sprite[data-dir='left'] {
+  transform: scaleX(-1);
+}
+/* Khung: 0 idle, 1-3 walk, 4 turn, 5 run, 6 jump; chu kỳ đi/chạy 1,2,3,2 (ping-pong). */
+.pixel-cat-sprite[data-pose='stand'] {
+  background-position-x: calc(var(--cat-size, 48px) * -2);
+}
+.pixel-cat-sprite[data-pose='turn'] {
+  background-position-x: calc(var(--cat-size, 48px) * -4);
+}
+.pixel-cat-sprite[data-pose='jump'] {
+  background-position-x: calc(var(--cat-size, 48px) * -6);
+}
+/* Nhịp bước do JS đặt theo tốc độ (--cat-cycle-ms): mỗi chu kỳ ứng với một quãng đường cố định. */
+.pixel-cat-sprite[data-pose='walk'],
+.pixel-cat-sprite[data-pose='run'] {
+  animation: pixel-cat-cycle var(--cat-cycle-ms, 570ms) infinite;
+}
+/* step-end phải nằm TRONG từng keyframe có giá trị: khối "0%, 25%, ..." tách riêng bị Chrome coi là
+   keyframe khác nên các khung vẫn nội suy "ease" (dải sprite trượt, hiện nửa khung này nửa khung kia). */
+@keyframes pixel-cat-cycle {
+  0% {
+    background-position-x: calc(var(--cat-size, 48px) * -1);
+    animation-timing-function: step-end;
+  }
+  25% {
+    background-position-x: calc(var(--cat-size, 48px) * -2);
+    animation-timing-function: step-end;
+  }
+  50% {
+    background-position-x: calc(var(--cat-size, 48px) * -3);
+    animation-timing-function: step-end;
+  }
+  75% {
+    background-position-x: calc(var(--cat-size, 48px) * -2);
+    animation-timing-function: step-end;
+  }
+}
+/* Chó: dải 0 đứng/quay, 1 nhảy, 2-9 đi (8 khung), 10-15 chạy phi (6 khung); mỗi vòng phát liền một lượt. */
+.pixel-cat[data-pet='dog'] .pixel-cat-sprite[data-pose='stand'],
+.pixel-cat[data-pet='dog'] .pixel-cat-sprite[data-pose='turn'] {
+  background-position-x: 0;
+}
+.pixel-cat[data-pet='dog'] .pixel-cat-sprite[data-pose='jump'] {
+  background-position-x: calc(var(--cat-size, 64px) * -1);
+}
+.pixel-cat[data-pet='dog'] .pixel-cat-sprite[data-pose='walk'] {
+  animation: pixel-dog-walk var(--cat-cycle-ms, 570ms) steps(8, end) infinite;
+}
+.pixel-cat[data-pet='dog'] .pixel-cat-sprite[data-pose='run'] {
+  animation: pixel-dog-run var(--cat-cycle-ms, 570ms) steps(6, end) infinite;
+}
+@keyframes pixel-dog-walk {
+  from {
+    background-position-x: calc(var(--cat-size, 64px) * -2);
+  }
+  to {
+    background-position-x: calc(var(--cat-size, 64px) * -10);
+  }
+}
+@keyframes pixel-dog-run {
+  from {
+    background-position-x: calc(var(--cat-size, 64px) * -10);
+  }
+  to {
+    background-position-x: calc(var(--cat-size, 64px) * -16);
+  }
+}
+@keyframes pixel-cat-jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(var(--cat-jump, 18px) * -1));
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+/* Bong bóng hội thoại: nằm trên đầu thú, đi theo thú. --bubble-shift (JS) giữ nó trong viewport; dịch bằng
+   `left` chứ không bằng transform để lần đặt vị trí đầu tiên không bị chạy transition (bong bóng trượt từ ngoài mép vào). */
+.pixel-cat-bubble {
+  position: absolute;
+  left: calc(50% + var(--bubble-shift, 0px));
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: 220px;
+  padding: 7px 11px;
+  border: 1px solid var(--ink);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+  transform-origin: calc(50% - var(--bubble-shift, 0px)) 100%;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.pixel-cat-bubble.is-open {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.pixel-cat-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: calc(50% - var(--bubble-shift, 0px));
+  width: 8px;
+  height: 8px;
+  margin: -5px 0 0 -5px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  background: var(--surface);
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pixel-cat-body,
+  .pixel-cat-sprite {
+    animation: none;
+  }
+  .pixel-cat-bubble {
+    transition: none;
+  }
+}
+/* Ô chọn thú cưng trong menu ?: một hàng nhãn + select, cùng nhịp với nút của nhóm. */
+.pet-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.pet-choice > select {
+  min-width: 0;
+  max-width: 60%;
+  font-size: 12px;
+}

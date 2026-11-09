@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { discardDraft } from './ui-driver.mjs';
 
 test('replacing an image preserves its properties, validates the file and respects cancel', async ({ page }) => {
   await page.goto('/');
@@ -42,7 +43,7 @@ test('replacing an image preserves its properties, validates the file and respec
   await page.locator('[data-image-replace]').click();
   await (await chooserAgain).setFiles('tests/fixtures/english-endings.png');
   await expect(image).toHaveAttribute('src', /^data:image\/png;base64,/);
-  await page.locator('#panel-body button[type=button]').filter({ hasText: /Hủy/ }).last().click();
+  await discardDraft(page);
   const unchanged = await page.evaluate(async (id) => (await import('/assets/js/app.js')).store.project.cards.find((item) => item.id === id), card.id);
   expect(unchanged).toEqual(card);
 });
