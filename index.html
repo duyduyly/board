@@ -253,23 +253,42 @@
         <dialog id="detail-panel" class="detail-panel" aria-labelledby="panel-title">
           <div class="panel-header">
             <h2 id="panel-title" tabindex="-1"></h2>
-            <span id="panel-save-status" class="panel-save-status" role="status" hidden></span>
-            <button data-action="detail-theme" data-i18n-title="darkMode" id="detail-theme">
-              ◐
-            </button>
-            <button
-              id="writing-exit"
-              hidden
-              data-action="writing-exit"
-              data-i18n="exitWriting"
-            ></button>
-            <button data-action="expand" data-i18n-title="fullDetail">⤢</button
-            ><button data-action="close" data-i18n-title="close">×</button>
+            <div class="panel-actions">
+              <span id="panel-save-status" class="panel-save-status" role="status" hidden></span>
+              <button
+                id="reading-text-smaller"
+                class="reading-text-size"
+                hidden
+                data-action="reading-text-smaller"
+                data-i18n-title="readingTextSmaller"
+              >
+                A−</button
+              ><button
+                id="reading-text-larger"
+                class="reading-text-size"
+                hidden
+                data-action="reading-text-larger"
+                data-i18n-title="readingTextLarger"
+              >
+                A+
+              </button>
+              <button data-action="detail-theme" data-i18n-title="darkMode" id="detail-theme">
+                ◐
+              </button>
+              <button
+                id="writing-exit"
+                hidden
+                data-action="writing-exit"
+                data-i18n="exitWriting"
+              ></button>
+              <button data-action="expand" data-i18n-title="fullDetail">⤢</button
+              ><button data-action="close" data-i18n-title="close">×</button>
+            </div>
           </div>
           <nav id="panel-tabs" class="panel-tabs"></nav>
           <div id="panel-body" class="panel-body"></div>
           <details id="detail-tools" class="detail-tools">
-            <summary data-i18n="projectTools"></summary>
+            <summary data-i18n="projectTools" data-i18n-title="projectTools"></summary>
             <div class="detail-tool-actions">
               <select id="detail-map-view" data-i18n-title="mapView">
                 <option value="card" data-i18n="cardMap"></option>

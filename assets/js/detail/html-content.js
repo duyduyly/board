@@ -123,6 +123,14 @@ export async function standaloneHTMLDocument(card) {
     '</main></body></html>'
   );
 }
+const frameHeight = (doc) => Math.max(400, doc.body.scrollHeight) + 'px';
+/** Applies a session reading scale (percent of the browser default) to an open viewer frame. */
+export function setDocumentScale(frame, percent) {
+  const doc = frame?.contentDocument;
+  if (!doc?.body) return;
+  doc.documentElement.style.fontSize = percent + '%';
+  frame.style.height = frameHeight(doc);
+}
 export async function renderHTMLDocument(host, card, options = {}) {
   const hasCode = documentHTML(card.extensions[DOCUMENT]).includes('<code');
   const highlighter = hasCode ? (await import('../../vendor/highlight-entry.js')).default : null;
@@ -143,9 +151,10 @@ export async function renderHTMLDocument(host, card, options = {}) {
       label.textContent = t(key) + ' ';
       target.before(label);
     }
-    addContents(doc.body);
+    if (options.fontScale) doc.documentElement.style.fontSize = options.fontScale + '%';
+    (options.contents || addContents)(doc.body);
     const sizeFrame = () => {
-      if (frame.isConnected) frame.style.height = Math.max(400, doc.body.scrollHeight) + 'px';
+      if (frame.isConnected) frame.style.height = frameHeight(doc);
     };
     let width = 0;
     const resizeObserver = new ResizeObserver(([entry]) => {
@@ -185,13 +194,16 @@ export async function renderHTMLDocument(host, card, options = {}) {
   const css = new URL('../../vendor/bootstrap.min.css', import.meta.url).href;
   const documentCSS = new URL('../../css/document-content.css', import.meta.url).href;
   frame.srcdoc =
-    '<!doctype html><html><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\' ' +
+    '<!doctype html><html' +
+    // The viewer follows the app theme; the panel is re-rendered when the theme changes.
+    (document.documentElement.dataset.theme === 'dark' ? ' data-bs-theme="dark"' : '') +
+    '><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\' ' +
     window.location.origin +
     '; img-src data: ' +
     (options.allowImages ? 'https: http:' : '') +
     ';"><link rel="stylesheet" href="' +
     css +
-    '"><link rel="stylesheet" href="' + documentCSS + '"><style>.legacy-source-status{color:#705321;font-size:.875em;font-weight:600}.document-contents{padding:12px;margin-bottom:20px;border:1px solid #b6c3b8}.document-contents button{display:block;border:0;background:none;color:#28594b;text-align:left}.document-contents .heading-h2{padding-left:16px}.document-contents .heading-h3{padding-left:32px}.hljs-keyword,.hljs-selector-tag,.hljs-literal{color:#7147a3}.hljs-string,.hljs-attr{color:#177447}.hljs-number,.hljs-type,.hljs-built_in{color:#a34d19}.hljs-title,.hljs-name{color:#285b9d}.hljs-comment,.hljs-quote{color:#6c7469}</style></head><body>' +
+    '"><link rel="stylesheet" href="' + documentCSS + '"><style>.legacy-source-status{color:#705321;font-size:.875em;font-weight:600}.document-contents{padding:12px;margin-bottom:20px;border:1px solid #b6c3b8}.document-contents button{display:block;border:0;background:none;color:#28594b;text-align:left}.document-contents .heading-h2{padding-left:16px}.document-contents .heading-h3{padding-left:32px}.hljs-keyword,.hljs-selector-tag,.hljs-literal{color:#7147a3}.hljs-string,.hljs-attr{color:#177447}.hljs-number,.hljs-type,.hljs-built_in{color:#a34d19}.hljs-title,.hljs-name{color:#285b9d}.hljs-comment,.hljs-quote{color:#6c7469}[data-bs-theme=dark] .legacy-source-status{color:#e0c48a}[data-bs-theme=dark] .document-contents{border-color:#535c4b}[data-bs-theme=dark] .document-contents button{color:#b2cba4}[data-bs-theme=dark] :is(.hljs-keyword,.hljs-selector-tag,.hljs-literal){color:#c9aaf0}[data-bs-theme=dark] :is(.hljs-string,.hljs-attr){color:#8fd3a8}[data-bs-theme=dark] :is(.hljs-number,.hljs-type,.hljs-built_in){color:#f0a878}[data-bs-theme=dark] :is(.hljs-title,.hljs-name){color:#8fb8f0}[data-bs-theme=dark] :is(.hljs-comment,.hljs-quote){color:#9aa392}</style></head><body>' +
     resolvedHTML(card, options.allowImages, highlighter) +
     '</body></html>';
   host.replaceChildren(frame);

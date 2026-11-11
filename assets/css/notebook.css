@@ -357,6 +357,10 @@ dialog.detail-panel::backdrop,
 .image-preview::backdrop {
   background: #20251f70;
 }
+/* Detail is a reading surface: dim the board further so it does not compete with the document. */
+dialog.detail-panel::backdrop {
+  background: #20251fb8;
+}
 .markdown {
   color: var(--ink);
 }

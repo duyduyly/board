@@ -64,7 +64,8 @@ import {
   enableRecovery,
   disableRecovery,
 } from './store/recovery.js';
-import { captureEditor, restoreEditor, addContents } from './detail/writing.js';
+import { captureEditor, restoreEditor } from './detail/writing.js';
+import { mountReadingContents } from './detail/reading-contents.js';
 import { installImagePreview, closeImagePreview } from './detail/image-preview.js';
 import { IMAGE_NAMESPACE } from './detail/attachments.js';
 import {
@@ -82,7 +83,13 @@ import { GraphAdapter } from './canvas/adapter.js';
 import { renderLegacySource } from './detail/legacy-source.js';
 import { DOCUMENT, documentText } from './graph/html-document.js';
 import { mountBlockEditor } from './detail/block-editor.js';
-import { renderHTMLDocument, standaloneHTMLDocument } from './detail/html-content.js';
+import {
+  renderHTMLDocument,
+  setDocumentScale,
+  standaloneHTMLDocument,
+} from './detail/html-content.js';
+// Reading text sizes in percent of the browser default; session-only, never exported.
+const READING_SCALES = [100, 112.5, 125, 140];
 let blockEditor = null;
 let blockEditorDraft = null;
 let pendingEditorRecovery = null;
@@ -106,6 +113,8 @@ let selection = null,
   hasSession = false,
   loadingTemplate = false,
   expanded = false,
+  readingScale = 1,
+  disposeReadingContents = null,
   lastExport = false,
   theme = 'light',
   themeSwitchFrame = 0,
@@ -1002,7 +1011,16 @@ function renderPanel() {
     detailOpen && writing && selection?.kind === 'card',
   );
 }
+function syncReadingScale() {
+  const percent = READING_SCALES[readingScale];
+  $('#detail-panel').style.setProperty('--reading-scale', String(percent / 100));
+  setDocumentScale($('#panel-body .html-document-frame'), percent);
+  $('#reading-text-smaller').disabled = readingScale === 0;
+  $('#reading-text-larger').disabled = readingScale === READING_SCALES.length - 1;
+}
 function renderPanelContent() {
+  disposeReadingContents?.();
+  disposeReadingContents = null;
   blockEditor?.destroy();
   blockEditor = null;
   blockEditorDraft = null;
@@ -1026,6 +1044,9 @@ function renderPanelContent() {
     if (panel.parentElement !== $('#inspector-fields')) $('#inspector-fields').append(panel);
   } else if (panel.parentElement !== $('.workspace')) $('.workspace').append(panel);
   panel.classList.toggle('detail-full', expanded);
+  const reading = !docked && tab === 'overview' && selection.kind === 'card';
+  panel.classList.toggle('detail-reading', reading);
+  for (const button of panel.querySelectorAll('.reading-text-size')) button.hidden = !reading;
   $('#panel-title').textContent =
     selection.kind === 'project'
       ? t('projectSettings')
@@ -1038,13 +1059,17 @@ function renderPanelContent() {
   if (selection.kind === 'card')
     for (const mode of ['overview', 'edit', 'format']) {
       const button = document.createElement('button');
-      button.textContent = t(
+      const label = t(
         mode === 'format'
           ? 'inspectorTitle'
           : mode === 'edit' && e.extensions?.[DOCUMENT]
             ? 'blockEditor'
             : mode,
       );
+      // Icon tab: the translated name stays as (visually hidden) text and as the tooltip.
+      button.dataset.tab = mode;
+      button.textContent = label;
+      button.title = label;
       button.className = tab === mode ? 'active' : '';
       button.disabled = readOnly && mode !== 'overview';
       button.onclick = async () => {
@@ -1072,7 +1097,7 @@ function renderPanelContent() {
           esc(t('unpinCard')) +
           '</button></div>'
         : '') +
-      '<div class="markdown"></div><details class="document-details"><summary>' +
+      '<div class="reading-layout"><nav class="reading-contents" hidden></nav><div class="markdown"></div></div><details class="document-details"><summary>' +
       esc(t('metadata')) +
       '</summary><p class="summary">' +
       esc(e.summary) +
@@ -1092,17 +1117,27 @@ function renderPanelContent() {
         if (await guardDraft()) change((p) => togglePinned(p.cards.find((c) => c.id === e.id)));
       };
     const host = body.querySelector('.markdown');
+    const contents = (root) => {
+      if (version !== panelVersion) return;
+      disposeReadingContents?.();
+      disposeReadingContents = mountReadingContents(
+        body.querySelector('.reading-contents'),
+        root,
+        body,
+      );
+    };
+    syncReadingScale();
     if (e.content || e.extensions?.[DOCUMENT])
       (e.extensions?.[DOCUMENT]
-        ? renderHTMLDocument(host, e, { allowImages })
-        : Promise.resolve(renderLegacySource(host, e.content))
-      )
-        .then(() => {
-          if (version === panelVersion) addContents(host);
-        })
-        .catch(() => {
-          if (version === panelVersion) host.textContent = t('errorDiagram');
-        });
+        ? renderHTMLDocument(host, e, {
+            allowImages,
+            contents,
+            fontScale: READING_SCALES[readingScale],
+          })
+        : Promise.resolve(renderLegacySource(host, e.content)).then(() => contents(host))
+      ).catch(() => {
+        if (version === panelVersion) host.textContent = t('errorDiagram');
+      });
     else host.innerHTML = '<p class="muted">' + esc(t('noContent')) + '</p>';
     body.querySelector('#allow-images').hidden = allowImages;
     body.querySelector('#allow-images').onclick = () => {
@@ -2483,6 +2518,14 @@ const actions = {
     $('#detail-panel').classList.toggle('detail-full', expanded);
     $('[data-action=expand]').dataset.i18nTitle = expanded ? 'restoreDetail' : 'fullDetail';
     translate();
+  },
+  'reading-text-smaller': () => {
+    readingScale = Math.max(0, readingScale - 1);
+    syncReadingScale();
+  },
+  'reading-text-larger': () => {
+    readingScale = Math.min(READING_SCALES.length - 1, readingScale + 1);
+    syncReadingScale();
   },
   'zoom-in': () => adapter.zoom(1.2),
   'zoom-out': () => adapter.zoom(1 / 1.2),

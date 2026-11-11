@@ -23,8 +23,15 @@ export function restoreEditor(host, state) {
     host.querySelector('.editor-metadata').open = state.metadata;
   host.scrollTop = state.top;
 }
-export function addContents(host) {
+export function documentHeadings(host) {
   const headings = [...host.querySelectorAll('h1,h2,h3')].filter((h) => !h.closest('.diagram'));
+  headings.forEach((h, index) => {
+    h.id = 'document-heading-' + index;
+  });
+  return headings;
+}
+export function addContents(host) {
+  const headings = documentHeadings(host);
   if (headings.length < 2) return;
   const nav = document.createElement('details');
   nav.className = 'document-contents';
@@ -32,8 +39,7 @@ export function addContents(host) {
   const summary = document.createElement('summary');
   summary.textContent = t('contents');
   nav.append(summary);
-  headings.forEach((h, index) => {
-    h.id = 'document-heading-' + index;
+  headings.forEach((h) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.textContent = h.textContent;

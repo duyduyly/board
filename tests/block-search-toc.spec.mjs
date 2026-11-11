@@ -51,10 +51,12 @@ test('HTML readonly document offers a working table of contents', async ({ page 
   await page.locator('[data-id=html-search]').focus();
   await page.keyboard.press('Enter');
   const frame = page.frameLocator('.html-document-frame');
-  const nav = frame.locator('.document-contents');
+  // The outline now sits beside the document (sticky rail) instead of inside the viewer frame.
+  const nav = page.locator('.reading-contents');
   await expect(nav).toBeVisible();
-  await expect(nav.locator('button')).toHaveCount(2);
-  await expect(nav.locator('button').nth(1)).toHaveText('Second heading');
-  await nav.locator('button').nth(1).click();
+  const items = nav.locator('.reading-contents-list button');
+  await expect(items).toHaveCount(2);
+  await expect(items.nth(1)).toHaveText('Second heading');
+  await items.nth(1).click();
   await expect(frame.locator('#document-heading-1')).toHaveText('Second heading');
 });

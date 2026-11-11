@@ -700,6 +700,8 @@ export default {
   retry: 'Try again',
   fullDetail: 'Full size',
   restoreDetail: 'Restore size',
+  readingTextSmaller: 'Smaller text',
+  readingTextLarger: 'Larger text',
   imageFitView: 'Fit',
   imageActualSize: 'Actual size 100%',
   openImage: 'Enlarge image',

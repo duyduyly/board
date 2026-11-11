@@ -697,6 +697,8 @@ export default {
   retry: 'Thử lại',
   fullDetail: 'Toàn màn hình',
   restoreDetail: 'Khôi phục kích thước',
+  readingTextSmaller: 'Giảm cỡ chữ',
+  readingTextLarger: 'Tăng cỡ chữ',
   imageFitView: 'Vừa khung',
   imageActualSize: 'Kích thước gốc 100%',
   openImage: 'Phóng to ảnh',

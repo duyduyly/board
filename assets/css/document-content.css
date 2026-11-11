@@ -1,16 +1,36 @@
 /* Shared document surface for the sandboxed viewer and the visual editor. */
+/* 18px base: Bootstrap sizes are rem-based, so the whole document scales with it. */
+html { font-size: 112.5%; }
+:root { --doc-ink: #343c34; --doc-surface: #fffdf7; --doc-soft: #f0eee3; --doc-border: #b7c0b4; }
+/* Dark reading theme: Bootstrap's own dark mode, tuned to the app's charcoal paper tokens. */
+[data-bs-theme='dark'] {
+  --doc-ink: #ececdd; --doc-surface: #272b25; --doc-soft: #30352d; --doc-border: #535c4b;
+  --bs-body-color: var(--doc-ink); --bs-body-color-rgb: 236, 236, 221;
+  --bs-body-bg: var(--doc-surface); --bs-body-bg-rgb: 39, 43, 37;
+  --bs-secondary-bg: #3a4235; --bs-tertiary-bg: var(--doc-soft);
+  --bs-border-color: var(--doc-border);
+  --bs-link-color: #b2cba4; --bs-link-color-rgb: 178, 203, 164;
+  --bs-link-hover-color: #cfe0c4; --bs-link-hover-color-rgb: 207, 224, 196;
+}
 body {
   box-sizing: border-box;
   max-width: 1120px;
   margin: 0 auto;
   padding: 24px;
-  color: #343c34;
-  background: #fffdf7;
+  color: var(--doc-ink);
+  background: var(--doc-surface);
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
+/* Keep running text at a readable measure; cards, tables and code still use the full column. */
+:where(p, li, blockquote):not(.text-center, .text-end, .text-center *, .text-end *, table *, .list-group-item) { max-width: 72ch; }
 img { max-width: 100%; height: auto; }
-pre { white-space: pre-wrap; background: #f0eee3; padding: 16px; overflow-x: auto; }
+pre { white-space: pre-wrap; background: var(--doc-soft); padding: 16px; overflow-x: auto; }
 table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
-th, td { border: 1px solid #b7c0b4; padding: 0.5rem 0.75rem; }
+th, td { border: 1px solid var(--doc-border); padding: 0.5rem 0.75rem; }
 @media (max-width: 600px) { body { padding: 16px; } }
+/* Fixed-light utilities and inline light backgrounds would leave light text on a light box. */
+[data-bs-theme='dark'] :is(.bg-light, .bg-white) { background-color: var(--bs-tertiary-bg) !important; }
+[data-bs-theme='dark'] :is(.text-dark, .text-black) { color: var(--doc-ink) !important; }
+[data-bs-theme='dark'] .table-light { --bs-table-color: var(--doc-ink); --bs-table-bg: var(--doc-soft); --bs-table-border-color: var(--doc-border); }
+[data-bs-theme='dark'] [style*='background-color']:not([style^='color'], [style*=';color']) { color: #343c34; }
