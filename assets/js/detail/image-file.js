@@ -8,9 +8,12 @@ export async function readImageFile(file, maxBytes) {
     reader.readAsDataURL(file);
   });
   const image = { name: file.name, mimeType: file.type, data };
+  await decodeImage(image);
+  return image;
+}
+export async function decodeImage(image) {
   if (!validImageAttachment(image)) throw Error('image');
   const decoded = new Image();
-  decoded.src = 'data:' + image.mimeType + ';base64,' + data;
+  decoded.src = 'data:' + image.mimeType + ';base64,' + image.data;
   await decoded.decode();
-  return image;
 }

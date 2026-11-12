@@ -49,14 +49,31 @@ for (const path of Object.keys(codeMirrorBuild.metafile.inputs)) {
 }
 const codeMirrorLicenses = [];
 for (const name of [...codeMirrorPackages].sort()) {
-  codeMirrorLicenses.push('===== ' + name + ' =====\n' + await fs.readFile('node_modules/' + name + '/LICENSE', 'utf8'));
+  codeMirrorLicenses.push(
+    '===== ' + name + ' =====\n' + (await fs.readFile('node_modules/' + name + '/LICENSE', 'utf8')),
+  );
 }
-await fs.writeFile('assets/vendor/codemirror-dependencies-LICENSE.txt', codeMirrorLicenses.join('\n\n'));
+await fs.writeFile(
+  'assets/vendor/codemirror-dependencies-LICENSE.txt',
+  codeMirrorLicenses.join('\n\n'),
+);
 await fs.copyFile('node_modules/codemirror/LICENSE', 'assets/vendor/codemirror-LICENSE.txt');
-await fs.copyFile('node_modules/@codemirror/lang-html/LICENSE', 'assets/vendor/codemirror-html-LICENSE.txt');
-await fs.copyFile('node_modules/@codemirror/state/LICENSE', 'assets/vendor/codemirror-state-LICENSE.txt');
-await fs.copyFile('node_modules/@codemirror/language/LICENSE', 'assets/vendor/codemirror-language-LICENSE.txt');
-await fs.copyFile('node_modules/@codemirror/lint/LICENSE', 'assets/vendor/codemirror-lint-LICENSE.txt');
+await fs.copyFile(
+  'node_modules/@codemirror/lang-html/LICENSE',
+  'assets/vendor/codemirror-html-LICENSE.txt',
+);
+await fs.copyFile(
+  'node_modules/@codemirror/state/LICENSE',
+  'assets/vendor/codemirror-state-LICENSE.txt',
+);
+await fs.copyFile(
+  'node_modules/@codemirror/language/LICENSE',
+  'assets/vendor/codemirror-language-LICENSE.txt',
+);
+await fs.copyFile(
+  'node_modules/@codemirror/lint/LICENSE',
+  'assets/vendor/codemirror-lint-LICENSE.txt',
+);
 await build({
   entryPoints: ['scripts/highlight-entry.js'],
   outfile: 'assets/vendor/highlight-entry.js',
@@ -76,3 +93,52 @@ await fs.copyFile(
 await fs.copyFile('node_modules/grapesjs/LICENSE', 'assets/vendor/grapesjs-LICENSE.txt');
 await fs.copyFile('node_modules/bootstrap/LICENSE', 'assets/vendor/bootstrap-LICENSE.txt');
 await fs.copyFile('node_modules/grapesjs/locale/vi.mjs', 'assets/vendor/grapes-vi.js');
+// elkjs (EPL-2.0, ~1.6 MB) is only an optional layout engine loaded lazily by Mermaid; the default
+// dagre layout never needs it, so it is replaced by a stub that fails loudly if an ELK layout is requested.
+const omitElkjs = {
+  name: 'omit-elkjs',
+  setup(pluginBuild) {
+    pluginBuild.onResolve({ filter: /^elkjs(\/|$)/ }, () => ({
+      path: 'elkjs',
+      namespace: 'omit-elkjs',
+    }));
+    pluginBuild.onLoad({ filter: /.*/, namespace: 'omit-elkjs' }, () => ({
+      contents:
+        "export default class ELK { constructor() { throw new Error('ELK layout is not bundled'); } }",
+      loader: 'js',
+    }));
+  },
+};
+const mermaidBuild = await build({
+  plugins: [omitElkjs],
+  entryPoints: ['scripts/mermaid-entry.js'],
+  outdir: 'assets/vendor/mermaid',
+  entryNames: '[name]',
+  chunkNames: 'chunks/[name]-[hash]',
+  bundle: true,
+  format: 'esm',
+  splitting: true,
+  minify: true,
+  platform: 'browser',
+  target: 'es2022',
+  legalComments: 'none',
+  metafile: true,
+});
+const mermaidPackages = new Set();
+for (const path of Object.keys(mermaidBuild.metafile.inputs)) {
+  const parts = path.replaceAll('\\', '/').split('/');
+  const index = parts.lastIndexOf('node_modules');
+  if (index < 0) continue;
+  const name = parts[index + 1];
+  mermaidPackages.add(name.startsWith('@') ? name + '/' + parts[index + 2] : name);
+}
+const mermaidLicenses = [];
+for (const name of [...mermaidPackages].sort()) {
+  const files = await fs.readdir('node_modules/' + name);
+  const licenseFile = files.find((file) => /^(licen[sc]e|copying)(\.|$)/i.test(file));
+  const text = licenseFile
+    ? await fs.readFile('node_modules/' + name + '/' + licenseFile, 'utf8')
+    : 'No license file shipped; see package.json license field.';
+  mermaidLicenses.push('===== ' + name + ' =====\n' + text);
+}
+await fs.writeFile('assets/vendor/mermaid/LICENSES.txt', mermaidLicenses.join('\n\n'));

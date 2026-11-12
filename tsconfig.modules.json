@@ -13,6 +13,8 @@
     "assets/js/common/data.js",
     "assets/js/common/html.js",
     "assets/js/graph/project-index.js",
-    "assets/js/graph/branch-focus.js"
+    "assets/js/graph/branch-focus.js",
+    "assets/js/graph/youtube.js",
+    "assets/js/graph/diagram-policy.js"
   ]
 }

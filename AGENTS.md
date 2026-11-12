@@ -91,7 +91,7 @@ Khi lượt làm việc kết thúc hoặc chuyển phiên, để lại mục Ti
 - File JSON hợp đồng 1.0; giữ extensions; import stage+validate trước replace. Không âm thầm bỏ dữ liệu lỗi hoặc unknown fields ngoài contract.
 - Project Model là nguồn dữ liệu đang làm việc. Selection/panel/draft/history là session; renderer adapter không trở thành format file.
 - Mọi mutation đi qua commands/transactions; delete cascade, connector-create và editor Apply phải undo nguyên khối.
-- Không upload project, analytics nội dung, runtime CDN, project localStorage/IndexedDB hoặc recovery ngầm. Nội dung Markdown/Mermaid phải theo policy của spec.
+- Không upload project, analytics nội dung, runtime CDN, project localStorage/IndexedDB hoặc recovery ngầm. Nội dung Markdown/Mermaid phải theo policy của spec. Ngoại lệ mạng duy nhất (E056): trình phát YouTube của liên kết `a.board-video` chỉ được tải sau khi người dùng bấm phát ở màn hình đọc; không tải thumbnail hay bất cứ thứ gì trước đó. Mermaid được vẽ bằng bundle cục bộ, nguồn phải qua `isSafeDiagramSource`.
 - Prototype quyết định library và tooling; không áp đặt framework làm thay cấu trúc người dùng chọn. Kiểm tra docs chính thức khi triển khai dependencies và ghi version.
 
 ## Kiểm chứng và báo cáo

@@ -1133,6 +1133,7 @@ function renderPanelContent() {
             allowImages,
             contents,
             fontScale: READING_SCALES[readingScale],
+            videos: true,
           })
         : Promise.resolve(renderLegacySource(host, e.content)).then(() => contents(host))
       ).catch(() => {

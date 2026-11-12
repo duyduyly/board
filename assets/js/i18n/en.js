@@ -132,6 +132,24 @@ export default {
   editorGroupComponents: 'Components',
   editorGroupActions: 'Tools',
   legacySourceMermaid: 'Mermaid diagram preserved as source code',
+  legacySourceMermaidRendered: 'Mermaid diagram converted from an older document',
+  htmlImportImageInvalid: 'invalid base64 image (PNG, JPEG, WebP or GIF only)',
+  htmlImportImageTooLarge: 'base64 image larger than 10 MB',
+  htmlImportImagesAttached: '{count} image(s) converted to attachments.',
+  mermaidDiagram: 'Mermaid diagram',
+  mermaidShowSource: 'Show source',
+  mermaidHideSource: 'Hide source',
+  mermaidError:
+    'The Mermaid diagram could not be drawn; its source is kept. Check its syntax in the editor tab.',
+  mermaidBlocked:
+    'The diagram uses unsupported configuration, styles or links; showing its source. Remove click, style, classDef, %%{init} lines and any URL, then apply again.',
+  mermaidTooLarge:
+    'The diagram is too large or the document has too many diagrams; showing its source.',
+  videoPlay: 'Play video: {title}',
+  videoPlayerTitle: 'YouTube player',
+  videoClose: 'Close video',
+  videoNetworkNotice: 'The video loads from YouTube when you press play.',
+  videoOpenYouTube: 'Open on YouTube',
   legacySourceHTML: 'Legacy HTML preserved as text',
   legacySourceImage: 'External image preserved as an address and not loaded automatically',
   legacySourceUnsupported: 'Unsupported content preserved as source',
@@ -671,7 +689,7 @@ export default {
   relation: 'Relation',
   removeConfirm: 'Delete selected item',
   aiGuide:
-    'Generate a JSON project with version "1.0", cards and relations arrays. Each card requires a stable unique id and non-empty title. Each relation requires a unique id, source and target referencing existing cards. No self-loops. Types are arbitrary strings. Position may be omitted for a default grid. Use only fields in the schema; place producer data in namespaced extensions. Maximum canonical JSON export size 10 MiB. Maximum 500 cards, 2000 relations and 100000 content characters/card. Store HTML in extensions["card-atlas:document"] with version 1, format "html-bs5", and components as an array of strings or {tag, attributes, children} nodes; content contains the corresponding plain text. Use supported tags and attributes; do not include scripts; images may use HTTP(S) URLs or attachments. Return valid JSON only, without prose or code fences. Appearance extension card-atlas:appearance supports shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon|star|heart|octagon|arrow|isosceles-triangle|right-triangle, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft and transparent boolean flags. Shape does not change kind/type. Geometry is per view; ratio outlines inscribed in legacy bounds. Never provide CSS/SVG paths. card-atlas:metadata supports pinned boolean and createdAt canonical UTC ISO yyyy-MM-ddTHH:mm:ss.SSSZ and optional createdDate calendar YYYY-MM-DD; omit unknown dates. card-atlas:typography accepts optional title/summary/type objects with fontSize8–72, color #RRGGBB and fontFamily system|serif|mono. Omit overrides to keep existing defaults.',
+    'Generate a JSON project with version "1.0", cards and relations arrays. Each card requires a stable unique id and non-empty title. Each relation requires a unique id, source and target referencing existing cards. No self-loops. Types are arbitrary strings. Position may be omitted for a default grid. Use only fields in the schema; place producer data in namespaced extensions. Maximum canonical JSON export size 10 MiB. Maximum 500 cards, 2000 relations and 100000 content characters/card. Store HTML in extensions["card-atlas:document"] with version 1, format "html-bs5", and components as an array of strings or {tag, attributes, children} nodes; content contains the corresponding plain text. Use supported tags and attributes; do not include scripts; images may use HTTP(S) URLs or attachments. Return valid JSON only, without prose or code fences. Appearance extension card-atlas:appearance supports shape rectangle|rounded|square|circle|ellipse|diamond|triangle|hexagon|star|heart|octagon|arrow|isosceles-triangle|right-triangle, sizeMode manual|fit, titleFontSize12–72, radius0–100, borderWidth0–8, align left|center|right, shadow none|soft and transparent boolean flags. Shape does not change kind/type. Geometry is per view; ratio outlines inscribed in legacy bounds. Never provide CSS/SVG paths. card-atlas:metadata supports pinned boolean and createdAt canonical UTC ISO yyyy-MM-ddTHH:mm:ss.SSSZ and optional createdDate calendar YYYY-MM-DD; omit unknown dates. card-atlas:typography accepts optional title/summary/type objects with fontSize8–72, color #RRGGBB and fontFamily system|serif|mono. Omit overrides to keep existing defaults. Put Mermaid diagrams in pre > code with class language-mermaid; they are drawn in the reading view. Do not use %%{init}, frontmatter, style, classDef, click or URLs. Embed a YouTube video with an a element with class board-video and a YouTube URL as href. Images in JSON are HTTP(S) URLs or attachments only; data URLs are accepted only when pasted through Import HTML.',
   galleryTitle: 'Templates',
   galleryIntro: 'Choose a template to start. Open a note to edit visually or with HTML code.',
   templateCategories: 'Template categories',

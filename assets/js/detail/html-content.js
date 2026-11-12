@@ -10,6 +10,8 @@ import { attachmentDataURL } from './attachments.js';
 import { showImagePreview } from './image-preview.js';
 import { t } from '../i18n/index.js';
 import { addContents } from './writing.js';
+import { renderMermaidBlocks } from './mermaid-render.js';
+import { mountVideoPlayers } from './video-embed.js';
 
 export const legacySourceKeys = {
   'legacy-mermaid': 'legacySourceMermaid',
@@ -18,7 +20,7 @@ export const legacySourceKeys = {
   'legacy-unsupported': 'legacySourceUnsupported',
 };
 
-export function parseDocument(html) {
+export function parseDocument(html, { dataImage } = {}) {
   const removed = [];
   const clean = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [...documentTags],
@@ -58,13 +60,20 @@ export function parseDocument(html) {
       if (node.nodeType === 3) return [node.textContent];
       if (node.nodeType !== 1) return [];
       const attributes = {};
+      const tag = node.tagName.toLowerCase();
       for (const attr of node.attributes) {
+        if (dataImage && tag === 'img' && attr.name === 'src' && /^\s*data:/i.test(attr.value)) {
+          const converted = dataImage(attr.value, node.getAttribute('alt') || '');
+          if (converted.src) attributes.src = converted.src;
+          else removed.push(converted.removed);
+          continue;
+        }
         const value = attr.name === 'style' ? safeStyle(attr.value) : attr.value;
         if (value !== attr.value) removed.push(attr.name);
         if (allowedAttribute(attr.name, value)) attributes[attr.name] = value;
         else removed.push(attr.name);
       }
-      return [{ tag: node.tagName.toLowerCase(), attributes, children: nodes(node) }];
+      return [{ tag, attributes, children: nodes(node) }];
     });
   }
   return {
@@ -124,12 +133,15 @@ export async function standaloneHTMLDocument(card) {
   );
 }
 const frameHeight = (doc) => Math.max(400, doc.body.scrollHeight) + 'px';
+/** Open video players are laid over the frame, so they follow every change of its height. */
+const frameRelayout = new WeakMap();
 /** Applies a session reading scale (percent of the browser default) to an open viewer frame. */
 export function setDocumentScale(frame, percent) {
   const doc = frame?.contentDocument;
   if (!doc?.body) return;
   doc.documentElement.style.fontSize = percent + '%';
   frame.style.height = frameHeight(doc);
+  frameRelayout.get(frame)?.();
 }
 export async function renderHTMLDocument(host, card, options = {}) {
   const hasCode = documentHTML(card.extensions[DOCUMENT]).includes('<code');
@@ -153,8 +165,12 @@ export async function renderHTMLDocument(host, card, options = {}) {
     }
     if (options.fontScale) doc.documentElement.style.fontSize = options.fontScale + '%';
     (options.contents || addContents)(doc.body);
+    const videos = options.videos ? mountVideoPlayers(frame, doc, host) : null;
+    if (videos) frameRelayout.set(frame, videos.relayout);
     const sizeFrame = () => {
-      if (frame.isConnected) frame.style.height = frameHeight(doc);
+      if (!frame.isConnected) return;
+      frame.style.height = frameHeight(doc);
+      videos?.relayout();
     };
     let width = 0;
     const resizeObserver = new ResizeObserver(([entry]) => {
@@ -168,11 +184,16 @@ export async function renderHTMLDocument(host, card, options = {}) {
       if (!frame.isConnected) {
         resizeObserver.disconnect();
         removalObserver.disconnect();
+        videos?.dispose();
       }
     });
     removalObserver.observe(document, { childList: true, subtree: true });
     sizeFrame();
     doc.fonts?.ready.then(sizeFrame);
+    renderMermaidBlocks(doc, {
+      isCurrent: () => frame.isConnected && frame.contentDocument === doc,
+      onLayout: sizeFrame,
+    });
     for (const image of doc.querySelectorAll('img')) {
       image.addEventListener('load', sizeFrame, { once: true });
       image.tabIndex = 0;

@@ -1,7 +1,14 @@
 import { labelIcon } from './editor-icons.js';
-﻿import { t } from '../i18n/index.js';
+import { t } from '../i18n/index.js';
 import { DOCUMENT, documentHTML, documentIssues } from '../graph/html-document.js';
 import { parseDocument } from './html-content.js';
+import { MAX_IMAGE_BYTES, imageFromDataURL } from './attachments.js';
+import { decodeImage } from './image-file.js';
+import { LIMITS } from '../json/validator.js';
+
+const MAX_HTML_BYTES = 1000000;
+const DATA_IMAGE_PAYLOAD = /data:image\/[a-z+.-]+;base64,[A-Za-z0-9+/=\s]*/gi;
+const imageExtension = { 'image/jpeg': 'jpg' };
 
 export function createHTMLImport(editor, images) {
   const root = document.createElement('section');
@@ -38,8 +45,12 @@ export function createHTMLImport(editor, images) {
   cancel.dataset.htmlCancel = '';
   root.append(heading, label, file, review, result, accept, cancel);
   let staged = null;
+  let stagedImages = {};
+  let run = 0;
   const invalidate = () => {
+    run += 1;
     staged = null;
+    stagedImages = {};
     result.hidden = true;
     accept.disabled = true;
   };
@@ -52,7 +63,7 @@ export function createHTMLImport(editor, images) {
     const chosen = file.files[0];
     file.value = '';
     if (!chosen) return;
-    if (chosen.size > 1000000) {
+    if (chosen.size > LIMITS.file) {
       warning.textContent = t('htmlImportTooLarge');
       result.hidden = false;
       accept.disabled = true;
@@ -60,23 +71,67 @@ export function createHTMLImport(editor, images) {
     }
     source.value = await chosen.text();
     invalidate();
+    if (oversize(source.value)) {
+      warning.textContent = t('htmlImportTooLarge');
+      result.hidden = false;
+    }
   };
-  const stage = () => {
+  const oversize = (text) => {
+    const total = new TextEncoder().encode(text).length;
+    const payload = new TextEncoder().encode(
+      (text.match(DATA_IMAGE_PAYLOAD) || []).join(''),
+    ).length;
+    return total > LIMITS.file || total - payload > MAX_HTML_BYTES;
+  };
+  const dataImageHook = (pending) => {
+    const ids = new Map();
+    return (value, alt) => {
+      const compact = value.replace(/\s+/g, '');
+      if (ids.has(compact)) return { src: 'attachment:' + ids.get(compact) };
+      const name = alt.trim();
+      const parsedImage = imageFromDataURL(compact, name || 'image', MAX_IMAGE_BYTES);
+      if (!parsedImage.image)
+        return {
+          removed: t(
+            parsedImage.error === 'imageSize'
+              ? 'htmlImportImageTooLarge'
+              : 'htmlImportImageInvalid',
+          ),
+        };
+      const { image } = parsedImage;
+      if (!name)
+        image.name = 'image.' + (imageExtension[image.mimeType] || image.mimeType.slice(6));
+      const id = 'image-' + window.crypto.randomUUID();
+      ids.set(compact, id);
+      pending[id] = image;
+      return { src: 'attachment:' + id };
+    };
+  };
+  const stage = async () => {
     invalidate();
+    const token = run;
     result.hidden = false;
-    if (new TextEncoder().encode(source.value).length > 1000000) {
+    if (oversize(source.value)) {
       warning.textContent = t('htmlImportTooLarge');
       return;
     }
-    const parsed = parseDocument(source.value);
+    const pending = {};
+    const parsed = parseDocument(source.value, { dataImage: dataImageHook(pending) });
+    const failed = new Set();
+    await Promise.all(
+      Object.entries(pending).map(([id, image]) => decodeImage(image).catch(() => failed.add(id))),
+    );
+    if (token !== run) return;
+    for (const id of failed) delete pending[id];
+    const available = { ...images, ...pending };
     const missing = [];
     const visit = (nodes) => {
       for (const node of nodes) {
         if (typeof node === 'string') continue;
-        if (node.tag === 'img' && node.attributes.src?.startsWith('attachment:') &&
-          (!Object.hasOwn(images, node.attributes.src.slice(11)) || !images[node.attributes.src.slice(11)])) {
+        const id = node.attributes.src?.startsWith('attachment:') && node.attributes.src.slice(11);
+        if (node.tag === 'img' && id && (!Object.hasOwn(available, id) || !available[id])) {
           delete node.attributes.src;
-          missing.push('img src');
+          missing.push(failed.has(id) ? t('htmlImportImageInvalid') : 'img src');
         }
         visit(node.children);
       }
@@ -84,22 +139,31 @@ export function createHTMLImport(editor, images) {
     visit(parsed.document.components);
     const removed = [...parsed.removed, ...missing];
     if (
-      documentIssues({ extensions: { [DOCUMENT]: parsed.document, 'card-atlas:images': images } })
-        .length
+      documentIssues({
+        extensions: { [DOCUMENT]: parsed.document, 'card-atlas:images': available },
+      }).length
     ) {
       warning.textContent = t('htmlImportInvalid');
       return;
     }
     staged = parsed.document;
-    warning.textContent = removed.length
-      ? t('htmlImportRemoved') + ': ' + [...new Set(removed)].join(', ')
-      : t('htmlImportClean');
+    stagedImages = pending;
+    const attached = Object.keys(pending).length;
+    warning.textContent =
+      (removed.length
+        ? t('htmlImportRemoved') + ': ' + [...new Set(removed)].join(', ')
+        : t('htmlImportClean')) +
+      (attached
+        ? (removed.length ? '. ' : ' ') +
+          t('htmlImportImagesAttached').replace('{count}', String(attached))
+        : '');
     preview.textContent = documentHTML(staged);
     accept.disabled = false;
   };
   review.onclick = stage;
   accept.onclick = () => {
     if (!staged) return;
+    Object.assign(images, stagedImages);
     editor.addComponents(documentHTML(staged));
     root.hidden = true;
     source.value = '';

@@ -458,11 +458,45 @@ dialog.detail-panel.detail-reading[open] {
   scroll-padding-top: 52px;
 }
 .detail-reading .markdown {
+  /* Positioning context for video players laid over the document frame. */
+  position: relative;
   margin-inline: auto;
   font-size: calc(16px * var(--reading-scale, 1.125));
 }
 .detail-reading .markdown:not(:has(> iframe)) {
   padding: 24px 12px 0;
+}
+/* Below the sticky outline (z-index 2) so it never covers navigation. */
+.reading-video-player {
+  z-index: 1;
+  border-radius: 8px;
+  background: #000;
+}
+.reading-video-player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+.reading-video-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.reading-video-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .reading-contents {
   position: sticky;
