@@ -9,6 +9,7 @@ const icons = {
   propertiesReset: '↺', imageReplace: '⇄', tableAddRow: '⊞', tableDeleteRow: '⊟', tableAddColumn: '⊕', tableDeleteColumn: '⊖', tableMergeRight: '⊡', blockLinkApply: '✓', htmlImportReview: '⌕',
   htmlImportAccept: '✓', cancel: '×',
   cmFind: '⌕', htmlFormat: '≋',
+  aiPromptCopy: '✦', htmlSamplesTitle: '?',
 };
 export function labelIcon(button, key) {
   button.textContent = icons[key];

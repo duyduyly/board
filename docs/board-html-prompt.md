@@ -236,4 +236,6 @@ Ví dụ 4 — bài học theo mẫu ngắn 5W1H (mục 18) có sơ đồ Mermai
 
 Để tạo nhiều note cùng phong cách trong một cuộc trò chuyện, dán prompt một lần rồi mỗi lần chỉ gửi lại khối **Yêu cầu nội dung** mới.
 
+Trong app, ở chế độ code HTML (`</>`) của trình soạn thảo khối, nút ✦ sao chép sẵn phần prompt này, nút ? mở các mẫu HTML/CSS chèn được ngay, và nút ⇥ nhập HTML do AI trả về. Sau khi sửa file này, chạy `npm run sync:prompt` để cập nhật bản mà app sao chép (`assets/data/board-html-prompt.md`).
+
 Quy tắc trên phản ánh bộ hỗ trợ hiện tại (xem `assets/js/graph/html-document.js` và `assets/js/detail/html-content.js`); không đảm bảo mọi kết quả do mô hình tạo đều hợp lệ, nên luôn kiểm tra bước "Kiểm tra HTML" trước khi thêm. Sơ đồ Mermaid được vẽ bởi `assets/js/detail/mermaid-render.js` theo chính sách ở `assets/js/graph/diagram-policy.js`; video bởi `assets/js/detail/video-embed.js`. Bootstrap được nạp cục bộ từ `assets/vendor/bootstrap.min.css` (v5.3.8); các component cần JavaScript của Bootstrap không hoạt động trong Board. Kiểu chữ, cột đọc và theme tối của tài liệu nằm ở `assets/css/document-content.css`.

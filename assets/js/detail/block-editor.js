@@ -10,6 +10,7 @@ import { createComponentControls } from './component-controls.js';
 import { createCodeControls } from './code-controls.js';
 import { createImageControls } from './image-controls.js';
 import { createHTMLImport } from './html-import.js';
+import { createEditorGuide } from './editor-guide.js';
 import { htmlTemplate } from './writing.js';
 import { formatHTML } from './html-formatter.js';
 const local = (file) => new URL('../../vendor/' + file, import.meta.url).href;
@@ -68,7 +69,13 @@ export async function mountBlockEditor(
   const sourceButton = document.createElement('button');
   const sourceSearch = document.createElement('button');
   const sourceFormat = document.createElement('button');
-  for (const button of [visualButton, sourceButton, sourceSearch, sourceFormat]) button.type = 'button';
+  const sourceImport = document.createElement('button');
+  for (const button of [visualButton, sourceButton, sourceSearch, sourceFormat, sourceImport]) button.type = 'button';
+  sourceImport.dataset.editorImport = '';
+  sourceImport.hidden = true;
+  // Import review and help panels stay reachable in both editing modes.
+  const panels = document.createElement('div');
+  panels.className = 'block-editor-panels';
   visualButton.dataset.editorMode = 'visual';
   sourceButton.dataset.editorMode = 'html';
   sourceSearch.dataset.editorSearch = '';
@@ -85,8 +92,8 @@ export async function mountBlockEditor(
   source.spellcheck = false;
   source.hidden = true;
   sourceHint.hidden = true;
-  modeBar.append(visualButton, sourceButton, sourceSearch, sourceFormat);
-  host.append(modeBar, tools, notice, legacyStatus, canvas, sourceHint, sourceHost);
+  modeBar.append(visualButton, sourceButton, sourceSearch, sourceFormat, sourceImport);
+  host.append(modeBar, tools, panels, notice, legacyStatus, canvas, sourceHint, sourceHost);
   const editor = grapesjs.init({
     container: canvas,
     height: '580px',
@@ -305,14 +312,25 @@ export async function mountBlockEditor(
   };
   imageControls.root.append(replaceFile);
   tools.append(imageControls.root);
-  const htmlImport = createHTMLImport(editor, images);
+  const htmlImport = createHTMLImport(
+    (html) => (mode === 'html' ? insertSource(html) : editor.addComponents(html)),
+    images,
+  );
   const htmlButton = document.createElement('button');
   htmlButton.type = 'button';
   htmlButton.dataset.blockLabel = 'htmlImportTitle';
   labelIcon(htmlButton, 'htmlImportTitle');
   htmlButton.onclick = htmlImport.show;
   groups.editorGroupActions.append(htmlButton);
-  tools.append(htmlImport.root);
+  sourceImport.onclick = htmlImport.show;
+  panels.append(htmlImport.root);
+  // Samples go through the same review as pasted HTML before they enter the document.
+  const guide = createEditorGuide({ onInsert: htmlImport.fromClipboard });
+  // The AI prompt and the samples belong to HTML code mode, next to find and format.
+  guide.promptButton.hidden = true;
+  guide.samplesButton.hidden = true;
+  modeBar.append(guide.promptButton, guide.samplesButton);
+  panels.append(guide.root);
   linkApply.onclick = () => {
     const component = editor.getSelected();
     if (component?.get('tagName') !== 'a') return;
@@ -403,6 +421,15 @@ export async function mountBlockEditor(
     });
     settingSource = false;
   };
+  const insertSource = (html) => {
+    const { from, to } = sourceView.state.selection.main;
+    sourceView.dispatch({
+      changes: { from, to, insert: html },
+      selection: { anchor: from + html.length },
+      userEvent: 'input.paste',
+    });
+    sourceView.focus();
+  };
   sourceSearch.onclick = () => codeMirror.openSearchPanel(sourceView);
   sourceFormat.onclick = () => {
     const result = formatHTML(sourceView.state.doc.toString());
@@ -469,6 +496,10 @@ export async function mountBlockEditor(
     sourceHost.hidden = !code;
     sourceSearch.hidden = !code;
     sourceFormat.hidden = !code;
+    sourceImport.hidden = !code;
+    guide.promptButton.hidden = !code;
+    guide.samplesButton.hidden = !code;
+    if (!code) guide.close();
     sourceHint.hidden = !code;
     visualButton.setAttribute('aria-pressed', String(!code));
     sourceButton.setAttribute('aria-pressed', String(code));
@@ -653,12 +684,14 @@ export async function mountBlockEditor(
   codeControls.translate();
   imageControls.translate();
   htmlImport.translate();
+  guide.translate();
   const translateModes = () => {
     modeBar.setAttribute('aria-label', t('editorMode'));
     labelIcon(visualButton, 'editorVisual');
     labelIcon(sourceButton, 'editorHTML');
     labelIcon(sourceSearch, 'cmFind');
     labelIcon(sourceFormat, 'htmlFormat');
+    labelIcon(sourceImport, 'htmlImportTitle');
     source.setAttribute('aria-label', t('editorHTML'));
     sourceView.contentDOM.setAttribute('aria-label', t('editorHTML'));
     sourceView.dispatch({ effects: languageCompartment.reconfigure(sourcePhrases()) });
@@ -713,6 +746,7 @@ export async function mountBlockEditor(
       codeControls.translate();
       imageControls.translate();
       htmlImport.translate();
+      guide.translate();
       translateModes();
       translateRichTextControls();
       for (const button of tools.querySelectorAll('[data-block-label]'))

@@ -6,7 +6,7 @@ export function quickHelpBody() {
     '<div class="quick-help-content"><p class="muted">' +
     esc(t('quickHelpIntro')) +
     '</p><dl>' +
-    ['Select', 'Marquee', 'Pin', 'Edit', 'Navigate', 'Save']
+    ['Select', 'Marquee', 'Copy', 'Pin', 'Edit', 'Navigate', 'Save']
       .map(
         (key) =>
           '<div><dt>' +

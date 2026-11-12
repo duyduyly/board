@@ -15,6 +15,7 @@ import {
 import { enableAutoRoutes } from './graph/auto-routing.js';
 import { createGroupEditor } from './ui/group-editor.js';
 import { removeGroup, createGroup, cardGroups, GROUPS } from './graph/card-groups.js';
+import { copyCards, pasteCards } from './graph/copy-cards.js';
 import { selectionLocked } from './graph/card-lock.js';
 import { moveCards } from './graph/move-cards.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
@@ -99,6 +100,9 @@ export let layoutPreview = null;
 let selection = null,
   focusBranch = false,
   selectedCards = new Set(),
+  // Copied notes live in session memory only (CC-23); pasteCount staggers repeated pastes.
+  cardClipboard = null,
+  pasteCount = 0,
   singleMarqueeId = null,
   tab = 'overview',
   draft = null,
@@ -1774,6 +1778,46 @@ async function duplicate() {
   beginDraft();
   render();
 }
+const PASTE_OFFSET = 36;
+const copyableIds = () =>
+  selectedCards.size ? [...selectedCards] : selection?.kind === 'card' ? [selection.id] : [];
+function copySelection() {
+  const ids = copyableIds();
+  if (!ids.length) return false;
+  cardClipboard = copyCards(store.project, ids);
+  pasteCount = 0;
+  toast('cardsCopied', { params: { count: cardClipboard.cards.length } });
+  return true;
+}
+async function pasteSnapshot(snapshot, offset) {
+  if (adapter.callbacks.groupLocked() || !(await guardDraft())) return false;
+  if (
+    store.project.cards.length + snapshot.cards.length > LIMITS.cards ||
+    store.project.relations.length + snapshot.relations.length > LIMITS.relations
+  ) {
+    toast('pasteLimit');
+    return false;
+  }
+  let ids = [];
+  if (
+    !change((p) => {
+      ids = pasteCards(p, snapshot, { offset, newId });
+    })
+  )
+    return false;
+  selectMany(ids);
+  toast('cardsPasted', { params: { count: ids.length } });
+  return true;
+}
+async function pasteSelection() {
+  if (cardClipboard && (await pasteSnapshot(cardClipboard, PASTE_OFFSET * (pasteCount + 1))))
+    pasteCount += 1;
+}
+// Duplicate leaves the copy buffer alone, so an earlier Ctrl+C can still be pasted afterwards.
+async function duplicateSelection() {
+  const ids = copyableIds();
+  if (ids.length) await pasteSnapshot(copyCards(store.project, ids), PASTE_OFFSET);
+}
 async function deleteSelected() {
   if (selectedCards.size > 1) {
     toast('groupMoveOnly');
@@ -2458,6 +2502,7 @@ const actions = {
   },
 
   'clear-selection': () => selectMany([]),
+  'selection-duplicate': duplicateSelection,
   'selection-copy-json': () => exportSelectionJSON('copy'),
   'selection-download-json': () => exportSelectionJSON('download'),
   'group-create': () => {
@@ -2642,6 +2687,19 @@ document.addEventListener('keydown', (e) => {
   if (!detailOpen && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
     e.preventDefault();
     openSearch();
+  }
+  if (!detailOpen && (e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
+    const key = e.key.toLowerCase();
+    // Selected page text keeps the browser's own copy.
+    if (key === 'c' && window.getSelection().isCollapsed && copySelection()) e.preventDefault();
+    if (key === 'v' && cardClipboard) {
+      e.preventDefault();
+      pasteSelection();
+    }
+    if (key === 'd' && copyableIds().length) {
+      e.preventDefault();
+      duplicateSelection();
+    }
   }
   if (e.key === 'Delete' || e.key === 'Backspace') {
     e.preventDefault();

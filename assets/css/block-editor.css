@@ -177,6 +177,72 @@
   border: 1px solid var(--border);
   background: var(--surface);
 }
+.block-editor-panels {
+  display: grid;
+  gap: 6px;
+}
+/* Form controls get an explicit display from the app styles, so hidden needs to win here. */
+.block-editor-panels [hidden] {
+  display: none !important;
+}
+.block-editor-guide {
+  width: 100%;
+}
+.block-editor-guide-status:empty {
+  display: none;
+}
+.block-editor-guide-status {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.block-editor-guide textarea {
+  width: 100%;
+  font-family: monospace;
+}
+.block-editor-samples {
+  max-height: 320px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: auto;
+}
+.block-editor-samples h4 {
+  margin: 10px 0 4px;
+  font-size: 0.9rem;
+}
+.block-editor-samples p {
+  margin: 4px 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.block-editor-samples ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.block-editor-samples li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 4px 6px;
+  align-items: center;
+}
+.block-editor-sample-name {
+  font-weight: 600;
+}
+.block-editor-samples pre {
+  grid-column: 1 / -1;
+  max-height: 96px;
+  margin: 0;
+  padding: 6px 8px;
+  background: var(--soft);
+  font-family: monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  overflow: auto;
+}
 .block-html-import label {
   display: flex;
   flex-direction: column;

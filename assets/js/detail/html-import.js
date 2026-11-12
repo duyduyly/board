@@ -10,7 +10,8 @@ const MAX_HTML_BYTES = 1000000;
 const DATA_IMAGE_PAYLOAD = /data:image\/[a-z+.-]+;base64,[A-Za-z0-9+/=\s]*/gi;
 const imageExtension = { 'image/jpeg': 'jpg' };
 
-export function createHTMLImport(editor, images) {
+/** @param {(html: string) => void} insert adds reviewed HTML to the document being edited */
+export function createHTMLImport(insert, images) {
   const root = document.createElement('section');
   root.className = 'block-html-import';
   root.hidden = true;
@@ -164,7 +165,7 @@ export function createHTMLImport(editor, images) {
   accept.onclick = () => {
     if (!staged) return;
     Object.assign(images, stagedImages);
-    editor.addComponents(documentHTML(staged));
+    insert(documentHTML(staged));
     root.hidden = true;
     source.value = '';
     invalidate();
