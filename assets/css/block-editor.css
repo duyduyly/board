@@ -177,6 +177,11 @@
   border: 1px solid var(--border);
   background: var(--surface);
 }
+/* Visual-only line break between blocks of single-line HTML source. */
+.cm-soft-break {
+  display: block;
+  height: 0;
+}
 .block-editor-panels {
   display: grid;
   gap: 6px;
@@ -184,6 +189,33 @@
 /* Form controls get an explicit display from the app styles, so hidden needs to win here. */
 .block-editor-panels [hidden] {
   display: none !important;
+}
+.block-editor-library {
+  max-height: 260px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: auto;
+}
+.block-editor-library p {
+  margin: 4px 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.block-editor-library h4 {
+  margin: 10px 0 4px;
+  font-size: 0.9rem;
+}
+.block-editor-library-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.block-editor-library-items button {
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  cursor: grab;
 }
 .block-editor-guide {
   width: 100%;
@@ -242,6 +274,47 @@
   font-size: 0.8rem;
   white-space: pre-wrap;
   overflow: auto;
+}
+.editor-button-labeled {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.editor-button-labeled[hidden] {
+  display: none;
+}
+/* Group names stay available to assistive tech through each group's aria-label. */
+.block-editor-group-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+/* Groups wrap to a new row instead of squeezing their labels. */
+.block-editor-group {
+  flex-shrink: 0;
+}
+.block-editor-tools .block-editor-group select {
+  max-width: 92px;
+}
+.editor-button-label {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.block-html-import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.block-html-import-actions button {
+  padding: 4px 12px;
+  font-size: 0.85rem;
+}
+.block-html-import-actions [data-html-accept] {
+  font-weight: 600;
 }
 .block-html-import label {
   display: flex;

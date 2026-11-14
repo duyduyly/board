@@ -1,4 +1,3 @@
-import { labelIcon } from './editor-icons.js';
 import { t } from '../i18n/index.js';
 import { DOCUMENT, documentHTML, documentIssues } from '../graph/html-document.js';
 import { parseDocument } from './html-content.js';
@@ -26,6 +25,12 @@ export function createHTMLImport(insert, images) {
   file.type = 'file';
   file.accept = '.html,.htm,text/html';
   file.dataset.htmlFile = '';
+  // The native control cannot be translated, so a labelled button opens it instead.
+  file.hidden = true;
+  const fileButton = document.createElement('button');
+  fileButton.type = 'button';
+  fileButton.dataset.htmlFileButton = '';
+  fileButton.onclick = () => file.click();
   const review = document.createElement('button');
   review.type = 'button';
   review.dataset.htmlReview = '';
@@ -44,7 +49,10 @@ export function createHTMLImport(insert, images) {
   const cancel = document.createElement('button');
   cancel.type = 'button';
   cancel.dataset.htmlCancel = '';
-  root.append(heading, label, file, review, result, accept, cancel);
+  const actions = document.createElement('div');
+  actions.className = 'block-html-import-actions';
+  actions.append(fileButton, review, accept, cancel);
+  root.append(heading, label, file, result, actions);
   let staged = null;
   let stagedImages = {};
   let run = 0;
@@ -186,9 +194,10 @@ export function createHTMLImport(insert, images) {
     translate() {
       heading.textContent = t('htmlImportTitle');
       caption.textContent = t('htmlImportSource');
-      labelIcon(review, 'htmlImportReview');
-      labelIcon(accept, 'htmlImportAccept');
-      labelIcon(cancel, 'cancel');
+      fileButton.textContent = t('htmlImportFile');
+      review.textContent = t('htmlImportReview');
+      accept.textContent = t('htmlImportAccept');
+      cancel.textContent = t('cancel');
       file.setAttribute('aria-label', t('htmlImportFile'));
     },
   };

@@ -1,4 +1,5 @@
 export { basicSetup, EditorView } from 'codemirror';
+export { Decoration, ViewPlugin, WidgetType } from '@codemirror/view';
 export { html } from '@codemirror/lang-html';
 export { EditorState, Compartment, Transaction } from '@codemirror/state';
 export { syntaxTree } from '@codemirror/language';

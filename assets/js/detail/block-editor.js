@@ -11,8 +11,10 @@ import { createCodeControls } from './code-controls.js';
 import { createImageControls } from './image-controls.js';
 import { createHTMLImport } from './html-import.js';
 import { createEditorGuide } from './editor-guide.js';
+import { createElementLibrary } from './element-library.js';
 import { htmlTemplate } from './writing.js';
 import { formatHTML } from './html-formatter.js';
+import { softBreaks } from './source-soft-breaks.js';
 const local = (file) => new URL('../../vendor/' + file, import.meta.url).href;
 import { labelIcon } from './editor-icons.js';
 
@@ -118,6 +120,20 @@ export async function mountBlockEditor(
     isComponent: (element) =>
       ['UL', 'OL'].includes(element.tagName) ? { type: 'editable-list' } : false,
   });
+  // Table cells and callouts hold their text directly, which GrapesJS does not make editable by itself.
+  editor.Components.addType('editable-cell', {
+    extend: 'text',
+    isComponent: (element) =>
+      ['TD', 'TH'].includes(element.tagName) ? { type: 'editable-cell' } : false,
+    model: { defaults: { draggable: 'tr' } },
+  });
+  editor.Components.addType('editable-callout', {
+    extend: 'text',
+    isComponent: (element) =>
+      element.tagName === 'DIV' && element.classList?.contains('alert')
+        ? { type: 'editable-callout' }
+        : false,
+  });
   editor.Components.addType('image', {
     model: { defaults: { editable: false, traits: [] } },
     view: { events: { dblclick: () => {} } },
@@ -165,6 +181,32 @@ export async function mountBlockEditor(
     blockDivider: '<hr>',
     blockButton: '<a class="btn btn-primary" href="#">...</a>',
   };
+  // Containers whose children are blocks; a new block goes right after the selected block inside them.
+  const BLOCK_PARENTS = new Set(['div', 'section', 'article', 'aside', 'header', 'footer', 'td', 'th']);
+  /** Adds content after the selected block (inside a selected div), then reveals it. */
+  const insertBlock = (content) => {
+    const selected = editor.getSelected();
+    let added;
+    if (selected?.get('tagName') === 'div') added = selected.append(content);
+    else {
+      let anchor = selected;
+      while (
+        anchor?.parent() &&
+        anchor.parent() !== editor.getWrapper() &&
+        !BLOCK_PARENTS.has(anchor.parent().get('tagName'))
+      )
+        anchor = anchor.parent();
+      added = anchor?.parent()
+        ? anchor.parent().append(content, { at: anchor.index() + 1 })
+        : editor.addComponents(content);
+    }
+    const first = [added].flat()[0];
+    if (!first) return null;
+    // Selecting a new div would nest the next block inside it, so only leaf blocks get selected.
+    if (first.get('tagName') !== 'div') editor.select(first);
+    first.getEl()?.scrollIntoView({ block: 'nearest' });
+    return first;
+  };
   const groups = {};
   for (const key of ['editorGroupText', 'editorGroupLayout', 'editorGroupComponents', 'editorGroupActions']) {
     const group = document.createElement('div');
@@ -188,11 +230,7 @@ export async function mountBlockEditor(
     button.type = 'button';
     button.dataset.blockLabel = key;
     labelIcon(button, key);
-    button.onclick = () => {
-      const selected = editor.getSelected();
-      if (selected?.get('tagName') === 'div') selected.append(html);
-      else editor.addComponents(html);
-    };
+    button.onclick = () => insertBlock(html);
     groupFor(key).append(button);
   }
   for (const [key, command] of [
@@ -228,7 +266,7 @@ export async function mountBlockEditor(
       notice.textContent = '';
       const id = 'image-' + window.crypto.randomUUID();
       images[id] = image;
-      editor.addComponents({
+      insertBlock({
         tagName: 'figure',
         components: [
           {
@@ -255,7 +293,7 @@ export async function mountBlockEditor(
     templateSelect.append(option);
   }
   templateSelect.onchange = () => {
-    if (templateSelect.value) editor.addComponents(htmlTemplate(templateSelect.value));
+    if (templateSelect.value) insertBlock(htmlTemplate(templateSelect.value));
     templateSelect.value = '';
   };
   groups.editorGroupActions.append(templateSelect);
@@ -313,7 +351,7 @@ export async function mountBlockEditor(
   imageControls.root.append(replaceFile);
   tools.append(imageControls.root);
   const htmlImport = createHTMLImport(
-    (html) => (mode === 'html' ? insertSource(html) : editor.addComponents(html)),
+    (html) => (mode === 'html' ? insertSource(html) : insertBlock(html)),
     images,
   );
   const htmlButton = document.createElement('button');
@@ -326,6 +364,21 @@ export async function mountBlockEditor(
   panels.append(htmlImport.root);
   // Samples go through the same review as pasted HTML before they enter the document.
   const guide = createEditorGuide({ onInsert: htmlImport.fromClipboard });
+  // Ready-made elements for visual mode: click inserts after the selection, dragging drops in place.
+  // The drop is resolved here instead of by GrapesJS blocks, whose drop position is off inside the dialog.
+  let draggedElement = null;
+  const library = createElementLibrary({
+    onInsert: (html) => insertBlock(html),
+    onDragStart: (html) => {
+      draggedElement = html;
+    },
+    onDragEnd: () => {
+      draggedElement = null;
+      editor.Canvas.getDocument()?.querySelector('[data-drop-line]')?.remove();
+    },
+  });
+  groups.editorGroupActions.append(library.button);
+  panels.append(library.root);
   // The AI prompt and the samples belong to HTML code mode, next to find and format.
   guide.promptButton.hidden = true;
   guide.samplesButton.hidden = true;
@@ -361,6 +414,33 @@ export async function mountBlockEditor(
   let visualDocumentBaseline = documentHTML(parseDocument(editor.getHtml()).document);
   let sourceBaseline = '';
   const hasPending = () => mode === 'html' && source.value !== sourceBaseline;
+  // Selecting a block opens its property panel above the canvas. Scroll the enclosing panel by the
+  // same amount so the block stays under the pointer; otherwise the second click of a double-click
+  // lands somewhere else and the block never enters text editing.
+  const scroller = (() => {
+    for (let node = host.parentElement; node; node = node.parentElement)
+      if (['auto', 'scroll'].includes(window.getComputedStyle(node).overflowY)) return node;
+    return null;
+  })();
+  let toolsHeight = tools.offsetHeight;
+  const keepCanvasInPlace = () => {
+    const height = tools.offsetHeight;
+    const delta = height - toolsHeight;
+    toolsHeight = height;
+    if (delta && scroller && ready && mode === 'visual') scroller.scrollTop += delta;
+  };
+  // Selection changes call this synchronously (before the next click); the observer covers the rest.
+  const toolsObserver = new window.ResizeObserver(keepCanvasInPlace);
+  toolsObserver.observe(tools);
+  // Panels opening above the canvas move it; GrapesJS must re-read its position or drops land off target.
+  const panelsObserver = new window.ResizeObserver(() => {
+    if (ready && mode === 'visual') editor.refresh();
+  });
+  panelsObserver.observe(panels);
+  editor.on('destroy', () => {
+    toolsObserver.disconnect();
+    panelsObserver.disconnect();
+  });
   const canSave = () => {
     if (!hasPending()) return true;
     if (new TextEncoder().encode(source.value).length > 1000000) return false;
@@ -386,6 +466,7 @@ export async function mountBlockEditor(
     extensions: [
       codeMirror.basicSetup,
       codeMirror.html(),
+      softBreaks(codeMirror),
       languageCompartment.of(sourcePhrases()),
       codeMirror.lintGutter(),
       codeMirror.linter((view) => {
@@ -500,6 +581,7 @@ export async function mountBlockEditor(
     guide.promptButton.hidden = !code;
     guide.samplesButton.hidden = !code;
     if (!code) guide.close();
+    else library.close();
     sourceHint.hidden = !code;
     visualButton.setAttribute('aria-pressed', String(!code));
     sourceButton.setAttribute('aria-pressed', String(code));
@@ -585,6 +667,92 @@ export async function mountBlockEditor(
       }
     };
     frame.addEventListener('input', captureInput, true);
+    // Enter in a paragraph or heading starts a new paragraph block; Shift+Enter keeps a line break.
+    /** Moves the text after the caret into a new paragraph after `component` and starts editing it. */
+    const splitParagraph = async (component) => {
+      const editable = component.getEl();
+      const caret = frame.getSelection().getRangeAt(0);
+      caret.deleteContents();
+      const tail = frame.createRange();
+      tail.setStart(caret.endContainer, caret.endOffset);
+      tail.setEnd(editable, editable.childNodes.length);
+      const holder = frame.createElement('div');
+      holder.append(tail.extractContents());
+      // Splitting inside inline formatting leaves empty clones (for example <strong></strong>) on both sides.
+      for (const side of [holder, editable])
+        for (const node of [...side.querySelectorAll('*')].reverse())
+          if (!node.textContent && !node.matches('img,br') && !node.querySelector('img,br'))
+            node.remove();
+      liveText.set(editable.id, editable.innerHTML);
+      const rest = documentHTML(parseDocument(holder.innerHTML).document);
+      const [next] = [
+        component
+          .parent()
+          .append({ type: 'text', tagName: 'p', components: rest }, { at: component.index() + 1 }),
+      ].flat();
+      // Editing moves on only after the old block has closed its rich-text session.
+      await component.view?.disableEditing?.();
+      editor.select(next);
+      await next.view?.onActive?.();
+      // The rich-text editor resets the caret shortly after it opens; wait so ours is the last word.
+      await new Promise((resolve) => window.setTimeout(resolve, RTE_SETTLE_MS));
+      const element = next.getEl();
+      const start = frame.createRange();
+      start.setStart(element, 0);
+      start.collapse(true);
+      const selection = frame.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(start);
+      element.focus();
+      element.scrollIntoView({ block: 'nearest' });
+      return next;
+    };
+    // Keys typed while editing moves to the new paragraph are replayed there, so fast typing is not lost.
+    const RTE_SETTLE_MS = 40;
+    let handover = null;
+    frame.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return;
+        if (handover) {
+          // Other keys are dropped for these few milliseconds rather than applied out of order.
+          if (['Shift', 'CapsLock'].includes(event.key)) return;
+          event.preventDefault();
+          event.stopPropagation();
+          const split = event.key === 'Enter' && !event.shiftKey;
+          if (split || event.key.length === 1) handover.push(event.key);
+          return;
+        }
+        if (event.key !== 'Enter' || event.shiftKey) return;
+        const editable = event.target.closest?.('[contenteditable="true"]');
+        const component = editor.getSelected();
+        if (
+          !editable ||
+          !/^(P|H[1-6])$/.test(editable.tagName) ||
+          component?.getEl() !== editable ||
+          !component.parent() ||
+          !frame.getSelection()?.rangeCount
+        )
+          return;
+        event.preventDefault();
+        event.stopPropagation();
+        handover = [];
+        void (async () => {
+          try {
+            let current = await splitParagraph(component);
+            while (handover.length && isCurrent()) {
+              const key = handover.shift();
+              if (key === 'Enter') current = await splitParagraph(current);
+              else frame.execCommand('insertText', false, key);
+            }
+          } finally {
+            handover = null;
+            sync();
+          }
+        })();
+      },
+      true,
+    );
     frame.addEventListener('compositionend', captureInput, true);
     frame.addEventListener(
       'paste',
@@ -598,9 +766,66 @@ export async function mountBlockEditor(
       },
       true,
     );
+    // Dropping a library element: find the block under the pointer and insert before or after it.
+    const dropPlace = (event) => {
+      const hit = frame.elementFromPoint(event.clientX, event.clientY);
+      let parent = editor.getWrapper();
+      let block = null;
+      for (;;) {
+        const child = parent.components().find((item) => item.getEl()?.contains(hit));
+        if (!child) break;
+        block = child;
+        if (!BLOCK_PARENTS.has(child.get('tagName'))) break;
+        parent = child;
+      }
+      if (!block) return { parent: editor.getWrapper(), at: editor.getWrapper().components().length };
+      // An empty container takes the element inside it.
+      if (BLOCK_PARENTS.has(block.get('tagName')) && !block.components().length)
+        return { parent: block, at: 0, rect: block.getEl().getBoundingClientRect(), after: false };
+      const rect = block.getEl().getBoundingClientRect();
+      const after = event.clientY > rect.top + rect.height / 2;
+      return { parent: block.parent(), at: block.index() + (after ? 1 : 0), rect, after };
+    };
+    frame.addEventListener(
+      'dragover',
+      (event) => {
+        if (!draggedElement) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        const place = dropPlace(event);
+        let line = frame.querySelector('[data-drop-line]');
+        if (!line) {
+          line = frame.createElement('div');
+          line.setAttribute('data-drop-line', '');
+          frame.body.append(line);
+        }
+        const view = frame.defaultView;
+        const top = place.rect
+          ? (place.after ? place.rect.bottom : place.rect.top) + view.scrollY
+          : frame.body.scrollHeight - 2;
+        line.style.cssText =
+          'position:absolute;left:0;right:0;height:3px;pointer-events:none;z-index:10;background:var(--doc-ink);top:' +
+          (top - 1) +
+          'px';
+      },
+      true,
+    );
     frame.addEventListener(
       'drop',
       (event) => {
+        if (draggedElement) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          const place = dropPlace(event);
+          frame.querySelector('[data-drop-line]')?.remove();
+          const [first] = [place.parent.append(draggedElement, { at: place.at })].flat();
+          draggedElement = null;
+          if (first) {
+            if (first.get('tagName') !== 'div') editor.select(first);
+            first.getEl()?.scrollIntoView({ block: 'nearest' });
+          }
+          return;
+        }
         if (
           event.dataTransfer?.types.some((type) => ['text/html', 'text/uri-list'].includes(type)) ||
           event.dataTransfer?.files.length
@@ -619,11 +844,54 @@ export async function mountBlockEditor(
       },
       true,
     );
+    // The block toolbar is redrawn for every selection; label it whenever its buttons change.
+    const blockToolbar = host.querySelector('.gjs-toolbar');
+    if (blockToolbar) {
+      const toolbarObserver = new window.MutationObserver(labelBlockToolbar);
+      toolbarObserver.observe(blockToolbar, { childList: true, subtree: true });
+      editor.on('destroy', () => toolbarObserver.disconnect());
+    }
     tools.inert = false;
     modeBar.inert = false;
     host.removeAttribute('aria-busy');
   });
   editor.on('update', sync);
+  // GrapesJS draws the selected block's toolbar without names; label it for pointer and screen reader.
+  const blockToolbarLabels = {
+    'tlb-move': 'blockMove',
+    'tlb-clone': 'blockClone',
+    'tlb-delete': 'blockDelete',
+  };
+  const labelBlockToolbar = () => {
+    const definitions = editor.getSelected()?.get('toolbar') || [];
+    host.querySelectorAll('.gjs-toolbar-item').forEach((item, index) => {
+      const command = definitions[index]?.command;
+      const key = typeof command === 'string' ? blockToolbarLabels[command] : 'blockSelectParent';
+      if (!key) return;
+      item.title = t(key);
+      item.setAttribute('aria-label', t(key));
+      item.setAttribute('role', 'button');
+    });
+  };
+  const translateBlockNames = () => {
+    editor.I18n.addMessages({
+      [getLocale()]: {
+        domComponents: {
+          names: {
+            '': t('blockTypeBlock'),
+            text: t('blockTypeText'),
+            image: t('blockTypeImage'),
+            link: t('blockTypeLink'),
+            table: t('blockTypeTable'),
+            row: t('blockTypeRow'),
+            cell: t('blockTypeCell'),
+            'editable-list': t('blockTypeList'),
+          },
+        },
+      },
+    });
+  };
+  translateBlockNames();
   editor.on('component:selected', (component) => {
     layoutControls.select(component);
     componentControls.select(component);
@@ -633,6 +901,7 @@ export async function mountBlockEditor(
     const isLink = component.get('tagName') === 'a';
     linkControls.hidden = !isLink;
     if (isLink) linkInput.value = component.getAttributes().href || '';
+    keepCanvasInPlace();
   });
   editor.on('component:deselected', () => {
     linkControls.hidden = true;
@@ -640,6 +909,7 @@ export async function mountBlockEditor(
     componentControls.clear();
     codeControls.clear();
     imageControls.clear();
+    keepCanvasInPlace();
   });
   const translateLinkControls = () => {
     linkLabelText.textContent = t('blockLinkAddress');
@@ -685,6 +955,7 @@ export async function mountBlockEditor(
   imageControls.translate();
   htmlImport.translate();
   guide.translate();
+  library.translate();
   const translateModes = () => {
     modeBar.setAttribute('aria-label', t('editorMode'));
     labelIcon(visualButton, 'editorVisual');
@@ -740,6 +1011,8 @@ export async function mountBlockEditor(
     },
     translate: () => {
       editor.I18n.setLocale(getLocale());
+      translateBlockNames();
+      labelBlockToolbar();
       translateLinkControls();
       layoutControls.translate();
       componentControls.translate();
@@ -747,6 +1020,7 @@ export async function mountBlockEditor(
       imageControls.translate();
       htmlImport.translate();
       guide.translate();
+      library.translate();
       translateModes();
       translateRichTextControls();
       for (const button of tools.querySelectorAll('[data-block-label]'))

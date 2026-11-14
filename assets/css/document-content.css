@@ -25,6 +25,8 @@ body {
 /* Keep running text at a readable measure; cards, tables and code still use the full column. */
 :where(p, li, blockquote):not(.text-center, .text-end, .text-center *, .text-end *, table *, .list-group-item) { max-width: 72ch; }
 img { max-width: 100%; height: auto; }
+/* Editor only: an empty block being typed into keeps one line of height for the caret. */
+[contenteditable='true']:empty { min-height: 1.65em; }
 pre { white-space: pre-wrap; background: var(--doc-soft); padding: 16px; overflow-x: auto; }
 table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
 th, td { border: 1px solid var(--doc-border); padding: 0.5rem 0.75rem; }

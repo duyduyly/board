@@ -28,7 +28,8 @@ test('small help button beside locale explains gestures, switches language and p
   await button.click();
   await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toBeVisible();
-  await expect(page.locator('.quick-help-content dt')).toHaveCount(6);
+  await expect(page.locator('.quick-help-content dt')).toHaveCount(7);
+  await expect(page.locator('.quick-help-content')).toContainText('Ctrl/Cmd + C');
   await expect(page.locator('.quick-help-content')).toContainText('Shift');
   await expect(page.locator('.quick-help-content')).toContainText('Xuất dự án');
   await expect(page.locator('#modal-locale')).toHaveCount(0);
