@@ -56,6 +56,7 @@ import {
   setGeometry,
   setRoot,
   relationKind,
+  newLinkKind,
 } from './graph/mind-map.js';
 import { APPEARANCE, appearance, appearanceWith } from './detail/appearance.js';
 import {
@@ -1622,6 +1623,9 @@ async function connection(source, target, position) {
     target = card.id;
   }
   const r = newRelation(source, target);
+  // In the Mind Map a hand-drawn link grows the tree, so the source can collapse its new child.
+  if (store.activeView === 'mind' && newLinkKind(store.project, source, target) === 'branch')
+    r.extensions = { [MIND]: { kind: 'branch' } };
   if (
     !change((p) => {
       if (card) {

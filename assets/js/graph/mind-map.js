@@ -41,6 +41,22 @@ export function setRoot(p, id, detach = false) {
   if (id) p.extensions[MIND].rootId = id;
   else delete p.extensions[MIND].rootId;
 }
+/**
+ * Kind for a link drawn by hand in the Mind Map: it extends the tree as a branch when the target
+ * has no parent yet and is not the root or an ancestor of the source; otherwise it is a reference.
+ */
+export function newLinkKind(p, source, target) {
+  if (target === p.extensions?.[MIND]?.rootId) return 'reference';
+  const parents = new Map();
+  for (const r of p.relations) if (relationKind(r) === 'branch') parents.set(r.target, r.source);
+  if (parents.has(target)) return 'reference';
+  const seen = new Set();
+  for (let id = source; id !== undefined && !seen.has(id); id = parents.get(id)) {
+    if (id === target) return 'reference';
+    seen.add(id);
+  }
+  return 'branch';
+}
 export function branchInfo(p) {
   const root = p.extensions?.[MIND]?.rootId,
     parents = new Map();
