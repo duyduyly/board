@@ -371,16 +371,22 @@ export default {
     'Tab đọc có mục lục bên lề, A−/A+ đổi cỡ chữ và ◐ đổi theme. Khối code language-mermaid được vẽ thành sơ đồ. Liên kết YouTube có class board-video thành khung phát, chỉ tải khi bấm phát (cần mạng); Escape để đóng video.',
   quickHelpSave: 'Hoàn tác & lưu dự án',
   quickHelpSaveBody:
-    'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Xuất dự án để lưu JSON, Nhập JSON để mở lại; khi chọn nhiều note, menu JSON sao chép hoặc tải riêng vùng chọn. Dữ liệu chỉ ở trong phiên; đóng trang khi chưa xuất sẽ được hỏi lại.',
-  quickHelpWordExport: 'Xuất Word',
+    'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Menu Xuất → Xuất dự án để lưu JSON, Nhập JSON để mở lại; khi chọn nhiều note, menu JSON sao chép hoặc tải riêng vùng chọn. Dữ liệu chỉ ở trong phiên; đóng trang khi chưa xuất sẽ được hỏi lại.',
+  quickHelpWordExport: 'Xuất Word và Markdown',
   quickHelpWordExportBody:
-    'Xuất Word tạo file .docx gồm ghi chú, nhóm, bảng, ảnh đính kèm và liên kết để đọc hoặc in. Ảnh từ web chỉ là liên kết, sơ đồ Mermaid giữ mã nguồn. Ghi chú xếp theo thứ tự của view đang mở, sau trang mục lục. File Word không nhập lại được; hãy dùng Xuất dự án để lưu.',
+    'Xuất Word tạo file .docx gồm ghi chú, nhóm, bảng, ảnh đính kèm và liên kết để đọc hoặc in. Ảnh từ web chỉ là liên kết, sơ đồ Mermaid giữ mã nguồn. Ghi chú xếp theo thứ tự của view đang mở, sau trang mục lục. Xuất Markdown tải file .zip gồm tài liệu .md cùng bố cục (logo, mục lục, liên kết nội bộ) và thư mục images/ chứa ảnh đính kèm; Mermaid thành khối ```mermaid. Cả hai đều nằm trong menu Xuất và không nhập lại được; hãy dùng Xuất dự án để lưu.',
   wordExportDone: 'Đã yêu cầu tải file Word. Hãy kiểm tra trong Downloads.',
   wordExportDoneSkipped:
     'Đã yêu cầu tải file Word. Ảnh không nhúng được (ghi bằng tên ảnh): {count}.',
-  wordExportNotSaved: 'Dự án vẫn chưa được lưu: dùng Xuất dự án để lưu bản mở lại được.',
+  wordExportNotSaved: 'Dự án vẫn chưa được lưu: dùng Xuất → Xuất dự án để lưu bản mở lại được.',
   wordExportEmpty: 'Dự án chưa có ghi chú nào để xuất Word.',
   wordExportFailed: 'Không tạo được file Word. Dự án hiện tại được giữ nguyên. Hãy thử lại.',
+  markdownExportDone: 'Đã yêu cầu tải file Markdown (.zip). Hãy kiểm tra trong Downloads.',
+  markdownExportDoneSkipped:
+    'Đã yêu cầu tải file Markdown (.zip). Ảnh không đưa vào được (ghi bằng tên ảnh): {count}.',
+  markdownExportEmpty: 'Dự án chưa có ghi chú nào để xuất Markdown.',
+  markdownExportFailed:
+    'Không tạo được file Markdown. Dự án hiện tại được giữ nguyên. Hãy thử lại.',
   wordUngrouped: 'Ghi chú khác',
   wordLinks: 'Liên kết',
   wordType: 'Loại',
@@ -709,6 +715,12 @@ export default {
   export: 'Xuất dự án',
   exportWord: 'Xuất Word',
   exportWordHint: 'Tải tài liệu Word (.docx) để đọc hoặc in. File này không nhập lại được.',
+  exportMenu: 'Xuất',
+  exportMenuHint: 'Lưu dự án hoặc xuất tài liệu để đọc',
+  exportProjectHint: 'Lưu file dự án (.json) để mở lại trong Card Atlas.',
+  exportMarkdown: 'Xuất Markdown',
+  exportMarkdownHint:
+    'Tải file .zip gồm tài liệu Markdown (.md) và thư mục ảnh. File này không nhập lại được.',
   format: 'Hướng dẫn JSON',
   search: 'Tìm kiếm note…',
   cards: 'note',

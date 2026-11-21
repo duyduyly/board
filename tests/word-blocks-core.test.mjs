@@ -229,13 +229,20 @@ test('callout variants', () => {
   assert.equal(run([el('div', { class: 'alert' }, 'x')])[0].variant, 'neutral');
 });
 
-test('code blocks keep whitespace and mermaid gets a caption', () => {
+test('code blocks keep whitespace and language; mermaid gets a caption', () => {
   const code = run([el('pre', {}, el('code', { class: 'language-js' }, 'a\n  b\n'))])[0];
-  assert.deepEqual(code, { type: 'code', text: 'a\n  b' });
+  assert.deepEqual(code, { type: 'code', text: 'a\n  b', language: 'js' });
+  const plain = run([el('pre', {}, el('code', {}, 'x'))])[0];
+  assert.deepEqual(plain, { type: 'code', text: 'x' });
   const mermaid = run([
     el('pre', {}, el('code', { class: 'language-mermaid' }, 'graph TD\nA-->B')),
   ])[0];
-  assert.deepEqual(mermaid, { type: 'code', text: 'graph TD\nA-->B', caption: 'Mermaid source' });
+  assert.deepEqual(mermaid, {
+    type: 'code',
+    text: 'graph TD\nA-->B',
+    language: 'mermaid',
+    caption: 'Mermaid source',
+  });
   const legacy = run([el('pre', {}, el('code', { 'data-origin': 'legacy-mermaid' }, 'x'))])[0];
   assert.equal(legacy.caption, 'Mermaid source');
 });

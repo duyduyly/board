@@ -3,7 +3,7 @@ import { download } from '../common/download.js';
 import { filename } from '../json/validator.js';
 import { buildDocx, DOCX_MIME } from './index.js';
 
-function wordLabels() {
+export function wordLabels() {
   return {
     ungrouped: t('wordUngrouped'),
     links: t('wordLinks'),
@@ -60,7 +60,7 @@ async function loadLogo() {
   }
 }
 
-function brandLogo() {
+export function brandLogo() {
   logoPromise ??= loadLogo().then((logo) => {
     if (!logo) logoPromise = null;
     return logo;

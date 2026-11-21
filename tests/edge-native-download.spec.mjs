@@ -1,4 +1,5 @@
 ﻿import { test, expect } from '@playwright/test';
+import { exportMenuAction } from './ui-driver.mjs';
 
 test('Edge downloads a project with an image and reimports its attachment', async ({
   page,
@@ -20,7 +21,7 @@ test('Edge downloads a project with an image and reimports its attachment', asyn
   );
   expect(Object.keys(original.extensions['card-atlas:images'])).toHaveLength(1);
   const pendingDownload = page.waitForEvent('download');
-  await page.locator('[data-action=export]').click();
+  await exportMenuAction(page, 'export');
   const download = await pendingDownload;
   expect(download.suggestedFilename()).toMatch(/\.json$/);
   expect(await download.failure()).toBeNull();

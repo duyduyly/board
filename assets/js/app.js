@@ -805,7 +805,16 @@ function render() {
     layoutPreview?.result.warnings.map((w) => t(w.code, { count: w.count })).join(' ') || '';
   $('[data-action=layout]').disabled = Boolean(layoutPreview) || !store.project.cards.length;
   $('[data-action=expand-all]').disabled = Boolean(layoutPreview) || !store.collapsed.size;
-  for (const action of ['new', 'add', 'connect', 'import', 'export', 'export-word', 'recovery'])
+  for (const action of [
+    'new',
+    'add',
+    'connect',
+    'import',
+    'export',
+    'export-word',
+    'export-markdown',
+    'recovery',
+  ])
     for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
       el.disabled = Boolean(layoutPreview);
 
@@ -2103,27 +2112,51 @@ async function exportProject() {
     return false;
   }
 }
-async function exportWord() {
-  const button = $('[data-action=export-word]');
-  if (layoutPreview || button.getAttribute('aria-busy') === 'true') return;
-  if (!store.project.cards.length) return toast('wordExportEmpty');
+/** Document exports in the Export menu: they download a file to read and never mark the project saved. */
+const DOCUMENT_EXPORTS = {
+  word: {
+    run: async (project, options) =>
+      (await import('./word-export/browser.js')).exportWordFile(project, options),
+    done: 'wordExportDone',
+    doneSkipped: 'wordExportDoneSkipped',
+    empty: 'wordExportEmpty',
+    failed: 'wordExportFailed',
+  },
+  markdown: {
+    run: async (project, options) =>
+      (await import('./markdown-export/browser.js')).exportMarkdownFile(project, options),
+    done: 'markdownExportDone',
+    doneSkipped: 'markdownExportDoneSkipped',
+    empty: 'markdownExportEmpty',
+    failed: 'markdownExportFailed',
+  },
+};
+// The chosen option disappears with the menu, so focus returns to the menu button first; the
+// draft dialog then hands focus back to it as well.
+function closeExportMenu() {
+  if (!$('#export-menu').open) return;
+  $('#export-menu').open = false;
+  $('#export-menu > summary').focus();
+}
+async function exportDocument(format) {
+  const kind = DOCUMENT_EXPORTS[format];
+  const menuButton = $('#export-menu > summary');
+  closeExportMenu();
+  if (layoutPreview || menuButton.getAttribute('aria-busy') === 'true') return;
+  if (!store.project.cards.length) return toast(kind.empty);
   if (!(await resolveExportDraft())) return;
-  // aria-* instead of disabled so keyboard focus stays on the button while exporting
-  button.setAttribute('aria-busy', 'true');
-  button.setAttribute('aria-disabled', 'true');
+  menuButton.setAttribute('aria-busy', 'true');
   try {
-    const { exportWordFile } = await import('./word-export/browser.js');
-    const { skippedImages } = await exportWordFile(store.project, { view: store.activeView });
-    toast(skippedImages ? 'wordExportDoneSkipped' : 'wordExportDone', {
+    const { skippedImages } = await kind.run(store.project, { view: store.activeView });
+    toast(skippedImages ? kind.doneSkipped : kind.done, {
       params: { count: skippedImages },
       detail: store.dirty ? 'wordExportNotSaved' : null,
     });
   } catch (error) {
     console.error(error);
-    toast('wordExportFailed');
+    toast(kind.failed);
   } finally {
-    button.removeAttribute('aria-busy');
-    button.removeAttribute('aria-disabled');
+    menuButton.removeAttribute('aria-busy');
   }
 }
 async function createProject() {
@@ -2601,8 +2634,12 @@ const actions = {
     store.redo();
   },
   import: () => $('#file-input').click(),
-  export: exportProject,
-  'export-word': exportWord,
+  export: () => {
+    closeExportMenu();
+    return exportProject();
+  },
+  'export-word': () => exportDocument('word'),
+  'export-markdown': () => exportDocument('markdown'),
   example: () => loadExample(),
   'mind-example': () => loadExample('assets/data/mind-map-example.json'),
   'english-example': () => loadExample('assets/data/english-endings-example.json'),
@@ -2678,6 +2715,7 @@ document.addEventListener('click', (e) => {
     actions[button.dataset.action || button.dataset.panelAction]?.();
   if (!e.target.closest('#selection-json') || button) $('#selection-json').open = false;
   if (!e.target.closest('#project-menu') || button) $('#project-menu').open = false;
+  if (!e.target.closest('#export-menu')) $('#export-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
   if (dateEditor.open || overviewEditor.open) return;
@@ -2696,6 +2734,11 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     $('#project-menu').open = false;
     $('#project-menu > summary').focus();
+    return;
+  }
+  if (e.key === 'Escape' && !detailOpen && !feedback.state && $('#export-menu').open) {
+    e.preventDefault();
+    closeExportMenu();
     return;
   }
   if (layoutPreview && e.key === 'Escape' && !feedback.state) {

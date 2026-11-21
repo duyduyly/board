@@ -1,6 +1,7 @@
 import { projectAction, view } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { exportMenuAction } from './ui-driver.mjs';
 
 const CARD = 'card-user-service';
 const APPEARANCE = 'card-atlas:appearance';
@@ -54,7 +55,7 @@ test('editing the background color keeps the default radius out of JSON, export 
   expect(await radiusOf(page)).toBe('6px');
   const download = page.waitForEvent('download');
   await page.locator('#project-menu > summary').click();
-  await page.locator('[data-action=export]').first().click();
+  await exportMenuAction(page, 'export');
   const file = await (await download).path();
   const exported = JSON.parse(await fs.readFile(file, 'utf8'));
   expect(

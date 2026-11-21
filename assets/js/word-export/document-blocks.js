@@ -15,7 +15,7 @@ import { validImageAttachment } from '../detail/attachments.js';
  * @typedef {{ type: 'heading', level: number, inlines: Inline[], bookmark?: string }
  *   | { type: 'paragraph', inlines: Inline[], style?: string, align?: string, rule?: boolean }
  *   | { type: 'list-item', ordered: boolean, level: number, listId: number, start?: number, inlines: Inline[] }
- *   | { type: 'code', text: string, caption?: string }
+ *   | { type: 'code', text: string, language?: string, caption?: string }
  *   | { type: 'table', caption?: Inline[], rows: { header: boolean, cells: TableCell[] }[] }
  *   | { type: 'callout', variant: string, blocks: Block[] }} Block
  * @typedef {{ name: string, mimeType: string, data: string }} ImageRecord
@@ -55,6 +55,7 @@ const ALIGN_BY_STYLE = {
   justify: 'justify',
 };
 const HEADING_TAG = /^h([1-6])$/;
+const LANGUAGE_CLASS = /^language-([\w+#.-]{1,32})$/;
 
 /** @param {any} node @param {string} name */
 const attr = (node, name) =>
@@ -256,11 +257,30 @@ function isMermaid(node) {
   );
 }
 
+/** Fence language from a `language-*` class on the `pre` or its `code`; Mermaid wins. @param {any} node */
+function codeLanguage(node) {
+  if (isMermaid(node)) return 'mermaid';
+  const codes = childrenOf(node).filter(
+    (child) => typeof child !== 'string' && child.tag === 'code',
+  );
+  for (const name of [node, ...codes].flatMap(classes)) {
+    const match = LANGUAGE_CLASS.exec(name);
+    if (match) return match[1].toLowerCase();
+  }
+  return '';
+}
+
 /** @param {any} node @param {any} ctx @returns {Block[]} */
 function codeBlocks(node, ctx) {
   const text = rawText(childrenOf(node)).replace(/\r\n?/g, '\n').replace(/\n$/, '');
+  const language = codeLanguage(node);
   return [
-    { type: 'code', text, ...(isMermaid(node) ? { caption: ctx.labels.mermaidSource } : {}) },
+    {
+      type: 'code',
+      text,
+      ...(language ? { language } : {}),
+      ...(language === 'mermaid' ? { caption: ctx.labels.mermaidSource } : {}),
+    },
   ];
 }
 

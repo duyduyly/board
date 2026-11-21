@@ -12,7 +12,7 @@
 .home-mode .toolbar {
   flex: none;
 }
-.toolbar-actions > [data-action='export-word'][aria-busy='true'] {
+#export-menu > summary[aria-busy='true'] {
   cursor: progress;
   opacity: 0.6;
 }
@@ -22,8 +22,7 @@
 .home-mode .toolbar-actions > [data-action='connect'],
 .home-mode #map-view,
 .home-mode .history-buttons,
-.home-mode .toolbar-actions > [data-action='export'],
-.home-mode .toolbar-actions > [data-action='export-word'] {
+.home-mode #export-menu {
   display: none;
 }
 .home-page {

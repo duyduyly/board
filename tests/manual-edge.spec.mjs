@@ -1,6 +1,7 @@
 import { view as switchMapView } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { exportMenuAction } from './ui-driver.mjs';
 const state = (page) =>
   page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
@@ -220,7 +221,7 @@ test('independent corner drags detour obstacle with90degree legs and survive exp
   ).toBeUndefined();
   await page.locator('[data-edge-action=done]').click();
   const downloadPromise = page.waitForEvent('download');
-  await page.locator('.toolbar [data-action=export]').click();
+  await exportMenuAction(page, 'export');
   const download = await downloadPromise;
   const bytes = await fs.readFile(await download.path());
   expect(

@@ -45,6 +45,13 @@ export async function applyAndContinue(page, button) {
   if (s.kind === 'card' && target.tab > 0)
     await page.locator('#panel-tabs button').nth(target.tab).click();
 }
+const EXPORT_MENU_ACTIONS = ['export', 'export-word', 'export-markdown'];
+/** Opens the toolbar Export menu when needed and picks one of its options. */
+export async function exportMenuAction(page, action) {
+  if (!(await page.locator('#export-menu').evaluate((e) => e.open)))
+    await page.locator('#export-menu > summary').click();
+  await page.locator('#export-menu [data-action="' + action + '"]').click();
+}
 export async function projectAction(page, action) {
   if (await page.locator('#detail-panel').isVisible()) {
     const local = page.locator('[data-panel-action="' + action + '"]');
@@ -56,6 +63,7 @@ export async function projectAction(page, action) {
     }
     await page.locator('[data-action=close]').click();
   }
+  if (EXPORT_MENU_ACTIONS.includes(action)) return exportMenuAction(page, action);
   if (
     ['format', 'recovery', 'inspector', 'convert-mind', 'auto-route-all', 'help'].includes(
       action,

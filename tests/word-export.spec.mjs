@@ -2,14 +2,15 @@ import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { readZip, readZipText } from './docx-zip-reader.mjs';
-import { openRow } from './ui-driver.mjs';
+import { exportMenuAction, openRow } from './ui-driver.mjs';
 
 const SAMPLE = path.join('wordspace', 'tasks', '20_word_export', 'assets', 'sample.docx');
-const WORD_BUTTON = '.toolbar [data-action=export-word]';
+const WORD_BUTTON = '#export-menu [data-action=export-word]';
+const EXPORT_MENU = '#export-menu > summary';
 const TOAST = {
   vi: {
     done: 'Đã yêu cầu tải file Word. Hãy kiểm tra trong Downloads.',
-    notSaved: 'Dự án vẫn chưa được lưu: dùng Xuất dự án để lưu bản mở lại được.',
+    notSaved: 'Dự án vẫn chưa được lưu: dùng Xuất → Xuất dự án để lưu bản mở lại được.',
     empty: 'Dự án chưa có ghi chú nào để xuất Word.',
   },
   en: { done: 'Word download requested. Check your Downloads.' },
@@ -19,7 +20,7 @@ const NO_DOWNLOAD_WAIT_MS = 1200;
 async function exportWord(page) {
   const [download] = await Promise.all([
     page.waitForEvent('download'),
-    page.locator(WORD_BUTTON).click(),
+    exportMenuAction(page, 'export-word'),
   ]);
   expect(await download.failure()).toBeNull();
   return download;
@@ -114,7 +115,7 @@ test('empty project shows a notice and downloads nothing', async ({ page }) => {
   await page.locator('[data-action=new]').click();
   await page.locator('[data-choice=create]').click();
   await expect(page.locator('.graph-card')).toHaveCount(0);
-  await expectNoDownload(page, () => page.locator(WORD_BUTTON).click());
+  await expectNoDownload(page, () => exportMenuAction(page, 'export-word'));
   await expect(page.locator('#toast[role=status]')).toContainText(TOAST.vi.empty);
 });
 
@@ -137,11 +138,11 @@ test('dirty project stays unsaved after Word export', async ({ page }) => {
 test('draft guard: the docked Format draft is asked about before Word export', async ({ page }) => {
   const { background, original } = await openDraft(page);
   const dialog = page.locator('#modal');
-  const wordButton = page.locator(WORD_BUTTON);
+  const exportMenu = page.locator(EXPORT_MENU);
 
-  // The docked Format inspector consumes the outside press and asks first, so the export
-  // draft dialog (exportDraftTitle) cannot be reached through visible controls.
-  await expectNoDownload(page, () => wordButton.click());
+  // The docked Format inspector consumes the outside press on the Export menu and asks first, so
+  // the export draft dialog (exportDraftTitle) cannot be reached through visible controls.
+  await expectNoDownload(page, () => exportMenu.click());
   await expect(dialog).toBeVisible();
   await dialog.locator('[data-choice=cancel]').click();
   await expect(dialog).not.toBeVisible();
@@ -149,7 +150,7 @@ test('draft guard: the docked Format draft is asked about before Word export', a
   await expect(page.locator('#cancel-draft')).toBeVisible();
 
   await expectNoDownload(page, async () => {
-    await wordButton.click();
+    await exportMenu.click();
     await dialog.locator('[data-choice=apply]').click();
   });
   await expect(page.locator('#cancel-draft')).not.toBeVisible();
@@ -159,11 +160,13 @@ test('draft guard: the docked Format draft is asked about before Word export', a
   await expect(page.locator('#save-state')).toHaveClass(/dirty/);
 });
 
-test('keyboard: Tab to the button and Enter downloads', async ({ page }) => {
+test('keyboard: open the Export menu, Tab to Word and Enter downloads', async ({ page }) => {
   await page.goto('/');
   await page.locator('[data-template=personal]').click();
   await expect(page.locator('.graph-card').first()).toBeVisible();
-  await page.locator('.toolbar [data-action=export]').focus();
+  await page.locator(EXPORT_MENU).focus();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   await expect(page.locator(WORD_BUTTON)).toBeFocused();
   const [download] = await Promise.all([
@@ -171,19 +174,25 @@ test('keyboard: Tab to the button and Enter downloads', async ({ page }) => {
     page.keyboard.press('Enter'),
   ]);
   expect(download.suggestedFilename()).toMatch(/\.docx$/);
-  await expect(page.locator(WORD_BUTTON)).toBeFocused();
+  // The menu closes after the choice and focus goes back to its button.
+  await expect(page.locator(WORD_BUTTON)).toBeHidden();
+  await expect(page.locator(EXPORT_MENU)).toBeFocused();
 });
 
-test('button is hidden on the home gallery and disabled during layout preview', async ({
+test('menu is hidden on the home gallery and Word is disabled during layout preview', async ({
   page,
 }) => {
   await page.goto('/');
-  await expect(page.locator(WORD_BUTTON)).toBeHidden();
+  await expect(page.locator(EXPORT_MENU)).toBeHidden();
   await page.locator('[data-template=mind-project]').click();
+  await page.locator(EXPORT_MENU).click();
   await expect(page.locator(WORD_BUTTON)).toBeVisible();
+  await page.locator(EXPORT_MENU).click();
   await page.locator('[data-action=layout]').click();
   await expect(page.locator('#layout-preview-bar')).toBeVisible();
+  await page.locator(EXPORT_MENU).click();
   await expect(page.locator(WORD_BUTTON)).toBeDisabled();
+  await page.locator(EXPORT_MENU).click();
   await page.locator('[data-action=layout-cancel]').click();
   await expect(page.locator(WORD_BUTTON)).toBeEnabled();
 });

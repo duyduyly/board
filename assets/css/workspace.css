@@ -313,6 +313,65 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+/* Export menu: the summary looks like the toolbar's primary button; options open below it. */
+.export-menu {
+  position: relative;
+}
+.export-menu > summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+}
+.export-menu > summary::-webkit-details-marker {
+  display: none;
+}
+.export-menu > summary:focus-visible {
+  outline: 2px solid #4b8f75;
+  outline-offset: 3px;
+}
+.export-menu-caret {
+  font-size: 10px;
+}
+.export-menu-body {
+  position: absolute;
+  z-index: 12;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 270px;
+  max-width: calc(100vw - 20px);
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+  white-space: normal;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 25px #0002;
+}
+.toolbar-actions .export-menu-body button {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  text-align: left;
+  border-color: transparent;
+  background: transparent;
+}
+.toolbar-actions .export-menu-body button:hover:not(:disabled) {
+  background: var(--soft);
+  border-color: var(--border);
+}
+.export-option-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.export-option-hint {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
 .chatgpt-launcher {
   position: absolute;
   z-index: 5;

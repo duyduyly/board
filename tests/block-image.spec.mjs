@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { exportMenuAction } from './ui-driver.mjs';
 
 test('palette image is present in the canonical HTML document and editor', async ({ page }) => {
   await page.goto('/');
@@ -69,7 +70,7 @@ test('local image settings and attachment survive project export and import', as
   expect(json).toContain('object-fit');
   expect(Object.keys(card.extensions['card-atlas:images'])).toHaveLength(1);
   const downloadPromise = page.waitForEvent('download');
-  await page.locator('[data-action=export]').click();
+  await exportMenuAction(page, 'export');
   const download = await downloadPromise;
   const file = await download.path();
   await page.locator('#file-input').setInputFiles(file);

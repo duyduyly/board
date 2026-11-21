@@ -3,6 +3,7 @@ import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 import { projectAction } from './ui-driver.mjs';
+import { exportMenuAction } from './ui-driver.mjs';
 const state = (page) =>
   page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
@@ -232,7 +233,7 @@ test('frame drag without pins, membership cleanup and project export/import pres
   await page.keyboard.press('Control+z');
   expect((await state(page)).p).toEqual(after.p);
   const pending = page.waitForEvent('download');
-  await page.locator('[data-action=export]').click();
+  await exportMenuAction(page, 'export');
   const exported = JSON.parse(await fs.readFile(await (await pending).path(), 'utf8'));
   expect(exported.extensions['card-atlas:groups']).toEqual(after.p.extensions['card-atlas:groups']);
   await page.locator('#file-input').setInputFiles({

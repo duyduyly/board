@@ -372,17 +372,23 @@ export default {
     'The reading tab has a side outline, A−/A+ for text size and ◐ for the theme. Code blocks with language-mermaid are drawn as diagrams. YouTube links with class board-video become players that load only when you press play (needs a network); Escape closes a video.',
   quickHelpSave: 'Undo & save',
   quickHelpSaveBody:
-    'Ctrl/Cmd + Z undoes; add Shift to redo. Export project saves JSON and Import opens it again; with several notes selected, the JSON menu copies or downloads just the selection. Data stays in this session; closing the page before exporting asks first.',
-  quickHelpWordExport: 'Export Word',
+    'Ctrl/Cmd + Z undoes; add Shift to redo. Export → Export project saves JSON and Import opens it again; with several notes selected, the JSON menu copies or downloads just the selection. Data stays in this session; closing the page before exporting asks first.',
+  quickHelpWordExport: 'Export Word and Markdown',
   quickHelpWordExportBody:
-    'Export Word creates a .docx file with notes, groups, tables, attached images and links to read or print. Web images become links and Mermaid diagrams keep their source. Notes follow the order of the open view, after a contents page. A Word file cannot be imported back; use Export project to save.',
+    'Export Word creates a .docx file with notes, groups, tables, attached images and links to read or print. Web images become links and Mermaid diagrams keep their source. Notes follow the order of the open view, after a contents page. Export Markdown downloads a .zip with an .md document in the same layout (logo, contents, internal links) and an images/ folder with the attached images; Mermaid becomes a ```mermaid block. Both are in the Export menu and cannot be imported back; use Export project to save.',
   wordExportDone: 'Word download requested. Check your Downloads.',
   wordExportDoneSkipped: 'Word download requested. Images not embedded (listed by name): {count}.',
   wordExportNotSaved:
-    'The project is still unsaved: use Export project to keep a file you can reopen.',
+    'The project is still unsaved: use Export → Export project to keep a file you can reopen.',
   wordExportEmpty: 'This project has no notes to export to Word.',
   wordExportFailed:
     'Could not create the Word file. Your current work is unchanged. Please try again.',
+  markdownExportDone: 'Markdown download requested (.zip). Check your Downloads.',
+  markdownExportDoneSkipped:
+    'Markdown download requested (.zip). Images not included (listed by name): {count}.',
+  markdownExportEmpty: 'This project has no notes to export to Markdown.',
+  markdownExportFailed:
+    'Could not create the Markdown file. Your current work is unchanged. Please try again.',
   wordUngrouped: 'Other notes',
   wordLinks: 'Links',
   wordType: 'Type',
@@ -711,6 +717,12 @@ export default {
   export: 'Export project',
   exportWord: 'Export Word',
   exportWordHint: 'Download a Word document (.docx) to read or print. It cannot be imported back.',
+  exportMenu: 'Export',
+  exportMenuHint: 'Save the project or export a document to read',
+  exportProjectHint: 'Save the project file (.json) to open again in Card Atlas.',
+  exportMarkdown: 'Export Markdown',
+  exportMarkdownHint:
+    'Download a .zip with a Markdown document (.md) and an images folder. It cannot be imported back.',
   format: 'Format guide',
   search: 'Search notes and content…',
   cards: 'notes',

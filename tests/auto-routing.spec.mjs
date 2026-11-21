@@ -3,6 +3,7 @@ import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 import { fanoutProject } from './auto-routing-fixture.mjs';
+import { exportMenuAction } from './ui-driver.mjs';
 const state = (page) =>
   page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
@@ -245,7 +246,7 @@ test('mode selector restores manual corners and persists automatic choice throug
   await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
   await page.locator('[data-action=close]').click();
   const downloading = page.waitForEvent('download');
-  await page.locator('.toolbar [data-action=export]').click();
+  await exportMenuAction(page, 'export');
   const file = await downloading,
     buffer = await fs.readFile(await file.path());
   expect(JSON.parse(buffer.toString()).relations[0].extensions['card-atlas:edge'].modes.card).toBe(

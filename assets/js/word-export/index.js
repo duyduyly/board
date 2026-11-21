@@ -14,7 +14,7 @@ const PNG_MIME_TYPE = 'image/png';
  */
 
 /** Every inline image of the model, once per key, wherever it is nested. @param {unknown} node */
-function collectImages(node, found = new Map()) {
+export function collectImages(node, found = new Map()) {
   if (Array.isArray(node)) {
     for (const child of node) collectImages(child, found);
   } else if (node && typeof node === 'object') {

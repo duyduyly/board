@@ -161,7 +161,8 @@ button.primary:hover {
 .project-menu > .quick-help-button {
   border-radius: var(--radius-pill);
 }
-.project-menu-body {
+.project-menu-body,
+.export-menu-body {
   border-color: var(--pencil-stroke);
   border-radius: var(--radius-lg);
   box-shadow: var(--surface-shadow);

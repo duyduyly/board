@@ -43,33 +43,63 @@
             <button data-action="undo" data-i18n-title="undo">↶</button
             ><button data-action="redo" data-i18n-title="redo">↷</button>
           </div>
-          <button data-action="import" data-i18n="import"></button
-          ><button data-action="export" class="primary with-icon">
-            <span>↑</span><span data-i18n="export"></span></button
-          ><button
-            data-action="export-word"
-            class="with-icon"
-            data-i18n-title="exportWordHint"
-            data-i18n-aria="exportWord"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M3.5 1.75h6l3 3v9.5h-9z" />
-              <path d="M9.5 1.75v3h3" />
-              <path d="M5.5 12.5h5M8 12.5V7.5M6 9.25l2-2 2 2" />
-            </svg>
-            <span class="toolbar-label" data-i18n="exportWord"></span></button
-          ><button
+          <button data-action="import" data-i18n="import"></button>
+          <details id="export-menu" class="export-menu">
+            <summary class="primary with-icon" data-i18n-title="exportMenuHint">
+              <span aria-hidden="true">↑</span><span data-i18n="exportMenu"></span
+              ><span class="export-menu-caret" aria-hidden="true">▾</span>
+            </summary>
+            <div class="export-menu-body">
+              <button
+                type="button"
+                data-action="export"
+                aria-labelledby="export-json-label"
+                aria-describedby="export-json-hint"
+              >
+                <span id="export-json-label" class="export-option-label" data-i18n="export"></span>
+                <span
+                  id="export-json-hint"
+                  class="export-option-hint"
+                  data-i18n="exportProjectHint"
+                ></span>
+              </button>
+              <button
+                type="button"
+                data-action="export-word"
+                aria-labelledby="export-word-label"
+                aria-describedby="export-word-hint"
+              >
+                <span
+                  id="export-word-label"
+                  class="export-option-label"
+                  data-i18n="exportWord"
+                ></span>
+                <span
+                  id="export-word-hint"
+                  class="export-option-hint"
+                  data-i18n="exportWordHint"
+                ></span>
+              </button>
+              <button
+                type="button"
+                data-action="export-markdown"
+                aria-labelledby="export-markdown-label"
+                aria-describedby="export-markdown-hint"
+              >
+                <span
+                  id="export-markdown-label"
+                  class="export-option-label"
+                  data-i18n="exportMarkdown"
+                ></span>
+                <span
+                  id="export-markdown-hint"
+                  class="export-option-hint"
+                  data-i18n="exportMarkdownHint"
+                ></span>
+              </button>
+            </div>
+          </details>
+          <button
             id="theme-toggle"
             data-action="theme"
             data-i18n-title="darkMode"

@@ -61,12 +61,6 @@
 @media (max-width: 500px) {
   .zoom-controls .view-button > span:last-child { display: none; }
 }
-/* Word export keeps its icon only where the toolbar is tightest; the accessible name stays on aria-label. */
-@media (min-width: 801px) and (max-width: 950px) {
-  .toolbar-actions > [data-action='export-word'] .toolbar-label {
-    display: none;
-  }
-}
 @media (min-width: 801px) and (max-width: 880px) {
   /* Reclaim space from gaps and padding so the project name keeps 52px instead of shrinking. */
   .toolbar {
