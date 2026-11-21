@@ -19,7 +19,20 @@
 .quick-help-content dl {
   margin: 0;
   display: grid;
-  gap: 16px;
+  gap: 14px;
+}
+.quick-help-content section + section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.quick-help-content h3 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 .quick-help-content dt {
   font-size: 13px;
@@ -109,21 +122,21 @@
   padding: 4px 7px;
   flex: none;
 }
-/* Long member lists scroll inside the dialog so Save and Cancel stay on screen. */
-#modal:has(.group-editor) {
+/* Long member lists and the quick help scroll inside the dialog; the buttons stay on screen. */
+#modal:is(:has(.group-editor), :has(.quick-help-content)) {
   overflow: hidden;
 }
-#modal:has(.group-editor) .modal-inner {
+#modal:is(:has(.group-editor), :has(.quick-help-content)) .modal-inner {
   display: flex;
   flex-direction: column;
   max-height: 85vh;
   box-sizing: border-box;
 }
-#modal:has(.group-editor) h2,
-#modal:has(.group-editor) .modal-actions {
+#modal:is(:has(.group-editor), :has(.quick-help-content)) h2,
+#modal:is(:has(.group-editor), :has(.quick-help-content)) .modal-actions {
   flex: none;
 }
-#modal:has(.group-editor) .modal-body {
+#modal:is(:has(.group-editor), :has(.quick-help-content)) .modal-body {
   min-height: 0;
   overflow: auto;
   scrollbar-gutter: stable;

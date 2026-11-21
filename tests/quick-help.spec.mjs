@@ -28,7 +28,23 @@ test('small help button beside locale explains gestures, switches language and p
   await button.click();
   await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toBeVisible();
-  await expect(page.locator('.quick-help-content dt')).toHaveCount(7);
+  await expect(page.locator('.quick-help-content dt')).toHaveCount(15);
+  await expect(page.locator('.quick-help-content h3')).toHaveText([
+    'Trên Canvas',
+    'Nhóm',
+    'Tài liệu trong note',
+    'Hoàn tác & lưu',
+  ]);
+  for (const topic of [
+    'Nhóm con',
+    'Mũi tên vào nhóm',
+    'Nhánh Mind Map',
+    'Thư viện phần tử',
+    'Code HTML & AI',
+    'Đọc, sơ đồ & video',
+  ])
+    await expect(page.locator('.quick-help-content dt', { hasText: topic })).toHaveCount(1);
+  await expect(page.locator('#modal [data-choice]').first()).toBeInViewport();
   await expect(page.locator('.quick-help-content')).toContainText('Ctrl/Cmd + C');
   await expect(page.locator('.quick-help-content')).toContainText('Shift');
   await expect(page.locator('.quick-help-content')).toContainText('Xuất dự án');

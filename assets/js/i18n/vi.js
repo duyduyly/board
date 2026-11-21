@@ -317,10 +317,11 @@ export default {
   routeorthogonal: 'Vuông góc',
   routezigzag: 'Gấp khúc (zigzag)',
   quickHelpTitle: 'Hướng dẫn nhanh',
-  quickHelpIntro: 'Một vài thao tác để bắt đầu trên Note Board và Mind Map.',
+  quickHelpIntro:
+    'Các thao tác chính trên Note Board, Mind Map, nhóm và tài liệu trong note.',
   quickHelpSelect: 'Chọn nhiều & kéo nhóm',
   quickHelpSelectBody:
-    'Giữ Shift và bấm từng note để chọn/bỏ chọn; Shift + Space khi focus note cũng được. Kéo note đã chọn để di chuyển nhóm. Chọn từ hai note chưa có nhóm rồi bấm Tạo nhóm để lưu khung có tên.',
+    'Giữ Shift và bấm từng note để chọn hoặc bỏ chọn; Shift + Space khi focus note cũng được. Kéo note đã chọn để di chuyển cả cụm.',
   quickHelpMarquee: 'Quét vùng chọn',
   quickHelpMarqueeBody:
     'Giữ Shift rồi kéo vùng trống trên Canvas để chọn thêm các note nằm trong hoặc chạm khung. Escape khi đang kéo sẽ hủy thao tác; nhấn lại để bỏ chọn.',
@@ -340,9 +341,49 @@ export default {
   cardsPasted: 'Đã thêm {count} bản sao. Nhấn Ctrl+Z để hoàn tác.',
   pasteLimit: 'Không dán được: dự án sẽ vượt giới hạn 500 note hoặc 2.000 quan hệ.',
   duplicateSelectionHint: 'Nhân bản các note đang chọn (Ctrl+D)',
+  quickHelpSectionCanvas:
+    'Trên Canvas',
+  quickHelpSectionGroups:
+    'Nhóm',
+  quickHelpSectionDocuments:
+    'Tài liệu trong note',
+  quickHelpSectionSave:
+    'Hoàn tác & lưu',
+  quickHelpMindLinks:
+    'Nhánh Mind Map',
+  quickHelpMindLinksBody:
+    'Trong Mind Map, kéo chấm nối sang một note chưa có nhánh cha sẽ tạo nhánh mới; mọi note có nhánh con, kể cả shape, đều có nút −/+ để thu gọn. Nối tới note đã có cha, tới gốc hoặc tạo vòng sẽ thành đường tham chiếu.',
+  quickHelpGroups:
+    'Tạo & sửa nhóm',
+  quickHelpGroupsBody:
+    'Chọn từ hai note chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển cả nhóm; note ghim đứng yên. Sửa nhóm để đổi tên, thêm mô tả ngắn hiện dưới tên khung hoặc bỏ thành viên. Rã nhóm giữ nguyên các note.',
+  quickHelpGroupNest:
+    'Nhóm con',
+  quickHelpGroupNestBody:
+    'Chọn từ hai note đang cùng nằm trong một nhóm rồi bấm Tạo nhóm để tạo nhóm con; nhóm lồng tối đa 3 cấp. Ô Nằm trong nhóm trong Sửa nhóm chuyển nhóm sang nhóm cha khác. Kéo khung cha kéo theo mọi nhóm con; Rã nhóm đưa note và nhóm con lên một cấp.',
+  quickHelpGroupLinks:
+    'Mũi tên vào nhóm',
+  quickHelpGroupLinksBody:
+    'Kéo chấm nối của note rồi thả lên khung nhóm (tên hoặc vùng trống) để vẽ mũi tên chỉ vào nhóm. Bằng bàn phím: Enter ở chấm nối, rồi Enter ở tên khung. Bỏ chọn mũi tên trong Sửa nhóm để xóa.',
+  quickHelpWrite:
+    'Soạn tài liệu',
+  quickHelpWriteBody:
+    'Ở tab soạn thảo, các nút Đoạn văn, Tiêu đề, Danh sách, Bảng, Ảnh chèn khối ngay sau khối đang chọn. Nhấp đúp vào chữ để sửa; Enter tạo đoạn mới, Shift + Enter xuống dòng trong cùng đoạn. Bấm Áp dụng để lưu vào note.',
+  quickHelpLibrary:
+    'Thư viện phần tử',
+  quickHelpLibraryBody:
+    'Nút ❖ Thư viện mở các khối có sẵn: khung ý chính, bảng so sánh, nên và không nên, tự kiểm tra… Bấm để chèn sau khối đang chọn hoặc kéo thả vào đúng chỗ, rồi điền nội dung vào các dấu ...',
+  quickHelpCode:
+    'Code HTML & AI',
+  quickHelpCodeBody:
+    'Nút </> mở chế độ code HTML. Ở đó, ✦ sao chép prompt để nhờ ChatGPT viết bài, ? mở mẫu HTML/CSS, ⇥ Nhập HTML kiểm tra rồi chèn HTML do AI trả về. Ảnh base64 PNG, JPEG, WebP, GIF được lưu thành tệp đính kèm.',
+  quickHelpReading:
+    'Đọc, sơ đồ & video',
+  quickHelpReadingBody:
+    'Tab đọc có mục lục bên lề, A−/A+ đổi cỡ chữ và ◐ đổi theme. Khối code language-mermaid được vẽ thành sơ đồ. Liên kết YouTube có class board-video thành khung phát, chỉ tải khi bấm phát (cần mạng); Escape để đóng video.',
   quickHelpSave: 'Hoàn tác & lưu dự án',
   quickHelpSaveBody:
-    'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Một lần kéo nhóm là một bước Undo. Xuất dự án để lưu JSON, Nhập JSON để mở lại; mặc định dữ liệu chỉ ở trong phiên.',
+    'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Xuất dự án để lưu JSON, Nhập JSON để mở lại; khi chọn nhiều note, menu JSON sao chép hoặc tải riêng vùng chọn. Dữ liệu chỉ ở trong phiên; đóng trang khi chưa xuất sẽ được hỏi lại.',
   selectedCardsCount: 'Đã chọn {count} note · kéo để di chuyển · note ghim giữ nguyên',
   clearSelection: 'Bỏ chọn',
   selectionJsonMenu: 'JSON',

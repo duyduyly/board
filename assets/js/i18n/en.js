@@ -318,10 +318,11 @@ export default {
   routeorthogonal: 'Orthogonal',
   routezigzag: 'Zigzag',
   quickHelpTitle: 'Quick help',
-  quickHelpIntro: 'A few essentials for Note Board and Mind Map.',
+  quickHelpIntro:
+    'The main actions for Note Board, Mind Map, groups and note documents.',
   quickHelpSelect: 'Select & move groups',
   quickHelpSelectBody:
-    'Shift + click or Shift + Space on a focused note toggles selection. Drag a selected note to move the group. Select two or more ungrouped notes and choose Create group to save a named frame.',
+    'Shift + click, or Shift + Space on a focused note, toggles selection. Drag a selected note to move the whole selection.',
   quickHelpMarquee: 'Select an area',
   quickHelpMarqueeBody:
     'Hold Shift and drag blank Canvas space to add notes inside or touching the rectangle. Escape during a drag cancels it; press again to clear the selection.',
@@ -341,9 +342,49 @@ export default {
   cardsPasted: 'Added {count} copies. Press Ctrl+Z to undo.',
   pasteLimit: 'Cannot paste: the project would exceed 500 notes or 2,000 relations.',
   duplicateSelectionHint: 'Duplicate the selected notes (Ctrl+D)',
+  quickHelpSectionCanvas:
+    'On the Canvas',
+  quickHelpSectionGroups:
+    'Groups',
+  quickHelpSectionDocuments:
+    'Note documents',
+  quickHelpSectionSave:
+    'Undo & save',
+  quickHelpMindLinks:
+    'Mind Map branches',
+  quickHelpMindLinksBody:
+    'In the Mind Map, dragging a connector to a note without a parent branch creates a new branch; every note with child branches, shapes included, gets a −/+ button to collapse it. A link to a note that already has a parent, to the root or that would close a loop becomes a reference.',
+  quickHelpGroups:
+    'Create & edit groups',
+  quickHelpGroupsBody:
+    'Select two or more ungrouped notes and choose Create group. Drag the frame title to move the group; pinned notes stay fixed. Edit to rename, add a short description shown under the title or remove members. Ungroup keeps all notes.',
+  quickHelpGroupNest:
+    'Subgroups',
+  quickHelpGroupNestBody:
+    'Select two or more notes that sit in the same group and choose Create group to make a subgroup; groups nest up to 3 levels. Inside group in the edit dialog moves a group under another parent. Dragging a parent frame moves every subgroup; Ungroup moves notes and subgroups up one level.',
+  quickHelpGroupLinks:
+    'Arrows to a group',
+  quickHelpGroupLinksBody:
+    'Drag a note connector and drop it on a group frame (its title or an empty area) to draw an arrow to the group. With the keyboard: Enter on the connector, then Enter on the frame title. Uncheck an arrow in the edit dialog to remove it.',
+  quickHelpWrite:
+    'Write a document',
+  quickHelpWriteBody:
+    'In the editor tab, Paragraph, Heading, List, Table and Image insert a block right after the selected one. Double-click text to edit it; Enter starts a new paragraph and Shift + Enter breaks the line. Choose Apply to save it to the note.',
+  quickHelpLibrary:
+    'Element library',
+  quickHelpLibraryBody:
+    'The ❖ Library button opens ready-made blocks: key idea box, comparison table, do and do not, self-check… Click to insert after the selected block or drag one into place, then fill in each ...',
+  quickHelpCode:
+    'HTML code & AI',
+  quickHelpCodeBody:
+    'The </> button opens HTML code mode. There, ✦ copies the prompt for ChatGPT, ? opens HTML/CSS samples and ⇥ Import HTML reviews and inserts HTML returned by an AI. Base64 PNG, JPEG, WebP and GIF images become attachments.',
+  quickHelpReading:
+    'Reading, diagrams & video',
+  quickHelpReadingBody:
+    'The reading tab has a side outline, A−/A+ for text size and ◐ for the theme. Code blocks with language-mermaid are drawn as diagrams. YouTube links with class board-video become players that load only when you press play (needs a network); Escape closes a video.',
   quickHelpSave: 'Undo & save',
   quickHelpSaveBody:
-    'Ctrl/Cmd + Z undoes; add Shift to redo. A group drag is one Undo step. Export project saves JSON; Import opens it again. By default, data stays in this session only.',
+    'Ctrl/Cmd + Z undoes; add Shift to redo. Export project saves JSON and Import opens it again; with several notes selected, the JSON menu copies or downloads just the selection. Data stays in this session; closing the page before exporting asks first.',
   selectedCardsCount: '{count} notes selected · drag to move · pinned notes stay fixed',
   clearSelection: 'Clear selection',
   selectionJsonMenu: 'JSON',
