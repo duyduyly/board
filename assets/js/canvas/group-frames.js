@@ -1,4 +1,10 @@
-import { cardGroups, frameBounds } from '../graph/card-groups.js';
+import {
+  cardGroups,
+  frameBounds,
+  groupCardIds,
+  groupDepth,
+  groupTree,
+} from '../graph/card-groups.js';
 import { startGroupDrag } from './multi-selection.js';
 import { t } from '../i18n/index.js';
 
@@ -37,7 +43,6 @@ export function createGroupFrames(adapter) {
   let boundsList = [],
     project = null,
     hidden = new Set();
-  const current = (id) => cardGroups(project).find((g) => g.id === id);
   function paint(positions) {
     boundsList = [];
     byId.clear();
@@ -56,13 +61,20 @@ export function createGroupFrames(adapter) {
         size: { width: n.data('width'), height: n.data('height') },
       });
     }
-    for (const group of cardGroups(project)) {
+    // Subgroups first, so each parent frame can enclose the frames inside it.
+    const { children } = groupTree(project);
+    const depth = new Map(cardGroups(project).map((g) => [g.id, groupDepth(project, g.id)]));
+    const ordered = [...cardGroups(project)].sort((a, b) => depth.get(b.id) - depth.get(a.id));
+    for (const group of ordered) {
       const el = elements.get(group.id);
       if (!el) continue;
       const bounds = frameBounds(
         rects,
         group.cardIds.filter((id) => !hidden.has(id)),
+        (children.get(group.id) || []).map((id) => byId.get(id)).filter(Boolean),
       );
+      // Deeper frames sit above their parents so their titles stay clickable.
+      el.style.zIndex = String(depth.get(group.id));
       el.hidden = !bounds;
       if (bounds) boundsList.push(bounds);
       if (bounds) byId.set(group.id, bounds);
@@ -134,11 +146,12 @@ export function createGroupFrames(adapter) {
           handle.setAttribute('role', 'button');
           handle.onpointerdown = (e) => {
             if (e.button !== 0 || adapter.space || adapter.callbacks.groupLocked()) return;
-            const g = current(group.id);
+            const members = groupCardIds(project, group.id);
             const first =
-              g.cardIds.find((id) => !adapter.cards.get(id)?.classList.contains('pinned-card')) ||
-              g.cardIds[0];
-            startGroupDrag(adapter, e, first, { members: g.cardIds, target: handle });
+              members.find((id) => !adapter.cards.get(id)?.classList.contains('pinned-card')) ||
+              members[0];
+            if (!first) return;
+            startGroupDrag(adapter, e, first, { members, target: handle });
           };
           handle.onclick = (e) => {
             const source = adapter.callbacks.connectingFrom?.();
@@ -157,7 +170,7 @@ export function createGroupFrames(adapter) {
             if ((e.key === 'Enter' || e.key === ' ') && !adapter.callbacks.groupLocked()) {
               e.preventDefault();
               e.stopPropagation();
-              adapter.callbacks.selectMany(current(group.id).cardIds);
+              adapter.callbacks.selectMany(groupCardIds(project, group.id));
             }
           };
           const top = document.createElement('div');
@@ -183,11 +196,10 @@ export function createGroupFrames(adapter) {
           elements.set(group.id, el);
         }
         const handle = el.querySelector('.group-frame-handle');
-        handle.textContent = group.title + ' · ' + group.cardIds.length;
-        handle.setAttribute(
-          'aria-label',
-          t('groupMove', { title: group.title, count: group.cardIds.length }),
-        );
+        const count = groupCardIds(project, group.id).length;
+        handle.textContent = group.title + ' · ' + count;
+        handle.setAttribute('aria-label', t('groupMove', { title: group.title, count }));
+        el.dataset.depth = String(groupDepth(project, group.id));
         handle.title = t('groupMoveHint');
         const description = el.querySelector('.group-frame-description');
         description.textContent = group.description || '';

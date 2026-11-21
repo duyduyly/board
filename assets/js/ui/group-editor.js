@@ -1,4 +1,10 @@
-import { cardGroups } from '../graph/card-groups.js';
+import {
+  cardGroups,
+  groupCardIds,
+  groupTree,
+  newGroupParent,
+  parentOptions,
+} from '../graph/card-groups.js';
 import { isPinned } from '../graph/card-metadata.js';
 import { t } from '../i18n/index.js';
 
@@ -89,14 +95,16 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
     const original = project();
     const group = cardGroups(original).find((g) => g.id === id);
     const members = group?.cardIds || ids;
-    if (
-      !group &&
-      (members.length < 2 ||
-        members.some((id) => cardGroups(original).some((g) => g.cardIds.includes(id))))
-    ) {
-      toast(members.length < 2 ? 'groupSelectCards' : 'groupAlreadyAssigned');
+    // Where a new group goes: top level, or inside the group its notes already share.
+    const place = group ? null : newGroupParent(original, members);
+    if (!group && (members.length < 2 || place.issue)) {
+      toast(members.length < 2 ? 'groupSelectCards' : place.issue);
       return;
     }
+    const groupTitle = (groupId) => cardGroups(original).find((g) => g.id === groupId)?.title || '';
+    const subgroups = group ? groupTree(original).children.get(group.id) || [] : [];
+    const options = group ? parentOptions(original, group.id) : [];
+    let parentId = group?.parentId || null;
     const card = (cardId) => original.cards.find((c) => c.id === cardId);
     const cardTitle = (cardId) => card(cardId)?.title || cardId;
     let title = group?.title || t('newGroup');
@@ -104,7 +112,8 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
     const selected = new Set(members);
     const links = group?.links || [];
     const keptLinks = new Set(links.map((link) => link.id));
-    const blocked = () => !title.trim() || !selected.size;
+    // A group may keep only subgroups, but it must not end up with nothing inside.
+    const blocked = () => !title.trim() || (!selected.size && !subgroups.length);
     let status = null;
     const refresh = () => {
       const save = document.querySelector('[data-choice=save-group]');
@@ -113,8 +122,8 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
       if (status)
         status.textContent = !title.trim()
           ? t('groupNameRequired')
-          : !selected.size
-            ? t('groupNeedsMember')
+          : !selected.size && !subgroups.length
+            ? t(group?.parentId ? 'groupNeedsMemberNested' : 'groupNeedsMember')
             : '';
     };
     const body = () => {
@@ -156,13 +165,44 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
           max: DESCRIPTION_MAX,
         }),
       );
+      if (group) {
+        const parent = document.createElement('select');
+        parent.id = 'group-parent';
+        parent.name = 'group-parent';
+        for (const [value, text] of [
+          ['', t('groupParentNone')],
+          ...options.map((g) => [g.id, g.title]),
+        ]) {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = text;
+          option.selected = value === (parentId || '');
+          parent.append(option);
+        }
+        parent.onchange = () => {
+          parentId = parent.value || null;
+        };
+        host.append(field('groupParent', parent, { hintKey: 'groupParentHint' }));
+      }
 
       // Creating shows who will be grouped; editing lets members be taken out.
       const people = section(
         'groupMembersTitle',
         members.length,
-        group ? 'groupMembersHint' : 'groupMembersCreateHint',
+        group
+          ? group.parentId
+            ? 'groupMembersNestedHint'
+            : 'groupMembersHint'
+          : place.parentId
+            ? ''
+            : 'groupMembersCreateHint',
       );
+      if (!group && place.parentId) {
+        const hint = document.createElement('p');
+        hint.className = 'group-editor-hint';
+        hint.textContent = t('groupMembersSubgroupHint', { title: groupTitle(place.parentId) });
+        people.list.before(hint);
+      }
       for (const member of members) {
         const badge = isPinned(card(member)) ? 'groupPinnedBadge' : '';
         if (group)
@@ -181,6 +221,21 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
         }
       }
       host.append(people.set);
+
+      if (subgroups.length) {
+        const nested = section('groupSubgroupsTitle', subgroups.length, 'groupSubgroupsHint');
+        for (const child of subgroups) {
+          const row = document.createElement('div');
+          row.className = 'group-editor-item';
+          row.textContent = groupTitle(child);
+          const tag = document.createElement('span');
+          tag.className = 'group-editor-badge';
+          tag.textContent = t('groupNoteCount', { count: groupCardIds(original, child).length });
+          row.append(tag);
+          nested.list.append(row);
+        }
+        host.append(nested.set);
+      }
 
       if (links.length) {
         const arrows = section('groupLinksTitle', links.length, 'groupLinksHint');
@@ -220,6 +275,7 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
       description: description.trim(),
       cardIds: members.filter((member) => selected.has(member)),
       linkIds: [...keptLinks],
+      ...(group ? { parentId } : {}),
     });
   };
 }

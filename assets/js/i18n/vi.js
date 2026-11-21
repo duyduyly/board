@@ -269,7 +269,7 @@ export default {
   cornerGuide:
     'Đường vuông: kéo ô vuông 1/2 theo hai chiều để chỉnh góc riêng; chấm tròn dịch cả đường. card-atlas:edge có thể thêm corners:{card:{axis:"horizontal",source:{x:120,y:-180},target:{x:-120,y:-100}}}; mind tương tự. source/target là độ lệch world-pixel của điểm điều khiển so với tâm card ở hai đầu, không đổi ID đầu nối; mỗi tọa độ trong ±10000. corners ưu tiên hơn adjustments của cùng view. Đặt lại xóa cả hai cấu hình ở view đang mở. Đây là chỉnh thủ công, không tự né vật cản.',
   groupsGuide:
-    'Khung nhóm: chọn từ hai card chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển; card ghim đứng yên. Sửa nhóm để đổi tên/bỏ thành viên; Rã nhóm giữ card. Ví dụ extension của project: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Nhóm 1","cardIds":["card-1","card-2"]}]}. ID thành viên phải tồn tại; mỗi card tối đa một nhóm, không lồng nhóm. Tùy chọn: "description" (tối đa 500 ký tự) hiện dưới tên khung; "links":[{"id":"group-link-1","source":"card-3"}] vẽ mũi tên từ card-3 vào khung nhóm (kéo nút nối của note thả vào khung để tạo).',
+    'Khung nhóm: chọn từ hai card chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển; card ghim đứng yên. Sửa nhóm để đổi tên/bỏ thành viên; Rã nhóm giữ card. Ví dụ extension của project: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Nhóm 1","cardIds":["card-1","card-2"]}]}. ID thành viên phải tồn tại; mỗi card tối đa một nhóm (nhóm trong cùng). Nhóm lồng tối đa 3 cấp bằng "parentId" (id nhóm cha); nhóm cha có thể có "cardIds":[] nếu đã có nhóm con. Tùy chọn: "description" (tối đa 500 ký tự) hiện dưới tên khung; "links":[{"id":"group-link-1","source":"card-3"}] vẽ mũi tên từ card-3 vào khung nhóm (kéo nút nối của note thả vào khung để tạo).',
   routingGuide:
     'Đường nối: mở quan hệ và chọn kiểu. Ví dụ: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. route: curved, straight, orthogonal, zigzag. adjustments tùy chọn theo view, độ lệch world-pixel từ -2000 đến 2000, dùng cho curved/orthogonal. Chọn Chỉnh đường nối trên Canvas, kéo điểm hoặc dùng phím mũi tên (Shift:10px), Đặt lại hoặc Xong. Đặt lại chỉ xóa phần chỉnh của view đang mở. Điểm kéo thuộc chế độ thủ công; chọn Tự động để né card. Quan hệ với card ghim vẫn khóa. Bỏ cấu hình giữ đường cũ.',
   groupCreate: 'Tạo nhóm',
@@ -286,8 +286,20 @@ export default {
   groupMembersCreateHint: 'Các note đang chọn sẽ vào nhóm này.',
   groupPinnedBadge: 'đã ghim',
   groupNameRequired: 'Nhập tên nhóm để lưu.',
-  groupNeedsMember: 'Nhóm cần ít nhất một note. Muốn bỏ cả nhóm, dùng Rã nhóm trên khung.',
+  groupNeedsMember: 'Nhóm cần ít nhất một note hoặc một nhóm con. Muốn bỏ cả nhóm, dùng Rã nhóm trên khung.',
   groupSave: 'Lưu nhóm',
+  groupParent: 'Nằm trong nhóm',
+  groupParentNone: 'Không (nhóm ngoài cùng)',
+  groupParentHint: 'Chọn nhóm cha để lồng nhóm này vào; tối đa 3 cấp.',
+  groupSubgroupsTitle: 'Nhóm con ({count})',
+  groupSubgroupsHint: 'Kéo khung này sẽ kéo theo mọi nhóm con. Rã nhóm đưa nhóm con lên một cấp.',
+  groupNoteCount: '{count} note',
+  groupMembersNestedHint: 'Bỏ chọn để trả note về nhóm cha; note vẫn ở trên Canvas.',
+  groupMembersSubgroupHint: 'Các note đang chọn sẽ thành nhóm con trong “{title}”.',
+  groupNeedsMemberNested:
+    'Nhóm cần ít nhất một note hoặc một nhóm con. Muốn bỏ nhóm này, dùng Rã nhóm trên khung.',
+  groupTooDeep: 'Không lồng thêm được: nhóm chỉ lồng tối đa 3 cấp.',
+  groupCreateSubgroup: 'Tạo nhóm con từ các note đang chọn',
   optionalField: '(không bắt buộc)',
   groupLinkAdded: 'Đã nối mũi tên vào nhóm. Nhấn Ctrl+Z để hoàn tác.',
   groupLinkMember: 'Note này đã nằm trong nhóm nên không nối mũi tên vào chính nhóm đó.',

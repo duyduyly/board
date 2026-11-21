@@ -269,7 +269,7 @@ export default {
   cornerGuide:
     'Orthogonal: drag squares1/2 in two dimensions to edit bends independently; the circle moves the whole route. card-atlas:edge may include corners:{card:{axis:"horizontal",source:{x:120,y:-180},target:{x:-120,y:-100}}}; mind works similarly. source/target are world-pixel control offsets from endpoint-card centers, not relation endpoint IDs; each coordinate is bounded to ±10000. corners takes precedence over adjustments in the same view. Reset removes both for the active view. Manual control does not automatically avoid obstacles.',
   groupsGuide:
-    'Group frames: select two or more ungrouped cards, then Create group. Drag the frame title to move; pins stay fixed. Edit to rename/remove members; Ungroup keeps the cards. Example project extension: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Group 1","cardIds":["card-1","card-2"]}]}. Member IDs must exist; at most one group per card, no nesting. Optional: "description" (up to 500 characters) shows under the frame title; "links":[{"id":"group-link-1","source":"card-3"}] draws an arrow from card-3 to the frame (drag the connector of a note onto the frame to create one).',
+    'Group frames: select two or more ungrouped cards, then Create group. Drag the frame title to move; pins stay fixed. Edit to rename/remove members; Ungroup keeps the cards. Example project extension: "card-atlas:groups":{"groups":[{"id":"group-1","title":"Group 1","cardIds":["card-1","card-2"]}]}. Member IDs must exist; at most one group per card (the innermost). Groups nest up to 3 levels through "parentId" (the parent group id); a parent may have "cardIds":[] when it has subgroups. Optional: "description" (up to 500 characters) shows under the frame title; "links":[{"id":"group-link-1","source":"card-3"}] draws an arrow from card-3 to the frame (drag the connector of a note onto the frame to create one).',
   routingGuide:
     'Connectors: open a relation and choose its route. Example: "card-atlas:edge":{"route":"orthogonal","adjustments":{"card":-200,"mind":100}}. Routes: curved, straight, orthogonal, zigzag. Optional per-view adjustments are world-pixel offsets from -2000 to 2000, for curved/orthogonal only. Use Adjust connector on Canvas, drag the handle or use arrow keys (Shift:10px), Reset or Done. Reset removes only the active view adjustment. Manual controls do not auto-route; use Automatic mode for obstacle avoidance. Pinned incident relations stay locked. Omit to retain legacy routing.',
   groupCreate: 'Create group',
@@ -286,8 +286,21 @@ export default {
   groupMembersCreateHint: 'The selected notes will join this group.',
   groupPinnedBadge: 'pinned',
   groupNameRequired: 'Enter a group name to save.',
-  groupNeedsMember: 'A group needs at least one note. To remove the whole group, use Ungroup on the frame.',
+  groupNeedsMember: 'A group needs at least one note or subgroup. To remove the whole group, use Ungroup on the frame.',
   groupSave: 'Save group',
+  groupParent: 'Inside group',
+  groupParentNone: 'None (top-level group)',
+  groupParentHint: 'Pick a parent group to nest this one in; up to 3 levels.',
+  groupSubgroupsTitle: 'Subgroups ({count})',
+  groupSubgroupsHint:
+    'Dragging this frame moves every subgroup. Ungroup moves subgroups up one level.',
+  groupNoteCount: '{count} notes',
+  groupMembersNestedHint: 'Uncheck to return a note to the parent group; it stays on the Canvas.',
+  groupMembersSubgroupHint: 'The selected notes will become a subgroup inside “{title}”.',
+  groupNeedsMemberNested:
+    'A group needs at least one note or subgroup. To remove this group, use Ungroup on the frame.',
+  groupTooDeep: 'Cannot nest deeper: groups nest up to 3 levels.',
+  groupCreateSubgroup: 'Create a subgroup from the selected notes',
   optionalField: '(optional)',
   groupLinkAdded: 'Arrow connected to the group. Press Ctrl+Z to undo.',
   groupLinkMember: 'This note is already in the group, so it cannot point at its own group.',

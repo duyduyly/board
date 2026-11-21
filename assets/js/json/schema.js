@@ -244,12 +244,13 @@ schema.properties.extensions = extensions({
             title: { type: 'string', pattern: '\\S', maxLength: 120 },
             cardIds: {
               type: 'array',
-              minItems: 1,
+              minItems: 0,
               maxItems: 500,
               uniqueItems: true,
               items: { $ref: '#/$defs/id' },
             },
             description: { type: 'string', maxLength: 500 },
+            parentId: { $ref: '#/$defs/id' },
             links: {
               type: 'array',
               maxItems: 500,

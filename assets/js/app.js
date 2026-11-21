@@ -17,10 +17,10 @@ import { createGroupEditor } from './ui/group-editor.js';
 import {
   removeGroup,
   createGroup,
-  cardGroups,
-  GROUPS,
   addGroupLink,
   groupLinkIssue,
+  newGroupParent,
+  updateGroup,
 } from './graph/card-groups.js';
 import { copyCards, pasteCards } from './graph/copy-cards.js';
 import { selectionLocked } from './graph/card-lock.js';
@@ -145,24 +145,16 @@ const editGroup = createGroupEditor({
   dialog,
   toast,
   project: () => store.project,
-  onApply: (id, { title, description, cardIds, linkIds }) =>
+  onApply: (id, values) =>
     change((p) => {
-      if (!id) {
+      if (id) updateGroup(p, id, values);
+      else
         createGroup(p, {
           id: newId('group'),
-          title,
-          cardIds,
-          ...(description ? { description } : {}),
+          title: values.title,
+          cardIds: values.cardIds,
+          ...(values.description ? { description: values.description } : {}),
         });
-        return;
-      }
-      const group = p.extensions[GROUPS].groups.find((g) => g.id === id);
-      Object.assign(group, { title, cardIds });
-      if (description) group.description = description;
-      else delete group.description;
-      const links = (group.links || []).filter((link) => linkIds.includes(link.id));
-      if (links.length) group.links = links;
-      else delete group.links;
     }),
 });
 const detailSurface = dialogSurface($('#detail-panel'), {
@@ -798,11 +790,14 @@ function render() {
     selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
   if ($('#selection-tools').hidden) $('#selection-json').open = false;
   $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
-  const groupedCards = new Set(cardGroups(store.project).flatMap((group) => group.cardIds));
   const createGroupButton = $('[data-action=group-create]');
   createGroupButton.hidden = selectedCards.size < 2;
-  createGroupButton.disabled = [...selectedCards].some((id) => groupedCards.has(id));
-  createGroupButton.title = t(createGroupButton.disabled ? 'groupAlreadyAssigned' : 'groupCreate');
+  // Notes that all sit directly in one group form a subgroup of it.
+  const place = selectedCards.size ? newGroupParent(store.project, [...selectedCards]) : {};
+  createGroupButton.disabled = Boolean(place.issue);
+  createGroupButton.title = t(
+    place.issue || (place.parentId ? 'groupCreateSubgroup' : 'groupCreate'),
+  );
   $('#mind-map-tools').hidden = store.activeView !== 'mind';
   $('#layout-preview-bar').hidden = !layoutPreview;
   $('#panel-body').inert = Boolean(layoutPreview);

@@ -11,6 +11,8 @@ export interface CardGroup {
   id: string;
   title: string;
   cardIds: string[];
+  /** Enclosing group; groups nest up to three levels. cardIds may be empty when subgroups exist. */
+  parentId?: string;
   /** Short text shown under the title on the frame (max 500 characters). */
   description?: string;
   links?: GroupLink[];

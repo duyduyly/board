@@ -55,7 +55,25 @@ export function selectionFile(project, selectedIds, { viewport, viewports } = {}
       else delete exported.links;
       return [exported];
     });
-    if (groups.length) extensions[GROUPS] = { groups };
+    // Keep the parents of exported groups so nesting survives. A parent with no selected note is
+    // kept with no notes (and no arrows from unselected notes); a parent left out drops parentId.
+    const byId = new Map(source[GROUPS].groups.map((group) => [group.id, group]));
+    const kept = new Map(groups.map((group) => [group.id, group]));
+    for (const group of groups) {
+      let parent = byId.get(group.parentId);
+      while (parent && !kept.has(parent.id)) {
+        const empty = { ...clone(parent), cardIds: [] };
+        const links = (parent.links || []).filter((link) => ids.has(link.source));
+        if (links.length) empty.links = links;
+        else delete empty.links;
+        kept.set(parent.id, empty);
+        parent = byId.get(parent.parentId);
+      }
+    }
+    const nested = [...kept.values()];
+    for (const group of nested)
+      if (group.parentId && !kept.has(group.parentId)) delete group.parentId;
+    if (nested.length) extensions[GROUPS] = { groups: nested };
   }
   if (source[MIND]) {
     const mind = clone(source[MIND]);
