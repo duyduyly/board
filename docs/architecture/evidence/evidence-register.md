@@ -1,0 +1,78 @@
+---
+id: "EVIDENCE-REGISTER"
+title: "Evidence Register"
+doc_type: reference
+status: DRAFT
+owner: "UNKNOWN"
+reviewed_at: null
+system_version: "1.0.0"
+source_revision: "22407c017fffc2a2b6c774878dfd77ec991f91d6"
+scope: "Whole system"
+evidence_refs: []
+---
+
+# Evidence Register
+
+Every important claim in these docs points to a row here. Paths are relative to the repository root. Revision `22407c0` = `22407c017fffc2a2b6c774878dfd77ec991f91d6` (branch `main`, 2026-11-21).
+
+| EV-ID | Claim | Source path / URL | Symbol / line | Revision | Method | Result | Status | Limitations |
+|---|---|---|---|---|---|---|---|---|
+| EV-001 | The product is `card-atlas` 1.0.0, an ES-module Node project with exact-pinned runtime and dev dependencies | `package.json` | `name`, `version`, `type`, `scripts`, `dependencies` | 22407c0 | CONFIG | 14 runtime and 5 dev dependencies, all exact versions | VERIFIED | Installed versions come from `package-lock.json`; not compared one by one |
+| EV-002 | The app is one HTML page that loads `assets/js/app.js` as a module and offers a hidden JSON file input | `index.html` | lines 318, 321 | 22407c0 | SOURCE | `<script type="module" src="assets/js/app.js">`, `<input id="file-input" type="file" accept=".json,application/json">` | VERIFIED | — |
+| EV-003 | The dev server binds 127.0.0.1:4173 and serves only `/`, `/index.html` and `/assets/…`, with `Cache-Control: no-store` | `scripts/serve.mjs` | lines 16–17, 36 | 22407c0 | SOURCE | Other paths answer 404 | VERIFIED | Local development server only; no production server exists in the repo |
+| EV-004 | `app.js` is the orchestrator: it creates the `ProjectStore`, the `GraphAdapter` and re-renders on every store change | `assets/js/app.js` | lines 106, 635, 2771 | 22407c0 | SOURCE | `export const store = new ProjectStore()`, `new GraphAdapter(...)`, `store.subscribe(render)` | VERIFIED | — |
+| EV-005 | Every mutation is one `commit`: clone, mutate, pinned check, full validation, diff; history keeps 100 entries / 20 MiB; undo and redo replay diffs | `assets/js/store/project-store.js` | `constructor` line 41, `commit` 107–135, `undo`/`redo` 156–169 | 22407c0 | SOURCE | Invalid result throws `invalidProject` and nothing changes | VERIFIED | — |
+| EV-006 | Files are limited to 10 MiB, 500 cards, 2,000 relations, 100,000 content characters per card; `stage` checks size before parsing, validates, normalizes and validates again | `assets/js/json/validator.js` | `LIMITS` line 11, `stage` 177–196 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-007 | The JSON contract rejects unknown fields except namespaced extensions `card-atlas:groups`, `views`, `mind-map`, `typography`, `metadata`, `node`, `appearance`, `edge` (plus `document` and `images` on cards) | `assets/js/json/schema.js`; `assets/js/graph/html-document.js`; `assets/js/detail/attachments.js` | schema lines 236–362; `DOCUMENT` line 2; `IMAGE_NAMESPACE` line 1 | 22407c0 | SOURCE | `additionalProperties: false` objects | VERIFIED | `assets/data/project.schema.json` is the published copy; `tests/core.test.mjs` compares the two |
+| EV-008 | Recovery is opt-in: a `localStorage` flag enables snapshots in IndexedDB `card-atlas-recovery`, written 500 ms after a change, capped at 20 MiB | `assets/js/store/recovery.js`; `assets/js/app.js` | recovery lines 1–50; app `scheduleRecovery` 1905–1917, `initializeRecovery` 2011 | 22407c0 | SOURCE | Disabled by default; disabling deletes the database | VERIFIED | — |
+| EV-009 | Import reads a chosen file (size checked first), stages it, shows a preview and replaces the project; a dirty project offers to export first | `assets/js/app.js` | `importFile` 2174–2234, `replaceProject` 2147–2172, file input 2257 | 22407c0 | SOURCE | Apply is disabled while staging has errors | VERIFIED | — |
+| EV-010 | Export serializes the project, refuses more than 10 MiB and downloads it through a Blob link with a sanitized file name | `assets/js/app.js`; `assets/js/json/validator.js`; `assets/js/common/download.js` | `exportProject` 2083–2104; `serialize` 197, `filename` 208; `download` 1 | 22407c0 | SOURCE | Marks the store as exported | VERIFIED | The browser decides where the file is saved |
+| EV-011 | Templates and examples are static JSON fetched from `assets/data/` and staged like an import | `assets/js/ui/template-gallery.js`; `assets/js/app.js` | gallery line 14; `loadExample` 2236–2255 | 22407c0 | SOURCE | `fetch('assets/data/template-catalog.json')` | VERIFIED | — |
+| EV-012 | Note documents are `html-bs5` component trees; HTML is sanitized by a DOMPurify allowlist and checked for size (3,000 nodes, depth 32) | `assets/js/detail/html-content.js`; `assets/js/graph/html-document.js` | `parseDocument` 23–75; `documentIssues` 58–104 | 22407c0 | SOURCE | Removed parts are reported to the user | VERIFIED | — |
+| EV-013 | The reading view renders documents in a `srcdoc` iframe without `allow-scripts`, with a CSP `default-src 'none'` | `assets/js/detail/html-content.js` | lines 153, 221–223 | 22407c0 | SOURCE | `sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"` | VERIFIED | Same-origin sandbox lets the parent page script the frame by design |
+| EV-014 | Remote `http(s)` images in documents load by default in the reading view | `assets/js/app.js`; `assets/js/detail/html-content.js` | `allowImages = true` lines 121, 1164; `img-src` line 223 | 22407c0 | SOURCE | The iframe CSP then allows `https:` and `http:` images | VERIFIED | — |
+| EV-015 | Mermaid is lazy-loaded only for diagrams, sources pass a safety policy, rendering uses `securityLevel: 'strict'` and SVG is sanitized without `foreignObject` | `assets/js/detail/mermaid-render.js`; `assets/js/graph/diagram-policy.js` | lines 15, 111–130; `isSafeDiagramSource` line 9 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-016 | A YouTube player loads only after the user presses play, from `youtube-nocookie.com`, in a sandboxed iframe | `assets/js/graph/youtube.js`; `assets/js/detail/video-embed.js` | `EMBED_ORIGIN` line 5; `PLAYER_SANDBOX` 5, `mountVideoPlayers` 42 | 22407c0 | SOURCE | Only valid 11-character ids on youtube.com / youtu.be | VERIFIED | — |
+| EV-017 | The ChatGPT shortcut only opens `https://chatgpt.com/` in a new window and never receives project content | `assets/js/ui/chatgpt-launcher.js` | lines 1, 22 | 22407c0 | SOURCE | `window.open(..., 'noopener,noreferrer')` | VERIFIED | — |
+| EV-018 | Third-party libraries are bundled by esbuild into `assets/vendor/` (Cytoscape, Ajv, DOMPurify, GrapesJS, CodeMirror, highlight.js, Mermaid with split chunks) | `scripts/build.mjs` | lines 18–19, 32–33, 78–79, 114–115 | 22407c0 | SOURCE | No CDN is used at runtime | VERIFIED | — |
+| EV-019 | An architecture gate rejects import cycles, imports of `app.js` and upward imports from `common/` | `scripts/architecture.mjs`; `scripts/check.mjs` | `analyzeModules` 5–60; `checkArchitecture` call | 22407c0 | SOURCE | Run by `npm run check` | VERIFIED | — |
+| EV-020 | Tests: `node --test` on `tests/*-core.test.mjs` and `tests/core.test.mjs`; Playwright projects chrome, edge, firefox, one worker, base URL 127.0.0.1:4173 | `package.json`; `playwright.config.js` | `scripts.test`, `scripts.e2e`; whole config | 22407c0 | CONFIG | 31 core test files, 120 E2E specs | VERIFIED | — |
+| EV-021 | Closing the page asks for confirmation while there are unexported changes or open drafts | `assets/js/app.js` | `beforeunload` line 2751 | 22407c0 | SOURCE | Browser shows its own generic prompt | VERIFIED | — |
+| EV-022 | UI text is translated through `t(key)` with Vietnamese (default) and English dictionaries | `assets/js/i18n/index.js`; `assets/js/app.js` | `setLocale` line 8; `setLocale('vi')` near line 2772 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-023 | Pinned cards cannot change: the invariant is enforced inside `commit` | `assets/js/graph/card-lock.js`; `assets/js/store/project-store.js` | `assertPinnedUnchanged` line 16; commit line 110 | 22407c0 | SOURCE | Throws `pinnedCardLocked` | VERIFIED | — |
+| EV-024 | Groups nest up to 3 levels, a card belongs to one group, groups carry optional description and arrows from cards; empty groups are cleaned up | `assets/js/graph/card-groups.js` | `MAX_GROUP_DEPTH` line 5, `groupIssues`, `cleanupGroups` | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-025 | Copied cards are kept in session memory only, never in the system clipboard or the file | `assets/js/app.js`; `assets/js/graph/copy-cards.js` | `cardClipboard` line 112; `copyCards` 17 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-026 | Legacy Markdown projects are converted offline by a CLI into a new folder | `scripts/convert-markdown-files.mjs`; `docs/development.md` | lines 8–11; line 9 | 22407c0 | SOURCE | `--out NEW_DIRECTORY INPUT.json` | VERIFIED | — |
+| EV-027 | The repository has no CI, container or hosting configuration | repository root | `git ls-files` searched for `.github/`, `Dockerfile`, `docker-compose*`, `netlify*`, `vercel*`, `Procfile` | 22407c0 | OBSERVATION | None found | VERIFIED | Does not prove no pipeline exists outside the repository |
+| EV-028 | Development is done with Node.js 25.8.2 | `README.md`; local `node --version` | "Chạy local" section | 22407c0 | DOCUMENT | `v25.8.2` on 2026-11-21 | VERIFIED | One developer machine |
+| EV-029 | Node.js 25 reached end-of-life on 2026-06-01; Node.js 24 is Maintenance LTS to 2028-04-30; Node.js 26 is Active LTS to 2029-04-30 | https://github.com/nodejs/Release ; https://nodejs.org/en/about/previous-releases | Release schedule and End-of-Life tables | read 2026-11-21 | FRAMEWORK_DOC | v25 listed as End-of-Life | VERIFIED | nodejs.org shows status only; dates come from the GitHub README |
+| EV-030 | Project policy forbids project upload, content analytics, runtime CDN and implicit storage | `AGENTS.md` | line 94 | 22407c0 | DOCUMENT | — | VERIFIED | Policy text; code compliance is checked by the other rows |
+| EV-031 | A selection export keeps only selected cards, their internal relations and arrows, parents of exported subgroups, and lists excluded namespaces | `assets/js/json/selection-export.js` | `selectionFile` 11–90 | 22407c0 | SOURCE | Result is re-validated with `stage` | VERIFIED | — |
+| EV-032 | Images are stored base64 in `card-atlas:images` after a MIME and magic-byte check (PNG, JPEG, WebP, GIF) | `assets/js/detail/attachments.js` | `validImageAttachment` line 5 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-033 | The canvas is a Cytoscape graph with HTML card overlays managed by `GraphAdapter` | `assets/js/canvas/adapter.js` | `class GraphAdapter` line 20 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-034 | The note document editor is GrapesJS (visual) plus CodeMirror (HTML code mode) | `assets/js/detail/block-editor.js` | `grapesjs.init` line 99 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-035 | The AI prompt the app copies is generated from `docs/board-html-prompt.md` into `assets/data/` | `scripts/sync-prompt.mjs`; `tests/prompt-core.test.mjs` | `promptText` line 11 | 22407c0 | SOURCE | A unit test fails when the copy drifts | VERIFIED | — |
+| EV-036 | A full Chrome E2E run on 2026-11-14 had 459 passed and 114 failed tests; 104 failures already existed in the baseline at `4868583` | Playwright run logs (session scratchpad); `wordspace/tasks/10_media_mermaid_video/docs/baseline-failures.txt` | — | c13a2a6 | OBSERVATION | Most failures are 30 s timeouts waiting for a control | INFERRED | Logs and baseline are local, git-ignored files; not re-run at 22407c0; causes not investigated |
+| EV-037 | In the Mind Map a hand-drawn link becomes a branch when it extends the tree | `assets/js/graph/mind-map.js`; `assets/js/app.js` | `newLinkKind`; `connection` 1637 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-038 | Modal UI uses native `<dialog>` through `dialogSurface`; feedback uses toasts and status lines | `assets/js/ui/dialog-surface.js`; `assets/js/ui/feedback.js` | line 1; `createFeedback` line 4 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-039 | Type checking covers declared contracts and selected modules with `tsc` | `package.json`; `tsconfig.json`; `tsconfig.modules.json` | `scripts.typecheck` | 22407c0 | CONFIG | — | VERIFIED | Only modules listed in `tsconfig.modules.json` are checked |
+| EV-040 | The unit test suite passes: 179 tests, 0 failures | `package.json` `scripts.test` | `npm test` | 22407c0 | TEST | Run 2026-11-21 on Node 25.8.2, Windows; exit 0 | VERIFIED | One machine; E2E not re-run at this revision |
+| EV-041 | The UI has a light theme and a dark theme switched by `data-theme` on the root element | `assets/css/theme.css` | `:root[data-theme='dark']` line 2 | 22407c0 | SOURCE | — | VERIFIED | — |
+| EV-042 | `assets/js/word-export/` turns a project into a `.docx` with no dependency: pure modules build an IR, write OOXML parts and pack them with a hand-written ZIP store; only `browser.js` touches DOM and i18n | `assets/js/word-export/index.js`, `zip.js`, `ooxml.js`, `browser.js` | `buildDocx` line 55; `zipStore` line 47; `docxParts` line 474; `exportWordFile` line 45 | 22407c0 + uncommitted | SOURCE | Imports checked: only `browser.js` imports `i18n` and `common/download.js`; `package.json` has no new dependency | VERIFIED | Working tree, not committed at this revision |
+| EV-043 | The *Xuất Word* action resolves an open draft, refuses an empty project, runs the export lazily through `import()`, never calls `store.exported()` and reports through toasts | `assets/js/app.js`; `index.html` | `resolveExportDraft` 2083; `exportWord` 2108; action map `'export-word'` 2607; button `data-action="export-word"` | 22407c0 + uncommitted | SOURCE | Busy state uses `aria-busy`/`aria-disabled`, not `disabled` | VERIFIED | Working tree, not committed; line numbers move with other edits |
+| EV-044 | Card order follows the active view (Mind Map: depth-first from the root; Note Board: y, x, id) and groups form up to three heading levels; web images become links and are never fetched | `assets/js/word-export/order.js`; `model.js`; `document-blocks.js` | `cardRank` 52; `outline` 74; `wordDocument` 223 | 22407c0 + uncommitted | SOURCE | Covered by `tests/word-model-core.test.mjs` and `tests/word-blocks-core.test.mjs` | VERIFIED | Working tree, not committed |
+| EV-045 | The word-export unit tests pass: 63 tests, 0 failures (ZIP and media, blocks, model, OOXML parts, end-to-end docx) | `tests/word-binary-core.test.mjs`, `word-blocks-core.test.mjs`, `word-model-core.test.mjs`, `word-ooxml-core.test.mjs`, `word-docx-core.test.mjs`; `tests/docx-zip-reader.mjs` | `node --test` on the five files | 22407c0 + uncommitted | TEST | Run 2026-11-21 on Node 25.8.2, Windows; 63 pass, 0 fail | VERIFIED | The produced file was not opened in Microsoft Word or LibreOffice (not available); well-formedness is checked by tests only |
+
+## Methods
+
+`SOURCE` code · `CONFIG` manifests and config · `TEST` command run · `OBSERVATION` runtime trace or repository search · `DOCUMENT` project docs · `FRAMEWORK_DOC` official vendor page opened on the date given · `FRAMEWORK_SOURCE` framework source.
+
+## Statuses
+
+`VERIFIED` traceable at the revision · `INFERRED` reasoned, not confirmed · `UNKNOWN` not determined · `NOT_APPLICABLE` checked and not relevant · `EXAMPLE` illustrative.
+
+## Rules
+
+- Rows are never renumbered or reused; an obsolete row becomes `NOT_APPLICABLE` with "removed in <rev>".
+- No secrets: this project has no environment variables, tokens or keys (searched `assets/js`, `scripts` for `process.env`, `.env`; none used by the app).
+- A row whose source changed after its revision is stale; re-check it or downgrade it to `INFERRED`.
