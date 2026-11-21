@@ -14,7 +14,14 @@ import {
 } from './graph/edge-routing.js';
 import { enableAutoRoutes } from './graph/auto-routing.js';
 import { createGroupEditor } from './ui/group-editor.js';
-import { removeGroup, createGroup, cardGroups, GROUPS } from './graph/card-groups.js';
+import {
+  removeGroup,
+  createGroup,
+  cardGroups,
+  GROUPS,
+  addGroupLink,
+  groupLinkIssue,
+} from './graph/card-groups.js';
 import { copyCards, pasteCards } from './graph/copy-cards.js';
 import { selectionLocked } from './graph/card-lock.js';
 import { moveCards } from './graph/move-cards.js';
@@ -138,14 +145,24 @@ const editGroup = createGroupEditor({
   dialog,
   toast,
   project: () => store.project,
-  onApply: (id, title, cardIds) =>
+  onApply: (id, { title, description, cardIds, linkIds }) =>
     change((p) => {
-      if (id)
-        Object.assign(
-          p.extensions[GROUPS].groups.find((g) => g.id === id),
-          { title, cardIds },
-        );
-      else createGroup(p, { id: newId('group'), title, cardIds });
+      if (!id) {
+        createGroup(p, {
+          id: newId('group'),
+          title,
+          cardIds,
+          ...(description ? { description } : {}),
+        });
+        return;
+      }
+      const group = p.extensions[GROUPS].groups.find((g) => g.id === id);
+      Object.assign(group, { title, cardIds });
+      if (description) group.description = description;
+      else delete group.description;
+      const links = (group.links || []).filter((link) => linkIds.includes(link.id));
+      if (links.length) group.links = links;
+      else delete group.links;
     }),
 });
 const detailSurface = dialogSurface($('#detail-panel'), {
@@ -703,6 +720,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       card.extensions[APPEARANCE] = appearanceWith(card, { sizeMode: 'manual' });
     }),
   connection: (source, target, pos) => connection(source, target, pos),
+  groupConnection: (source, group) => groupConnection(source, group),
+  connectingFrom: () => (connectMode ? connectSource : null),
   viewport: (zoom, position) => {
     store.setView(zoom, position);
     updateStatus();
@@ -1599,6 +1618,26 @@ async function guardDraft() {
   draft = null;
   draftOriginal = null;
   return true;
+}
+/** Draws an arrow from a card to a group frame as one Undo step. */
+async function groupConnection(source, groupId) {
+  connectMode = false;
+  connectSource = null;
+  if (isPinned(projectIndex(store.project).cards.get(source))) {
+    toast('pinnedCardLocked');
+    render();
+    return;
+  }
+  if (!(await guardDraft())) return;
+  const issue = groupLinkIssue(store.project, groupId, source);
+  if (issue) {
+    toast(issue);
+    render();
+    return;
+  }
+  if (!change((p) => addGroupLink(p, groupId, { id: newId('group-link'), source }))) return;
+  toast('groupLinkAdded');
+  render();
 }
 async function connection(source, target, position) {
   if ([source, target].some((id) => isPinned(projectIndex(store.project).cards.get(id)))) {

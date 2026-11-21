@@ -48,7 +48,12 @@ export function selectionFile(project, selectedIds, { viewport, viewports } = {}
           selected: cardIds.length,
           total: group.cardIds.length,
         });
-      return [{ ...clone(group), cardIds }];
+      const exported = { ...clone(group), cardIds };
+      // Arrows whose card is left out would point at nothing in the exported file.
+      const links = (group.links || []).filter((link) => ids.has(link.source));
+      if (links.length) exported.links = clone(links);
+      else delete exported.links;
+      return [exported];
     });
     if (groups.length) extensions[GROUPS] = { groups };
   }

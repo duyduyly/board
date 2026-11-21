@@ -772,11 +772,17 @@ export class GraphAdapter {
         ev.clientX <= rect.right &&
         ev.clientY >= rect.top &&
         ev.clientY <= rect.bottom;
-      const target = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.graph-card')
-        ?.dataset.id;
+      const hit = document.elementFromPoint(ev.clientX, ev.clientY);
+      const target = hit?.closest('.graph-card')?.dataset.id;
+      const point = this.graphPoint(ev.clientX, ev.clientY);
+      // Dropping on a group frame (its title or its empty area) points the arrow at the group.
+      const group = target
+        ? null
+        : hit?.closest('.group-frame')?.dataset.groupId || this.groupFrames.groupAt(point);
       cleanup();
-      if (inside)
-        this.callbacks.connection(id, target || null, this.graphPoint(ev.clientX, ev.clientY));
+      if (!inside) return;
+      if (group) this.callbacks.groupConnection(id, group);
+      else this.callbacks.connection(id, target || null, point);
     };
     const key = (ev) => {
       if (ev.key === 'Escape') cleanup();

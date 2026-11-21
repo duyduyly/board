@@ -8,6 +8,7 @@ export function groupIssues(project) {
   if (!value || !Array.isArray(value.groups)) return [error];
   const ids = new Set(),
     members = new Set(),
+    linkIds = new Set(),
     cards = new Set(project.cards.map((c) => c.id));
   for (const group of value.groups) {
     if (ids.has(group.id)) return [error];
@@ -15,6 +16,10 @@ export function groupIssues(project) {
     for (const id of group.cardIds) {
       if (!cards.has(id) || members.has(id)) return [error];
       members.add(id);
+    }
+    for (const link of group.links || []) {
+      if (linkIds.has(link.id) || !cards.has(link.source)) return [error];
+      linkIds.add(link.id);
     }
   }
   return [];
@@ -37,8 +42,34 @@ export function cleanupGroups(project) {
   const ids = new Set(project.cards.map((c) => c.id));
   if (!project.extensions?.[GROUPS]) return;
   project.extensions[GROUPS].groups = cardGroups(project)
-    .map((g) => ({ ...g, cardIds: g.cardIds.filter((id) => ids.has(id)) }))
+    .map((g) => {
+      const next = { ...g, cardIds: g.cardIds.filter((id) => ids.has(id)) };
+      if (g.links) {
+        const links = g.links.filter((link) => ids.has(link.source));
+        if (links.length) next.links = links;
+        else delete next.links;
+      }
+      return next;
+    })
     .filter((g) => g.cardIds.length);
+}
+
+/**
+ * Why an arrow from `source` to group `groupId` cannot be added, or null when it can.
+ * @returns {'groupLinkMember' | 'groupLinkExists' | 'groupLinkMissing' | null}
+ */
+export function groupLinkIssue(project, groupId, source) {
+  const group = cardGroups(project).find((g) => g.id === groupId);
+  if (!group || !project.cards.some((c) => c.id === source)) return 'groupLinkMissing';
+  if (group.cardIds.includes(source)) return 'groupLinkMember';
+  if ((group.links || []).some((link) => link.source === source)) return 'groupLinkExists';
+  return null;
+}
+
+/** Adds an arrow from a card to a group inside a store command; the caller checks groupLinkIssue. */
+export function addGroupLink(project, groupId, link) {
+  const group = cardGroups(project).find((g) => g.id === groupId);
+  group.links = [...(group.links || []), { id: link.id, source: link.source }];
 }
 
 // Derived bounds only: a frame never becomes another source of persisted geometry.

@@ -2,10 +2,18 @@ export interface Point {
   x: number;
   y: number;
 }
+export interface GroupLink {
+  id: string;
+  /** Card the arrow starts from; the arrow ends at the group frame. */
+  source: string;
+}
 export interface CardGroup {
   id: string;
   title: string;
   cardIds: string[];
+  /** Short text shown under the title on the frame (max 500 characters). */
+  description?: string;
+  links?: GroupLink[];
 }
 export interface ProjectGroups {
   groups: CardGroup[];

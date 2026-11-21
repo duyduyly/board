@@ -249,6 +249,15 @@ schema.properties.extensions = extensions({
               uniqueItems: true,
               items: { $ref: '#/$defs/id' },
             },
+            description: { type: 'string', maxLength: 500 },
+            links: {
+              type: 'array',
+              maxItems: 500,
+              items: object({ id: { $ref: '#/$defs/id' }, source: { $ref: '#/$defs/id' } }, [
+                'id',
+                'source',
+              ]),
+            },
           },
           ['id', 'title', 'cardIds'],
         ),

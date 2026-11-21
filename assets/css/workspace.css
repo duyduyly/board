@@ -52,12 +52,45 @@
 }
 .group-frame-header {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 32px;
+  flex-direction: column;
   padding: 4px 10px;
   color: var(--ink);
   pointer-events: auto;
+}
+.group-frame-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+}
+/* One line fits the space above the members; the full text stays in the tooltip. */
+.group-frame-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.group-frame-description[hidden] {
+  display: none;
+}
+.group-links {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  color: var(--accent);
+  pointer-events: none;
+}
+.group-links path[data-link-id] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6px;
+  stroke-dasharray: 6 4;
 }
 .group-frame-handle {
   flex: 1;
@@ -74,16 +107,120 @@
   padding: 4px 7px;
   flex: none;
 }
+/* Long member lists scroll inside the dialog so Save and Cancel stay on screen. */
+#modal:has(.group-editor) {
+  overflow: hidden;
+}
+#modal:has(.group-editor) .modal-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  box-sizing: border-box;
+}
+#modal:has(.group-editor) h2,
+#modal:has(.group-editor) .modal-actions {
+  flex: none;
+}
+#modal:has(.group-editor) .modal-body {
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+.group-editor {
+  display: grid;
+  gap: 14px;
+  min-width: min(480px, 80vw);
+}
+.group-editor-field {
+  display: grid;
+  gap: 4px;
+}
+#modal .group-editor-field label {
+  display: block;
+  font-weight: 600;
+}
+.group-editor-field input,
+.group-editor-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.group-editor-field textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+.group-editor-optional {
+  color: var(--muted);
+  font-weight: 400;
+}
+.group-editor-help {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.group-editor-count {
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+}
+.group-editor-section {
+  margin: 0;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.group-editor-section legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+.group-editor-hint,
+.group-editor-tip {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.group-editor-tip {
+  margin: 0;
+}
+.group-editor-status:empty {
+  display: none;
+}
+/* Same quiet notice style as the pinned-lock notice; the text, not colour, carries the meaning. */
+.group-editor-status {
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 13px;
+}
+.group-editor-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 24px;
+}
+.group-editor-badge {
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11px;
+}
 .group-members {
   display: grid;
   gap: 8px;
-  max-height: 220px;
+  max-height: 180px;
   overflow: auto;
 }
 .group-members label {
   display: flex;
   gap: 8px;
   align-items: center;
+  min-height: 24px;
+  cursor: pointer;
 }
 .group-members input {
   width: auto;

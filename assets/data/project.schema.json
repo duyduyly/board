@@ -63,6 +63,30 @@
                     "items": {
                       "$ref": "#/$defs/id"
                     }
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "links": {
+                    "type": "array",
+                    "maxItems": 500,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/$defs/id"
+                        },
+                        "source": {
+                          "$ref": "#/$defs/id"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "source"
+                      ],
+                      "additionalProperties": false
+                    }
                   }
                 },
                 "required": [
