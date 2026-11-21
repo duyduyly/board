@@ -6,7 +6,7 @@ const SECTIONS = [
   ['Canvas', ['Select', 'Marquee', 'Copy', 'Pin', 'Navigate', 'MindLinks']],
   ['Groups', ['Groups', 'GroupNest', 'GroupLinks']],
   ['Documents', ['Edit', 'Write', 'Library', 'Code', 'Reading']],
-  ['Save', ['Save']],
+  ['Save', ['Save', 'WordExport']],
 ];
 
 export function quickHelpBody() {

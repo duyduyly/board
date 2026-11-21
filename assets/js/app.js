@@ -805,7 +805,7 @@ function render() {
     layoutPreview?.result.warnings.map((w) => t(w.code, { count: w.count })).join(' ') || '';
   $('[data-action=layout]').disabled = Boolean(layoutPreview) || !store.project.cards.length;
   $('[data-action=expand-all]').disabled = Boolean(layoutPreview) || !store.collapsed.size;
-  for (const action of ['new', 'add', 'connect', 'import', 'export', 'recovery'])
+  for (const action of ['new', 'add', 'connect', 'import', 'export', 'export-word', 'recovery'])
     for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
       el.disabled = Boolean(layoutPreview);
 
@@ -818,11 +818,9 @@ function render() {
     store.activeView !== 'mind' || Boolean(store.project.extensions?.[MIND]?.rootId);
   $('#mind-map-hint').textContent = t('mindHint');
   $('#project-name').textContent = store.project.metadata.title;
-  $('#project-name').title = t('projectSettings');
-  $('#project-name').setAttribute(
-    'aria-label',
-    t('projectSettings') + ': ' + store.project.metadata.title,
-  );
+  const projectNameLabel = t('projectSettings') + ': ' + store.project.metadata.title;
+  $('#project-name').title = projectNameLabel;
+  $('#project-name').setAttribute('aria-label', projectNameLabel);
   $('#welcome').hidden = store.project.cards.length > 0;
   $('#project-menu > summary').setAttribute('aria-label', t('helpAndTools'));
   $('#counts').textContent =
@@ -2080,17 +2078,18 @@ async function exportSelectionJSON(mode) {
   }
 }
 
+async function resolveExportDraft() {
+  if (!draftDirty()) return true;
+  const choice = await dialog('exportDraftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
+    ['cancel', 'cancel'],
+    ['exportApplied', 'applied'],
+    ['applyExport', 'apply', true],
+  ]);
+  if (choice === 'cancel') return false;
+  return !(choice === 'apply' && ((await blockEditor?.flush()) === false || !applyDraft()));
+}
 async function exportProject() {
-  if (draftDirty()) {
-    const choice = await dialog('exportDraftTitle', () => '<p>' + esc(t('draftBody')) + '</p>', [
-      ['cancel', 'cancel'],
-      ['exportApplied', 'applied'],
-      ['applyExport', 'apply', true],
-    ]);
-    if (choice === 'cancel') return false;
-    if (choice === 'apply' && ((await blockEditor?.flush()) === false || !applyDraft()))
-      return false;
-  }
+  if (!(await resolveExportDraft())) return false;
   try {
     const text = serialize(store.project, store.viewport, store.viewports);
     if (new TextEncoder().encode(text).length > LIMITS.file) throw Error('fileLimit');
@@ -2102,6 +2101,29 @@ async function exportProject() {
   } catch {
     toast('errorExport');
     return false;
+  }
+}
+async function exportWord() {
+  const button = $('[data-action=export-word]');
+  if (layoutPreview || button.getAttribute('aria-busy') === 'true') return;
+  if (!store.project.cards.length) return toast('wordExportEmpty');
+  if (!(await resolveExportDraft())) return;
+  // aria-* instead of disabled so keyboard focus stays on the button while exporting
+  button.setAttribute('aria-busy', 'true');
+  button.setAttribute('aria-disabled', 'true');
+  try {
+    const { exportWordFile } = await import('./word-export/browser.js');
+    const { skippedImages } = await exportWordFile(store.project, { view: store.activeView });
+    toast(skippedImages ? 'wordExportDoneSkipped' : 'wordExportDone', {
+      params: { count: skippedImages },
+      detail: store.dirty ? 'wordExportNotSaved' : null,
+    });
+  } catch (error) {
+    console.error(error);
+    toast('wordExportFailed');
+  } finally {
+    button.removeAttribute('aria-busy');
+    button.removeAttribute('aria-disabled');
   }
 }
 async function createProject() {
@@ -2580,6 +2602,7 @@ const actions = {
   },
   import: () => $('#file-input').click(),
   export: exportProject,
+  'export-word': exportWord,
   example: () => loadExample(),
   'mind-example': () => loadExample('assets/data/mind-map-example.json'),
   'english-example': () => loadExample('assets/data/english-endings-example.json'),

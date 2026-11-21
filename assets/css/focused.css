@@ -12,13 +12,18 @@
 .home-mode .toolbar {
   flex: none;
 }
+.toolbar-actions > [data-action='export-word'][aria-busy='true'] {
+  cursor: progress;
+  opacity: 0.6;
+}
 .home-mode #project-name,
 .home-mode #save-state,
 .home-mode .toolbar-actions > [data-action='add'],
 .home-mode .toolbar-actions > [data-action='connect'],
 .home-mode #map-view,
 .home-mode .history-buttons,
-.home-mode .toolbar-actions > [data-action='export'] {
+.home-mode .toolbar-actions > [data-action='export'],
+.home-mode .toolbar-actions > [data-action='export-word'] {
   display: none;
 }
 .home-page {

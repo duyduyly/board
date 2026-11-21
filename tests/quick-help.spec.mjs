@@ -28,7 +28,7 @@ test('small help button beside locale explains gestures, switches language and p
   await button.click();
   await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toBeVisible();
-  await expect(page.locator('.quick-help-content dt')).toHaveCount(15);
+  await expect(page.locator('.quick-help-content dt')).toHaveCount(16);
   await expect(page.locator('.quick-help-content h3')).toHaveText([
     'Trên Canvas',
     'Nhóm',
@@ -42,6 +42,7 @@ test('small help button beside locale explains gestures, switches language and p
     'Thư viện phần tử',
     'Code HTML & AI',
     'Đọc, sơ đồ & video',
+    'Xuất Word',
   ])
     await expect(page.locator('.quick-help-content dt', { hasText: topic })).toHaveCount(1);
   await expect(page.locator('#modal [data-choice]').first()).toBeInViewport();
@@ -55,6 +56,7 @@ test('small help button beside locale explains gestures, switches language and p
   await page.locator('[data-action=help]').click();
   await expect(page.locator('#modal')).toHaveAccessibleName('Quick help');
   await expect(page.locator('.quick-help-content')).toContainText('Pinned notes are read-only');
+  await expect(page.locator('.quick-help-content dt', { hasText: 'Export Word' })).toHaveCount(1);
   await page.keyboard.press('Escape');
   await expect(page.locator('#modal')).not.toBeVisible();
   await expect(button).toBeFocused();

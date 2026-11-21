@@ -286,7 +286,8 @@ export default {
   groupMembersCreateHint: 'Các note đang chọn sẽ vào nhóm này.',
   groupPinnedBadge: 'đã ghim',
   groupNameRequired: 'Nhập tên nhóm để lưu.',
-  groupNeedsMember: 'Nhóm cần ít nhất một note hoặc một nhóm con. Muốn bỏ cả nhóm, dùng Rã nhóm trên khung.',
+  groupNeedsMember:
+    'Nhóm cần ít nhất một note hoặc một nhóm con. Muốn bỏ cả nhóm, dùng Rã nhóm trên khung.',
   groupSave: 'Lưu nhóm',
   groupParent: 'Nằm trong nhóm',
   groupParentNone: 'Không (nhóm ngoài cùng)',
@@ -317,8 +318,7 @@ export default {
   routeorthogonal: 'Vuông góc',
   routezigzag: 'Gấp khúc (zigzag)',
   quickHelpTitle: 'Hướng dẫn nhanh',
-  quickHelpIntro:
-    'Các thao tác chính trên Note Board, Mind Map, nhóm và tài liệu trong note.',
+  quickHelpIntro: 'Các thao tác chính trên Note Board, Mind Map, nhóm và tài liệu trong note.',
   quickHelpSelect: 'Chọn nhiều & kéo nhóm',
   quickHelpSelectBody:
     'Giữ Shift và bấm từng note để chọn hoặc bỏ chọn; Shift + Space khi focus note cũng được. Kéo note đã chọn để di chuyển cả cụm.',
@@ -341,49 +341,58 @@ export default {
   cardsPasted: 'Đã thêm {count} bản sao. Nhấn Ctrl+Z để hoàn tác.',
   pasteLimit: 'Không dán được: dự án sẽ vượt giới hạn 500 note hoặc 2.000 quan hệ.',
   duplicateSelectionHint: 'Nhân bản các note đang chọn (Ctrl+D)',
-  quickHelpSectionCanvas:
-    'Trên Canvas',
-  quickHelpSectionGroups:
-    'Nhóm',
-  quickHelpSectionDocuments:
-    'Tài liệu trong note',
-  quickHelpSectionSave:
-    'Hoàn tác & lưu',
-  quickHelpMindLinks:
-    'Nhánh Mind Map',
+  quickHelpSectionCanvas: 'Trên Canvas',
+  quickHelpSectionGroups: 'Nhóm',
+  quickHelpSectionDocuments: 'Tài liệu trong note',
+  quickHelpSectionSave: 'Hoàn tác & lưu',
+  quickHelpMindLinks: 'Nhánh Mind Map',
   quickHelpMindLinksBody:
     'Trong Mind Map, kéo chấm nối sang một note chưa có nhánh cha sẽ tạo nhánh mới; mọi note có nhánh con, kể cả shape, đều có nút −/+ để thu gọn. Nối tới note đã có cha, tới gốc hoặc tạo vòng sẽ thành đường tham chiếu.',
-  quickHelpGroups:
-    'Tạo & sửa nhóm',
+  quickHelpGroups: 'Tạo & sửa nhóm',
   quickHelpGroupsBody:
     'Chọn từ hai note chưa có nhóm rồi bấm Tạo nhóm. Kéo tên khung để di chuyển cả nhóm; note ghim đứng yên. Sửa nhóm để đổi tên, thêm mô tả ngắn hiện dưới tên khung hoặc bỏ thành viên. Rã nhóm giữ nguyên các note.',
-  quickHelpGroupNest:
-    'Nhóm con',
+  quickHelpGroupNest: 'Nhóm con',
   quickHelpGroupNestBody:
     'Chọn từ hai note đang cùng nằm trong một nhóm rồi bấm Tạo nhóm để tạo nhóm con; nhóm lồng tối đa 3 cấp. Ô Nằm trong nhóm trong Sửa nhóm chuyển nhóm sang nhóm cha khác. Kéo khung cha kéo theo mọi nhóm con; Rã nhóm đưa note và nhóm con lên một cấp.',
-  quickHelpGroupLinks:
-    'Mũi tên vào nhóm',
+  quickHelpGroupLinks: 'Mũi tên vào nhóm',
   quickHelpGroupLinksBody:
     'Kéo chấm nối của note rồi thả lên khung nhóm (tên hoặc vùng trống) để vẽ mũi tên chỉ vào nhóm. Bằng bàn phím: Enter ở chấm nối, rồi Enter ở tên khung. Bỏ chọn mũi tên trong Sửa nhóm để xóa.',
-  quickHelpWrite:
-    'Soạn tài liệu',
+  quickHelpWrite: 'Soạn tài liệu',
   quickHelpWriteBody:
     'Ở tab soạn thảo, các nút Đoạn văn, Tiêu đề, Danh sách, Bảng, Ảnh chèn khối ngay sau khối đang chọn. Nhấp đúp vào chữ để sửa; Enter tạo đoạn mới, Shift + Enter xuống dòng trong cùng đoạn. Bấm Áp dụng để lưu vào note.',
-  quickHelpLibrary:
-    'Thư viện phần tử',
+  quickHelpLibrary: 'Thư viện phần tử',
   quickHelpLibraryBody:
     'Nút ❖ Thư viện mở các khối có sẵn: khung ý chính, bảng so sánh, nên và không nên, tự kiểm tra… Bấm để chèn sau khối đang chọn hoặc kéo thả vào đúng chỗ, rồi điền nội dung vào các dấu ...',
-  quickHelpCode:
-    'Code HTML & AI',
+  quickHelpCode: 'Code HTML & AI',
   quickHelpCodeBody:
     'Nút </> mở chế độ code HTML. Ở đó, ✦ sao chép prompt để nhờ ChatGPT viết bài, ? mở mẫu HTML/CSS, ⇥ Nhập HTML kiểm tra rồi chèn HTML do AI trả về. Ảnh base64 PNG, JPEG, WebP, GIF được lưu thành tệp đính kèm.',
-  quickHelpReading:
-    'Đọc, sơ đồ & video',
+  quickHelpReading: 'Đọc, sơ đồ & video',
   quickHelpReadingBody:
     'Tab đọc có mục lục bên lề, A−/A+ đổi cỡ chữ và ◐ đổi theme. Khối code language-mermaid được vẽ thành sơ đồ. Liên kết YouTube có class board-video thành khung phát, chỉ tải khi bấm phát (cần mạng); Escape để đóng video.',
   quickHelpSave: 'Hoàn tác & lưu dự án',
   quickHelpSaveBody:
     'Ctrl/Cmd + Z để hoàn tác; thêm Shift để làm lại. Xuất dự án để lưu JSON, Nhập JSON để mở lại; khi chọn nhiều note, menu JSON sao chép hoặc tải riêng vùng chọn. Dữ liệu chỉ ở trong phiên; đóng trang khi chưa xuất sẽ được hỏi lại.',
+  quickHelpWordExport: 'Xuất Word',
+  quickHelpWordExportBody:
+    'Xuất Word tạo file .docx gồm ghi chú, nhóm, bảng, ảnh đính kèm và liên kết để đọc hoặc in. Ảnh từ web chỉ là liên kết, sơ đồ Mermaid giữ mã nguồn. Ghi chú xếp theo thứ tự của view đang mở, sau trang mục lục. File Word không nhập lại được; hãy dùng Xuất dự án để lưu.',
+  wordExportDone: 'Đã yêu cầu tải file Word. Hãy kiểm tra trong Downloads.',
+  wordExportDoneSkipped:
+    'Đã yêu cầu tải file Word. Ảnh không nhúng được (ghi bằng tên ảnh): {count}.',
+  wordExportNotSaved: 'Dự án vẫn chưa được lưu: dùng Xuất dự án để lưu bản mở lại được.',
+  wordExportEmpty: 'Dự án chưa có ghi chú nào để xuất Word.',
+  wordExportFailed: 'Không tạo được file Word. Dự án hiện tại được giữ nguyên. Hãy thử lại.',
+  wordUngrouped: 'Ghi chú khác',
+  wordLinks: 'Liên kết',
+  wordType: 'Loại',
+  wordTags: 'Thẻ',
+  wordLegacySource: 'Nội dung Markdown cũ (chưa chuyển đổi)',
+  wordMermaidSource: 'Sơ đồ Mermaid (mã nguồn)',
+  wordRemoteImage: 'Ảnh từ web',
+  wordImage: 'Ảnh',
+  wordGroup: 'Nhóm',
+  wordContents: 'Mục lục',
+  wordContentsHint: 'Chọn một mục để chuyển nhanh đến phần tương ứng.',
+  wordContentsTip: 'Mẹo: Ctrl + Click vào mục lục để mở liên kết trong Word.',
   selectedCardsCount: 'Đã chọn {count} note · kéo để di chuyển · note ghim giữ nguyên',
   clearSelection: 'Bỏ chọn',
   selectionJsonMenu: 'JSON',
@@ -698,6 +707,8 @@ export default {
   redo: 'Làm lại',
   import: 'Nhập JSON',
   export: 'Xuất dự án',
+  exportWord: 'Xuất Word',
+  exportWordHint: 'Tải tài liệu Word (.docx) để đọc hoặc in. File này không nhập lại được.',
   format: 'Hướng dẫn JSON',
   search: 'Tìm kiếm note…',
   cards: 'note',

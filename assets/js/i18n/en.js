@@ -286,7 +286,8 @@ export default {
   groupMembersCreateHint: 'The selected notes will join this group.',
   groupPinnedBadge: 'pinned',
   groupNameRequired: 'Enter a group name to save.',
-  groupNeedsMember: 'A group needs at least one note or subgroup. To remove the whole group, use Ungroup on the frame.',
+  groupNeedsMember:
+    'A group needs at least one note or subgroup. To remove the whole group, use Ungroup on the frame.',
   groupSave: 'Save group',
   groupParent: 'Inside group',
   groupParentNone: 'None (top-level group)',
@@ -318,8 +319,7 @@ export default {
   routeorthogonal: 'Orthogonal',
   routezigzag: 'Zigzag',
   quickHelpTitle: 'Quick help',
-  quickHelpIntro:
-    'The main actions for Note Board, Mind Map, groups and note documents.',
+  quickHelpIntro: 'The main actions for Note Board, Mind Map, groups and note documents.',
   quickHelpSelect: 'Select & move groups',
   quickHelpSelectBody:
     'Shift + click, or Shift + Space on a focused note, toggles selection. Drag a selected note to move the whole selection.',
@@ -342,49 +342,59 @@ export default {
   cardsPasted: 'Added {count} copies. Press Ctrl+Z to undo.',
   pasteLimit: 'Cannot paste: the project would exceed 500 notes or 2,000 relations.',
   duplicateSelectionHint: 'Duplicate the selected notes (Ctrl+D)',
-  quickHelpSectionCanvas:
-    'On the Canvas',
-  quickHelpSectionGroups:
-    'Groups',
-  quickHelpSectionDocuments:
-    'Note documents',
-  quickHelpSectionSave:
-    'Undo & save',
-  quickHelpMindLinks:
-    'Mind Map branches',
+  quickHelpSectionCanvas: 'On the Canvas',
+  quickHelpSectionGroups: 'Groups',
+  quickHelpSectionDocuments: 'Note documents',
+  quickHelpSectionSave: 'Undo & save',
+  quickHelpMindLinks: 'Mind Map branches',
   quickHelpMindLinksBody:
     'In the Mind Map, dragging a connector to a note without a parent branch creates a new branch; every note with child branches, shapes included, gets a −/+ button to collapse it. A link to a note that already has a parent, to the root or that would close a loop becomes a reference.',
-  quickHelpGroups:
-    'Create & edit groups',
+  quickHelpGroups: 'Create & edit groups',
   quickHelpGroupsBody:
     'Select two or more ungrouped notes and choose Create group. Drag the frame title to move the group; pinned notes stay fixed. Edit to rename, add a short description shown under the title or remove members. Ungroup keeps all notes.',
-  quickHelpGroupNest:
-    'Subgroups',
+  quickHelpGroupNest: 'Subgroups',
   quickHelpGroupNestBody:
     'Select two or more notes that sit in the same group and choose Create group to make a subgroup; groups nest up to 3 levels. Inside group in the edit dialog moves a group under another parent. Dragging a parent frame moves every subgroup; Ungroup moves notes and subgroups up one level.',
-  quickHelpGroupLinks:
-    'Arrows to a group',
+  quickHelpGroupLinks: 'Arrows to a group',
   quickHelpGroupLinksBody:
     'Drag a note connector and drop it on a group frame (its title or an empty area) to draw an arrow to the group. With the keyboard: Enter on the connector, then Enter on the frame title. Uncheck an arrow in the edit dialog to remove it.',
-  quickHelpWrite:
-    'Write a document',
+  quickHelpWrite: 'Write a document',
   quickHelpWriteBody:
     'In the editor tab, Paragraph, Heading, List, Table and Image insert a block right after the selected one. Double-click text to edit it; Enter starts a new paragraph and Shift + Enter breaks the line. Choose Apply to save it to the note.',
-  quickHelpLibrary:
-    'Element library',
+  quickHelpLibrary: 'Element library',
   quickHelpLibraryBody:
     'The ❖ Library button opens ready-made blocks: key idea box, comparison table, do and do not, self-check… Click to insert after the selected block or drag one into place, then fill in each ...',
-  quickHelpCode:
-    'HTML code & AI',
+  quickHelpCode: 'HTML code & AI',
   quickHelpCodeBody:
     'The </> button opens HTML code mode. There, ✦ copies the prompt for ChatGPT, ? opens HTML/CSS samples and ⇥ Import HTML reviews and inserts HTML returned by an AI. Base64 PNG, JPEG, WebP and GIF images become attachments.',
-  quickHelpReading:
-    'Reading, diagrams & video',
+  quickHelpReading: 'Reading, diagrams & video',
   quickHelpReadingBody:
     'The reading tab has a side outline, A−/A+ for text size and ◐ for the theme. Code blocks with language-mermaid are drawn as diagrams. YouTube links with class board-video become players that load only when you press play (needs a network); Escape closes a video.',
   quickHelpSave: 'Undo & save',
   quickHelpSaveBody:
     'Ctrl/Cmd + Z undoes; add Shift to redo. Export project saves JSON and Import opens it again; with several notes selected, the JSON menu copies or downloads just the selection. Data stays in this session; closing the page before exporting asks first.',
+  quickHelpWordExport: 'Export Word',
+  quickHelpWordExportBody:
+    'Export Word creates a .docx file with notes, groups, tables, attached images and links to read or print. Web images become links and Mermaid diagrams keep their source. Notes follow the order of the open view, after a contents page. A Word file cannot be imported back; use Export project to save.',
+  wordExportDone: 'Word download requested. Check your Downloads.',
+  wordExportDoneSkipped: 'Word download requested. Images not embedded (listed by name): {count}.',
+  wordExportNotSaved:
+    'The project is still unsaved: use Export project to keep a file you can reopen.',
+  wordExportEmpty: 'This project has no notes to export to Word.',
+  wordExportFailed:
+    'Could not create the Word file. Your current work is unchanged. Please try again.',
+  wordUngrouped: 'Other notes',
+  wordLinks: 'Links',
+  wordType: 'Type',
+  wordTags: 'Tags',
+  wordLegacySource: 'Legacy Markdown content (not converted)',
+  wordMermaidSource: 'Mermaid diagram (source)',
+  wordRemoteImage: 'Web image',
+  wordImage: 'Image',
+  wordGroup: 'Group',
+  wordContents: 'Contents',
+  wordContentsHint: 'Choose an item to jump to that section.',
+  wordContentsTip: 'Tip: Ctrl + Click an entry to follow the link in Word.',
   selectedCardsCount: '{count} notes selected · drag to move · pinned notes stay fixed',
   clearSelection: 'Clear selection',
   selectionJsonMenu: 'JSON',
@@ -699,6 +709,8 @@ export default {
   redo: 'Redo',
   import: 'Import',
   export: 'Export project',
+  exportWord: 'Export Word',
+  exportWordHint: 'Download a Word document (.docx) to read or print. It cannot be imported back.',
   format: 'Format guide',
   search: 'Search notes and content…',
   cards: 'notes',
