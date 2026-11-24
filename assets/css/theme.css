@@ -300,3 +300,18 @@ button.primary:hover {
     transition: none;
   }
 }
+/* Mind Map cards follow the note colour like Note Board, toned for the dark surface. */
+:root[data-theme='dark']
+  .graph-card.mind-node[data-node-kind='card']:not(.shaped-node):not(.transparent-background) {
+  background: color-mix(in srgb, var(--card-background) 3%, #232d27);
+}
+:root[data-theme='dark']
+  .graph-card.mind-node.root-node[data-node-kind='card']:not(.shaped-node):not(
+    .transparent-background
+  ) {
+  background: color-mix(
+    in srgb,
+    var(--branch-color) 12%,
+    color-mix(in srgb, var(--card-background) 3%, #232d27)
+  );
+}

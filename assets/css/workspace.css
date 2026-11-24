@@ -654,7 +654,8 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
   }
 }
 .graph-card.mind-node[data-node-kind='card']:not(.shaped-node):not(.transparent-background) {
-  background: var(--surface);
+  /* The note's own colour wins over the neutral Mind Map paper (CA-UI-01). */
+  background: var(--card-background, var(--surface));
   border-color: var(--branch-color);
   box-shadow: 0 3px 12px #132d2312;
   padding: 24px 24px 16px;
@@ -662,7 +663,7 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
 .graph-card.mind-node.root-node[data-node-kind='card']:not(.shaped-node):not(
     .transparent-background
   ) {
-  background: color-mix(in srgb, var(--branch-color) 12%, var(--surface));
+  background: color-mix(in srgb, var(--branch-color) 12%, var(--card-background, var(--surface)));
   border-width: 2px;
 }
 .graph-card.mind-node[data-node-kind='card'] > h3 {
