@@ -120,6 +120,11 @@ export class GraphAdapter {
     region.addEventListener('pointerdown', (e) => {
       if (this.space || e.button === 1) this.panStart(e);
     });
+    // One delegated handler serves every status chip; the host decides whether it may open.
+    region.addEventListener('click', (e) => {
+      const chip = e.target.closest('.card-status-chip');
+      if (chip) this.callbacks.status(chip.closest('.graph-card').dataset.id, chip);
+    });
     installMultiSelection(this);
     this.groupFrames = createGroupFrames(this);
     this.observer = new ResizeObserver(() => {
@@ -259,9 +264,12 @@ export class GraphAdapter {
           this.layer.append(el);
           this.cards.set(c.id, el);
           el.addEventListener('pointerdown', (e) => this.cardStart(e, c.id));
-          el.addEventListener('dblclick', () => this.callbacks.open({ kind: 'card', id: c.id }));
+          el.addEventListener('dblclick', (e) => {
+            if (!e.target.closest('.card-status-chip'))
+              this.callbacks.open({ kind: 'card', id: c.id });
+          });
           el.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.target.closest('.card-status-chip')) {
               e.preventDefault();
               this.callbacks.open({ kind: 'card', id: c.id });
             }
@@ -703,7 +711,7 @@ export class GraphAdapter {
   cardStart(e, id) {
     if (
       e.target.closest(
-        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, [data-overview-field]',
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, [data-overview-field]',
       ) ||
       this.space ||
       e.button !== 0

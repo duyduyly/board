@@ -1,4 +1,5 @@
 import { metadataIssues } from '../graph/card-metadata.js';
+import { commentIssues } from '../graph/card-comments.js';
 import { documentIssues } from '../graph/html-document.js';
 import { routingIssues } from '../graph/edge-routing.js';
 import { groupIssues } from '../graph/card-groups.js';
@@ -58,6 +59,7 @@ export function validate(raw) {
   raw.cards.forEach((c, i) => {
     errors.push(...documentIssues(c, 'cards[' + i + '].extensions.card-atlas:document'));
     errors.push(...metadataIssues(c, 'cards[' + i + '].extensions.card-atlas:metadata'));
+    errors.push(...commentIssues(c, 'cards[' + i + ']'));
     errors.push(...appearanceIssues(c, 'cards[' + i + '].extensions.card-atlas:appearance'));
     errors.push(...imageAttachmentIssues(c, 'cards[' + i + '].extensions.card-atlas:images'));
     if (ids.has(c.id)) errors.push({ path: 'cards[' + i + '].id', code: 'duplicateId' });

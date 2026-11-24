@@ -27,14 +27,14 @@ const item = (page, action) => page.locator('#export-menu [data-action="' + acti
 const openProject = async (page) => {
   await page.goto('/');
   await page.locator('[data-template=personal]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(4);
+  await expect(page.locator('.graph-card')).toHaveCount(5);
 };
 
 test('Export menu sits after Import and is hidden on the home gallery', async ({ page }) => {
   await page.goto('/');
   await expect(summary(page)).toBeHidden();
   await page.locator('[data-template=personal]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(4);
+  await expect(page.locator('.graph-card')).toHaveCount(5);
   await expect(summary(page)).toBeVisible();
   const order = await page
     .locator('.toolbar-actions > *')

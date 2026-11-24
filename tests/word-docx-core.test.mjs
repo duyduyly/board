@@ -16,6 +16,7 @@ const labels = {
   image: 'Image',
   group: 'Group',
   contents: 'Contents',
+  comments: 'Comments',
   contentsHint: 'Hint',
   contentsTip: 'Tip',
 };

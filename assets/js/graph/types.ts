@@ -112,6 +112,23 @@ export interface CardMetadata {
   createdAt?: string;
 }
 
+export type CardStatusValue = 'new' | 'in-progress' | 'done' | 'blocked' | 'cancelled';
+
+export interface CardStatus {
+  value: CardStatusValue;
+}
+
+export interface CardComment {
+  id: string;
+  createdAt: string;
+  text: string;
+}
+
+export interface CardComments {
+  version: 1;
+  items: CardComment[];
+}
+
 export interface CardTextStyle {
   fontSize?: number;
   color?: string;

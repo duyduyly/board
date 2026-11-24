@@ -38,6 +38,26 @@ export function issueMessage(issue) {
   }[issue.code];
   return key ? t(key) : t('errorSchema', { code: issue.code });
 }
+const statusKeys = {
+  new: 'statusNew',
+  'in-progress': 'statusInProgress',
+  done: 'statusDone',
+  blocked: 'statusBlocked',
+  cancelled: 'statusCancelled',
+};
+export function statusLabel(value) {
+  return Object.hasOwn(statusKeys, value) ? t(statusKeys[value]) : value;
+}
 export function number(n) {
   return new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US').format(n);
+}
+const dateTimeFormats = {};
+export function dateTime(iso) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  dateTimeFormats[locale] ??= new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+  return dateTimeFormats[locale].format(date);
 }

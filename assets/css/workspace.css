@@ -273,15 +273,50 @@
 .selection-tools[hidden] {
   display: none;
 }
-.selection-tools { flex-wrap: wrap; gap: 6px; }
-.selection-json { position: static; }
-.selection-json > summary { cursor: pointer; padding: 6px 9px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
-.selection-json-menu { position: absolute; z-index: 2; bottom: calc(100% + 8px); left: 0; box-sizing: border-box; width: 240px; max-width: 100%; padding: 10px; display: grid; gap: 6px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); box-shadow: 0 4px 14px #0002; }
-.selection-json-menu p { margin: 0; line-height: 1.4; }
-.selection-json-menu button { text-align: left; }
+.selection-tools {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.selection-json {
+  position: static;
+}
+.selection-json > summary {
+  cursor: pointer;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.selection-json-menu {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + 8px);
+  left: 0;
+  box-sizing: border-box;
+  width: 240px;
+  max-width: 100%;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 4px 14px #0002;
+}
+.selection-json-menu p {
+  margin: 0;
+  line-height: 1.4;
+}
+.selection-json-menu button {
+  text-align: left;
+}
 .canvas-hint {
   max-width: calc(100% - 340px);
   text-align: right;
+}
+/* The open Format dock narrows the canvas: view buttons keep only their icon (title stays) so the controls never reach the hint or the edge. */
+.inspector-open .zoom-controls .view-button > span:last-child {
+  display: none;
 }
 #modal .modal-body label:has(> select) {
   display: grid;
@@ -1259,4 +1294,189 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
 }
 .inspector-open #canvas-region {
   margin-right: min(380px, 90vw);
+}
+
+/* Detail comments: a composer and an append-only list; colours come from theme tokens. */
+.card-comments {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  /* Same column as the note information block below it. */
+  max-width: 900px;
+  margin-inline: auto;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.card-comments h3 {
+  margin: 0;
+  font-size: 14px;
+}
+.card-comments h3:focus-visible,
+.card-comment-delete:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-comment-composer {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.card-comment-composer label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.card-comment-composer textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.card-comment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.card-comment-hint {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.card-comment-length {
+  font-variant-numeric: tabular-nums;
+}
+.card-comment-add:disabled {
+  cursor: not-allowed;
+}
+.card-comment-error {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #a44737;
+}
+.card-comment-error[hidden] {
+  display: none;
+}
+:root[data-theme='dark'] .card-comment-error {
+  color: #efa995;
+}
+.card-comments-empty,
+.card-comments-locked {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.card-comment-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.card-comment {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.card-comment-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.card-comment-body {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.card-comment-body p {
+  margin: 0;
+}
+.card-comment-body p + p,
+.card-comment-body p + ul,
+.card-comment-body p + ol,
+.card-comment-body ul + p,
+.card-comment-body ol + p {
+  margin-top: 6px;
+}
+.card-comment-body ul,
+.card-comment-body ol {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.card-comment-body ul {
+  list-style: disc;
+}
+.card-comment-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.card-comment-status[hidden] {
+  display: none;
+}
+
+.card-row-status[data-card-status='new'] {
+  --status-chip-bg: var(--status-new-bg);
+  --status-chip-ink: var(--status-new-ink);
+  --status-chip-icon: url('../images/icons/status-new.svg');
+}
+.card-row-status[data-card-status='in-progress'] {
+  --status-chip-bg: var(--status-in-progress-bg);
+  --status-chip-ink: var(--status-in-progress-ink);
+  --status-chip-icon: url('../images/icons/status-in-progress.svg');
+}
+.card-row-status[data-card-status='done'] {
+  --status-chip-bg: var(--status-done-bg);
+  --status-chip-ink: var(--status-done-ink);
+  --status-chip-icon: url('../images/icons/status-done.svg');
+}
+.card-row-status[data-card-status='blocked'] {
+  --status-chip-bg: var(--status-blocked-bg);
+  --status-chip-ink: var(--status-blocked-ink);
+  --status-chip-icon: url('../images/icons/status-blocked.svg');
+}
+.card-row-status[data-card-status='cancelled'] {
+  --status-chip-bg: var(--status-cancelled-bg);
+  --status-chip-ink: var(--status-cancelled-ink);
+  --status-chip-icon: url('../images/icons/status-cancelled.svg');
+}
+
+/* Card list status chip. */
+.card-row-status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--status-chip-bg);
+  color: var(--status-chip-ink);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.card-row-status::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  mask: var(--status-chip-icon) center / contain no-repeat;
+  -webkit-mask: var(--status-chip-icon) center / contain no-repeat;
+}
+
+/* Status display toggle: same pressed cue as Focus. */
+[data-action='status-display'][aria-pressed='true'] {
+  background: var(--active-background);
+  color: var(--active-ink);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
 }

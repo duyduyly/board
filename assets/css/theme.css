@@ -13,6 +13,16 @@
   --border: #36493e;
   --active-background: #2b4739;
   --active-ink: #c7f0dc;
+  --status-new-bg: #3b82d6;
+  --status-new-ink: #111111;
+  --status-in-progress-bg: #e0912b;
+  --status-in-progress-ink: #111111;
+  --status-done-bg: #43a047;
+  --status-done-ink: #111111;
+  --status-blocked-bg: #e5534b;
+  --status-blocked-ink: #111111;
+  --status-cancelled-bg: #8a948f;
+  --status-cancelled-ink: #111111;
 }
 input {
   background: var(--surface);

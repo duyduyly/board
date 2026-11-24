@@ -1,3 +1,5 @@
+import { COMMENTS, COMMENT_LIMITS } from '../graph/card-comments.js';
+import { STATUS, STATUS_VALUES } from '../graph/card-status.js';
 const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'Card Atlas Project 1.0',
@@ -290,6 +292,25 @@ schema.$defs.card.properties.extensions = extensions({
       pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]{3}Z$',
     },
   }),
+  [COMMENTS]: object(
+    {
+      version: { const: 1 },
+      items: {
+        type: 'array',
+        maxItems: COMMENT_LIMITS.items,
+        items: object(
+          {
+            id: { $ref: '#/$defs/id' },
+            createdAt: { type: 'string' },
+            text: { type: 'string', minLength: 1, maxLength: COMMENT_LIMITS.text, pattern: '\\S' },
+          },
+          ['id', 'createdAt', 'text'],
+        ),
+      },
+    },
+    ['version', 'items'],
+  ),
+  [STATUS]: object({ value: { enum: [...STATUS_VALUES] } }, ['value']),
   'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
   'card-atlas:appearance': object({
     radius: { type: 'number', minimum: 0, maximum: 100 },

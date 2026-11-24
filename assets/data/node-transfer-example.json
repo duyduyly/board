@@ -51,6 +51,24 @@
           "kind": "illustrative",
           "note": "Standalone example; import Update or Add."
         },
+        "card-atlas:status": {
+          "value": "in-progress"
+        },
+        "card-atlas:comments": {
+          "version": 1,
+          "items": [
+            {
+              "id": "comment-1",
+              "createdAt": "2026-01-15T09:30:00.000Z",
+              "text": "Review the pronunciation table before the next lesson."
+            },
+            {
+              "id": "comment-2",
+              "createdAt": "2026-01-16T14:05:00.000Z",
+              "text": "Practice ideas:\n- Read the endings aloud\n- Record and compare"
+            }
+          ]
+        },
         "card-atlas:document": {
           "version": 1,
           "format": "html-bs5",

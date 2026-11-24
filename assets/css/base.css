@@ -13,6 +13,16 @@
   --accent: #28594b;
   --border: #e1e7e3;
   --panel-width: 360px;
+  --status-new-bg: #1f5fae;
+  --status-new-ink: #ffffff;
+  --status-in-progress-bg: #a8590a;
+  --status-in-progress-ink: #ffffff;
+  --status-done-bg: #2e7d32;
+  --status-done-ink: #ffffff;
+  --status-blocked-bg: #c0392b;
+  --status-blocked-ink: #ffffff;
+  --status-cancelled-bg: #5f6b66;
+  --status-cancelled-ink: #ffffff;
   font:
     14px/1.5 'Segoe UI',
     system-ui,

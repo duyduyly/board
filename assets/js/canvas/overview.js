@@ -1,10 +1,12 @@
 import { textFields, textStyle, fontFamilies } from '../graph/card-typography.js';
 import { cardMetadata } from '../graph/card-metadata.js';
+import { commentCount } from '../graph/card-comments.js';
+import { effectiveStatus } from '../graph/card-status.js';
 import { nodeStyle } from '../graph/mind-map.js';
 import { attachmentDataURL, IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { applyAppearance, appearance } from '../detail/appearance.js';
 import { applyShape } from './shape-view.js';
-import { t, getLocale } from '../i18n/index.js';
+import { t, getLocale, statusLabel } from '../i18n/index.js';
 const dateFormats = new Map();
 export const compactOverview = (card, size) =>
   nodeStyle(card).kind === 'text' && Boolean(card.summary) && size.height < 120;
@@ -110,7 +112,18 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   pin.type = 'button';
   pin.className = 'card-pin';
   pin.disabled = true;
-  strip.append(date, pin);
+  const status = document.createElement('button');
+  status.type = 'button';
+  status.className = 'card-status-chip';
+  status.setAttribute('aria-haspopup', 'menu');
+  const statusText = document.createElement('span');
+  statusText.className = 'card-status-text';
+  status.append(statusText);
+  const comments = document.createElement('span');
+  comments.className = 'card-comment-count';
+  comments.setAttribute('role', 'img');
+  comments.hidden = true;
+  strip.append(date, status, comments, pin);
   el.append(strip);
   updateCardMetadata(el, card);
   applyAppearance(el, card);
@@ -130,6 +143,8 @@ export function overviewElement(card, view, size = card.size, renderShape = true
 export function updateCardMetadata(el, card) {
   const meta = cardMetadata(card),
     date = el.querySelector('.card-created-date'),
+    status = el.querySelector('.card-status-chip'),
+    comments = el.querySelector('.card-comment-count'),
     pin = el.querySelector('.card-pin');
   el.classList.toggle('pinned-card', Boolean(meta.pinned));
   if (meta.pinned) el.setAttribute('aria-description', t('pinnedReadOnly'));
@@ -161,6 +176,22 @@ export function updateCardMetadata(el, card) {
         ? t('editCardDate', { date: date.textContent })
         : date.title,
     );
+  if (status) {
+    const value = effectiveStatus(card),
+      label = statusLabel(value);
+    el.dataset.cardStatus = value;
+    status.querySelector('.card-status-text').textContent = label;
+    status.title = meta.pinned ? t('statusPinnedHint') : t('statusChangeFor', { status: label });
+    status.setAttribute('aria-label', status.title);
+    status.setAttribute('aria-disabled', String(Boolean(meta.pinned)));
+  }
+  if (comments) {
+    const count = commentCount(card);
+    comments.hidden = count === 0;
+    comments.textContent = String(count);
+    comments.title = count === 1 ? t('commentCountOne') : t('commentCount', { count });
+    comments.setAttribute('aria-label', comments.title);
+  }
   if (pin) {
     pin.setAttribute('aria-pressed', String(Boolean(meta.pinned)));
     pin.title = t(meta.pinned ? 'unpinCard' : 'pinCard');

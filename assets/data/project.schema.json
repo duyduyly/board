@@ -357,6 +357,64 @@
               "required": [],
               "additionalProperties": false
             },
+            "card-atlas:comments": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "const": 1
+                },
+                "items": {
+                  "type": "array",
+                  "maxItems": 500,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/$defs/id"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "text"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "version",
+                "items"
+              ],
+              "additionalProperties": false
+            },
+            "card-atlas:status": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "enum": [
+                    "new",
+                    "in-progress",
+                    "done",
+                    "blocked",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "value"
+              ],
+              "additionalProperties": false
+            },
             "card-atlas:node": {
               "$ref": "#/$defs/nodePresentation"
             },

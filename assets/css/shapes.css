@@ -302,6 +302,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 6px;
+  container-type: inline-size;
   pointer-events: none;
   color: var(--muted);
   font-size: 11px;
@@ -318,6 +319,119 @@
   pointer-events: auto;
   cursor: help;
 }
+/* Comment count badge: decorative glyph + number inside the existing strip; adds no card geometry. */
+.card-status-strip > .card-comment-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-right: auto;
+  padding: 2px 4px;
+  pointer-events: none;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+.card-status-strip > .card-comment-count[hidden] {
+  display: none;
+}
+.card-status-strip > .card-comment-count::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  flex: none;
+  background-color: currentColor;
+  mask: url('../images/icons/comment.svg') center / contain no-repeat;
+  -webkit-mask: url('../images/icons/comment.svg') center / contain no-repeat;
+}
+/* Status chip: icon + label inside the strip; colours come from tokens, geometry stays untouched. */
+.card-status-strip > .card-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-right: auto;
+  padding: 1px 6px 1px 4px;
+  border-radius: 999px;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 0;
+  font: inherit;
+  background: var(--status-chip-bg);
+  color: var(--status-chip-ink);
+}
+.card-status-strip > .card-status-chip:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.card-status-strip > .card-status-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-status-strip > .card-status-chip[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+.card-status-strip > .card-status-chip[aria-disabled='true']:hover {
+  box-shadow: none;
+}
+.card-status-strip > .card-status-chip[hidden],
+#canvas-region.hide-card-status .card-status-chip {
+  display: none;
+}
+.card-status-strip > .card-status-chip::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  flex: none;
+  background-color: currentColor;
+  mask: var(--status-chip-icon) center / contain no-repeat;
+  -webkit-mask: var(--status-chip-icon) center / contain no-repeat;
+}
+.card-status-strip > .card-status-chip:not([hidden]):has(+ .card-comment-count:not([hidden])) {
+  margin-right: 0;
+}
+.graph-card[data-card-status='new'],
+.card-status-option[data-status='new'] {
+  --status-chip-bg: var(--status-new-bg);
+  --status-chip-ink: var(--status-new-ink);
+  --status-chip-icon: url('../images/icons/status-new.svg');
+}
+.graph-card[data-card-status='in-progress'],
+.card-status-option[data-status='in-progress'] {
+  --status-chip-bg: var(--status-in-progress-bg);
+  --status-chip-ink: var(--status-in-progress-ink);
+  --status-chip-icon: url('../images/icons/status-in-progress.svg');
+}
+.graph-card[data-card-status='done'],
+.card-status-option[data-status='done'] {
+  --status-chip-bg: var(--status-done-bg);
+  --status-chip-ink: var(--status-done-ink);
+  --status-chip-icon: url('../images/icons/status-done.svg');
+}
+.graph-card[data-card-status='blocked'],
+.card-status-option[data-status='blocked'] {
+  --status-chip-bg: var(--status-blocked-bg);
+  --status-chip-ink: var(--status-blocked-ink);
+  --status-chip-icon: url('../images/icons/status-blocked.svg');
+}
+.graph-card[data-card-status='cancelled'],
+.card-status-option[data-status='cancelled'] {
+  --status-chip-bg: var(--status-cancelled-bg);
+  --status-chip-ink: var(--status-cancelled-ink);
+  --status-chip-icon: url('../images/icons/status-cancelled.svg');
+}
+/* Narrow strips keep only the icon so the chip never crowds the date or pin. */
+@container (max-width: 150px) {
+  .card-status-chip .card-status-text {
+    display: none;
+  }
+}
+#canvas-region:not(.hide-card-status)
+  .graph-card[data-card-status='cancelled']
+  > :not(.card-status-strip) {
+  opacity: 0.6;
+}
+#canvas-region:not(.hide-card-status) .graph-card[data-card-status='cancelled'] h3 {
+  text-decoration: line-through;
+}
 .card-pin,
 .card-pin:hover,
 .card-pin[aria-pressed='true'] {
@@ -332,7 +446,9 @@
   overflow: visible;
   background: transparent url('../images/pushpin.svg') center/26px 34px no-repeat;
 }
+/* Never let a narrow strip squeeze the pin: its pushpin image would spill over the status chip. */
 .card-pin {
+  flex: none;
   opacity: 0.6;
   filter: grayscale(1);
 }
@@ -392,6 +508,18 @@
   color: inherit;
   background: color-mix(in srgb, var(--card-ink) 6%, transparent);
 }
+/* The paper pushpin sits centred over the strip, so the comment count moves to the right edge. */
+.paper-note .card-status-strip > .card-comment-count {
+  margin-right: 0;
+  margin-left: auto;
+}
+.paper-note .card-status-strip > .card-status-chip {
+  margin-right: 0;
+  margin-left: auto;
+}
+.paper-note .card-status-strip > .card-status-chip:not([hidden]) + .card-comment-count {
+  margin-left: 0;
+}
 .paper-note .card-pin {
   position: absolute;
   left: 50%;
@@ -420,6 +548,69 @@
 }
 .card-created-date[aria-disabled='false']:hover {
   border-bottom-color: currentColor;
+}
+/* Status menu: each option is a pill in its own status colours; the selected one adds a check and a bold border. */
+.card-status-popover {
+  position: fixed;
+  margin: 0;
+  width: 190px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  border: 1px solid var(--pencil-stroke, var(--border));
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--dialog-shadow, 0 12px 40px #0002);
+}
+.card-status-popover::backdrop {
+  background: transparent;
+  backdrop-filter: none;
+}
+.card-status-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card-status-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 8px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--status-chip-bg);
+  color: var(--status-chip-ink);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.card-status-option::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  flex: none;
+  background-color: currentColor;
+  mask: var(--status-chip-icon) center / contain no-repeat;
+  -webkit-mask: var(--status-chip-icon) center / contain no-repeat;
+}
+.card-status-option-label {
+  flex: 1;
+}
+.card-status-option[aria-checked='true'] {
+  border-color: currentColor;
+  font-weight: 700;
+}
+.card-status-option[aria-checked='true']::after {
+  content: '✓';
+  font-weight: 700;
+}
+.card-status-option:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.card-status-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .card-date-editor {
   position: fixed;

@@ -16,6 +16,8 @@
     "assets/js/graph/branch-focus.js",
     "assets/js/graph/youtube.js",
     "assets/js/graph/diagram-policy.js",
+    "assets/js/graph/card-comments.js",
+    "assets/js/graph/card-status.js",
     "assets/js/word-export/zip.js",
     "assets/js/word-export/media.js"
   ]

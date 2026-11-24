@@ -38,7 +38,7 @@ test('renderer prototype single curved edge and text bounds', async ({ page }) =
 async function sample(page) {
   await page.goto('/');
   await page.locator('[data-action=mind-example]').click();
-  await expect(page.locator('#card-list .card-row')).toHaveCount(12);
+  await expect(page.locator('#card-list .card-row')).toHaveCount(13);
   await locale(page, 'en');
 }
 async function data(page) {
@@ -71,7 +71,7 @@ test('mixed nodes, image decode, Detail click and curves in both themes', async 
     new RegExp('^data:image/png;base64,'),
   );
   await view(page, 'mind');
-  await expect(page.locator('.simple-node')).toHaveCount(12);
+  await expect(page.locator('.simple-node')).toHaveCount(13);
   await expect(page.locator('.root-node')).toHaveCount(1);
   await expect(page.locator('.detached-node')).toHaveCount(1);
   await openRow(page, page.locator('.card-row[data-card-id=illustration]'));

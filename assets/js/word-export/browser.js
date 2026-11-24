@@ -1,5 +1,6 @@
-import { t } from '../i18n/index.js';
+import { dateTime, statusLabel, t } from '../i18n/index.js';
 import { download } from '../common/download.js';
+import { STATUS_VALUES } from '../graph/card-status.js';
 import { filename } from '../json/validator.js';
 import { buildDocx, DOCX_MIME } from './index.js';
 
@@ -17,6 +18,10 @@ export function wordLabels() {
     contents: t('wordContents'),
     contentsHint: t('wordContentsHint'),
     contentsTip: t('wordContentsTip'),
+    comments: t('commentsTitle'),
+    commentTime: dateTime,
+    status: t('statusField'),
+    statuses: Object.fromEntries(STATUS_VALUES.map((value) => [value, statusLabel(value)])),
   };
 }
 

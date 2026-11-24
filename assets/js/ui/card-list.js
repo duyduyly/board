@@ -1,5 +1,6 @@
-import { t, number, getLocale } from '../i18n/index.js';
+import { t, number, getLocale, statusLabel } from '../i18n/index.js';
 import { search, searchExcerpt } from '../store/project-store.js';
+import { effectiveStatus } from '../graph/card-status.js';
 import { projectIndex } from '../graph/project-index.js';
 export function createCardList({ host, onSelect }) {
   let listProject = null,
@@ -25,7 +26,7 @@ export function createCardList({ host, onSelect }) {
     listSelection = selection?.kind === 'card' ? selection.id : null;
     const { degrees } = projectIndex(project);
     host.replaceChildren();
-    const cards = search(project.cards, query);
+    const cards = search(project.cards, query, (c) => statusLabel(effectiveStatus(c)));
     if (!cards.length && query) {
       const p = document.createElement('p');
       p.className = 'muted';
@@ -46,7 +47,14 @@ export function createCardList({ host, onSelect }) {
       const degree = document.createElement('span');
       degree.className = 'degree';
       degree.textContent = number(degrees.get(c.id) || 0);
-      btn.append(dot, name, degree);
+      btn.append(dot, name);
+      const status = effectiveStatus(c);
+      const badge = document.createElement('span');
+      badge.className = 'card-row-status';
+      badge.dataset.cardStatus = status;
+      badge.textContent = statusLabel(status);
+      btn.append(badge);
+      btn.append(degree);
       btn.onclick = async () => {
         await onSelect(c.id);
       };

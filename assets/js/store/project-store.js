@@ -1,5 +1,6 @@
 import { stampCreated } from '../graph/card-metadata.js';
 import { DOCUMENT, documentText } from '../graph/html-document.js';
+import { commentsText } from '../graph/card-comments.js';
 import { cleanupGroups } from '../graph/card-groups.js';
 import { assertPinnedUnchanged } from '../graph/card-lock.js';
 import { clone } from '../common/data.js';
@@ -214,11 +215,11 @@ export function remove(p, selection) {
     p.relations = p.relations.filter((r) => r.source !== selection.id && r.target !== selection.id);
   } else p.relations = p.relations.filter((r) => r.id !== selection.id);
 }
-export function search(cards, query) {
+export function search(cards, query, extraText = () => '') {
   const q = query.toLocaleLowerCase().trim();
   return cards.filter((c) =>
-    [c.title, c.summary, c.type, ...c.tags, searchContent(c)].some((s) =>
-      s.toLocaleLowerCase().includes(q),
+    [c.title, c.summary, c.type, ...c.tags, searchContent(c), commentsText(c), extraText(c)].some(
+      (s) => s.toLocaleLowerCase().includes(q),
     ),
   );
 }
@@ -228,10 +229,15 @@ function searchContent(card) {
 }
 
 export function searchExcerpt(card, query) {
-  const text = searchContent(card).replace(/\s+/g, ' ');
   const q = query.toLocaleLowerCase().trim();
-  const index = text.toLocaleLowerCase().indexOf(q);
-  if (!q || index < 0) return '';
+  if (!q) return '';
+  let text = searchContent(card).replace(/\s+/g, ' '),
+    index = text.toLocaleLowerCase().indexOf(q);
+  if (index < 0) {
+    text = commentsText(card).replace(/\s+/g, ' ');
+    index = text.toLocaleLowerCase().indexOf(q);
+  }
+  if (index < 0) return '';
   const start = Math.max(0, index - 35);
   return (
     (start ? '…' : '') +

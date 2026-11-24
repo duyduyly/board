@@ -28,6 +28,10 @@ import { moveCards } from './graph/move-cards.js';
 import { createCardOverviewEditor } from './ui/card-overview-editor.js';
 import { setOverview, uniformProfile, applyUniformStyles } from './graph/card-typography.js';
 import { createCardDateEditor } from './ui/card-date-editor.js';
+import { createCardComments } from './ui/card-comments.js';
+import { addComment, removeComment } from './graph/card-comments.js';
+import { effectiveStatus, setStatus } from './graph/card-status.js';
+import { createCardStatusPopover } from './ui/card-status-popover.js';
 import {
   stampCreated,
   togglePinned,
@@ -107,6 +111,8 @@ export const store = new ProjectStore();
 export let layoutPreview = null;
 let selection = null,
   focusBranch = false,
+  // Status chips on notes are a session-only display preference (CC-23), never exported.
+  showStatus = true,
   selectedCards = new Set(),
   // Copied notes live in session memory only (CC-23); pasteCount staggers repeated pastes.
   cardClipboard = null,
@@ -538,6 +544,55 @@ const dateEditor = createCardDateEditor({
     );
   },
 });
+// Status changes only through this chip menu: one guarded command, so Undo is one step.
+const statusBlocked = () => detailOpen || draftDirty() || feedback.state || layoutPreview;
+const statusPopover = createCardStatusPopover({
+  current: (id) => {
+    const card = projectIndex(store.project).cards.get(id);
+    return card && !isPinned(card) ? effectiveStatus(card) : null;
+  },
+  fallback: (id) => adapter.cards.get(id)?.querySelector('.card-status-chip'),
+  onApply: (id, value) => {
+    if (statusBlocked()) {
+      toast('statusChangeBlocked');
+      return false;
+    }
+    const card = projectIndex(store.project).cards.get(id);
+    if (!card || isPinned(card)) return false;
+    return change((p) =>
+      setStatus(
+        p.cards.find((c) => c.id === id),
+        value,
+      ),
+    );
+  },
+});
+// Comments change only through these guarded commands; the panel re-renders from the store.
+const commentsAllowed = () => detailOpen && !draftDirty() && !feedback.state && !layoutPreview;
+const comments = createCardComments({
+  onAdd: (id, text) =>
+    commentsAllowed() &&
+    change((p) =>
+      addComment(
+        p.cards.find((c) => c.id === id),
+        { id: newId('comment'), createdAt: new Date().toISOString(), text },
+      ),
+    ),
+  onRemove: (id, commentId) =>
+    commentsAllowed() &&
+    change((p) =>
+      removeComment(
+        p.cards.find((c) => c.id === id),
+        commentId,
+      ),
+    ),
+});
+function syncStatusDisplay() {
+  $('#canvas-region').classList.toggle('hide-card-status', !showStatus);
+  const button = $('[data-action=status-display]');
+  button.setAttribute('aria-pressed', String(showStatus));
+  button.dataset.i18nTitle = showStatus ? 'statusDisplayHide' : 'statusDisplayShow';
+}
 const overviewEditor = createCardOverviewEditor({
   onClose: () => updateStatus(),
   context: () => ({
@@ -662,6 +717,21 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     selectMany([id]);
     dateEditor.show(id, anchor);
   },
+  status: (id, anchor) => {
+    const card = projectIndex(store.project).cards.get(id);
+    if (!card || statusPopover.open) return;
+    if (inspector.hasPending()) {
+      void inspector.close();
+      return;
+    }
+    if (isPinned(card)) toast('statusPinnedHint');
+    else if (statusBlocked() || dateEditor.open || overviewEditor.open)
+      toast('statusChangeBlocked');
+    else {
+      selectMany([id]);
+      statusPopover.show(id, anchor);
+    }
+  },
   overview: (id, anchor, field) => {
     if (inspector.hasPending()) {
       void inspector.close();
@@ -726,6 +796,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       feedback.state ||
       layoutPreview ||
       dateEditor.open ||
+      statusPopover.open ||
       overviewEditor.open ||
       adapter.gesturing ||
       adapter.resizing ||
@@ -772,6 +843,7 @@ function render() {
     el.setAttribute('aria-pressed', String(focusBranch));
     el.dataset.i18nTitle = focusBranch ? 'focusBranchExit' : 'focus';
   }
+  syncStatusDisplay();
   $('[data-action=focus]').disabled =
     !focusBranch && !['card', 'relation'].includes(selection?.kind);
   if (selection && !entity()) {
@@ -855,6 +927,7 @@ function render() {
   updateStatus();
   translate();
   dateEditor.syncLocale();
+  statusPopover.syncLocale();
   overviewEditor.syncLocale();
   scheduleRecovery();
 }
@@ -962,6 +1035,7 @@ function renderPanel() {
     return;
   }
   const state = previousPanelKey === key ? captureEditor(body) : null;
+  const readingHeight = state && body.querySelector('.reading-layout')?.offsetHeight;
   const formatGroups = state
     ? new Map(
         [...body.querySelectorAll('details[data-format-group]')].map((group) => [
@@ -1029,6 +1103,7 @@ function renderPanel() {
     (imageOpen.open || imageOpen.count === body.querySelectorAll('.attachment-row').length)
   )
     body.querySelector('.image-tools').open = imageOpen.open;
+  holdReadingHeight(body, readingHeight);
   restoreEditor(body, state);
   if (!state) body.scrollTop = 0;
   $('#writing-exit').hidden = !(writing && selection?.kind === 'card');
@@ -1036,6 +1111,15 @@ function renderPanel() {
     'writing-mode',
     detailOpen && writing && selection?.kind === 'card',
   );
+}
+// The reading frame is rebuilt and sized asynchronously, so for a moment the panel is shorter and a
+// restored scroll position gets clamped. Hold the previous height until the frame has settled.
+const READING_HEIGHT_HOLD_MS = 1500;
+function holdReadingHeight(body, height) {
+  const layout = body.querySelector('.reading-layout');
+  if (!layout || !height) return;
+  layout.style.minHeight = height + 'px';
+  setTimeout(() => layout.style.removeProperty('min-height'), READING_HEIGHT_HOLD_MS);
 }
 function syncReadingScale() {
   const percent = READING_SCALES[readingScale];
@@ -1123,7 +1207,7 @@ function renderPanelContent() {
           esc(t('unpinCard')) +
           '</button></div>'
         : '') +
-      '<div class="reading-layout"><nav class="reading-contents" hidden></nav><div class="markdown"></div></div><details class="document-details"><summary>' +
+      '<div class="reading-layout"><nav class="reading-contents" hidden></nav><div class="markdown"></div></div><div class="card-comments-host"></div><details class="document-details"><summary>' +
       esc(t('metadata')) +
       '</summary><p class="summary">' +
       esc(e.summary) +
@@ -1142,6 +1226,7 @@ function renderPanelContent() {
       unpin.onclick = async () => {
         if (await guardDraft()) change((p) => togglePinned(p.cards.find((c) => c.id === e.id)));
       };
+    comments.mount(body.querySelector('.card-comments-host'), { card: e, locked: readOnly });
     const host = body.querySelector('.markdown');
     const contents = (root) => {
       if (version !== panelVersion) return;
@@ -2222,6 +2307,7 @@ async function replaceProject(p, adjusted = false) {
   query = '';
   $('#search').value = '';
   lastExport = false;
+  comments.clear();
   store.replace(p, adjusted);
   adapter.setViewport(store.viewport);
   return true;
@@ -2675,6 +2761,11 @@ const actions = {
   'zoom-out': () => adapter.zoom(1 / 1.2),
   'zoom-reset': () => adapter.resetZoom(),
   fit: () => adapter.fit(),
+  'status-display': () => {
+    showStatus = !showStatus;
+    syncStatusDisplay();
+    translate($('.zoom-controls'));
+  },
   focus: () => {
     if (selection?.kind === 'card' && focusBranch) {
       focusBranch = false;
@@ -2718,7 +2809,7 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#export-menu')) $('#export-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
-  if (dateEditor.open || overviewEditor.open) return;
+  if (dateEditor.open || statusPopover.open || overviewEditor.open) return;
   if (e.key === 'Escape' && !feedback.state && $('#selection-json').open) {
     e.preventDefault();
     $('#selection-json').open = false;

@@ -7,7 +7,7 @@ const historyLength = (page) =>
 async function openFormat(page) {
   await page.goto('/');
   await page.locator('[data-action=example]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(3);
+  await expect(page.locator('.graph-card')).toHaveCount(4);
 }
 
 async function openDirtyDraft(page) {

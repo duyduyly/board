@@ -1,4 +1,6 @@
 import { IMAGE_NAMESPACE, validImageAttachment } from '../detail/attachments.js';
+import { cardComments, commentBlocks } from '../graph/card-comments.js';
+import { DEFAULT_STATUS, effectiveStatus } from '../graph/card-status.js';
 import { cardGroups } from '../graph/card-groups.js';
 import { DOCUMENT } from '../graph/html-document.js';
 import { nodeStyle } from '../graph/mind-map.js';
@@ -16,7 +18,7 @@ import { outline } from './order.js';
  * @typedef {import('./order.js').OutlineGroup} OutlineGroup
  * @typedef {import('./document-blocks.js').Block} Block
  * @typedef {import('./document-blocks.js').Inline} Inline
- * @typedef {{ ungrouped: string, links: string, type: string, tags: string, legacySource: string, mermaidSource: string, remoteImage: string, image: string, group: string, contents: string, contentsHint: string, contentsTip: string }} Labels
+ * @typedef {{ ungrouped: string, links: string, type: string, tags: string, legacySource: string, mermaidSource: string, remoteImage: string, image: string, group: string, contents: string, contentsHint: string, contentsTip: string, comments: string, commentTime?: (iso: string) => string, status?: string, statuses?: Record<string, string> }} Labels
  * @typedef {{ title: string, description: string, blocks: Block[] }} DocModel
  * @typedef {{ project: Project, index: ReturnType<typeof projectIndex>, labels: Labels, listIds: { next: number }, cardMark: Map<string, string>, groups: Map<string, { title: string, bookmark: string }>, openings: Map<string, string>, groupLinks: Map<string, string[]> }} Context
  */
@@ -120,9 +122,22 @@ function referencesAttachment(doc, id) {
   return Array.isArray(nodes) && nodes.some(visit);
 }
 
-/** @param {Card} card @param {Labels} labels @returns {Block[]} */
-function metaBlocks(card, labels) {
+/** Display label of the card status, or null for the default NEW (kept out to stay compact).
+ * @param {Card} card @param {Labels} labels */
+function statusText(card, labels) {
+  const value = effectiveStatus(card);
+  return value === DEFAULT_STATUS ? null : (labels.statuses?.[value] ?? value);
+}
+
+/**
+ * Meta line of a card. `withStatus` adds the status for a group's opening card, which has no
+ * heading of its own to carry it.
+ * @param {Card} card @param {Labels} labels @param {boolean} [withStatus] @returns {Block[]}
+ */
+function metaBlocks(card, labels, withStatus = false) {
   const parts = [];
+  const status = withStatus ? statusText(card, labels) : null;
+  if (status) parts.push((labels.status ?? 'Status') + ': ' + status);
   if (card.type) parts.push(labels.type + ': ' + card.type);
   if (card.tags?.length) parts.push(labels.tags + ': ' + card.tags.join(', '));
   return parts.length ? [paragraph('Meta', [text(parts.join(' · '))])] : [];
@@ -238,29 +253,71 @@ function linkBlocks(card, level, ctx) {
   return [heading, ...relations, ...groups];
 }
 
+/** One comment block as IR: a paragraph with line breaks, or one list-item per entry. */
+function commentBlock(block, ctx) {
+  if (block.type === 'paragraph')
+    return [
+      {
+        type: 'paragraph',
+        inlines: block.lines.flatMap((line, i) =>
+          i ? [{ type: 'break' }, text(line)] : [text(line)],
+        ),
+      },
+    ];
+  const listId = ctx.listIds.next++;
+  return block.items.map((item) => ({
+    type: 'list-item',
+    ordered: block.ordered,
+    level: 0,
+    listId,
+    ...(block.ordered && block.start ? { start: block.start } : {}),
+    inlines: [text(item)],
+  }));
+}
+
+/** Comments section: one dated Meta line per comment, then its paragraphs and lists. */
+function commentSection(card, level, ctx) {
+  const comments = cardComments(card);
+  if (!comments.length) return [];
+  /** @type {Block} */
+  const heading = {
+    type: 'heading',
+    level: Math.min(level + 1, MAX_HEADING_LEVEL),
+    inlines: [text(ctx.labels.comments)],
+  };
+  const entries = comments.flatMap((comment) => [
+    paragraph('Meta', [text(ctx.labels.commentTime?.(comment.createdAt) ?? comment.createdAt)]),
+    ...commentBlocks(comment.text).flatMap((block) => commentBlock(block, ctx)),
+  ]);
+  return [heading, ...entries];
+}
+
 /** @param {string} id @param {number} level @param {Context} ctx @returns {Block[]} */
 function cardBlocks(id, level, ctx) {
   const card = ctx.index.cards.get(id);
+  const status = statusText(card, ctx.labels);
   /** @type {Block} */
   const heading = {
     type: 'heading',
     level,
-    inlines: [text(card.title)],
+    inlines: [text(status ? card.title + ' [' + status + ']' : card.title)],
     bookmark: ctx.cardMark.get(id),
     card: true,
   };
   return [heading, ...cardContent(card, level, ctx)];
 }
 
-/** Everything of a card below its heading; `level` is the heading level it would have. */
-function cardContent(card, level, ctx) {
+/** Everything of a card below its heading; `level` is the heading level it would have;
+ * `withStatus` puts the status in the Meta line because no heading shows it. */
+function cardContent(card, level, ctx, withStatus = false) {
   const doc = card.extensions?.[DOCUMENT];
   return [
     ...(card.summary ? [paragraph('Subtitle', [text(card.summary)])] : []),
-    ...metaBlocks(card, ctx.labels),
+    ...metaBlocks(card, ctx.labels, withStatus),
     ...coverBlocks(card, doc),
     ...bodyBlocks(card, level, ctx),
     ...linkBlocks(card, level, ctx),
+    ...commentSection(card, level, ctx),
   ];
 }
 
@@ -272,7 +329,8 @@ function groupBlocks(group, ctx) {
   ];
   if (group.description) blocks.push(paragraph('Lead', [text(group.description)]));
   const openingId = ctx.openings.get(group.id);
-  if (openingId) blocks.push(...cardContent(ctx.index.cards.get(openingId), group.depth, ctx));
+  if (openingId)
+    blocks.push(...cardContent(ctx.index.cards.get(openingId), group.depth, ctx, true));
   for (const id of group.cardIds)
     if (id !== openingId) blocks.push(...cardBlocks(id, group.depth + 1, ctx));
   for (const child of group.children) blocks.push(...groupBlocks(child, ctx));
