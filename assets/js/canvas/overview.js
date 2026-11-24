@@ -123,7 +123,11 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   comments.className = 'card-comment-count';
   comments.setAttribute('role', 'img');
   comments.hidden = true;
-  strip.append(date, status, comments, pin);
+  const color = document.createElement('button');
+  color.type = 'button';
+  color.className = 'card-color-button';
+  color.setAttribute('aria-haspopup', 'menu');
+  strip.append(date, status, comments, color, pin);
   el.append(strip);
   updateCardMetadata(el, card);
   applyAppearance(el, card);
@@ -145,6 +149,7 @@ export function updateCardMetadata(el, card) {
     date = el.querySelector('.card-created-date'),
     status = el.querySelector('.card-status-chip'),
     comments = el.querySelector('.card-comment-count'),
+    color = el.querySelector('.card-color-button'),
     pin = el.querySelector('.card-pin');
   el.classList.toggle('pinned-card', Boolean(meta.pinned));
   if (meta.pinned) el.setAttribute('aria-description', t('pinnedReadOnly'));
@@ -184,6 +189,11 @@ export function updateCardMetadata(el, card) {
     status.title = meta.pinned ? t('statusPinnedHint') : t('statusChangeFor', { status: label });
     status.setAttribute('aria-label', status.title);
     status.setAttribute('aria-disabled', String(Boolean(meta.pinned)));
+  }
+  if (color) {
+    color.title = t(meta.pinned ? 'quickColorPinnedHint' : 'quickColor');
+    color.setAttribute('aria-label', color.title);
+    color.setAttribute('aria-disabled', String(Boolean(meta.pinned)));
   }
   if (comments) {
     const count = commentCount(card);

@@ -612,6 +612,155 @@
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+/* Quick colour button: revealed on select/hover/focus only, lives in the strip so card geometry is untouched. */
+.card-status-strip > .card-color-button {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-left: 6px;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+}
+.card-status-strip > .card-color-button::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background-color: currentColor;
+  mask: url('../images/icons/palette.svg') center / contain no-repeat;
+  -webkit-mask: url('../images/icons/palette.svg') center / contain no-repeat;
+}
+.graph-card.selected .card-color-button,
+.graph-card:hover .card-color-button,
+.graph-card:focus-within .card-color-button {
+  opacity: 1;
+}
+.card-status-strip > .card-color-button:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.card-status-strip > .card-color-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-status-strip > .card-color-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0;
+}
+.graph-card.selected .card-color-button[aria-disabled='true'],
+.graph-card:hover .card-color-button[aria-disabled='true'],
+.graph-card:focus-within .card-color-button[aria-disabled='true'] {
+  opacity: 0.45;
+}
+.card-status-strip > .card-color-button[aria-disabled='true']:hover {
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-status-strip > .card-color-button {
+    transition: opacity 0.12s;
+  }
+}
+/* Colour menu: one row per swatch; the marked one adds a check and a bold border, not only colour. */
+.card-color-popover {
+  position: fixed;
+  margin: 0;
+  width: 190px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  border: 1px solid var(--pencil-stroke, var(--border));
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--dialog-shadow, 0 12px 40px #0002);
+}
+.card-color-popover::backdrop {
+  background: transparent;
+  backdrop-filter: none;
+}
+.card-color-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.card-color-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 6px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.card-color-chip {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border: 1px solid var(--border-strong, color-mix(in srgb, var(--ink) 45%, transparent));
+  border-radius: 6px;
+  background: var(--swatch);
+}
+.card-color-custom {
+  position: relative;
+}
+.card-color-rainbow {
+  display: grid;
+  place-items: center;
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+}
+.card-color-current {
+  display: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--swatch);
+}
+.card-color-custom[data-checked='true'] .card-color-current {
+  display: block;
+}
+.card-color-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.card-color-custom:has(.card-color-input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-color-label {
+  flex: 1;
+}
+.card-color-option[aria-checked='true'],
+.card-color-custom[data-checked='true'] {
+  border-color: currentColor;
+  font-weight: 700;
+}
+.card-color-option[aria-checked='true']::after,
+.card-color-custom[data-checked='true']::after {
+  content: '✓';
+  font-weight: 700;
+}
+.card-color-option:hover {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.card-color-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .card-date-editor {
   position: fixed;
   margin: 0;

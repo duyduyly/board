@@ -941,6 +941,18 @@ export default {
   statusChangeFor: 'Đổi trạng thái: {status}',
   statusPinnedHint: 'Note đã ghim chỉ xem: bỏ ghim để đổi trạng thái.',
   statusChangeBlocked: 'Hãy áp dụng hoặc bỏ bản nháp đang mở trước khi đổi trạng thái.',
+  quickColor: 'Đổi màu nền',
+  quickColorPinnedHint: 'Note đã ghim chỉ xem: bỏ ghim để đổi màu.',
+  quickColorBlocked: 'Hãy áp dụng hoặc bỏ bản nháp đang mở trước khi đổi màu.',
+  quickColorDefault: 'Mặc định',
+  quickColorSage: 'Xanh lá nhạt',
+  quickColorBlue: 'Xanh dương',
+  quickColorPurple: 'Tím',
+  quickColorPink: 'Hồng',
+  quickColorPeach: 'Cam đào',
+  quickColorTeal: 'Xanh ngọc',
+  quickColorCustom: 'Chọn màu khác',
+  quickColorCurrent: 'Đang dùng',
   statusGuide:
     'Trạng thái của note nằm trong extensions["card-atlas:status"] với dạng {"value": "new" | "in-progress" | "done" | "blocked" | "cancelled"}. Không có khóa này nghĩa là note ở trạng thái mặc định "new" (Mới). Trạng thái chỉ do người dùng tự gán; app không tự đặt hay đổi khi sửa, di chuyển hay định dạng.',
 };

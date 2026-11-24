@@ -33,6 +33,14 @@ import { addComment, removeComment } from './graph/card-comments.js';
 import { effectiveStatus, setStatus } from './graph/card-status.js';
 import { createCardStatusPopover } from './ui/card-status-popover.js';
 import {
+  currentQuickBackground,
+  quickBackgroundValue,
+  setQuickBackground,
+  DEFAULT_BACKGROUND_ID,
+  QUICK_BACKGROUNDS,
+} from './graph/card-quick-color.js';
+import { createCardColorPopover } from './ui/card-color-popover.js';
+import {
   stampCreated,
   togglePinned,
   setCreatedDate,
@@ -567,6 +575,43 @@ const statusPopover = createCardStatusPopover({
     );
   },
 });
+// Quick background colour: one guarded command (all unpinned selected notes when the clicked one is
+// part of a multi-selection), so Undo is one step. A transparent note becomes opaque, or the colour
+// would not show.
+const colorTargets = (id) =>
+  selectedCards.size > 1 && selectedCards.has(id) ? [...selectedCards] : [id];
+const colorPopover = createCardColorPopover({
+  current: (id) => {
+    const card = projectIndex(store.project).cards.get(id);
+    if (!card || isPinned(card)) return null;
+    const swatches = Object.fromEntries(
+      [DEFAULT_BACKGROUND_ID, ...QUICK_BACKGROUNDS.map((c) => c.id)].map((swatch) => [
+        swatch,
+        quickBackgroundValue(swatch, card),
+      ]),
+    );
+    return {
+      selected: currentQuickBackground(card),
+      swatches,
+      background: card.style.backgroundColor,
+    };
+  },
+  fallback: (id) => adapter.cards.get(id)?.querySelector('.card-color-button'),
+  onApply: (id, swatch) => {
+    if (statusBlocked()) {
+      toast('quickColorBlocked');
+      return false;
+    }
+    const ids = new Set(colorTargets(id));
+    return change((p) => {
+      for (const card of p.cards.filter((c) => ids.has(c.id) && !isPinned(c))) {
+        setQuickBackground(card, swatch);
+        if (appearance(card).backgroundTransparent)
+          card.extensions[APPEARANCE].backgroundTransparent = false;
+      }
+    });
+  },
+});
 // Comments change only through these guarded commands; the panel re-renders from the store.
 const commentsAllowed = () => detailOpen && !draftDirty() && !feedback.state && !layoutPreview;
 const comments = createCardComments({
@@ -732,6 +777,20 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       statusPopover.show(id, anchor);
     }
   },
+  color: (id, anchor) => {
+    const card = projectIndex(store.project).cards.get(id);
+    if (!card || colorPopover.open) return;
+    if (inspector.hasPending()) {
+      void inspector.close();
+      return;
+    }
+    if (isPinned(card)) toast('quickColorPinnedHint');
+    else if (statusBlocked() || dateEditor.open || overviewEditor.open) toast('quickColorBlocked');
+    else {
+      if (!selectedCards.has(id)) selectMany([id]);
+      colorPopover.show(id, anchor);
+    }
+  },
   overview: (id, anchor, field) => {
     if (inspector.hasPending()) {
       void inspector.close();
@@ -797,6 +856,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       layoutPreview ||
       dateEditor.open ||
       statusPopover.open ||
+      colorPopover.open ||
       overviewEditor.open ||
       adapter.gesturing ||
       adapter.resizing ||
@@ -928,6 +988,7 @@ function render() {
   translate();
   dateEditor.syncLocale();
   statusPopover.syncLocale();
+  colorPopover.syncLocale();
   overviewEditor.syncLocale();
   scheduleRecovery();
 }
@@ -2809,7 +2870,7 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#export-menu')) $('#export-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
-  if (dateEditor.open || statusPopover.open || overviewEditor.open) return;
+  if (dateEditor.open || statusPopover.open || colorPopover.open || overviewEditor.open) return;
   if (e.key === 'Escape' && !feedback.state && $('#selection-json').open) {
     e.preventDefault();
     $('#selection-json').open = false;

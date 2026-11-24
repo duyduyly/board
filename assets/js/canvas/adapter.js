@@ -124,6 +124,8 @@ export class GraphAdapter {
     region.addEventListener('click', (e) => {
       const chip = e.target.closest('.card-status-chip');
       if (chip) this.callbacks.status(chip.closest('.graph-card').dataset.id, chip);
+      const color = e.target.closest('.card-color-button');
+      if (color) this.callbacks.color(color.closest('.graph-card').dataset.id, color);
     });
     installMultiSelection(this);
     this.groupFrames = createGroupFrames(this);
@@ -265,11 +267,11 @@ export class GraphAdapter {
           this.cards.set(c.id, el);
           el.addEventListener('pointerdown', (e) => this.cardStart(e, c.id));
           el.addEventListener('dblclick', (e) => {
-            if (!e.target.closest('.card-status-chip'))
+            if (!e.target.closest('.card-status-chip, .card-color-button'))
               this.callbacks.open({ kind: 'card', id: c.id });
           });
           el.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.target.closest('.card-status-chip')) {
+            if (e.key === 'Enter' && !e.target.closest('.card-status-chip, .card-color-button')) {
               e.preventDefault();
               this.callbacks.open({ kind: 'card', id: c.id });
             }
@@ -711,7 +713,7 @@ export class GraphAdapter {
   cardStart(e, id) {
     if (
       e.target.closest(
-        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, [data-overview-field]',
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, .card-color-button, [data-overview-field]',
       ) ||
       this.space ||
       e.button !== 0

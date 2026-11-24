@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 async function sample(page) {
   await page.goto('/');
   await page.locator('[data-action=mind-example]').click();
-  await expect(page.locator('.card-row')).toHaveCount(12);
+  await expect(page.locator('.card-row')).toHaveCount(13);
   await locale(page, 'en');
   await view(page, 'mind');
   await projectAction(page, 'fit');
@@ -155,8 +155,8 @@ test('collapse hides only branch descendants and incident references; search rev
   await projectAction(page, 'export');
   const downloaded = await downloadPromise;
   const p = JSON.parse(await fs.readFile(await downloaded.path(), 'utf8'));
-  expect(p.cards).toHaveLength(12);
-  expect(p.relations).toHaveLength(13);
+  expect(p.cards).toHaveLength(13);
+  expect(p.relations).toHaveLength(14);
   expect(JSON.stringify(p)).not.toContain('collapsed');
   if (await page.locator('#detail-panel').isVisible())
     await page.locator('[data-action=close]').click();

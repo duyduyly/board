@@ -947,6 +947,18 @@ export default {
   statusChangeFor: 'Change status: {status}',
   statusPinnedHint: 'Pinned notes are read-only: unpin to change the status.',
   statusChangeBlocked: 'Apply or discard the open draft before changing the status.',
+  quickColor: 'Change background color',
+  quickColorPinnedHint: 'Pinned notes are read-only: unpin to change the color.',
+  quickColorBlocked: 'Apply or discard the open draft before changing the color.',
+  quickColorDefault: 'Default',
+  quickColorSage: 'Sage',
+  quickColorBlue: 'Blue',
+  quickColorPurple: 'Purple',
+  quickColorPink: 'Pink',
+  quickColorPeach: 'Peach',
+  quickColorTeal: 'Teal',
+  quickColorCustom: 'Choose another color',
+  quickColorCurrent: 'In use',
   statusGuide:
     'Note status lives in extensions["card-atlas:status"] shaped as {"value": "new" | "in-progress" | "done" | "blocked" | "cancelled"}. No key means the note has the default status "new". Status is assigned only by the user; the app never sets or changes it when you edit, move or format a note.',
 };
