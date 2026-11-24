@@ -156,7 +156,7 @@ test('palette keyboard and drag create at viewport coordinates; search and proje
   await open(page);
   await page.locator('[data-palette-shape=circle]').focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('.graph-card')).toHaveCount(4);
+  await expect(page.locator('.graph-card')).toHaveCount(5);
   const circle = page.locator('.graph-card[data-shape=circle]');
   await expect(circle).toHaveAttribute('aria-pressed', 'true');
   const rect = await page.locator('#canvas-region').boundingBox();
@@ -165,7 +165,7 @@ test('palette keyboard and drag create at viewport coordinates; search and proje
   await page.mouse.down();
   await page.mouse.move(rect.x + rect.width * 0.6, rect.y + rect.height * 0.35, { steps: 16 });
   await page.mouse.up();
-  await expect(page.locator('.graph-card')).toHaveCount(5);
+  await expect(page.locator('.graph-card')).toHaveCount(6);
   const center = await page.locator('.graph-card[data-shape=diamond]').boundingBox();
   expect(Math.abs(center.x + center.width / 2 - (rect.x + rect.width * 0.6))).toBeLessThan(4);
   await page.locator('[data-action=search]').click();
@@ -176,7 +176,7 @@ test('palette keyboard and drag create at viewport coordinates; search and proje
   await expect(page.locator('#search-drawer')).not.toBeVisible();
   await page.locator('[data-action=close]').click();
   await page.locator('#project-menu > summary').click();
-  await expect(page.locator('#counts')).toContainText('5');
+  await expect(page.locator('#counts')).toContainText('6');
   await page.locator('[data-action=format]').click();
   await expect(page.locator('#modal')).toBeVisible();
   await page.locator('[data-choice=cancel]').click();

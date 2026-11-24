@@ -101,7 +101,7 @@ test('uniform styling and radial layout retain pinned node geometry and styles',
   await locked.locator('.card-pin').click();
   await page.locator('.graph-card[data-id=card-user-service] h3').click();
   await page.locator('#overview-size').fill('24');
-  await expect(page.locator('[data-uniform-label]')).toContainText('2');
+  await expect(page.locator('[data-uniform-label]')).toContainText('3');
   await page.locator('#overview-uniform').check();
   await page.locator('[data-overview-apply]').click();
   await expect(locked.locator('h3')).not.toHaveCSS('font-size', '24px');

@@ -1,7 +1,7 @@
 /* Shared document surface for the sandboxed viewer and the visual editor. */
 /* 18px base: Bootstrap sizes are rem-based, so the whole document scales with it. */
 html { font-size: 112.5%; }
-:root { --doc-ink: #343c34; --doc-surface: #fffdf7; --doc-soft: #f0eee3; --doc-border: #b7c0b4; }
+:root { --doc-ink: #343c34; --doc-surface: #fffdf7; --doc-soft: #f0eee3; --doc-border: #b7c0b4; --doc-column: 55rem; --doc-radius: 6px; }
 /* Dark reading theme: Bootstrap's own dark mode, tuned to the app's charcoal paper tokens. */
 [data-bs-theme='dark'] {
   --doc-ink: #ececdd; --doc-surface: #272b25; --doc-soft: #30352d; --doc-border: #535c4b;
@@ -16,22 +16,43 @@ body {
   box-sizing: border-box;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 24px;
+  /* The body keeps its 1120px box; the padding centers a rem-based reading column that grows with A+. */
+  padding: 24px max(24px, calc((min(100vw, 1120px) - var(--doc-column)) / 2));
   color: var(--doc-ink);
   background: var(--doc-surface);
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
 /* Keep running text at a readable measure; cards, tables and code still use the full column. */
-:where(p, li, blockquote):not(.text-center, .text-end, .text-center *, .text-end *, table *, .list-group-item) { max-width: 72ch; }
+:where(p, li):not(.text-center, .text-end, .text-center *, .text-end *, table *, .list-group-item) { max-width: 72ch; }
 img { max-width: 100%; height: auto; }
 /* Editor only: an empty block being typed into keeps one line of height for the caret. */
 [contenteditable='true']:empty { min-height: 1.65em; }
-pre { white-space: pre-wrap; background: var(--doc-soft); padding: 16px; overflow-x: auto; }
-table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
-th, td { border: 1px solid var(--doc-border); padding: 0.5rem 0.75rem; }
+/* Heading scale in em so A-/A+ keep the hierarchy. Plain element selectors beat Bootstrap Reboot by load order;
+   its classes (.h1, .fs-*, .display-*) still win. */
+h1, h2, h3, h4 { font-weight: 600; }
+h1 { margin: 0 0 0.6em; font-size: 2em; font-weight: 650; line-height: 1.2; }
+h2 { margin: 1.6em 0 0.5em; font-size: 1.5em; line-height: 1.25; }
+h3 { margin: 1.4em 0 0.4em; font-size: 1.25em; line-height: 1.3; }
+h4 { margin: 1.2em 0 0.35em; font-size: 1.075em; line-height: 1.4; }
+h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
+:where(p, ul, ol, dl, blockquote, pre, figure, table) { margin-block: 0 1em; }
+ul, ol { padding-left: 1.5em; }
+:where(li) + li { margin-top: 0.25em; }
+:where(li) > :where(ul, ol) { margin: 0.25em 0 0; }
+:where(blockquote) { padding: 12px 16px; border-left: 3px solid var(--doc-border); background: var(--doc-soft); border-radius: 0 var(--doc-radius) var(--doc-radius) 0; }
+:where(blockquote) > :last-child { margin-bottom: 0; }
+:where(figcaption) { margin-top: 0.5em; color: var(--bs-secondary-color); font-size: 0.875em; }
+:where(.alert) { margin-block: 0 1em; }
+pre { white-space: pre-wrap; background: var(--doc-soft); padding: 12px 16px; border-radius: var(--doc-radius); font-size: 0.875em; line-height: 1.55; overflow-x: auto; }
+/* Inline code inherits the ink: Bootstrap's pink code color is too faint on the soft background. */
+:not(pre) > code { padding: 0.1em 0.35em; border-radius: 4px; background: var(--doc-soft); color: inherit; }
+/* Minimal tables: horizontal rules only; .table / .table-bordered authored in the document keep Bootstrap's look. */
+table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 0.875em; line-height: 1.55; }
+th, td { border: 0; border-bottom: 1px solid var(--doc-border); padding: 0.75em 1em; text-align: start; vertical-align: top; overflow-wrap: normal; }
+thead th, tr:first-child > th { border-bottom-width: 2px; background: var(--doc-soft); font-weight: 600; }
 /* Viewer-only blocks added by the reading screen: rendered Mermaid diagrams. */
-.board-mermaid { margin: 0 0 1rem; padding: 12px; border: 1px solid var(--doc-border); border-radius: 8px; overflow-x: auto; text-align: center; }
+.board-mermaid { margin: 0 0 1em; padding: 16px; border: 1px solid var(--doc-border); border-radius: var(--doc-radius); overflow-x: auto; text-align: center; }
 .board-mermaid svg { max-width: 100%; height: auto; }
 .board-mermaid-source { display: block; margin: 8px 0 0 auto; padding: 2px 10px; border: 1px solid var(--doc-border); border-radius: 999px; background: transparent; color: inherit; font: inherit; font-size: 0.8rem; cursor: pointer; }
 .board-mermaid-source:hover { background: var(--doc-soft); }

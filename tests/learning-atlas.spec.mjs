@@ -22,7 +22,7 @@ test('Learning Atlas is available in learning examples and opens both views with
   await expect(tile).toContainText('Reusable study template');
   await page.screenshot({ path: 'planning/design/learning-atlas-gallery-search.png' });
   await tile.click();
-  await expect(page.locator('.graph-card')).toHaveCount(14);
+  await expect(page.locator('.graph-card')).toHaveCount(15);
   await expect(page.locator('.group-frame')).toHaveCount(2);
   const before = await page.evaluate(async () => (await import('/assets/js/app.js')).store.project);
   const original = JSON.parse(
@@ -30,7 +30,7 @@ test('Learning Atlas is available in learning examples and opens both views with
   );
   expect(before.cards.map((c) => c.content)).toEqual(original.cards.map((c) => c.content));
   await switchMapView(page, 'mind');
-  await expect(page.locator('.graph-card')).toHaveCount(14);
+  await expect(page.locator('.graph-card')).toHaveCount(15);
   await switchMapView(page, 'card');
   const after = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');

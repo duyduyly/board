@@ -112,14 +112,14 @@ test('cascade deletion undo restores order, graph and clean snapshot', () => {
   const s = new ProjectStore();
   s.replace(input());
   s.commit((p) => remove(p, { kind: 'card', id: p.cards[0].id }));
-  assert.equal(s.project.cards.length, 2);
+  assert.equal(s.project.cards.length, input().cards.length - 1);
   assert.equal(s.project.relations.length, 1);
   assert.ok(s.dirty);
   s.undo();
   assert.deepEqual(s.project, input());
   assert.equal(s.dirty, false);
   s.redo();
-  assert.equal(s.project.cards.length, 2);
+  assert.equal(s.project.cards.length, input().cards.length - 1);
 });
 test('connector transaction undo and redo one operation', () => {
   const s = new ProjectStore();
@@ -134,7 +134,7 @@ test('connector transaction undo and redo one operation', () => {
   s.undo();
   assert.deepEqual(s.project, input());
   s.redo();
-  assert.equal(s.project.cards.length, 4);
+  assert.equal(s.project.cards.length, input().cards.length + 1);
 });
 test('no-op, rename, redo invalidation and project boundary', () => {
   const s = new ProjectStore();

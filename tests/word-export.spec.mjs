@@ -52,7 +52,7 @@ const projectTitle = (page) =>
 async function openDraft(page) {
   await page.goto('/');
   await page.locator('[data-action=example]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(3);
+  await expect(page.locator('.graph-card')).toHaveCount(4);
   await openRow(page, page.locator('.card-row[data-card-id=card-user-service]'));
   await page.locator('#panel-tabs button').nth(2).click();
   const background = page.locator('[name=appearance-backgroundTransparent]');
