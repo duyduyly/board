@@ -143,6 +143,15 @@
           "properties": {
             "rootId": {
               "$ref": "#/$defs/id"
+            },
+            "boardRoots": {
+              "type": "object",
+              "propertyNames": {
+                "$ref": "#/$defs/id"
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/id"
+              }
             }
           },
           "required": [],

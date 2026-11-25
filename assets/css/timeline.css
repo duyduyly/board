@@ -928,6 +928,13 @@
 .board-scope-hint[hidden] {
   display: none;
 }
+/* Mind Map tools and the layout preview start below the header instead of under it. */
+#canvas-region:has(> #board-scope:not([hidden])) .mind-map-tools {
+  top: calc(var(--board-scope-height, 0px) + 8px);
+}
+#canvas-region:has(> #board-scope:not([hidden])) .layout-preview-bar {
+  top: calc(var(--board-scope-height, 0px) + 56px);
+}
 .board-frame {
   position: absolute;
   z-index: 0;

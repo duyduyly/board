@@ -79,7 +79,12 @@ test('projectScope keeps only the scope cards, relations, groups and mind root',
       ['g3', ['b']],
     ],
   );
-  assert.equal(inner.extensions[MIND].rootId, 'a');
+  // The project-level rootId belongs to the project board; a node board only uses boardRoots.
+  assert.equal('rootId' in inner.extensions[MIND], false);
+  p.extensions[MIND].boardRoots = { n: 'b' };
+  assert.equal(projectScope(p, 'n').extensions[MIND].rootId, 'b');
+  assert.equal('boardRoots' in projectScope(p, null).extensions[MIND], false);
+  delete p.extensions[MIND].boardRoots;
   const outer = projectScope(p, null);
   assert.deepEqual(
     outer.extensions[GROUPS].groups.map((g) => g.id),

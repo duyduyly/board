@@ -14,7 +14,6 @@ const KEYS = {
   boardScopeCount: ['count'],
   boardScopeEmptyTitle: ['title'],
   boardScopeEmptyBody: [],
-  boardScopeMindUnavailable: [],
   boardScopeClosed: [],
   boardScopeIn: ['title'],
   boardDeleteTitle: [],
@@ -30,6 +29,8 @@ const KEYS = {
   errorRelationScope: [],
   errorGroupScope: [],
   errorMindRootScope: [],
+  errorMindBoardRootScope: [],
+  mindConvertBoardHint: ['title'],
 };
 
 test('board scope i18n keys exist in both locales with the expected placeholders', () => {
@@ -42,6 +43,8 @@ test('board scope i18n keys exist in both locales with the expected placeholders
     }
   }
   for (const guide of [vi.aiGuide, en.aiGuide]) assert.match(guide, /card-atlas:owner/);
+  for (const guide of [vi.aiGuide, en.aiGuide, vi.mindGuide, en.mindGuide])
+    assert.match(guide, /boardRoots/);
 });
 
 test('scope issue codes map to translated messages', () => {
@@ -52,6 +55,7 @@ test('scope issue codes map to translated messages', () => {
     relationScope: 'errorRelationScope',
     groupScope: 'errorGroupScope',
     mindRootScope: 'errorMindRootScope',
+    mindBoardRootScope: 'errorMindBoardRootScope',
   };
   for (const [locale, dict] of [
     ['vi', vi],

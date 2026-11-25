@@ -97,6 +97,7 @@ import {
   geometry,
   setGeometry,
   setRoot,
+  mindRootOf,
   relationKind,
   newLinkKind,
 } from './graph/mind-map.js';
@@ -191,6 +192,9 @@ const OVERVIEW_FIT_GAP = 16; // px kept clear around the fitted overview
 const ZOOM_BAR_OFFSET = 24; // the zoom bar sits this far above the canvas bottom
 const canvasProject = () =>
   boardOverview ? overviewLayout(store.project).project : scopedProject(store.project, boardScope);
+// Mind root of the board on screen: the project board's or the open note board's.
+const canvasRoot = () => mindRootOf(store.project, boardScope);
+const scopeViewKey = () => (store.activeView === 'mind' ? 'mind' : 'card');
 const inBoardScope = (card) => boardOverview || ownerOf(card) === boardScope;
 // The arranged layout is read-only: moves, links, resizes and new notes would land in projected positions.
 function overviewBlocked() {
@@ -813,7 +817,7 @@ const timeline = createTimelineView({
 const scopeBar = createBoardScopeBar({
   host: $('#board-scope'),
   onTimeline: () => (boardOverview ? exitOverview('timeline') : leaveBoard()),
-  onRoot: () => switchMapView('card'),
+  onRoot: () => leaveToProjectBoard(),
   onEdit: (field, anchor) => boardHeaderEdit(field, anchor),
 });
 // Same popup editor as a Timeline card, anchored to the board header's title or summary button.
@@ -839,7 +843,7 @@ async function enterBoard(nodeId, focusId) {
   if (!node || ownerOf(node) !== null) return false;
   if (adapter.gesturing) adapter.cancelGesture?.();
   // Read before the scope changes: syncing a new projection moves the viewport.
-  const saved = scopeViewports.get(nodeId);
+  const saved = scopeViewports.get(nodeId)?.card;
   if (boardScope === null) {
     scopeReturn = boardOverview
       ? {
@@ -888,13 +892,37 @@ function capFitZoom() {
     position: { x: cx - (cx - pan.x) / zoom, y: cyy - (cyy - pan.y) / zoom },
   });
 }
+// Viewports of a note board are kept per view: its Note Board and its Mind Map frame differently.
+function rememberScopeViewport(viewport) {
+  const saved = viewport || { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) };
+  scopeViewports.set(boardScope, { ...scopeViewports.get(boardScope), [scopeViewKey()]: saved });
+}
+function restoreScopeViewport() {
+  const saved = scopeViewports.get(boardScope)?.[scopeViewKey()];
+  adapter.cy.resize();
+  if (saved) adapter.setViewport(saved);
+  else if (canvasProject().cards.length) {
+    adapter.fit();
+    capFitZoom();
+  } else adapter.setViewport({ zoom: 1, position: { x: 0, y: 0 } });
+}
+// Collapsed ids outside the board on screen stay collapsed.
+function withoutScopeIds(collapsed) {
+  const inScope = new Set(canvasProject().cards.map((c) => c.id));
+  return new Set([...collapsed].filter((id) => !inScope.has(id)));
+}
+// "Note Board" in the header leaves a note's board for the project board, not the Timeline.
+async function leaveToProjectBoard() {
+  if (!(await leaveBoard({ timeline: true }))) return;
+  if (timelineActive) await switchMapView('card');
+}
 // A board opened from "View all" goes back there, unless the caller asks for the Timeline.
 async function leaveBoard({ timeline: toTimeline = false } = {}) {
   if (boardScope === null || feedback.state || layoutPreview || !(await guardDraft())) return false;
   if (adapter.gesturing) adapter.cancelGesture?.();
   const nodeId = boardScope;
   const back = scopeReturn;
-  scopeViewports.set(nodeId, { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) });
+  rememberScopeViewport();
   boardScope = null;
   scopeReturn = null;
   if (back?.overview && !toTimeline) {
@@ -1283,7 +1311,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   viewport: (zoom, position) => {
     if (boardOverview) overviewViewport = { zoom, position: clone(position) };
     else if (boardScope === null) store.setView(zoom, position);
-    else scopeViewports.set(boardScope, { zoom, position: clone(position) });
+    else rememberScopeViewport({ zoom, position: clone(position) });
     updateStatus();
   },
   collapse: (id) => toggleBranch(id),
@@ -1313,9 +1341,11 @@ function render() {
     boardScope !== null &&
     (!hasTimeline(store.project) || !scopeNode || ownerOf(scopeNode) !== null);
   if (scopeClosed) {
+    const view = scopeReturn?.view ?? 'card';
     boardScope = null;
     scopeReturn = null;
     timelineActive = hasTimeline(store.project);
+    if (store.activeView !== view) store.switchView(view);
   }
   const overviewClosed = boardOverview && !hasTimeline(store.project);
   if (overviewClosed) {
@@ -1434,9 +1464,7 @@ function render() {
   $('#detail-map-view').value = currentView();
   $('[data-panel-action=layout]').hidden = store.activeView !== 'mind';
   $('#mind-map-hint').hidden =
-    timelineActive ||
-    store.activeView !== 'mind' ||
-    Boolean(store.project.extensions?.[MIND]?.rootId);
+    timelineActive || store.activeView !== 'mind' || Boolean(canvasRoot());
   $('#mind-map-hint').textContent = t('mindHint');
   $('#project-name').textContent = store.project.metadata.title;
   const projectNameLabel = t('projectSettings') + ': ' + store.project.metadata.title;
@@ -1480,7 +1508,7 @@ function render() {
   overviewEditor.syncLocale();
   scheduleRecovery();
 }
-// Breadcrumb, empty-board text and the Mind Map lock; runs after translate() so it wins over data-i18n.
+// Breadcrumb and empty-board text; runs after translate() so it wins over data-i18n.
 function renderScopeChrome(scoped) {
   const node = boardScope === null ? null : projectIndex(store.project).cards.get(boardScope);
   const projectTitle = store.project.metadata.title;
@@ -1506,20 +1534,6 @@ function renderScopeChrome(scoped) {
   if (node && !scoped.cards.length) {
     $('#welcome h1').textContent = t('boardScopeEmptyTitle', { title: node.title });
     $('#welcome p').textContent = t('boardScopeEmptyBody');
-  }
-  const mindControls = [
-    ...document.querySelectorAll('[data-map-view=mind]'),
-    ...$('#detail-map-view').querySelectorAll('option[value=mind]'),
-  ];
-  for (const el of mindControls) {
-    if (node) {
-      el.setAttribute('aria-disabled', 'true');
-      el.title = t('boardScopeMindUnavailable');
-    } else {
-      el.removeAttribute('aria-disabled');
-      if (el.dataset.i18nTitle) el.title = t(el.dataset.i18nTitle);
-      else el.removeAttribute('title');
-    }
   }
 }
 const renderCardList = createCardList({
@@ -2168,12 +2182,12 @@ function renderPanelContent() {
         ])) !== 'detach'
       )
         return;
-      change((p) => setRoot(p, id, true));
+      change((p) => setRoot(p, id, true, boardScope));
     };
   if ($('#clear-root')) {
-    $('#clear-root').disabled = !store.project.extensions?.[MIND]?.rootId;
+    $('#clear-root').disabled = !canvasRoot();
     $('#clear-root').onclick = async () => {
-      if (await guardDraft()) change((p) => setRoot(p, null));
+      if (await guardDraft()) change((p) => setRoot(p, null, false, boardScope));
     };
   }
   if ($('#reset-appearance')) {
@@ -2356,7 +2370,7 @@ async function connection(source, target, position) {
   }
   const r = newRelation(source, target);
   // In the Mind Map a hand-drawn link grows the tree, so the source can collapse its new child.
-  if (store.activeView === 'mind' && newLinkKind(store.project, source, target) === 'branch')
+  if (store.activeView === 'mind' && newLinkKind(canvasProject(), source, target) === 'branch')
     r.extensions = { [MIND]: { kind: 'branch' } };
   if (
     !change((p) => {
@@ -3079,11 +3093,6 @@ async function switchMapView(targetView) {
     $('#detail-map-view').value = currentView();
     return;
   }
-  if (boardScope !== null && targetView === 'mind') {
-    toast('boardScopeMindUnavailable');
-    $('#detail-map-view').value = currentView();
-    return;
-  }
   // Leaving "View all" for Mind Map or Note Board lands on the ordinary project board first.
   if (boardOverview) {
     if (!(await exitOverview(targetView === 'timeline' ? 'timeline' : 'card'))) return;
@@ -3092,12 +3101,6 @@ async function switchMapView(targetView) {
   }
   if (boardScope !== null && targetView === 'timeline') {
     await leaveBoard({ timeline: true });
-    return;
-  }
-  // From a note's board "Note Board" means the project board, not the Timeline it was opened from.
-  if (boardScope !== null && targetView === 'card') {
-    if (!(await leaveBoard({ timeline: true }))) return;
-    if (timelineActive) await switchMapView('card');
     return;
   }
   if (targetView === currentView()) return;
@@ -3128,18 +3131,20 @@ async function switchMapView(targetView) {
     }
     return;
   }
-  if (targetView === 'mind' && !store.project.extensions?.[MIND]?.rootId) {
+  if (targetView === 'mind' && !canvasRoot()) {
     await actions['convert-mind']();
     $('#detail-map-view').value = currentView();
     return;
   }
   timelineActive = false;
+  if (boardScope !== null) rememberScopeViewport();
   if (targetView !== store.activeView) store.switchView(targetView);
   selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
   singleMarqueeId = null;
   previousPanelKey = null;
   render();
-  adapter.setViewport(store.viewport);
+  if (boardScope !== null) restoreScopeViewport();
+  else adapter.setViewport(store.viewport);
 }
 for (const button of document.querySelectorAll('[data-map-view]'))
   button.onclick = () => switchMapView(button.dataset.mapView);
@@ -3173,7 +3178,7 @@ async function toggleBranch(id) {
   const collapsed = new Set(store.collapsed);
   if (collapsed.has(id)) collapsed.delete(id);
   else collapsed.add(id);
-  const { hidden } = visibility(store.project, collapsed);
+  const { hidden } = visibility(canvasProject(), collapsed);
   store.collapsed = collapsed;
   selectedCards = new Set([...selectedCards].filter((key) => !hidden.has(key)));
   const r = selection?.kind === 'relation' ? entity() : null;
@@ -3190,7 +3195,7 @@ async function toggleBranch(id) {
 }
 async function startLayout() {
   if (store.activeView !== 'mind' || feedback.state || layoutPreview) return;
-  if (!store.project.extensions?.[MIND]?.rootId) {
+  if (!canvasRoot()) {
     toast('layoutNeedsRoot');
     return;
   }
@@ -3198,7 +3203,7 @@ async function startLayout() {
   detailOpen = false;
   detailSurface.close();
   try {
-    const result = radialLayout(scopedProject(store.project, null));
+    const result = radialLayout(scopedProject(store.project, boardScope));
     layoutPreview = {
       result,
       project: store.project,
@@ -3284,28 +3289,31 @@ const actions = {
     toast('timelineRemoved');
   },
   'convert-mind': async () => {
-    if (boardScope !== null) return toast('boardScopeMindUnavailable');
     if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
+    const scoped = canvasProject();
+    const candidates = scoped.cards.filter((c) => !isPinned(c));
     let rootId =
-      selection?.kind === 'card' && !isPinned(entity())
+      selection?.kind === 'card' && candidates.some((c) => c.id === selection.id)
         ? selection.id
-        : store.project.cards.find((c) => !isPinned(c))?.id;
+        : candidates[0]?.id;
     if (!rootId) {
-      toast(store.project.cards.length ? 'mindAllPinned' : 'mindNoCards');
+      toast(scoped.cards.length ? 'mindAllPinned' : 'mindNoCards');
       return;
     }
+    const board = boardScope;
+    const boardTitle = board === null ? '' : projectIndex(store.project).cards.get(board)?.title;
     const choice = await dialog(
       'convertMind',
       () => {
         const body = document.createElement('div');
         const help = document.createElement('p');
-        help.textContent = t('mindConvertHint');
+        help.textContent =
+          board === null ? t('mindConvertHint') : t('mindConvertBoardHint', { title: boardTitle });
         const label = document.createElement('label');
         label.textContent = t('mindRoot');
         const select = document.createElement('select');
         select.id = 'mind-convert-root';
-        for (const card of store.project.cards.filter((c) => !isPinned(c)))
-          select.append(new window.Option(card.title, card.id));
+        for (const card of candidates) select.append(new window.Option(card.title, card.id));
         select.value = rootId;
         select.onchange = () => {
           rootId = select.value;
@@ -3321,7 +3329,7 @@ const actions = {
     );
     if (choice !== 'apply') return;
     try {
-      const result = convertMind(store.project, rootId);
+      const result = convertMind(store.project, rootId, board);
       if (
         !change((p) => {
           p.relations = result.project.relations;
@@ -3334,11 +3342,17 @@ const actions = {
       draft = null;
       draftOriginal = null;
       timelineActive = false;
+      if (board !== null) rememberScopeViewport();
       store.switchView('mind');
-      store.collapsed = new Set();
+      store.collapsed = withoutScopeIds(store.collapsed);
       selection = { kind: 'card', id: rootId };
       render();
-      adapter.fit();
+      if (board === null) adapter.fit();
+      else {
+        adapter.cy.resize();
+        adapter.fit();
+        capFitZoom();
+      }
       toast(result.warnings.length ? 'mindConvertWarnings' : 'mindConverted');
     } catch {
       toast('mindConvertFailed');
@@ -3408,7 +3422,7 @@ const actions = {
   'layout-reset': () => {
     if (layoutPreview) {
       try {
-        layoutPreview.result = radialLayout(scopedProject(store.project, null));
+        layoutPreview.result = radialLayout(scopedProject(store.project, boardScope));
         render();
         adapter.fit();
       } catch {
@@ -3419,7 +3433,7 @@ const actions = {
   'layout-apply': acceptLayout,
   'expand-all': () => {
     if (!layoutPreview) {
-      store.collapsed = new Set();
+      store.collapsed = withoutScopeIds(store.collapsed);
       render();
     }
   },

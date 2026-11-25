@@ -1,6 +1,6 @@
 import { clone } from '../common/data.js';
 import { CARD_META, isPinned } from './card-metadata.js';
-import { geometry, MIND } from './mind-map.js';
+import { geometry, mindRoots } from './mind-map.js';
 
 export function selectionLocked(project, selection) {
   if (selection?.kind === 'card') return isPinned(project.cards.find((c) => c.id === selection.id));
@@ -31,6 +31,8 @@ export function assertPinnedUnchanged(before, after) {
   const oldRelations = relations(before),
     newRelations = relations(after);
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const oldRoots = mindRoots(before),
+    newRoots = mindRoots(after);
   for (const card of locked) {
     const candidate = cards.get(card.id);
     let contentSame = same(card, candidate);
@@ -39,8 +41,8 @@ export function assertPinnedUnchanged(before, after) {
       unpinned.extensions[CARD_META].pinned = false;
       contentSame = same(unpinned, candidate);
     }
-    const oldRoot = before.extensions?.[MIND]?.rootId === card.id;
-    const newRoot = after.extensions?.[MIND]?.rootId === card.id;
+    const oldRoot = oldRoots.has(card.id);
+    const newRoot = newRoots.has(card.id);
     if (
       !candidate ||
       !contentSame ||

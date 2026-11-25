@@ -75,6 +75,10 @@ export interface MindMapView {
   sizes?: Record<string, { width: number; height: number }>;
   viewport?: { zoom: number; position: Point };
 }
+export interface MindMapConfig {
+  rootId?: string;
+  boardRoots?: Record<string, string>;
+}
 export interface MindMapRelation {
   kind: 'branch' | 'reference';
   color?: string;

@@ -28,6 +28,13 @@ export function createBoardScopeBar({ host, onTimeline, onRoot, onEdit }) {
     if (edit) onEdit?.(edit.dataset.scopeEdit, edit);
   });
 
+  // Floating tools (Mind Map bar, layout preview) sit below this header; CSS reads the published height.
+  const region = host.parentElement;
+  new ResizeObserver(() => {
+    const height = host.hidden ? 0 : host.offsetTop + host.offsetHeight;
+    region?.style.setProperty('--board-scope-height', height + 'px');
+  }).observe(host);
+
   function pinMark() {
     const mark = document.createElement('span');
     mark.className = 'board-scope-pin';

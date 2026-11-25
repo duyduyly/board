@@ -42,6 +42,7 @@ export function issueMessage(issue) {
     relationScope: 'errorRelationScope',
     groupScope: 'errorGroupScope',
     mindRootScope: 'errorMindRootScope',
+    mindBoardRootScope: 'errorMindBoardRootScope',
   }[issue.code];
   return key ? t(key) : t('errorSchema', { code: issue.code });
 }

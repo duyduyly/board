@@ -202,6 +202,15 @@ export function newRelation(source, target) {
     style: { color: '#64748b', line: 'solid', arrow: 'end' },
   };
 }
+// A node board entry is keyed by its owner node and valued by its root: either id going away drops it.
+function removeBoardRoots(p, id) {
+  const mind = p.extensions?.[MIND],
+    roots = mind?.boardRoots;
+  if (!roots) return;
+  for (const [board, root] of Object.entries(roots))
+    if (board === id || root === id) delete roots[board];
+  if (!Object.keys(roots).length) delete mind.boardRoots;
+}
 export function remove(p, selection) {
   if (selection.kind === 'card') {
     p.cards = p.cards.filter((c) => c.id !== selection.id);
@@ -212,6 +221,7 @@ export function remove(p, selection) {
       delete m.sizes?.[selection.id];
     }
     if (p.extensions?.[MIND]?.rootId === selection.id) delete p.extensions[MIND].rootId;
+    removeBoardRoots(p, selection.id);
     p.relations = p.relations.filter((r) => r.source !== selection.id && r.target !== selection.id);
   } else p.relations = p.relations.filter((r) => r.id !== selection.id);
 }

@@ -284,7 +284,14 @@ schema.properties.extensions = extensions({
     ['version'],
   ),
   'card-atlas:views': object({ mindMap: { $ref: '#/$defs/mindView' } }),
-  'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
+  'card-atlas:mind-map': object({
+    rootId: { $ref: '#/$defs/id' },
+    boardRoots: {
+      type: 'object',
+      propertyNames: { $ref: '#/$defs/id' },
+      additionalProperties: { $ref: '#/$defs/id' },
+    },
+  }),
 });
 schema.$defs.card.properties.extensions = extensions({
   'card-atlas:typography': object(

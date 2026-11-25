@@ -1,5 +1,5 @@
 import { GROUPS, cardGroups, cleanupGroups } from './card-groups.js';
-import { MIND } from './mind-map.js';
+import { MIND, mindRootOf } from './mind-map.js';
 
 export const OWNER = 'card-atlas:owner';
 
@@ -64,10 +64,10 @@ export function projectScope(project, ownerId) {
     if (!cardGroups(next).length) delete next.extensions[GROUPS];
   }
   const mind = project.extensions[MIND];
-  if (mind?.rootId !== undefined && !ids.has(mind.rootId)) {
-    next.extensions[MIND] = { ...mind };
-    delete next.extensions[MIND].rootId;
-  }
+  if (mind === undefined) return next;
+  // A board keeps its own root: the project-level rootId belongs to the project board only.
+  const rootId = ownerId === null ? mind.rootId : mindRootOf(project, ownerId);
+  next.extensions[MIND] = rootId !== undefined && ids.has(rootId) ? { rootId } : {};
   return next;
 }
 
@@ -93,6 +93,8 @@ export function adoptNewCards(project, beforeIds, ownerId) {
 
 /** Removes every owner. @returns {number} cards changed */
 export function clearOwners(project) {
+  const mind = project.extensions?.[MIND];
+  if (mind) delete mind.boardRoots;
   let changed = 0;
   for (const card of project.cards) if (setOwner(card, null)) changed += 1;
   return changed;
@@ -131,6 +133,17 @@ export function scopeIssues(project, { timeline }) {
     );
   });
   if (mixed) issues.push({ path: 'extensions.' + GROUPS, code: 'groupScope' });
+  const boardRoots = project.extensions?.[MIND]?.boardRoots;
+  if (boardRoots && typeof boardRoots === 'object')
+    for (const [nodeId, rootId] of Object.entries(boardRoots)) {
+      const node = byId.get(nodeId);
+      if (!node || ownerOf(node) !== null || (byId.has(rootId) && owner(rootId) !== nodeId))
+        issues.push({
+          path: `extensions.${MIND}.boardRoots.${nodeId}`,
+          code: 'mindBoardRootScope',
+          params: { nodeId },
+        });
+    }
   const root = project.extensions?.[MIND]?.rootId;
   if (root !== undefined && owner(root) !== null)
     issues.push({ path: `extensions.${MIND}.rootId`, code: 'mindRootScope' });

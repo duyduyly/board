@@ -82,6 +82,15 @@ export function selectionFile(project, selectedIds, { viewport, viewports } = {}
   if (source[MIND]) {
     const mind = clone(source[MIND]);
     if (mind.rootId && !ids.has(mind.rootId)) delete mind.rootId;
+    // A node board's root only travels when both its node and the root are selected.
+    if (mind.boardRoots) {
+      mind.boardRoots = Object.fromEntries(
+        Object.entries(mind.boardRoots).filter(
+          ([nodeId, rootId]) => ids.has(nodeId) && ids.has(rootId),
+        ),
+      );
+      if (!Object.keys(mind.boardRoots).length) delete mind.boardRoots;
+    }
     extensions[MIND] = mind;
   }
   if (source[VIEWS]) {

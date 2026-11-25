@@ -32,21 +32,54 @@ export function setGeometry(p, id, view, field, value) {
     });
   }
 }
-export function setRoot(p, id, detach = false) {
+const boardRootsOf = (p) => p.extensions?.[MIND]?.boardRoots;
+/** Mind root of the project board (board null) or of the board owned by node `board`. */
+export function mindRootOf(p, board = null) {
+  const mind = p.extensions?.[MIND];
+  if (board === null) return mind?.rootId;
+  const roots = boardRootsOf(p);
+  return roots && Object.hasOwn(roots, board) ? roots[board] : undefined;
+}
+/** Every root of the project: the project board root and each node board root. */
+export function mindRoots(p) {
+  const roots = new Set(),
+    rootId = p.extensions?.[MIND]?.rootId,
+    byBoard = boardRootsOf(p);
+  if (rootId !== undefined) roots.add(rootId);
+  if (byBoard && typeof byBoard === 'object')
+    for (const id of Object.values(byBoard)) roots.add(id);
+  return roots;
+}
+export function setRoot(p, id, detach = false, board = null) {
   const parents = p.relations.filter((r) => relationKind(r) === 'branch' && r.target === id);
   if (parents.length && !detach) throw Error('rootParent');
   for (const r of parents) r.extensions[MIND] = { ...r.extensions[MIND], kind: 'reference' };
   p.extensions ||= {};
   p.extensions[MIND] = { ...p.extensions[MIND] };
-  if (id) p.extensions[MIND].rootId = id;
-  else delete p.extensions[MIND].rootId;
+  const mind = p.extensions[MIND];
+  if (board === null) {
+    if (id) mind.rootId = id;
+    else delete mind.rootId;
+    return;
+  }
+  const roots = { ...mind.boardRoots };
+  if (id)
+    Object.defineProperty(roots, board, {
+      value: id,
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
+  else delete roots[board];
+  if (Object.keys(roots).length) mind.boardRoots = roots;
+  else delete mind.boardRoots;
 }
 /**
  * Kind for a link drawn by hand in the Mind Map: it extends the tree as a branch when the target
  * has no parent yet and is not the root or an ancestor of the source; otherwise it is a reference.
  */
 export function newLinkKind(p, source, target) {
-  if (target === p.extensions?.[MIND]?.rootId) return 'reference';
+  if (mindRoots(p).has(target)) return 'reference';
   const parents = new Map();
   for (const r of p.relations) if (relationKind(r) === 'branch') parents.set(r.target, r.source);
   if (parents.has(target)) return 'reference';
@@ -141,10 +174,22 @@ export function mindIssues(p) {
     }
   }
   const config = p.extensions?.[MIND];
-  let root;
-  if (config !== undefined && keys(config, ['rootId'], 'extensions.' + MIND)) {
-    root = config.rootId;
-    if (root !== undefined && !ids.has(root)) bad('extensions.' + MIND + '.rootId');
+  const roots = new Set();
+  if (config !== undefined && keys(config, ['rootId', 'boardRoots'], 'extensions.' + MIND)) {
+    const root = config.rootId;
+    if (root !== undefined) {
+      if (typeof root === 'string' && ids.has(root)) roots.add(root);
+      else bad('extensions.' + MIND + '.rootId');
+    }
+    const byBoard = config.boardRoots;
+    if (
+      byBoard !== undefined &&
+      keys(byBoard, Object.keys(byBoard), 'extensions.' + MIND + '.boardRoots')
+    )
+      for (const [node, id] of Object.entries(byBoard)) {
+        if (ids.has(node) && typeof id === 'string' && ids.has(id)) roots.add(id);
+        else bad('extensions.' + MIND + '.boardRoots.' + node);
+      }
   }
   const parents = new Map();
   p.relations.forEach((r, i) => {
@@ -158,7 +203,7 @@ export function mindIssues(p) {
       )
         bad(path + '.color');
       if (m.kind === 'branch') {
-        if (parents.has(r.target) || r.target === root) bad(path + '.kind');
+        if (parents.has(r.target) || roots.has(r.target)) bad(path + '.kind');
         parents.set(r.target, r.source);
       }
     }

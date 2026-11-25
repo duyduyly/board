@@ -1,7 +1,7 @@
 import { MAX_GROUP_DEPTH, cardGroups, groupTree } from '../graph/card-groups.js';
-import { geometry, MIND } from '../graph/mind-map.js';
+import { geometry, MIND, mindRootOf } from '../graph/mind-map.js';
 import { branchTree } from '../graph/radial-layout.js';
-import { ownerOf } from '../graph/card-scope.js';
+import { ownerOf, projectScope } from '../graph/card-scope.js';
 
 /**
  * @typedef {import('../graph/types.js').Project} Project
@@ -44,8 +44,21 @@ function branchOrder(project, rootId) {
 }
 
 /**
+ * Children of a node in Mind view: the branch tree of its board root first (when the board has
+ * one), then the remaining owned cards by position.
+ */
+function boardChildren(project, ownerId, cards, view) {
+  const ids = byGeometry(project, cards, view).map((c) => c.id);
+  const rootId = view === 'mind' ? mindRootOf(project, ownerId) : undefined;
+  if (rootId === undefined || !ids.includes(rootId)) return ids;
+  const tree = branchOrder(projectScope(project, ownerId), rootId);
+  const placed = new Set(tree);
+  return [...tree, ...ids.filter((id) => !placed.has(id))];
+}
+
+/**
  * Moves each owned card (board scope) right after its owner node, children in reading order of
- * position. Cards whose owner is missing keep their place; cycles fall back to the input order.
+ * position (Mind view: the board's branch tree first). Cards whose owner is missing keep their place; cycles fall back to the input order.
  * @param {Project} project @param {string[]} order @param {'card' | 'mind'} view
  */
 function withOwnedAfterOwner(project, order, view) {
@@ -53,12 +66,12 @@ function withOwnedAfterOwner(project, order, view) {
   const owned = project.cards.filter((c) => byId.has(ownerOf(c)) && ownerOf(c) !== c.id);
   if (!owned.length) return order;
   const ownedIds = new Set(owned.map((c) => c.id));
-  const children = new Map();
-  for (const card of byGeometry(project, owned, view)) {
-    const list = children.get(ownerOf(card)) || [];
-    list.push(card.id);
-    children.set(ownerOf(card), list);
-  }
+  const byOwner = new Map();
+  for (const card of owned)
+    byOwner.set(ownerOf(card), [...(byOwner.get(ownerOf(card)) || []), card]);
+  const children = new Map(
+    [...byOwner].map(([id, cards]) => [id, boardChildren(project, id, cards, view)]),
+  );
   const result = [],
     seen = new Set();
   const visit = (id) => {

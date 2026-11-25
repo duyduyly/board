@@ -128,14 +128,13 @@ test('search finds a note inside a board, opens that board and selects the note'
   await expect(card(page, 'b-child-2')).toHaveClass(/selected/);
 });
 
-test('Mind Map is unavailable inside a board', async ({ page }) => {
+test('Mind Map opens inside a board', async ({ page }) => {
   await openProject(page);
   await openNodeBoard(page, 'node-a');
-  const mind = page.locator('[data-map-view=mind]');
-  await expect(mind).toHaveAttribute('aria-disabled', 'true');
-  await mind.click({ force: true });
-  await expect(toast(page)).toBeVisible();
-  await expect(page.locator('[data-map-view=card]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-map-view=mind]').click();
+  await expect(page.locator('#mind-convert-root')).toBeVisible();
+  await page.locator('[data-choice=apply]').click();
+  await expect(page.locator('[data-map-view=mind]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#board-scope')).toBeVisible();
 });
 
@@ -214,17 +213,15 @@ test('a parent note shows a board badge on the project board that opens its boar
   await expect(page.locator('.card-board-badge:visible')).toHaveCount(0);
 });
 
-test('Note Board inside a board and the project breadcrumb both lead to the project board', async ({
+test('Note Board inside a board stays in the board; the project breadcrumb leads to the project board', async ({
   page,
 }) => {
   await openProject(page);
   await openNodeBoard(page, 'node-a');
   await page.locator('[data-map-view=card]').click();
-  await expect(page.locator('#board-scope')).toBeHidden();
-  await expect(card(page, 'node-a')).toBeVisible();
-  await expect(page.locator('#timeline-view')).toBeHidden();
+  await expect(page.locator('#board-scope')).toBeVisible();
+  await expect(card(page, 'a-child-1')).toBeVisible();
 
-  await openNodeBoard(page, 'node-a');
   await page.locator('#board-scope [data-scope-action=root]').click();
   await expect(page.locator('#board-scope')).toBeHidden();
   await expect(card(page, 'node-a')).toBeVisible();
