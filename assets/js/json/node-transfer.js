@@ -6,6 +6,7 @@ import { validate, stage, serialize } from './validator.js';
 import { NODE, MIND, VIEWS, geometry, setGeometry } from '../graph/mind-map.js';
 import { APPEARANCE } from '../detail/appearance.js';
 import { IMAGE_NAMESPACE } from '../detail/attachments.js';
+import { TIMELINE } from '../graph/timeline.js';
 
 const known = new Set([CARD_META, TYPOGRAPHY, NODE, APPEARANCE, IMAGE_NAMESPACE, DOCUMENT]);
 export function transferError(code, issues = []) {
@@ -47,7 +48,9 @@ export function assertReferences(card) {
   return ids;
 }
 export function excludedProjectNamespaces(project) {
-  return Object.keys(project.extensions || {}).filter((key) => ![MIND, VIEWS].includes(key));
+  return Object.keys(project.extensions || {}).filter(
+    (key) => ![MIND, VIEWS, TIMELINE].includes(key),
+  );
 }
 export function nodeFile(project, card, { includeUnused = true, excludeUnknown = false } = {}) {
   const excluded = excludedProjectNamespaces(project);

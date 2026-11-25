@@ -106,6 +106,18 @@
           ],
           "additionalProperties": false
         },
+        "card-atlas:timeline": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": 1
+            }
+          },
+          "required": [
+            "version"
+          ],
+          "additionalProperties": false
+        },
         "card-atlas:views": {
           "type": "object",
           "properties": {
@@ -412,6 +424,23 @@
               },
               "required": [
                 "value"
+              ],
+              "additionalProperties": false
+            },
+            "card-atlas:schedule": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                },
+                "end": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                }
+              },
+              "required": [
+                "start"
               ],
               "additionalProperties": false
             },

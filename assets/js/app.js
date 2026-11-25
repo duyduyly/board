@@ -40,6 +40,15 @@ import {
   QUICK_BACKGROUNDS,
 } from './graph/card-quick-color.js';
 import { createCardColorPopover } from './ui/card-color-popover.js';
+import { createCardScheduleEditor } from './ui/card-schedule-editor.js';
+import { createTimelineView } from './ui/timeline-view.js';
+import {
+  cardSchedule,
+  disableTimeline,
+  enableTimeline,
+  hasTimeline,
+  setSchedule,
+} from './graph/timeline.js';
 import {
   stampCreated,
   togglePinned,
@@ -137,6 +146,8 @@ let selection = null,
   detailOpen = false,
   home = true,
   hasSession = false,
+  // Timeline is a session surface over the Project Model: store.activeView keeps the last canvas view.
+  timelineActive = false,
   loadingTemplate = false,
   expanded = false,
   readingScale = 1,
@@ -181,7 +192,9 @@ const detailSurface = dialogSurface($('#detail-panel'), {
   },
   fallback: () =>
     selection?.kind === 'card'
-      ? adapter.cards.get(selection.id) || $('[data-palette-kind=card]')
+      ? (timelineActive && timeline.element(selection.id, 'title')) ||
+        adapter.cards.get(selection.id) ||
+        $('[data-palette-kind=card]')
       : $('#project-name'),
 });
 const inspector = createFormatInspector({
@@ -530,6 +543,10 @@ function announceApplied(success) {
     toast('formatUpdated', { position: 'top', detail: store.notice ? 'historyLimit' : null });
   return success;
 }
+function announceSchedule(success, key) {
+  if (success) toast(key, { position: 'top', detail: store.notice ? 'historyLimit' : null });
+  return success;
+}
 const dateEditor = createCardDateEditor({
   current: (id) => {
     const card = projectIndex(store.project).cards.get(id);
@@ -559,7 +576,9 @@ const statusPopover = createCardStatusPopover({
     const card = projectIndex(store.project).cards.get(id);
     return card && !isPinned(card) ? effectiveStatus(card) : null;
   },
-  fallback: (id) => adapter.cards.get(id)?.querySelector('.card-status-chip'),
+  fallback: (id) =>
+    (timelineActive && timeline.element(id, 'status')) ||
+    adapter.cards.get(id)?.querySelector('.card-status-chip'),
   onApply: (id, value) => {
     if (statusBlocked()) {
       toast('statusChangeBlocked');
@@ -574,6 +593,83 @@ const statusPopover = createCardStatusPopover({
       ),
     );
   },
+});
+const scheduleEditor = createCardScheduleEditor({
+  // Prefill with the date the timeline already shows for the note (its note date).
+  suggest: (id) => {
+    const card = projectIndex(store.project).cards.get(id);
+    return (card && cardDateValue(card)) || null;
+  },
+  current: (id) => {
+    const card = projectIndex(store.project).cards.get(id);
+    return card && !isPinned(card) ? cardSchedule(card) : null;
+  },
+  fallback: (id) => timeline.element(id, 'date'),
+  onApply: (id, value) => {
+    if (statusBlocked()) return false;
+    const card = projectIndex(store.project).cards.get(id);
+    if (!card || isPinned(card)) return false;
+    const notice = value ? 'scheduleUpdated' : 'scheduleCleared';
+    if (JSON.stringify(cardSchedule(card)) === JSON.stringify(value))
+      return announceSchedule(true, notice);
+    return announceSchedule(
+      change((p) =>
+        setSchedule(
+          p.cards.find((c) => c.id === id),
+          value,
+        ),
+      ),
+      notice,
+    );
+  },
+});
+function timelineStatus(id, anchor) {
+  const card = projectIndex(store.project).cards.get(id);
+  if (!card || statusPopover.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (isPinned(card)) toast('statusPinnedHint');
+  else if (statusBlocked() || dateEditor.open || overviewEditor.open || scheduleEditor.open)
+    toast('statusChangeBlocked');
+  else statusPopover.show(id, anchor);
+}
+function timelineSchedule(id, anchor) {
+  const card = projectIndex(store.project).cards.get(id);
+  if (!card || scheduleEditor.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (isPinned(card)) toast('schedulePinned');
+  else if (statusBlocked() || statusPopover.open || dateEditor.open || overviewEditor.open)
+    toast('scheduleBlocked');
+  else scheduleEditor.show(id, anchor);
+}
+async function timelineOpen(id) {
+  if (!(await guardDraft()) || !(await select({ kind: 'card', id }, false, true))) return;
+  tab = 'overview';
+  draft = null;
+  draftOriginal = null;
+  render();
+}
+async function timelineReveal(id) {
+  if (feedback.state || !(await guardDraft()) || !(await select({ kind: 'card', id }))) return;
+  timelineActive = false;
+  render();
+  adapter.setViewport(store.viewport);
+  adapter.focus(id);
+  adapter.cards.get(id)?.focus({ preventScroll: true });
+}
+const timeline = createTimelineView({
+  host: $('#timeline-view'),
+  onOpen: timelineOpen,
+  onStatus: timelineStatus,
+  onSchedule: timelineSchedule,
+  onReveal: timelineReveal,
+  onBoard: () => switchMapView('card'),
+  isPinned: (id) => isPinned(projectIndex(store.project).cards.get(id)),
 });
 // Quick background colour: one guarded command (all unpinned selected notes when the clicked one is
 // part of a multi-selection), so Undo is one step. A transparent note becomes opaque, or the colour
@@ -855,6 +951,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       feedback.state ||
       layoutPreview ||
       dateEditor.open ||
+      scheduleEditor.open ||
       statusPopover.open ||
       colorPopover.open ||
       overviewEditor.open ||
@@ -863,13 +960,22 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       adapter.edgeDragging,
     ),
 });
+const currentView = () => (timelineActive ? 'timeline' : store.activeView);
 function render() {
+  const timelineAvailable = !home && hasTimeline(store.project);
+  if (!hasTimeline(store.project)) timelineActive = false;
   $('#canvas-region').dataset.view = store.activeView;
   $('#map-view').hidden = home;
   $('#map-view').setAttribute('aria-label', t('mapView'));
   $('[data-action=inspector]').disabled = home;
-  $('#mind-view-banner').hidden = home || store.activeView !== 'mind';
+  $('#mind-view-banner').hidden = home || timelineActive || store.activeView !== 'mind';
   $('[data-action=convert-mind]').hidden = home || store.activeView === 'mind';
+  $('[data-map-view=timeline]').hidden = !timelineAvailable;
+  $('#detail-map-view option[value=timeline]').hidden = !timelineAvailable;
+  $('[data-action=timeline-create]').hidden = home || hasTimeline(store.project);
+  $('[data-action=timeline-remove]').hidden = !timelineAvailable;
+  $('#timeline-view').hidden = !timelineActive;
+  $('.workspace').classList.toggle('timeline-active', timelineActive);
   inspector.sync();
   $('#app').classList.toggle('home-mode', home);
   $('#home-page').hidden = !home;
@@ -930,7 +1036,7 @@ function render() {
   createGroupButton.title = t(
     place.issue || (place.parentId ? 'groupCreateSubgroup' : 'groupCreate'),
   );
-  $('#mind-map-tools').hidden = store.activeView !== 'mind';
+  $('#mind-map-tools').hidden = timelineActive || store.activeView !== 'mind';
   $('#layout-preview-bar').hidden = !layoutPreview;
   $('#panel-body').inert = Boolean(layoutPreview);
   $('#layout-warnings').textContent =
@@ -946,17 +1052,21 @@ function render() {
     'export-word',
     'export-markdown',
     'recovery',
+    'timeline-create',
+    'timeline-remove',
   ])
     for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
       el.disabled = Boolean(layoutPreview);
 
-  $('#map-view').dataset.activeView = store.activeView;
+  $('#map-view').dataset.activeView = currentView();
   for (const button of document.querySelectorAll('[data-map-view]'))
-    button.setAttribute('aria-pressed', String(button.dataset.mapView === store.activeView));
-  $('#detail-map-view').value = store.activeView;
+    button.setAttribute('aria-pressed', String(button.dataset.mapView === currentView()));
+  $('#detail-map-view').value = currentView();
   $('[data-panel-action=layout]').hidden = store.activeView !== 'mind';
   $('#mind-map-hint').hidden =
-    store.activeView !== 'mind' || Boolean(store.project.extensions?.[MIND]?.rootId);
+    timelineActive ||
+    store.activeView !== 'mind' ||
+    Boolean(store.project.extensions?.[MIND]?.rootId);
   $('#mind-map-hint').textContent = t('mindHint');
   $('#project-name').textContent = store.project.metadata.title;
   const projectNameLabel = t('projectSettings') + ': ' + store.project.metadata.title;
@@ -984,9 +1094,16 @@ function render() {
   palette.render();
   renderList();
   renderPanel();
+  if (timelineActive)
+    timeline.render({
+      project: store.project,
+      selection: selectedCards,
+      revealLabel: t(store.activeView === 'mind' ? 'mindMap' : 'cardMap'),
+    });
   updateStatus();
   translate();
   dateEditor.syncLocale();
+  scheduleEditor.syncLocale();
   statusPopover.syncLocale();
   colorPopover.syncLocale();
   overviewEditor.syncLocale();
@@ -997,7 +1114,8 @@ const renderCardList = createCardList({
   onSelect: async (id) => {
     if (await select({ kind: 'card', id }, false, true)) {
       closeSearch();
-      adapter.focus(id);
+      if (timelineActive) timeline.reveal(id);
+      else adapter.focus(id);
     }
   },
 });
@@ -2126,6 +2244,7 @@ async function restoreRecovery() {
   if (!(await replaceProject(staged.project, true))) return;
   if (snapshot.viewports) store.viewports = clone(snapshot.viewports);
   store.switchView(snapshot.activeView === 'mind' ? 'mind' : 'card');
+  timelineActive = hasTimeline(store.project);
   if (snapshot.viewport) store.setView(snapshot.viewport.zoom, snapshot.viewport.position);
   home = false;
   hasSession = true;
@@ -2369,6 +2488,8 @@ async function replaceProject(p, adjusted = false) {
   $('#search').value = '';
   lastExport = false;
   comments.clear();
+  timelineActive = hasTimeline(p);
+  timeline.reset();
   store.replace(p, adjusted);
   adapter.setViewport(store.viewport);
   return true;
@@ -2444,7 +2565,7 @@ async function loadExample(path = 'assets/data/example.json', initialView = 'car
     const result = stage(await response.text());
     if (result.errors.length) throw Error();
     if (await replaceProject(result.project, false)) {
-      if (initialView === 'mind') {
+      if (initialView === 'mind' && !hasTimeline(result.project)) {
         store.switchView('mind');
         render();
       }
@@ -2468,10 +2589,14 @@ $('#search').oninput = (e) => {
 $('#project-name').onclick = () => select({ kind: 'project', id: 'metadata' }, true);
 async function switchMapView(targetView) {
   if (feedback.state) {
-    $('#detail-map-view').value = store.activeView;
+    $('#detail-map-view').value = currentView();
     return;
   }
-  if (targetView === store.activeView) return;
+  if (targetView === currentView()) return;
+  if (targetView === 'timeline' && !hasTimeline(store.project)) {
+    $('#detail-map-view').value = currentView();
+    return;
+  }
   // Cancel a transient group drag before evaluating the view's draft guard.
   if (adapter.gesturing) adapter.cancelGesture?.();
   if (layoutPreview) {
@@ -2479,15 +2604,22 @@ async function switchMapView(targetView) {
     toast('previewCancelledSwitch');
   }
   if (!(await guardDraft())) {
-    $('#detail-map-view').value = store.activeView;
+    $('#detail-map-view').value = currentView();
+    return;
+  }
+  if (targetView === 'timeline') {
+    timelineActive = true;
+    previousPanelKey = null;
+    render();
     return;
   }
   if (targetView === 'mind' && !store.project.extensions?.[MIND]?.rootId) {
     await actions['convert-mind']();
-    $('#detail-map-view').value = store.activeView;
+    $('#detail-map-view').value = currentView();
     return;
   }
-  store.switchView(targetView);
+  timelineActive = false;
+  if (targetView !== store.activeView) store.switchView(targetView);
   selectedCards = new Set(selection?.kind === 'card' ? [selection.id] : []);
   singleMarqueeId = null;
   previousPanelKey = null;
@@ -2604,6 +2736,33 @@ function acceptLayout() {
 }
 const actions = {
   inspector: () => inspector.activate('global'),
+  'timeline-create': async () => {
+    if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
+    if (hasTimeline(store.project) || !change((p) => enableTimeline(p))) return;
+    timelineActive = true;
+    render();
+    const heading = $('#timeline-heading');
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    toast('timelineCreated');
+  },
+  'timeline-remove': async () => {
+    if (home || feedback.state || layoutPreview || !hasTimeline(store.project)) return;
+    if (!(await guardDraft())) return;
+    const choice = await dialog(
+      'timelineRemoveTitle',
+      () => '<p>' + esc(t('timelineRemoveBody')) + '</p>',
+      [
+        ['cancel', 'cancel'],
+        ['timelineRemove', 'remove', true],
+      ],
+    );
+    if (choice !== 'remove' || !change((p) => disableTimeline(p))) return;
+    timelineActive = false;
+    render();
+    adapter.setViewport(store.viewport);
+    toast('timelineRemoved');
+  },
   'convert-mind': async () => {
     if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
     let rootId =
@@ -2653,6 +2812,7 @@ const actions = {
       detailOpen = false;
       draft = null;
       draftOriginal = null;
+      timelineActive = false;
       store.switchView('mind');
       store.collapsed = new Set();
       selection = { kind: 'card', id: rootId };
@@ -2715,6 +2875,7 @@ const actions = {
   },
   continue: () => {
     home = false;
+    timelineActive = hasTimeline(store.project);
     render();
     adapter.cy.resize();
     adapter.setViewport(store.viewport);
@@ -2870,7 +3031,14 @@ document.addEventListener('click', (e) => {
   if (!e.target.closest('#export-menu')) $('#export-menu').open = false;
 });
 document.addEventListener('keydown', (e) => {
-  if (dateEditor.open || statusPopover.open || colorPopover.open || overviewEditor.open) return;
+  if (
+    dateEditor.open ||
+    scheduleEditor.open ||
+    statusPopover.open ||
+    colorPopover.open ||
+    overviewEditor.open
+  )
+    return;
   if (e.key === 'Escape' && !feedback.state && $('#selection-json').open) {
     e.preventDefault();
     $('#selection-json').open = false;
@@ -2914,7 +3082,7 @@ document.addEventListener('keydown', (e) => {
     return;
   // Native controls must receive Space for keyboard activation, including the inspector tabs.
   if (e.code === 'Space' && e.target.closest('button,a[href],summary')) return;
-  if (e.code === 'Space') {
+  if (e.code === 'Space' && !timelineActive) {
     e.preventDefault();
     adapter.space = true;
   }
@@ -2944,7 +3112,7 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     openSearch();
   }
-  if (!detailOpen && (e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
+  if (!detailOpen && !timelineActive && (e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
     const key = e.key.toLowerCase();
     // Selected page text keeps the browser's own copy.
     if (key === 'c' && window.getSelection().isCollapsed && copySelection()) e.preventDefault();
@@ -2957,7 +3125,7 @@ document.addEventListener('keydown', (e) => {
       duplicateSelection();
     }
   }
-  if (e.key === 'Delete' || e.key === 'Backspace') {
+  if (!timelineActive && (e.key === 'Delete' || e.key === 'Backspace')) {
     e.preventDefault();
     deleteSelected();
   }
@@ -2967,7 +3135,13 @@ document.addEventListener('keyup', (e) => {
 });
 window.addEventListener('blur', () => (adapter.space = false));
 window.addEventListener('beforeunload', (e) => {
-  if (store.dirty || draftDirty() || dateEditor.dirty || overviewEditor.dirty) {
+  if (
+    store.dirty ||
+    draftDirty() ||
+    dateEditor.dirty ||
+    scheduleEditor.dirty ||
+    overviewEditor.dirty
+  ) {
     e.preventDefault();
     e.returnValue = '';
   }

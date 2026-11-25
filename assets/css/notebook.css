@@ -345,6 +345,7 @@ dialog.detail-panel,
 #modal,
 #card-overview-editor,
 #card-date-editor,
+#card-schedule-editor,
 .image-preview {
   border-color: var(--pencil-stroke);
   border-radius: var(--radius-xl);

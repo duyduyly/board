@@ -1,5 +1,6 @@
 import { COMMENTS, COMMENT_LIMITS } from '../graph/card-comments.js';
 import { STATUS, STATUS_VALUES } from '../graph/card-status.js';
+import { SCHEDULE, TIMELINE } from '../graph/timeline.js';
 const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'Card Atlas Project 1.0',
@@ -233,6 +234,7 @@ schema.$defs.mindView = object({
     ['zoom', 'position'],
   ),
 });
+const scheduleDate = { type: 'string', pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' };
 const extensions = (properties) => ({ ...schema.$defs.extensions, properties });
 schema.properties.extensions = extensions({
   'card-atlas:groups': object(
@@ -268,6 +270,7 @@ schema.properties.extensions = extensions({
     },
     ['groups'],
   ),
+  [TIMELINE]: object({ version: { const: 1 } }, ['version']),
   'card-atlas:views': object({ mindMap: { $ref: '#/$defs/mindView' } }),
   'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
 });
@@ -311,6 +314,7 @@ schema.$defs.card.properties.extensions = extensions({
     ['version', 'items'],
   ),
   [STATUS]: object({ value: { enum: [...STATUS_VALUES] } }, ['value']),
+  [SCHEDULE]: object({ start: scheduleDate, end: scheduleDate }, ['start']),
   'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
   'card-atlas:appearance': object({
     radius: { type: 'number', minimum: 0, maximum: 100 },

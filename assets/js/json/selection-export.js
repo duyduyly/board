@@ -1,9 +1,10 @@
 import { clone } from '../common/data.js';
 import { GROUPS } from '../graph/card-groups.js';
 import { MIND, VIEWS } from '../graph/mind-map.js';
+import { TIMELINE } from '../graph/timeline.js';
 import { serialize, stage } from './validator.js';
 
-const supportedProjectExtensions = new Set([GROUPS, MIND, VIEWS]);
+const supportedProjectExtensions = new Set([GROUPS, MIND, VIEWS, TIMELINE]);
 
 // Derive a portable project without mutating the live project or its selection.
 // Unknown project namespaces may contain references that cannot safely be
@@ -92,6 +93,8 @@ export function selectionFile(project, selectedIds, { viewport, viewports } = {}
     }
     extensions[VIEWS] = views;
   }
+  // Timeline is project-level view configuration with no card references, so it travels unchanged.
+  if (source[TIMELINE]) extensions[TIMELINE] = clone(source[TIMELINE]);
   if (Object.keys(extensions).length) output.extensions = extensions;
 
   const text = serialize(output, viewport || output.canvas, viewports || null);

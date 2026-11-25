@@ -6,7 +6,13 @@ const GROUPS = {
 };
 const ACTIONS = {
   'menu-group-help': ['help', 'format'],
-  'menu-group-project': ['inspector', 'convert-mind', 'auto-route-all'],
+  'menu-group-project': [
+    'inspector',
+    'convert-mind',
+    'timeline-create',
+    'timeline-remove',
+    'auto-route-all',
+  ],
   'menu-group-session': ['recovery'],
 };
 
@@ -33,7 +39,7 @@ test('help menu groups controls under translated headings without changing actio
       expect(got).toEqual(actions);
     }
     await expect(page.locator('#project-menu a[href^="https://chatgpt.com"]')).toHaveCount(1);
-    await expect(page.locator('#project-menu button')).toHaveCount(6);
+    await expect(page.locator('#project-menu button')).toHaveCount(8);
   }
 });
 

@@ -38,6 +38,13 @@
               aria-pressed="false"
               data-i18n="mindMap"
             ></button>
+            <button
+              type="button"
+              data-map-view="timeline"
+              aria-pressed="false"
+              data-i18n="timelineView"
+              hidden
+            ></button>
           </div>
           <div class="history-buttons">
             <button data-action="undo" data-i18n-title="undo">↶</button
@@ -133,6 +140,8 @@
                 ></h3>
                 <button data-action="inspector" data-i18n="inspectorTitle"></button>
                 <button data-action="convert-mind" data-i18n="convertMind"></button>
+                <button data-action="timeline-create" data-i18n="timelineCreate"></button>
+                <button data-action="timeline-remove" data-i18n="timelineRemove" hidden></button>
                 <div id="counts"></div>
                 <p id="save-state" class="save-state"></p>
                 <button data-action="auto-route-all" data-i18n="autoRouteAll"></button>
@@ -225,6 +234,40 @@
           </div>
           <div id="graph"></div>
           <div id="cards-layer"></div>
+          <section
+            id="timeline-view"
+            class="timeline-view"
+            aria-labelledby="timeline-heading"
+            hidden
+          >
+            <div class="timeline-toolbar">
+              <h2 id="timeline-heading" data-i18n="timelineView"></h2>
+              <p class="timeline-mode-note" data-i18n="timelineEventOrder"></p>
+              <label class="timeline-filter">
+                <span data-i18n="timelineFilterLabel"></span>
+                <select id="timeline-status-filter">
+                  <option value="" data-i18n="timelineFilterAll"></option>
+                  <option value="new" data-i18n="statusNew"></option>
+                  <option value="in-progress" data-i18n="statusInProgress"></option>
+                  <option value="done" data-i18n="statusDone"></option>
+                  <option value="blocked" data-i18n="statusBlocked"></option>
+                  <option value="cancelled" data-i18n="statusCancelled"></option>
+                </select>
+              </label>
+              <button type="button" data-timeline-action="today" data-i18n="timelineToday"></button>
+              <button type="button" data-timeline-action="start" data-i18n="timelineStart"></button>
+              <button type="button" data-timeline-action="end" data-i18n="timelineEnd"></button>
+              <span class="timeline-count" role="status"></span>
+            </div>
+            <div class="timeline-scroll">
+              <ol class="timeline-track" data-i18n-aria="timelineRegion"></ol>
+            </div>
+            <details class="timeline-unscheduled" hidden>
+              <summary></summary>
+              <ul></ul>
+            </details>
+            <div class="timeline-empty" hidden></div>
+          </section>
           <div id="welcome" class="welcome">
             <h1 data-i18n="welcome"></h1>
             <p data-i18n="welcomeBody"></p>
@@ -361,6 +404,7 @@
               <select id="detail-map-view" data-i18n-title="mapView">
                 <option value="card" data-i18n="cardMap"></option>
                 <option value="mind" data-i18n="mindMap"></option>
+                <option value="timeline" data-i18n="timelineView" hidden></option>
               </select>
               <button data-panel-action="undo" data-i18n="undo"></button
               ><button data-panel-action="redo" data-i18n="redo"></button>

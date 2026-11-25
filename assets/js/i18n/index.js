@@ -35,6 +35,7 @@ export function issueMessage(issue) {
     selfLoop: 'errorSelfLoop',
     duplicateRelation: 'errorDuplicateRelation',
     defaultAdded: 'errorDefaultAdded',
+    scheduleOrder: 'errorScheduleOrder',
   }[issue.code];
   return key ? t(key) : t('errorSchema', { code: issue.code });
 }
@@ -60,4 +61,31 @@ export function dateTime(iso) {
     timeStyle: 'short',
   });
   return dateTimeFormats[locale].format(date);
+}
+const calendarFormats = {};
+function calendarFormat() {
+  return (calendarFormats[locale] ??= new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-GB', {
+    dateStyle: 'medium',
+    timeZone: 'UTC',
+  }));
+}
+function calendarTime(ymd) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd ?? '');
+  if (!match) return null;
+  const time = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  return Number.isNaN(time) ? null : time;
+}
+// Calendar dates carry no time zone: format the UTC instant built from y-m-d so the day never shifts.
+export function calendarDate(ymd) {
+  const time = calendarTime(ymd);
+  return time === null ? ymd : calendarFormat().format(time);
+}
+export function dateRange(start, end = null) {
+  if (end === null || end === undefined) return calendarDate(start);
+  const from = calendarTime(start);
+  const to = calendarTime(end);
+  const joined = calendarDate(start) + ' – ' + calendarDate(end);
+  if (from === null || to === null) return joined;
+  const format = calendarFormat();
+  return typeof format.formatRange === 'function' ? format.formatRange(from, to) : joined;
 }

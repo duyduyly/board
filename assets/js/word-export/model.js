@@ -5,6 +5,7 @@ import { cardGroups } from '../graph/card-groups.js';
 import { DOCUMENT } from '../graph/html-document.js';
 import { nodeStyle } from '../graph/mind-map.js';
 import { projectIndex } from '../graph/project-index.js';
+import { cardSchedule } from '../graph/timeline.js';
 import { documentBlocks } from './document-blocks.js';
 import { outline } from './order.js';
 
@@ -18,7 +19,7 @@ import { outline } from './order.js';
  * @typedef {import('./order.js').OutlineGroup} OutlineGroup
  * @typedef {import('./document-blocks.js').Block} Block
  * @typedef {import('./document-blocks.js').Inline} Inline
- * @typedef {{ ungrouped: string, links: string, type: string, tags: string, legacySource: string, mermaidSource: string, remoteImage: string, image: string, group: string, contents: string, contentsHint: string, contentsTip: string, comments: string, commentTime?: (iso: string) => string, status?: string, statuses?: Record<string, string> }} Labels
+ * @typedef {{ ungrouped: string, links: string, type: string, tags: string, legacySource: string, mermaidSource: string, remoteImage: string, image: string, group: string, contents: string, contentsHint: string, contentsTip: string, comments: string, commentTime?: (iso: string) => string, status?: string, statuses?: Record<string, string>, schedule?: string, dateRange?: (start: string, end: string | null) => string }} Labels
  * @typedef {{ title: string, description: string, blocks: Block[] }} DocModel
  * @typedef {{ project: Project, index: ReturnType<typeof projectIndex>, labels: Labels, listIds: { next: number }, cardMark: Map<string, string>, groups: Map<string, { title: string, bookmark: string }>, openings: Map<string, string>, groupLinks: Map<string, string[]> }} Context
  */
@@ -129,6 +130,16 @@ function statusText(card, labels) {
   return value === DEFAULT_STATUS ? null : (labels.statuses?.[value] ?? value);
 }
 
+/** Explicit schedule only; the inferred creation date is never exported.
+ * @param {Card} card @param {Labels} labels */
+function scheduleText(card, labels) {
+  const schedule = cardSchedule(card);
+  if (!schedule?.start) return null;
+  const { start, end = null } = schedule;
+  const range = labels.dateRange?.(start, end) ?? (end ? start + ' – ' + end : start);
+  return (labels.schedule ?? 'Schedule') + ': ' + range;
+}
+
 /**
  * Meta line of a card. `withStatus` adds the status for a group's opening card, which has no
  * heading of its own to carry it.
@@ -138,6 +149,8 @@ function metaBlocks(card, labels, withStatus = false) {
   const parts = [];
   const status = withStatus ? statusText(card, labels) : null;
   if (status) parts.push((labels.status ?? 'Status') + ': ' + status);
+  const schedule = scheduleText(card, labels);
+  if (schedule) parts.push(schedule);
   if (card.type) parts.push(labels.type + ': ' + card.type);
   if (card.tags?.length) parts.push(labels.tags + ': ' + card.tags.join(', '));
   return parts.length ? [paragraph('Meta', [text(parts.join(' · '))])] : [];

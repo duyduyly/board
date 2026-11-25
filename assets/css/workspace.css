@@ -900,6 +900,9 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
 .project-menu > summary::-webkit-details-marker {
   display: none;
 }
+.menu-group > button[hidden] {
+  display: none;
+}
 .menu-group > button {
   display: block;
   width: 100%;

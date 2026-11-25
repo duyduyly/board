@@ -1,4 +1,4 @@
-import { dateTime, statusLabel, t } from '../i18n/index.js';
+import { dateRange, dateTime, statusLabel, t } from '../i18n/index.js';
 import { download } from '../common/download.js';
 import { STATUS_VALUES } from '../graph/card-status.js';
 import { filename } from '../json/validator.js';
@@ -21,6 +21,8 @@ export function wordLabels() {
     comments: t('commentsTitle'),
     commentTime: dateTime,
     status: t('statusField'),
+    schedule: t('scheduleTitle'),
+    dateRange,
     statuses: Object.fromEntries(STATUS_VALUES.map((value) => [value, statusLabel(value)])),
   };
 }

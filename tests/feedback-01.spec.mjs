@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 const openArchitecture = async (page) => {
   await page.goto('/');
   await page.locator('[data-template=architecture]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(3);
+  await expect(page.locator('.graph-card')).toHaveCount(4);
 };
 const openDetail = async (page, id = 'card-user-service') => {
   await openSearch(page);
@@ -142,7 +142,7 @@ test('failed template loading keeps session and gallery', async ({ page }) => {
   await page.locator('[data-template=english]').click();
   await expect(page.locator('#toast')).toContainText('đọc');
   await page.locator('[data-action=continue]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(3);
+  await expect(page.locator('.graph-card')).toHaveCount(4);
 });
 test('template catalog files are valid and standalone', async ({ page }) => {
   await page.goto('/');

@@ -79,3 +79,11 @@
     flex-shrink: 0;
   }
 }
+@media (min-width: 801px) and (max-width: 900px) {
+  /* The Timeline switch button makes the shared toolbar overflow; shrink the segmented control only. */
+  #map-view button {
+    min-width: 0;
+    padding: 8px 7px;
+    font-size: 12px;
+  }
+}

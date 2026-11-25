@@ -389,31 +389,36 @@
   margin-right: 0;
 }
 .graph-card[data-card-status='new'],
-.card-status-option[data-status='new'] {
+.card-status-option[data-status='new'],
+.timeline-entry[data-card-status='new'] {
   --status-chip-bg: var(--status-new-bg);
   --status-chip-ink: var(--status-new-ink);
   --status-chip-icon: url('../images/icons/status-new.svg');
 }
 .graph-card[data-card-status='in-progress'],
-.card-status-option[data-status='in-progress'] {
+.card-status-option[data-status='in-progress'],
+.timeline-entry[data-card-status='in-progress'] {
   --status-chip-bg: var(--status-in-progress-bg);
   --status-chip-ink: var(--status-in-progress-ink);
   --status-chip-icon: url('../images/icons/status-in-progress.svg');
 }
 .graph-card[data-card-status='done'],
-.card-status-option[data-status='done'] {
+.card-status-option[data-status='done'],
+.timeline-entry[data-card-status='done'] {
   --status-chip-bg: var(--status-done-bg);
   --status-chip-ink: var(--status-done-ink);
   --status-chip-icon: url('../images/icons/status-done.svg');
 }
 .graph-card[data-card-status='blocked'],
-.card-status-option[data-status='blocked'] {
+.card-status-option[data-status='blocked'],
+.timeline-entry[data-card-status='blocked'] {
   --status-chip-bg: var(--status-blocked-bg);
   --status-chip-ink: var(--status-blocked-ink);
   --status-chip-icon: url('../images/icons/status-blocked.svg');
 }
 .graph-card[data-card-status='cancelled'],
-.card-status-option[data-status='cancelled'] {
+.card-status-option[data-status='cancelled'],
+.timeline-entry[data-card-status='cancelled'] {
   --status-chip-bg: var(--status-cancelled-bg);
   --status-chip-ink: var(--status-cancelled-ink);
   --status-chip-icon: url('../images/icons/status-cancelled.svg');

@@ -29,6 +29,8 @@ export function createFormatGuide({ dialog, toast }) {
         '</p><p>' +
         esc(t('statusGuide')) +
         '</p><p>' +
+        esc(t('timelineGuide')) +
+        '</p><p>' +
         esc(t('routingGuide') + '\n\n' + [t('cornerGuide'), t('autoGuide')].join('\n\n')) +
         '</p><p>' +
         esc(t('transferGuide')) +
@@ -70,6 +72,7 @@ export function createFormatGuide({ dialog, toast }) {
               t('groupsGuide'),
               t('commentsGuide'),
               t('statusGuide'),
+              t('timelineGuide'),
               t('routingGuide') + '\n\n' + [t('cornerGuide'), t('autoGuide')].join('\n\n'),
             ].join('\n\n'),
           );

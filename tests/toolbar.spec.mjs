@@ -12,7 +12,7 @@ test('compact toolbar has help tools and native segmented views; cursor/guards f
   await expect(page.locator('#modal .quick-help-content')).toBeVisible();
   await page.locator('[data-choice=cancel]').click();
   await page.locator('[data-template=personal]').click();
-  await expect(page.locator('.graph-card')).toHaveCount(4);
+  await expect(page.locator('.graph-card')).toHaveCount(5);
   await expect(
     page.locator(
       '.toolbar #open-inspector,.toolbar [data-action=add],.toolbar [data-action=connect],.toolbar select#map-view',

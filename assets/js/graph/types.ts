@@ -118,6 +118,15 @@ export interface CardStatus {
   value: CardStatusValue;
 }
 
+export interface CardSchedule {
+  start: string;
+  end?: string;
+}
+
+export interface TimelineConfig {
+  version: 1;
+}
+
 export interface CardComment {
   id: string;
   createdAt: string;

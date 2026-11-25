@@ -1,0 +1,985 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Timeline fixture",
+    "description": "Fixture for the Timeline view contract."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "task-01",
+      "title": "Task 01",
+      "summary": "Timeline sample 01",
+      "type": "task",
+      "tags": [],
+      "content": "Task 01",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-02",
+          "end": "2026-03-08"
+        },
+        "card-atlas:status": {
+          "value": "new"
+        }
+      }
+    },
+    {
+      "id": "task-02",
+      "title": "Task 02",
+      "summary": "Timeline sample 02",
+      "type": "task",
+      "tags": [],
+      "content": "Task 02",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-08",
+          "end": "2026-03-14"
+        },
+        "card-atlas:status": {
+          "value": "in-progress"
+        }
+      }
+    },
+    {
+      "id": "task-03",
+      "title": "Task 03",
+      "summary": "Timeline sample 03",
+      "type": "task",
+      "tags": [],
+      "content": "Task 03",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-14",
+          "end": "2026-03-20"
+        },
+        "card-atlas:status": {
+          "value": "done"
+        }
+      }
+    },
+    {
+      "id": "task-04",
+      "title": "Task 04",
+      "summary": "Timeline sample 04",
+      "type": "task",
+      "tags": [],
+      "content": "Task 04",
+      "position": {
+        "x": 900,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-04-01"
+        },
+        "card-atlas:status": {
+          "value": "blocked"
+        }
+      }
+    },
+    {
+      "id": "task-05",
+      "title": "Task 05",
+      "summary": "Timeline sample 05",
+      "type": "task",
+      "tags": [],
+      "content": "Task 05",
+      "position": {
+        "x": 1200,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-04-01"
+        },
+        "card-atlas:status": {
+          "value": "cancelled"
+        }
+      }
+    },
+    {
+      "id": "task-06",
+      "title": "Task 06",
+      "summary": "Timeline sample 06",
+      "type": "task",
+      "tags": [],
+      "content": "Task 06",
+      "position": {
+        "x": 1500,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-04-01",
+          "end": "2026-04-15"
+        },
+        "card-atlas:status": {
+          "value": "new"
+        }
+      }
+    },
+    {
+      "id": "task-07",
+      "title": "Task 07",
+      "summary": "Timeline sample 07",
+      "type": "task",
+      "tags": [],
+      "content": "Task 07",
+      "position": {
+        "x": 1800,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-04-01",
+          "end": "2026-04-16"
+        },
+        "card-atlas:status": {
+          "value": "in-progress"
+        }
+      }
+    },
+    {
+      "id": "task-08",
+      "title": "Task 08",
+      "summary": "Timeline sample 08",
+      "type": "task",
+      "tags": [],
+      "content": "Task 08",
+      "position": {
+        "x": 2100,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-02-14",
+          "pinned": true
+        },
+        "card-atlas:status": {
+          "value": "done"
+        }
+      }
+    },
+    {
+      "id": "task-09",
+      "title": "Task 09",
+      "summary": "Timeline sample 09",
+      "type": "task",
+      "tags": [],
+      "content": "Task 09",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-04-09"
+        },
+        "card-atlas:status": {
+          "value": "blocked"
+        }
+      }
+    },
+    {
+      "id": "task-10",
+      "title": "Task 10",
+      "summary": "Timeline sample 10",
+      "type": "task",
+      "tags": [],
+      "content": "Task 10",
+      "position": {
+        "x": 300,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-05-10"
+        },
+        "card-atlas:status": {
+          "value": "cancelled"
+        }
+      }
+    },
+    {
+      "id": "task-11",
+      "title": "Task 11",
+      "summary": "Timeline sample 11",
+      "type": "task",
+      "tags": [],
+      "content": "Task 11",
+      "position": {
+        "x": 600,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-01-11"
+        },
+        "card-atlas:status": {
+          "value": "new"
+        }
+      }
+    },
+    {
+      "id": "task-12",
+      "title": "Task 12",
+      "summary": "Timeline sample 12",
+      "type": "task",
+      "tags": [],
+      "content": "Task 12",
+      "position": {
+        "x": 900,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-02-12"
+        },
+        "card-atlas:status": {
+          "value": "in-progress"
+        }
+      }
+    },
+    {
+      "id": "task-13",
+      "title": "Task 13",
+      "summary": "Timeline sample 13",
+      "type": "task",
+      "tags": [],
+      "content": "Task 13",
+      "position": {
+        "x": 1200,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-03-13"
+        },
+        "card-atlas:status": {
+          "value": "done"
+        }
+      }
+    },
+    {
+      "id": "task-14",
+      "title": "Task 14",
+      "summary": "Timeline sample 14",
+      "type": "task",
+      "tags": [],
+      "content": "Task 14",
+      "position": {
+        "x": 1500,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-04-14"
+        },
+        "card-atlas:status": {
+          "value": "blocked"
+        }
+      }
+    },
+    {
+      "id": "task-15",
+      "title": "Task 15",
+      "summary": "Timeline sample 15",
+      "type": "task",
+      "tags": [],
+      "content": "Task 15",
+      "position": {
+        "x": 1800,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-05-15"
+        },
+        "card-atlas:status": {
+          "value": "cancelled"
+        }
+      }
+    },
+    {
+      "id": "task-16",
+      "title": "Task 16",
+      "summary": "Timeline sample 16",
+      "type": "task",
+      "tags": [],
+      "content": "Task 16",
+      "position": {
+        "x": 2100,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-01-16"
+        },
+        "card-atlas:status": {
+          "value": "new"
+        }
+      }
+    },
+    {
+      "id": "task-17",
+      "title": "Task 17",
+      "summary": "Timeline sample 17",
+      "type": "task",
+      "tags": [],
+      "content": "Task 17",
+      "position": {
+        "x": 0,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-02-17"
+        },
+        "card-atlas:status": {
+          "value": "in-progress"
+        }
+      }
+    },
+    {
+      "id": "task-18",
+      "title": "Task 18",
+      "summary": "Timeline sample 18",
+      "type": "task",
+      "tags": [],
+      "content": "Task 18",
+      "position": {
+        "x": 300,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-03-18"
+        },
+        "card-atlas:status": {
+          "value": "done"
+        }
+      }
+    },
+    {
+      "id": "task-19",
+      "title": "Task 19",
+      "summary": "Timeline sample 19",
+      "type": "task",
+      "tags": [],
+      "content": "Task 19",
+      "position": {
+        "x": 600,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-04-19"
+        },
+        "card-atlas:status": {
+          "value": "blocked"
+        }
+      }
+    },
+    {
+      "id": "task-20",
+      "title": "Task 20",
+      "summary": "Timeline sample 20",
+      "type": "task",
+      "tags": [],
+      "content": "Task 20",
+      "position": {
+        "x": 900,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-05-20"
+        },
+        "card-atlas:status": {
+          "value": "cancelled"
+        }
+      }
+    },
+    {
+      "id": "task-21",
+      "title": "Task 21",
+      "summary": "Timeline sample 21",
+      "type": "task",
+      "tags": [],
+      "content": "Task 21",
+      "position": {
+        "x": 1200,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-01-21"
+        },
+        "card-atlas:status": {
+          "value": "new"
+        }
+      }
+    },
+    {
+      "id": "task-22",
+      "title": "Task 22",
+      "summary": "Timeline sample 22",
+      "type": "task",
+      "tags": [],
+      "content": "Task 22",
+      "position": {
+        "x": 1500,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-02-22"
+        },
+        "card-atlas:status": {
+          "value": "in-progress"
+        }
+      }
+    },
+    {
+      "id": "task-23",
+      "title": "Task 23",
+      "summary": "Timeline sample 23",
+      "type": "task",
+      "tags": [],
+      "content": "Task 23",
+      "position": {
+        "x": 1800,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-03-23"
+        },
+        "card-atlas:status": {
+          "value": "done"
+        }
+      }
+    },
+    {
+      "id": "task-24",
+      "title": "Task 24",
+      "summary": "Timeline sample 24",
+      "type": "task",
+      "tags": [],
+      "content": "Task 24",
+      "position": {
+        "x": 2100,
+        "y": 600
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-04-24"
+        },
+        "card-atlas:status": {
+          "value": "blocked"
+        }
+      }
+    },
+    {
+      "id": "task-25",
+      "title": "Task 25",
+      "summary": "Timeline sample 25",
+      "type": "task",
+      "tags": [],
+      "content": "Task 25",
+      "position": {
+        "x": 0,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-05-25"
+        },
+        "card-atlas:status": {
+          "value": "cancelled"
+        }
+      }
+    },
+    {
+      "id": "task-26",
+      "title": "Task 26",
+      "summary": "Timeline sample 26",
+      "type": "task",
+      "tags": [],
+      "content": "Task 26",
+      "position": {
+        "x": 300,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-01-26"
+        }
+      }
+    },
+    {
+      "id": "task-27",
+      "title": "Task 27",
+      "summary": "Timeline sample 27",
+      "type": "task",
+      "tags": [],
+      "content": "Task 27",
+      "position": {
+        "x": 600,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-02-27"
+        }
+      }
+    },
+    {
+      "id": "task-28",
+      "title": "Task 28",
+      "summary": "Timeline sample 28",
+      "type": "task",
+      "tags": [],
+      "content": "Task 28",
+      "position": {
+        "x": 900,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:metadata": {
+          "createdDate": "2026-03-01"
+        }
+      }
+    },
+    {
+      "id": "task-29",
+      "title": "Task 29",
+      "summary": "Timeline sample 29",
+      "type": "task",
+      "tags": [],
+      "content": "Task 29",
+      "position": {
+        "x": 1200,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    },
+    {
+      "id": "task-30",
+      "title": "Task 30",
+      "summary": "Timeline sample 30",
+      "type": "task",
+      "tags": [],
+      "content": "Task 30",
+      "position": {
+        "x": 1500,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    },
+    {
+      "id": "task-31",
+      "title": "Task 31",
+      "summary": "Timeline sample 31",
+      "type": "task",
+      "tags": [],
+      "content": "Task 31",
+      "position": {
+        "x": 1800,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    },
+    {
+      "id": "task-32",
+      "title": "Task 32",
+      "summary": "Timeline sample 32",
+      "type": "task",
+      "tags": [],
+      "content": "Task 32",
+      "position": {
+        "x": 2100,
+        "y": 900
+      },
+      "size": {
+        "width": 260,
+        "height": 260
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-1",
+      "source": "task-01",
+      "target": "task-02",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "rel-2",
+      "source": "task-02",
+      "target": "task-03",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "rel-3",
+      "source": "task-04",
+      "target": "task-10",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "rel-4",
+      "source": "task-11",
+      "target": "task-12",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "rel-5",
+      "source": "task-21",
+      "target": "task-22",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ],
+  "extensions": {
+    "card-atlas:timeline": {
+      "version": 1
+    }
+  }
+}
