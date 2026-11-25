@@ -8,11 +8,19 @@ const KEYS = {
   groupAddCards: [],
   groupAddCardsHint: [],
   groupAddCardsTitle: [],
+  groupAddCardsHeading: ['count'],
+  groupAddCardsHeadingOne: ['count'],
+  groupNoteCount: ['count'],
+  groupNoteCountOne: ['count'],
   groupAddMixed: [],
   groupCardsAdded: ['count', 'title'],
+  groupCardsAddedOne: ['count', 'title'],
   groupRemoveCards: [],
   groupRemoveCardsHint: [],
   groupCardsRemoved: ['count'],
+  groupCardsRemovedOne: ['count'],
+  groupCardsMoved: ['count', 'from', 'to'],
+  groupCardsMovedOne: ['count', 'from', 'to'],
   groupRemoveCardFrom: ['title'],
 };
 
@@ -23,4 +31,10 @@ test('add/remove group strings exist in both locales with matching placeholders'
       assert.ok(dict[key].length, key);
       assert.deepEqual(placeholders(dict[key]), expected, key);
     }
+});
+
+test('english singular variants read as one note', () => {
+  for (const key of ['groupNoteCount', 'groupCardsAdded', 'groupCardsRemoved', 'groupCardsMoved'])
+    assert.doesNotMatch(en[key + 'One'], /\bnotes\b/, key);
+  assert.doesNotMatch(en.groupAddCardsHeadingOne, /\bnotes\b/);
 });

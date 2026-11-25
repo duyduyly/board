@@ -10,7 +10,7 @@ const card = (id, title, x, y, extensions) => ({
   ...(extensions ? { extensions } : {}),
 });
 
-async function loadProject(page, { groups = true } = {}) {
+async function loadProject(page, { groups = true, many = 0 } = {}) {
   const project = {
     version: '1.0',
     metadata: { title: 'Add to group' },
@@ -22,6 +22,7 @@ async function loadProject(page, { groups = true } = {}) {
       card('e', 'Loose', 800, 0),
       card('f', 'Other', 1000, 330),
       card('p', 'Pinned', 1100, 0, { 'card-atlas:metadata': { pinned: true } }),
+      ...Array.from({ length: many }, (_, i) => card('m' + i, 'Member ' + i, 1300 + i * 40, 0)),
     ],
     relations: [],
     ...(groups
@@ -32,6 +33,11 @@ async function loadProject(page, { groups = true } = {}) {
                 { id: 'outer', title: 'Product', cardIds: ['a'] },
                 { id: 'inner', title: 'Auth', cardIds: ['b', 'c'], parentId: 'outer' },
                 { id: 'deep', title: 'Security', cardIds: ['d'], parentId: 'inner' },
+                ...Array.from({ length: many }, (_, i) => ({
+                  id: 'extra' + i,
+                  title: 'Extra ' + i,
+                  cardIds: ['m' + i],
+                })),
               ],
             },
           },
@@ -128,7 +134,7 @@ test('removing a note from a subgroup returns it to the parent group', async ({ 
   await remove(page).click();
   expect(await cardIds(page, 'inner')).toEqual(['c']);
   expect(await cardIds(page, 'outer')).toEqual(['a', 'b']);
-  await expect(page.locator('#toast')).toContainText('Đã bỏ 1 note khỏi nhóm');
+  await expect(page.locator('#toast')).toContainText('Đã chuyển 1 note từ “Auth” về “Product”');
   await projectAction(page, 'undo');
   expect(await cardIds(page, 'inner')).toEqual(['b', 'c']);
   expect(await cardIds(page, 'outer')).toEqual(['a']);
@@ -150,11 +156,15 @@ test('a mixed selection cannot be added, and Remove only touches grouped notes',
   await loadProject(page);
   await note(page, 'c').click();
   await note(page, 'e').click({ modifiers: ['Shift'] });
-  await expect(add(page)).toBeDisabled();
+  await expect(add(page)).toHaveAttribute('aria-disabled', 'true');
   await expect(add(page)).toHaveAttribute('title', /đã thuộc nhóm/);
+  await add(page).click({ force: true });
+  await expect(page.locator('#toast')).toContainText('đã thuộc nhóm');
+  await expect(picker(page)).not.toBeVisible();
   await remove(page).click();
   expect(await cardIds(page, 'inner')).toEqual(['b']);
   expect(await cardIds(page, 'outer')).toEqual(['a', 'c']);
+  await expect(page.locator('#toast')).toContainText('Đã chuyển 1 note từ “Auth” về “Product”');
   expect((await groupsOf(page)).some((g) => g.cardIds.includes('e'))).toBe(false);
 });
 
@@ -221,4 +231,56 @@ test('the corner button refuses to empty a group and is hidden when no group exi
   await loadProject(page, { groups: false });
   await note(page, 'e').click();
   await expect(badge(page, 'e')).toBeHidden();
+});
+
+test('Tab closes the picker and returns focus to the button', async ({ page }) => {
+  await loadProject(page);
+  await note(page, 'e').click();
+  await add(page).focus();
+  await page.keyboard.press('Enter');
+  await expect(option(page, 'outer')).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(picker(page)).not.toBeVisible();
+  await expect(add(page)).toBeFocused();
+  expect(await cardIds(page, 'outer')).toEqual(['a']);
+});
+
+test('the picker shows a heading with the note count and english singular', async ({ page }) => {
+  await loadProject(page);
+  await note(page, 'e').click();
+  await add(page).click();
+  await expect(picker(page).locator('.group-picker-heading')).toHaveText('Thêm 1 note vào nhóm');
+  await page.keyboard.press('Escape');
+  await page.locator('#locale').selectOption('en');
+  await add(page).click();
+  await expect(picker(page).locator('.group-picker-heading')).toHaveText('Add 1 note to a group');
+  await option(page, 'inner').click();
+  await expect(page.locator('#toast')).toContainText('Added 1 note to “Auth”');
+  await expect(page.locator('#toast')).not.toContainText('1 notes');
+});
+
+test('a picker near the bottom opens above its button; End keeps the last option in view', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 560 });
+  await loadProject(page, { many: 12 });
+  await note(page, 'e').click();
+  await add(page).click();
+  await expect(picker(page)).toBeVisible();
+  const lists = async () => ({
+    button: await add(page).boundingBox(),
+    popup: await picker(page).boundingBox(),
+  });
+  const { button, popup } = await lists();
+  const room = 560 - (button.y + button.height) - 8;
+  // Only assert the flip when the popup truly cannot fit below the button.
+  if (popup.height > room) expect(popup.y + popup.height).toBeLessThanOrEqual(button.y);
+  else expect(popup.y).toBeGreaterThanOrEqual(button.y + button.height);
+  await page.keyboard.press('End');
+  const last = option(page, 'extra11');
+  await expect(last).toBeFocused();
+  const box = await last.boundingBox();
+  const menu = await page.locator('.group-picker-menu').boundingBox();
+  expect(box.y).toBeGreaterThanOrEqual(menu.y - 1);
+  expect(box.y + box.height).toBeLessThanOrEqual(menu.y + menu.height + 1);
 });

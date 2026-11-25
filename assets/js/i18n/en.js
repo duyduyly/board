@@ -298,6 +298,7 @@ export default {
   groupSubgroupsHint:
     'Dragging this frame moves every subgroup. Ungroup moves subgroups up one level.',
   groupNoteCount: '{count} notes',
+  groupNoteCountOne: '{count} note',
   groupMembersNestedHint: 'Uncheck to return a note to the parent group; it stays on the Canvas.',
   groupMembersSubgroupHint: 'The selected notes will become a subgroup inside “{title}”.',
   groupNeedsMemberNested:
@@ -317,13 +318,19 @@ export default {
   groupAddCards: 'Add to group…',
   groupAddCardsHint: 'Add the selected notes to an existing group on this board.',
   groupAddCardsTitle: 'Choose a group to add the notes to',
+  groupAddCardsHeading: 'Add {count} notes to a group',
+  groupAddCardsHeadingOne: 'Add {count} note to a group',
   groupAddMixed:
     'Some notes already belong to a group. Remove them from it before adding to another.',
   groupCardsAdded: 'Added {count} notes to “{title}”. Press Ctrl+Z to undo.',
+  groupCardsAddedOne: 'Added {count} note to “{title}”. Press Ctrl+Z to undo.',
   groupRemoveCards: 'Remove from group',
   groupRemoveCardsHint:
     'Notes in a subgroup go back to the parent group; notes stay on the Canvas.',
   groupCardsRemoved: 'Removed {count} notes from the group. Press Ctrl+Z to undo.',
+  groupCardsRemovedOne: 'Removed {count} note from the group. Press Ctrl+Z to undo.',
+  groupCardsMoved: 'Moved {count} notes from “{from}” to “{to}”. Press Ctrl+Z to undo.',
+  groupCardsMovedOne: 'Moved {count} note from “{from}” to “{to}”. Press Ctrl+Z to undo.',
   groupRemoveCardFrom: 'Remove from group “{title}”',
   groupAlreadyAssigned: 'A note already belongs to another group. Remove it from that group first.',
   edgeRoute: 'Connector route',

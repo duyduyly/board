@@ -64,19 +64,26 @@ function positionDialog(element, state) {
   const r = state.anchor.isConnected ? state.anchor.getBoundingClientRect() : state.rect;
   element.style.left =
     Math.max(12, Math.min(r.left, window.innerWidth - element.offsetWidth - 12)) + 'px';
+  const height = element.offsetHeight;
+  const below = r.bottom + 8;
+  // Opt-in: near the viewport bottom the popup opens above the anchor instead of covering it.
+  const flipped =
+    state.flip && below + height > window.innerHeight - 12 && r.top - 8 - height >= 12;
   element.style.top =
-    Math.max(12, Math.min(r.bottom + 8, window.innerHeight - element.offsetHeight - 12)) + 'px';
+    Math.max(12, flipped ? r.top - 8 - height : Math.min(below, window.innerHeight - height - 12)) +
+    'px';
 }
-export function anchorDialog(element, anchor) {
+export function anchorDialog(element, anchor, { flip = false } = {}) {
   let state = anchorContexts.get(element);
   if (!state) {
-    state = { anchor, rect: anchor.getBoundingClientRect() };
+    state = { anchor, rect: anchor.getBoundingClientRect(), flip };
     anchorContexts.set(element, state);
     const observer = new window.ResizeObserver(() => positionDialog(element, state));
     observer.observe(element);
     window.addEventListener('resize', () => positionDialog(element, state));
   } else {
     state.anchor = anchor;
+    state.flip = flip;
     state.rect = anchor.getBoundingClientRect();
   }
   positionDialog(element, state);

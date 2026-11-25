@@ -1,6 +1,8 @@
 import { dialogSurface, anchorDialog } from './dialog-surface.js';
 import { t } from '../i18n/index.js';
 
+const noteCountKey = (count) => (count === 1 ? 'groupNoteCountOne' : 'groupNoteCount');
+
 /**
  * One shared menu that lists the groups of the board as an indented tree. `groups()` returns the
  * outline ({ id, title, depth, count }); `onApply(groupId)` commits the choice.
@@ -13,19 +15,24 @@ export function createGroupPickerPopover({ groups, onApply, fallback }) {
   const menu = document.createElement('div');
   menu.setAttribute('role', 'menu');
   menu.className = 'group-picker-menu';
-  element.append(menu);
+  const heading = document.createElement('p');
+  heading.className = 'group-picker-heading';
+  element.append(heading, menu);
   document.body.append(element);
   const surface = dialogSurface(element, {
     onRequestClose: () => close(),
     fallback,
   });
+  let noteCount = 0;
   const options = () => [...menu.querySelectorAll('.group-picker-option')];
   function close() {
     surface.close();
   }
   function focusOption(index) {
     const list = options();
-    list[(index + list.length) % list.length].focus({ preventScroll: true });
+    const option = list[(index + list.length) % list.length];
+    option.focus({ preventScroll: true });
+    option.scrollIntoView({ block: 'nearest' });
   }
   function fill() {
     menu.replaceChildren(
@@ -41,7 +48,7 @@ export function createGroupPickerPopover({ groups, onApply, fallback }) {
         name.textContent = title;
         const size = document.createElement('span');
         size.className = 'group-picker-option-count';
-        size.textContent = t('groupNoteCount', { count });
+        size.textContent = t(noteCountKey(count), { count });
         option.append(name, size);
         return option;
       }),
@@ -57,7 +64,11 @@ export function createGroupPickerPopover({ groups, onApply, fallback }) {
   menu.addEventListener('keydown', (e) => {
     const index = options().indexOf(document.activeElement);
     const step = { ArrowDown: 1, ArrowUp: -1 }[e.key];
-    if (step) {
+    if (e.key === 'Tab') {
+      // The popup is a menu, not a tab stop: leave it and return focus to the button.
+      e.preventDefault();
+      close();
+    } else if (step) {
       e.preventDefault();
       focusOption(index + step);
     } else if (e.key === 'Home' || e.key === 'End') {
@@ -70,10 +81,14 @@ export function createGroupPickerPopover({ groups, onApply, fallback }) {
   function syncLocale() {
     element.setAttribute('aria-label', t('groupAddCardsTitle'));
     menu.setAttribute('aria-label', t('groupAddCardsTitle'));
+    heading.textContent = t(noteCount === 1 ? 'groupAddCardsHeadingOne' : 'groupAddCardsHeading', {
+      count: noteCount,
+    });
     if (!element.open) return;
     for (const option of options()) {
-      option.querySelector('.group-picker-option-count').textContent = t('groupNoteCount', {
-        count: groups().find((g) => g.id === option.dataset.groupId)?.count ?? 0,
+      const count = groups().find((g) => g.id === option.dataset.groupId)?.count ?? 0;
+      option.querySelector('.group-picker-option-count').textContent = t(noteCountKey(count), {
+        count,
       });
     }
   }
@@ -83,13 +98,14 @@ export function createGroupPickerPopover({ groups, onApply, fallback }) {
       return element.open;
     },
     syncLocale,
-    show(anchor) {
+    show(anchor, count) {
       if (element.open) return;
+      noteCount = count;
       syncLocale();
       fill();
       if (!options().length) return;
       surface.show(options()[0]);
-      anchorDialog(element, anchor);
+      anchorDialog(element, anchor, { flip: true });
     },
     close,
   };

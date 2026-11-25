@@ -670,14 +670,25 @@ const groupPicker = createGroupPickerPopover({
     const ids = pickerIds;
     const title = cardGroups(store.project).find((g) => g.id === groupId)?.title;
     if (ids.length && change((p) => addCardsToGroup(p, groupId, ids)))
-      toast('groupCardsAdded', { params: { count: ids.length, title } });
+      toast(plural('groupCardsAdded', ids.length), { params: { count: ids.length, title } });
   },
 });
+const plural = (key, count) => (count === 1 ? key + 'One' : key);
+// Notes that all leave one subgroup land in its parent; say so instead of "removed".
+function moveTarget(ids) {
+  const owners = new Set(ids.map((id) => groupOfCard(store.project, id)).filter(Boolean));
+  const [from] = owners;
+  const to = owners.size === 1 && cardGroups(store.project).find((g) => g.id === from.parentId);
+  return to ? { from: from.title, to: to.title } : null;
+}
 function removeFromGroups(ids) {
   const issue = removeFromGroupIssue(store.project, ids);
-  if (issue) toast(issue);
-  else if (change((p) => removeCardsFromGroup(p, ids)))
-    toast('groupCardsRemoved', { params: { count: ids.length } });
+  if (issue) return toast(issue);
+  const moved = moveTarget(ids);
+  if (!change((p) => removeCardsFromGroup(p, ids))) return;
+  if (moved)
+    toast(plural('groupCardsMoved', ids.length), { params: { count: ids.length, ...moved } });
+  else toast(plural('groupCardsRemoved', ids.length), { params: { count: ids.length } });
 }
 const scheduleEditor = createCardScheduleEditor({
   title: (id) => projectIndex(store.project).cards.get(id)?.title || '',
@@ -1311,7 +1322,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     if (groupOfCard(store.project, id)) return removeFromGroups([id]);
     pickerIds = [id];
     pickerFallback = () => adapter.cards.get(id)?.querySelector('.card-group-button');
-    groupPicker.show(anchor);
+    groupPicker.show(anchor, 1);
   },
   overview: (id, anchor, field) => {
     if (inspector.hasPending()) {
@@ -1490,10 +1501,14 @@ function render() {
   const mixedMembership = groupedIds.length > 0 && groupedIds.length < selectedCards.size;
   addButton.hidden =
     groupedIds.length === selectedCards.size || !cardGroups(canvasProject()).length;
-  addButton.disabled = groupedIds.length > 0 || boardOverview;
-  addButton.title = t(mixedMembership ? 'groupAddMixed' : 'groupAddCardsHint');
+  // aria-disabled keeps the buttons focusable so a press can explain why they are locked.
+  addButton.setAttribute('aria-disabled', String(groupedIds.length > 0 || boardOverview));
+  addButton.title = t(
+    boardOverview ? 'boardOverviewLocked' : mixedMembership ? 'groupAddMixed' : 'groupAddCardsHint',
+  );
   removeButton.hidden = !groupedIds.length;
-  removeButton.disabled = boardOverview;
+  removeButton.setAttribute('aria-disabled', String(boardOverview));
+  removeButton.title = t(boardOverview ? 'boardOverviewLocked' : 'groupRemoveCardsHint');
   // One selected note shows the bar only when it offers a group action (or came from a marquee).
   $('#selection-tools').hidden =
     selectedCards.size < 2 &&
@@ -3527,8 +3542,9 @@ const actions = {
   'group-add': () => {
     if (overviewBlocked() || adapter.callbacks.groupLocked() || layoutPreview) return;
     pickerIds = ungroupedSelection();
+    if (pickerIds.length < selectedCards.size) return toast('groupAddMixed');
     pickerFallback = () => $('[data-action=group-add]');
-    groupPicker.show($('[data-action=group-add]'));
+    groupPicker.show($('[data-action=group-add]'), pickerIds.length);
   },
   'group-remove': () => {
     if (overviewBlocked() || adapter.callbacks.groupLocked() || layoutPreview) return;

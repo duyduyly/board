@@ -296,10 +296,26 @@
   background: transparent;
   backdrop-filter: none;
 }
+.selection-tools button[aria-disabled='true'] {
+  opacity: 0.42;
+  cursor: default;
+}
+.group-picker-popover[open] {
+  display: flex;
+  flex-direction: column;
+}
+.group-picker-heading {
+  flex: none;
+  margin: 2px 10px 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
 .group-picker-menu {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-height: 0;
+  overflow-y: auto;
 }
 .group-picker-option {
   display: flex;

@@ -708,6 +708,7 @@
 }
 /* Group button: "+" adds a loose note to a group, "−" takes a member out; shown like the colour button. */
 .card-status-strip > .card-group-button {
+  position: relative;
   flex: none;
   display: grid;
   place-items: center;
@@ -725,6 +726,12 @@
 }
 .card-status-strip > .card-group-button[hidden] {
   display: none;
+}
+/* Invisible extra hit area: the 20px button is small at low zoom, yet its box stays the same. */
+.card-status-strip > .card-group-button::after {
+  content: '';
+  position: absolute;
+  inset: -5px -3px;
 }
 .card-status-strip > .card-group-button::before {
   content: '';
