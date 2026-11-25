@@ -45,6 +45,7 @@
   font-size: 12px;
   line-height: 1.65;
 }
+#board-frames-layer,
 #group-frames-layer {
   position: absolute;
   left: 0;

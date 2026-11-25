@@ -65,6 +65,39 @@ export function disableTimeline(project) {
   return true;
 }
 
+/** Limits shared with the contract schema (assets/js/json/schema.js). */
+export const TIMELINE_INFO_LIMITS = { title: 200, description: 500 };
+
+/**
+ * The Timeline's own title and short purpose; empty strings when unset.
+ * @param {any} project @returns {{ title: string, description: string }}
+ */
+export function timelineInfo(project) {
+  const config = project?.extensions?.[TIMELINE];
+  return { title: config?.title ?? '', description: config?.description ?? '' };
+}
+
+/**
+ * Sets the Timeline title/description (trimmed; an empty value removes its key). Call only inside a
+ * store commit. Returns false when the Timeline is off or nothing changes.
+ * @param {any} project @param {{ title?: string, description?: string }} value
+ */
+export function setTimelineInfo(project, value) {
+  const config = project?.extensions?.[TIMELINE];
+  if (!config) return false;
+  const next = {
+    title: (value.title ?? '').trim().slice(0, TIMELINE_INFO_LIMITS.title),
+    description: (value.description ?? '').trim().slice(0, TIMELINE_INFO_LIMITS.description),
+  };
+  const current = timelineInfo(project);
+  if (next.title === current.title && next.description === current.description) return false;
+  for (const key of /** @type {const} */ (['title', 'description'])) {
+    if (next[key]) config[key] = next[key];
+    else delete config[key];
+  }
+  return true;
+}
+
 /**
  * Sets or clears the explicit schedule; call only inside a store commit. Returns false when
  * unchanged so callers can skip the commit.

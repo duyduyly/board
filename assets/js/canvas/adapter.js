@@ -6,6 +6,7 @@ import { createAutoEdges } from './auto-edges.js';
 import { installResize } from './resize-node.js';
 import { installMultiSelection, startGroupDrag } from './multi-selection.js';
 import { createGroupFrames } from './group-frames.js';
+import { createBoardFrames } from './board-frames.js';
 import { applyShape } from './shape-view.js';
 import { appearance } from '../detail/appearance.js';
 import { projectIndex } from '../graph/project-index.js';
@@ -15,6 +16,7 @@ import { geometry, nodeStyle, MIND, relationKind, branchInfo } from '../graph/mi
 import { applyAppearance } from '../detail/appearance.js';
 import cytoscape from '../../vendor/cytoscape-entry.js';
 import { t, getLocale } from '../i18n/index.js';
+const ARRANGED_DRAG_SLOP = 4; // px of movement that counts as a drag attempt
 const cid = (id) => 'c:' + id,
   rid = (id) => 'r:' + id;
 export class GraphAdapter {
@@ -131,11 +133,16 @@ export class GraphAdapter {
     });
     installMultiSelection(this);
     this.groupFrames = createGroupFrames(this);
+    this.boardFrames = createBoardFrames(this);
     this.observer = new ResizeObserver(() => {
       this.cy.resize();
       this.view();
     });
     this.observer.observe(region);
+  }
+  // Arranged overview: cards sit at projected positions, so connecting and resizing are off.
+  arranged() {
+    return Boolean(this.callbacks.arranged?.());
   }
   sync(project, selection, view = 'card', options = {}) {
     this.edgeEditor.cancel();
@@ -147,8 +154,10 @@ export class GraphAdapter {
     if (
       this.activeView !== view ||
       this.lastPreview !== options.positions ||
-      this.lastCollapsed !== options.collapsed
+      this.lastCollapsed !== options.collapsed ||
+      this.lastFrames !== options.frames
     ) {
+      this.lastFrames = options.frames;
       this.lastPreview = options.positions;
       this.lastCollapsed = options.collapsed;
       this.lastProject = null;
@@ -220,6 +229,7 @@ export class GraphAdapter {
       this.edgeEditor.sync(project, selection);
       this.autoEdges.sync(project, view, this.hiddenNodes || new Set());
       this.groupFrames.sync(project, this.hiddenNodes || new Set());
+      this.boardFrames.sync(project, options.frames || null);
       this.view();
       return;
     }
@@ -386,7 +396,7 @@ export class GraphAdapter {
         else el.append(open);
         const connector = document.createElement('button');
         connector.className = 'connector';
-        connector.disabled = isPinned(c);
+        connector.disabled = isPinned(c) || this.arranged();
         connector.title = t('dragConnector');
         connector.setAttribute('aria-label', t('dragConnector'));
         connector.addEventListener('pointerdown', (e) => {
@@ -515,7 +525,13 @@ export class GraphAdapter {
         edge.toggleClass('reference-edge', view === 'mind' && relationKind(r) === 'reference');
         for (const route of ['straight', 'orthogonal', 'zigzag'])
           edge.toggleClass('route-' + route, view !== 'mind' && edgeRoute(r) === route);
-        applyEdgePath(edge, view === 'mind' ? { extensions: {} } : r, view, automatic.get(r.id));
+        // Stored waypoints belong to the real layout; an arranged overview draws default routes.
+        applyEdgePath(
+          edge,
+          view === 'mind' || this.arranged() ? { extensions: {} } : r,
+          view,
+          this.arranged() ? undefined : automatic.get(r.id),
+        );
         edge.toggleClass('selected', selection?.kind === 'relation' && selection.id === r.id);
       }
     });
@@ -523,6 +539,7 @@ export class GraphAdapter {
     this.paintedSelection = new Set(this.selectedCards);
     this.syncFocus(project, view, options, true);
     this.groupFrames.sync(project, this.hiddenNodes);
+    this.boardFrames.sync(project, options.frames || null);
     this.edgeEditor.sync(project, selection);
     this.view();
   }
@@ -579,6 +596,7 @@ export class GraphAdapter {
       z = this.cy.zoom();
     this.layer.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px) scale(' + z + ')';
     this.groupFrames?.paint();
+    this.boardFrames?.paint();
     this.edgeEditor?.paint();
     // Keep the full graph model; skip rasterizing offscreen DOM cards in large maps.
     const large = this.cards.size >= 200;
@@ -732,7 +750,26 @@ export class GraphAdapter {
       this.callbacks.select({ kind: 'card', id });
       return;
     }
-    if (!startGroupDrag(this, e, id)) this.callbacks.select({ kind: 'card', id });
+    if (startGroupDrag(this, e, id)) return;
+    this.callbacks.select({ kind: 'card', id });
+    if (this.arranged()) this.reportArrangedDrag(e);
+  }
+  // A press-and-drag on a card of the read-only overview gets one explanation per gesture.
+  reportArrangedDrag(e) {
+    const start = { x: e.clientX, y: e.clientY };
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+      window.removeEventListener('pointercancel', stop);
+    };
+    const move = (ev) => {
+      if (Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < ARRANGED_DRAG_SLOP) return;
+      stop();
+      this.callbacks.arrangedDrag?.();
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop);
+    window.addEventListener('pointercancel', stop);
   }
   panStart(e) {
     if (!this.space && e.button !== 1) return;
@@ -752,7 +789,7 @@ export class GraphAdapter {
     window.addEventListener('pointerup', end, { once: true });
   }
   connectorStart(e, id) {
-    if (this.callbacks.locked()) {
+    if (this.callbacks.locked() || this.arranged()) {
       this.callbacks.select({ kind: 'card', id });
       return;
     }

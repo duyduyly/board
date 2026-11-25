@@ -286,13 +286,40 @@
               <span class="timeline-count" role="status"></span>
               <button
                 type="button"
+                class="timeline-overview"
+                data-timeline-action="overview"
+                data-i18n="timelineOverview"
+                data-i18n-title="timelineOverviewHint"
+              ></button>
+              <button
+                type="button"
                 class="timeline-add primary"
                 data-timeline-action="add-note"
                 data-i18n="timelineAddNote"
               ></button>
             </div>
-            <div class="timeline-scroll">
-              <ol class="timeline-track" data-i18n-aria="timelineRegion"></ol>
+            <div class="timeline-body">
+              <div class="timeline-intro">
+                <h3 class="timeline-intro-heading">
+                  <button
+                    type="button"
+                    class="timeline-intro-title"
+                    data-timeline-action="info"
+                    data-timeline-field="title"
+                  ></button>
+                </h3>
+                <p class="timeline-intro-row">
+                  <button
+                    type="button"
+                    class="timeline-intro-description"
+                    data-timeline-action="info"
+                    data-timeline-field="description"
+                  ></button>
+                </p>
+              </div>
+              <div class="timeline-scroll">
+                <ol class="timeline-track" data-i18n-aria="timelineRegion"></ol>
+              </div>
             </div>
             <details class="timeline-unscheduled" hidden>
               <summary></summary>
@@ -300,25 +327,28 @@
             </details>
             <div class="timeline-empty" hidden></div>
           </section>
-          <nav id="board-scope" class="board-scope" data-i18n-aria="boardScopeLabel" hidden>
-            <ol>
-              <li class="board-scope-project">
-                <button type="button" data-scope-action="root"></button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  data-scope-action="timeline"
-                  data-i18n="timelineView"
-                  data-i18n-title="boardScopeBack"
-                ></button>
-              </li>
-              <li aria-current="page">
-                <span class="board-scope-title" tabindex="-1"></span>
-                <span class="board-scope-count"></span>
-              </li>
-            </ol>
-          </nav>
+          <section id="board-scope" class="board-scope" data-i18n-aria="boardScopeLabel" hidden>
+            <nav class="board-scope-path" data-i18n-aria="boardScopeLabel">
+              <button type="button" data-scope-action="timeline"></button>
+              <button type="button" class="board-scope-project" data-scope-action="root"></button>
+            </nav>
+            <h2 class="board-scope-heading">
+              <button type="button" class="board-scope-title" data-scope-edit="title"></button>
+              <span
+                class="board-scope-overview-title"
+                tabindex="-1"
+                data-i18n="boardOverviewTitle"
+                hidden
+              ></span>
+            </h2>
+            <p class="board-scope-summary-row">
+              <button type="button" class="board-scope-summary" data-scope-edit="summary"></button>
+            </p>
+            <p class="board-scope-meta">
+              <span class="board-scope-count"></span>
+              <span class="board-scope-hint" hidden></span>
+            </p>
+          </section>
           <div id="welcome" class="welcome">
             <h1 data-i18n="welcome"></h1>
             <p data-i18n="welcomeBody"></p>

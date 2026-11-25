@@ -1,12 +1,16 @@
 const controls = 'button, input, select, textarea, .card-created-date, .resize-handle';
 
+// Selecting stays possible where moving is not (e.g. the read-only overview layout).
+const selectionLocked = (callbacks) => (callbacks.selectionLocked ?? callbacks.groupLocked)();
+
 // All gesture geometry is transient. The host alone selects and commits project changes.
 export function installMultiSelection(adapter) {
   const { region, callbacks } = adapter;
   region.addEventListener(
     'pointerdown',
     (event) => {
-      if (event.button !== 0 || !event.shiftKey || adapter.space || callbacks.groupLocked()) return;
+      if (event.button !== 0 || !event.shiftKey || adapter.space || selectionLocked(callbacks))
+        return;
       const card = event.target.closest('.graph-card');
       if (event.target.closest(controls) || (!card && !event.target.closest('#graph'))) return;
       event.preventDefault();
@@ -41,7 +45,7 @@ export function installMultiSelection(adapter) {
         event.shiftKey &&
         event.code === 'Space' &&
         event.target.matches('.graph-card') &&
-        !callbacks.groupLocked()
+        !selectionLocked(callbacks)
       ) {
         event.preventDefault();
         event.stopImmediatePropagation();

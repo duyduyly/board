@@ -1,6 +1,12 @@
 import { ownedCounts } from '../graph/card-scope.js';
 import { effectiveStatus } from '../graph/card-status.js';
-import { filterEntries, timelineEntries, todayIndex, todayKey } from '../graph/timeline.js';
+import {
+  filterEntries,
+  timelineEntries,
+  timelineInfo,
+  todayIndex,
+  todayKey,
+} from '../graph/timeline.js';
 import { calendarDate, dateRange, getLocale, statusLabel, t } from '../i18n/index.js';
 
 const ACTION_SELECTOR = '[data-timeline-action]';
@@ -32,16 +38,17 @@ function actionButton(action, label, className) {
 }
 
 /**
- * Opens the node's own board; the count says how many notes it holds.
+ * Primary footer action: opens the node's own board; the count says how many notes it holds.
  * @param {string} title @param {number} count
  */
 function boardButton(title, count) {
   const button = actionButton('board-open', '', 'timeline-board');
   button.dataset.count = String(count);
   button.append(
+    node('span', 'timeline-board-label', t('timelineBoardOpen')),
     node(
       'span',
-      '',
+      'timeline-board-count',
       count
         ? t(count === 1 ? 'timelineBoardCountOne' : 'timelineBoardCount', { count })
         : t('timelineBoardEmpty'),
@@ -88,9 +95,10 @@ function selectedIds(selection) {
  *   onEdit: (id: string, anchor: HTMLElement, field: string) => void,
  *   onStatus: (id: string, anchor: HTMLElement) => void,
  *   onSchedule: (id: string, anchor: HTMLElement) => void,
- *   onReveal: (id: string) => void,
+ *   onInfo: (field: string, anchor: HTMLElement) => void,
  *   onOpenBoard: (id: string) => void,
  *   onBoard: () => void,
+ *   onOverview: () => void,
  *   onAddNote: () => void,
  *   isPinned: (id: string) => boolean,
  * }} ports
@@ -101,9 +109,10 @@ export function createTimelineView({
   onEdit,
   onStatus,
   onSchedule,
-  onReveal,
+  onInfo,
   onOpenBoard,
   onBoard,
+  onOverview,
   onAddNote,
   isPinned,
 }) {
@@ -119,10 +128,17 @@ export function createTimelineView({
   const unscheduledSummary = /** @type {HTMLElement} */ (unscheduledEl.querySelector('summary'));
   const unscheduledList = /** @type {HTMLElement} */ (unscheduledEl.querySelector('ul'));
   const emptyEl = /** @type {HTMLElement} */ (host.querySelector('.timeline-empty'));
+  const infoButtons = {
+    title: /** @type {HTMLElement} */ (host.querySelector('.timeline-intro-title')),
+    description: /** @type {HTMLElement} */ (host.querySelector('.timeline-intro-description')),
+  };
+  const overviewButton = /** @type {HTMLElement | null} */ (
+    host.querySelector('.timeline-overview')
+  );
 
   let filter = '';
-  let current = { project: null, selection: null, revealLabel: '' };
-  /** @type {{ project: any, locale: string, filter: string, revealLabel: string } | null} */
+  let current = { project: null, selection: null };
+  /** @type {{ project: any, locale: string, filter: string } | null} */
   let built = null;
   /** @type {Map<string, HTMLElement>} */
   let entryEls = new Map();
@@ -131,7 +147,7 @@ export function createTimelineView({
   /** @type {HTMLElement | null} */
   let todayEl = null;
 
-  function buildEntry(card, entry, side, revealLabel, counts) {
+  function buildEntry(card, entry, side, counts) {
     const status = effectiveStatus(card);
     const pinned = isPinned(card.id);
     const range = dateRange(entry.start, entry.end);
@@ -161,12 +177,7 @@ export function createTimelineView({
     if (pinned) chip.setAttribute('aria-disabled', 'true');
 
     const footer = node('footer', 'timeline-card-footer');
-    // Icon-only: the full label stays as tooltip and accessible name.
-    const revealText = t('timelineOpenOn', { view: revealLabel });
-    const revealButton = actionButton('reveal', '', 'timeline-reveal');
-    revealButton.title = revealText;
-    revealButton.setAttribute('aria-label', revealText);
-    footer.append(chip, boardButton(card.title, counts.get(card.id) || 0), revealButton);
+    footer.append(chip, boardButton(card.title, counts.get(card.id) || 0));
 
     const article = node('article', 'timeline-card');
     // Same appearance variables as the canvas card, so the note keeps its own colours.
@@ -205,8 +216,28 @@ export function createTimelineView({
     return li;
   }
 
+  // The Timeline's own title and purpose; user content, so only the empty prompts are translated.
+  function renderInfo(project) {
+    const info = timelineInfo(project);
+    for (const field of /** @type {const} */ (['title', 'description'])) {
+      const button = infoButtons[field];
+      const value = info[field];
+      button.textContent =
+        value || t(field === 'title' ? 'timelineInfoTitleEmpty' : 'timelineInfoDescriptionEmpty');
+      button.classList.toggle('is-empty', !value);
+      button.title = value;
+      button.setAttribute(
+        'aria-label',
+        t(field === 'title' ? 'timelineInfoEditTitleAria' : 'timelineInfoEditDescriptionAria', {
+          value,
+        }),
+      );
+    }
+  }
+
   function rebuild() {
-    const { project, revealLabel } = current;
+    const { project } = current;
+    renderInfo(project);
     const keepScroll = scrollEl.scrollLeft;
     entryEls = new Map();
     painted = new Set();
@@ -221,13 +252,7 @@ export function createTimelineView({
       : model.unscheduled;
 
     const items = entries.map((entry, index) => {
-      const li = buildEntry(
-        cards.get(entry.id),
-        entry,
-        index % 2 ? 'below' : 'above',
-        revealLabel,
-        counts,
-      );
+      const li = buildEntry(cards.get(entry.id), entry, index % 2 ? 'below' : 'above', counts);
       entryEls.set(entry.id, li);
       return li;
     });
@@ -249,6 +274,7 @@ export function createTimelineView({
     countEl.textContent = t('timelineCount', { count: entries.length });
     renderEmpty(model.entries.length, entries.length, unscheduled.length, cards.size);
     scrollEl.scrollLeft = keepScroll;
+    if (overviewButton) overviewButton.hidden = !cards.size;
   }
 
   function renderEmpty(total, shown, unscheduledShown, cardCount) {
@@ -291,18 +317,14 @@ export function createTimelineView({
     painted = new Set([...next].filter((id) => entryEls.has(id)));
   }
 
-  function render({ project, selection, revealLabel }) {
-    current = { project, selection, revealLabel };
+  function render({ project, selection }) {
+    current = { project, selection };
     const locale = getLocale();
     const same =
-      built &&
-      built.project === project &&
-      built.locale === locale &&
-      built.filter === filter &&
-      built.revealLabel === revealLabel;
+      built && built.project === project && built.locale === locale && built.filter === filter;
     if (!same) {
       rebuild();
-      built = { project, locale, filter, revealLabel };
+      built = { project, locale, filter };
     }
     paintSelection();
   }
@@ -324,6 +346,9 @@ export function createTimelineView({
     if (button && unscheduledEl.contains(button)) unscheduledEl.open = true;
     return button;
   }
+
+  /** @param {string} field */
+  const infoElement = (field) => infoButtons[field] || null;
 
   function reveal(id) {
     if (!current.project) return;
@@ -351,14 +376,15 @@ export function createTimelineView({
     if (action === 'today') scrollToToday();
     else if (action === 'start') scrollEl.scrollLeft = 0;
     else if (action === 'end') scrollEl.scrollLeft = scrollEl.scrollWidth;
+    else if (action === 'info') onInfo(button.dataset.timelineField || 'title', button);
     else if (action === 'board') onBoard();
+    else if (action === 'overview') onOverview();
     else if (action === 'add-note') onAddNote();
     else if (action === 'clear-filter') setFilter('');
     else if (id && action === 'open') onOpen(id);
     else if (id && action === 'edit') onEdit(id, button, button.dataset.timelineField || 'title');
     else if (id && action === 'status') onStatus(id, button);
     else if (id && action === 'schedule') onSchedule(id, button);
-    else if (id && action === 'reveal') onReveal(id);
     else if (id && action === 'board-open') onOpenBoard(id);
   });
 
@@ -399,5 +425,5 @@ export function createTimelineView({
     scrollEl.scrollLeft = scrollLeft;
   };
 
-  return { render, reveal, element, reset, context, restore };
+  return { render, reveal, element, infoElement, reset, context, restore };
 }

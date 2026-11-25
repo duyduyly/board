@@ -11,6 +11,8 @@ import {
   enableTimeline,
   hasTimeline,
   setSchedule,
+  setTimelineInfo,
+  timelineInfo,
 } from '../assets/js/graph/timeline.js';
 
 function projectWith({ schedule, timeline } = {}) {
@@ -114,4 +116,52 @@ test('timeline fixture stages without errors or adjustments', async () => {
   assert.deepEqual(staged.adjustments, []);
   assert.equal(staged.project.cards.length, 32);
   assert.equal(hasTimeline(staged.project), true);
+});
+
+test('timeline title and description round-trip and stay within the contract', () => {
+  const timeline = { version: 1, title: 'Roadmap', description: 'Why this plan exists' };
+  const first = serialize(projectWith({ timeline }));
+  const staged = stage(first);
+  assert.deepEqual(staged.errors, []);
+  assert.deepEqual(timelineInfo(staged.project), {
+    title: 'Roadmap',
+    description: 'Why this plan exists',
+  });
+  assert.equal(serialize(staged.project), first);
+  for (const bad of [
+    { version: 1, title: '   ' },
+    { version: 1, title: 'x'.repeat(201) },
+    { version: 1, description: '' },
+    { version: 1, description: 'x'.repeat(501) },
+    { version: 1, title: 5 },
+  ])
+    assert.notDeepEqual(errorsOf({ timeline: bad }), [], JSON.stringify(bad).slice(0, 60));
+});
+
+test('setTimelineInfo trims, drops empty keys and is one undo step', () => {
+  const store = storeWith();
+  store.commit((p) => enableTimeline(p));
+  assert.deepEqual(timelineInfo(store.project), { title: '', description: '' });
+  const base = store.undoStack.length;
+  assert.equal(
+    store.commit((p) => setTimelineInfo(p, { title: '  Plan  ', description: ' Goal ' })),
+    true,
+  );
+  assert.equal(store.undoStack.length, base + 1);
+  assert.deepEqual(store.project.extensions[TIMELINE], {
+    version: 1,
+    title: 'Plan',
+    description: 'Goal',
+  });
+  assert.equal(
+    setTimelineInfo(structuredClone(store.project), { title: 'Plan', description: 'Goal' }),
+    false,
+  );
+  store.commit((p) => setTimelineInfo(p, { title: '', description: 'Goal' }));
+  assert.deepEqual(store.project.extensions[TIMELINE], { version: 1, description: 'Goal' });
+  store.undo();
+  assert.equal(timelineInfo(store.project).title, 'Plan');
+  store.undo();
+  assert.deepEqual(timelineInfo(store.project), { title: '', description: '' });
+  assert.equal(setTimelineInfo(blank(), { title: 'x' }), false);
 });

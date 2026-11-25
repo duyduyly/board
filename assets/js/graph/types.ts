@@ -129,6 +129,8 @@ export interface CardOwner {
 
 export interface TimelineConfig {
   version: 1;
+  title?: string;
+  description?: string;
 }
 
 export interface CardComment {

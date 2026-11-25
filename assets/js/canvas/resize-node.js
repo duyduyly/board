@@ -15,7 +15,7 @@ export function installResize(adapter, el, card, size) {
   handle.addEventListener('dblclick', (e) => e.stopPropagation());
   handle.addEventListener('pointerdown', (e) => {
     e.stopPropagation();
-    if (e.button !== 0 || adapter.callbacks.locked()) return;
+    if (e.button !== 0 || adapter.callbacks.locked() || adapter.arranged()) return;
     e.preventDefault();
     const node = adapter.cy.getElementById('c:' + card.id),
       position = { ...node.position() },

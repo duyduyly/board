@@ -201,6 +201,8 @@ export function createGroupFrames(adapter) {
         handle.setAttribute('aria-label', t('groupMove', { title: group.title, count }));
         el.dataset.depth = String(groupDepth(project, group.id));
         handle.title = t('groupMoveHint');
+        // The arranged overview is read-only: the move handle must not take Tab stops there.
+        handle.tabIndex = adapter.arranged() ? -1 : 0;
         const description = el.querySelector('.group-frame-description');
         description.textContent = group.description || '';
         description.title = group.description || '';

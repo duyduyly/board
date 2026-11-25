@@ -244,11 +244,20 @@ test.describe('Timeline interaction', () => {
     await expect(page.locator('#card-overview-editor')).toBeVisible();
   });
 
-  test('reveal on the board selects the right note', async ({ page }) => {
+  test('Xem tất cả selects the right note', async ({ page }) => {
     await openTimeline(page);
-    await entry(page, 'task-05').locator('button.timeline-reveal').click();
-    await expect(page.locator('#timeline-view')).toBeHidden();
-    await expect(page.locator('.graph-card[data-id=task-05]')).toHaveClass(/selected/);
+    await expect(page.locator('#timeline-view .timeline-reveal')).toHaveCount(0);
+    await expect(
+      entry(page, 'task-05').locator('button.timeline-board').filter({ hasText: 'Mở board' }),
+    ).toBeVisible();
+    await entry(page, 'task-05').locator('button.timeline-title').click();
+    await expect(page.locator('#card-overview-editor')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await page.locator('.timeline-overview').click();
+    await expect(page.locator('#canvas-region')).toHaveClass(/board-overview/);
+    const card = page.locator('.graph-card[data-id=task-05]');
+    await expect(card).toHaveClass(/selected/);
+    await expect(card).toBeInViewport();
   });
 
   test('search from Timeline scrolls to the entry', async ({ page }) => {

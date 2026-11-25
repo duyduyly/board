@@ -41,8 +41,10 @@ import {
 } from './graph/card-quick-color.js';
 import { createCardColorPopover } from './ui/card-color-popover.js';
 import { createCardScheduleEditor } from './ui/card-schedule-editor.js';
+import { createTimelineInfoEditor } from './ui/timeline-info-editor.js';
 import { createTimelineView } from './ui/timeline-view.js';
 import { createBoardScopeBar } from './ui/board-scope-bar.js';
+import { overviewLayout } from './graph/board-overview.js';
 import {
   adoptNewCards,
   clearOwners,
@@ -57,6 +59,8 @@ import {
   enableTimeline,
   hasTimeline,
   setSchedule,
+  setTimelineInfo,
+  timelineInfo,
   todayKey,
 } from './graph/timeline.js';
 import {
@@ -161,6 +165,11 @@ let selection = null,
   // Board of one Timeline node (session only, CC-23): the canvas draws a projection of its notes.
   boardScope = null,
   scopeReturn = null,
+  // "View all": the Timeline notes of every board on one arranged canvas. Layout is projected, never
+  // stored; its viewport is session memory and never reaches the exported view (CC-23).
+  boardOverview = false,
+  overviewViewport = null,
+  overviewReturn = null,
   loadingTemplate = false,
   expanded = false,
   readingScale = 1,
@@ -178,8 +187,17 @@ let selection = null,
   originalMindSize = null;
 // Per-board viewports stay in session memory; only the project board viewport is exported.
 const scopeViewports = new Map();
-const canvasProject = () => scopedProject(store.project, boardScope);
-const inBoardScope = (card) => ownerOf(card) === boardScope;
+const OVERVIEW_FIT_GAP = 16; // px kept clear around the fitted overview
+const ZOOM_BAR_OFFSET = 24; // the zoom bar sits this far above the canvas bottom
+const canvasProject = () =>
+  boardOverview ? overviewLayout(store.project).project : scopedProject(store.project, boardScope);
+const inBoardScope = (card) => boardOverview || ownerOf(card) === boardScope;
+// The arranged layout is read-only: moves, links, resizes and new notes would land in projected positions.
+function overviewBlocked() {
+  if (!boardOverview) return false;
+  toast('boardOverviewLocked');
+  return true;
+}
 const relationInBoardScope = (project) => {
   const ids = new Set(project.cards.filter(inBoardScope).map((c) => c.id));
   return (relation) => ids.has(relation.source) && ids.has(relation.target);
@@ -308,6 +326,7 @@ const inspector = createFormatInspector({
     }
   },
   onGlobal: async (options, typographyProfile) => {
+    if (overviewBlocked()) return false;
     if (overviewEditor.dirty) {
       toast('inspectorResolveTextDraft');
       return false;
@@ -408,7 +427,7 @@ const palette = createShapePalette({
   host: $('#shape-library'),
   region: $('#canvas-region'),
   onCreate: createPaletteNode,
-  locked: () => Boolean(home || detailOpen || layoutPreview || feedback.state),
+  locked: () => Boolean(home || detailOpen || layoutPreview || feedback.state || boardOverview),
 });
 const documentTransfer = createDocumentTransfer({
   context: transferContext,
@@ -573,9 +592,8 @@ function change(mutator) {
     return false;
   }
 }
-function announceApplied(success) {
-  if (success)
-    toast('formatUpdated', { position: 'top', detail: store.notice ? 'historyLimit' : null });
+function announceApplied(success, key = 'formatUpdated') {
+  if (success) toast(key, { position: 'top', detail: store.notice ? 'historyLimit' : null });
   return success;
 }
 function announceSchedule(success, key) {
@@ -667,7 +685,13 @@ function timelineStatus(id, anchor) {
     return;
   }
   if (isPinned(card)) toast('statusPinnedHint');
-  else if (statusBlocked() || dateEditor.open || overviewEditor.open || scheduleEditor.open)
+  else if (
+    statusBlocked() ||
+    dateEditor.open ||
+    overviewEditor.open ||
+    scheduleEditor.open ||
+    timelineInfoEditor.open
+  )
     toast('statusChangeBlocked');
   else statusPopover.show(id, anchor);
 }
@@ -707,6 +731,36 @@ function timelineEdit(id, anchor, field) {
     overviewEditor.show(id, anchor, field);
   }
 }
+const timelineInfoEditor = createTimelineInfoEditor({
+  current: () => timelineInfo(store.project),
+  fallback: (field) => timeline.infoElement(field),
+  onApply: (value) => {
+    if (statusBlocked() || !hasTimeline(store.project)) return false;
+    // setTimelineInfo reports "no change" the same as a refused commit, so probe on the extensions only.
+    if (!setTimelineInfo({ extensions: clone(store.project.extensions) }, value))
+      return announceSchedule(true, 'timelineInfoUpdated');
+    return announceSchedule(
+      change((p) => setTimelineInfo(p, value)),
+      'timelineInfoUpdated',
+    );
+  },
+});
+function timelineInfoEdit(field, anchor) {
+  if (timelineInfoEditor.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (
+    statusBlocked() ||
+    dateEditor.open ||
+    statusPopover.open ||
+    scheduleEditor.open ||
+    overviewEditor.open
+  )
+    toast('timelineInfoBlocked');
+  else timelineInfoEditor.show(field, anchor);
+}
 const TIMELINE_NOTE_GAP = 40;
 // New Timeline note: dated today, placed right of the existing notes so it never overlaps one.
 async function timelineAddNote() {
@@ -742,21 +796,15 @@ async function timelineAddNote() {
   render();
   timeline.reveal(card.id);
 }
-async function timelineReveal(id) {
-  if (feedback.state || !(await guardDraft()) || !(await select({ kind: 'card', id }))) return;
-  timelineActive = false;
-  render();
-  adapter.setViewport(store.viewport);
-  adapter.focus(id);
-  adapter.cards.get(id)?.focus({ preventScroll: true });
-}
 const timeline = createTimelineView({
   host: $('#timeline-view'),
   onOpen: timelineOpen,
   onEdit: timelineEdit,
   onStatus: timelineStatus,
   onSchedule: timelineSchedule,
-  onReveal: timelineReveal,
+  onInfo: timelineInfoEdit,
+  onOverview: () =>
+    selectedCards.size === 1 ? openOverview([...selectedCards][0]) : openOverview(),
   onBoard: () => switchMapView('card'),
   onOpenBoard: (id) => enterBoard(id),
   onAddNote: () => timelineAddNote(),
@@ -764,9 +812,27 @@ const timeline = createTimelineView({
 });
 const scopeBar = createBoardScopeBar({
   host: $('#board-scope'),
-  onTimeline: () => leaveBoard(),
+  onTimeline: () => (boardOverview ? exitOverview('timeline') : leaveBoard()),
   onRoot: () => switchMapView('card'),
+  onEdit: (field, anchor) => boardHeaderEdit(field, anchor),
 });
+// Same popup editor as a Timeline card, anchored to the board header's title or summary button.
+function boardHeaderEdit(field, anchor) {
+  const id = boardScope;
+  const card = id === null ? null : projectIndex(store.project).cards.get(id);
+  if (!card || overviewEditor.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (isPinned(card)) toast('pinnedReadOnly');
+  else if (statusBlocked() || dateEditor.open || statusPopover.open || scheduleEditor.open)
+    toast('timelineEditBlocked');
+  else {
+    document.body.append($('#card-overview-editor'));
+    overviewEditor.show(id, anchor, field);
+  }
+}
 async function enterBoard(nodeId, focusId) {
   if (home || feedback.state || layoutPreview || !(await guardDraft())) return false;
   const node = projectIndex(store.project).cards.get(nodeId);
@@ -774,12 +840,23 @@ async function enterBoard(nodeId, focusId) {
   if (adapter.gesturing) adapter.cancelGesture?.();
   // Read before the scope changes: syncing a new projection moves the viewport.
   const saved = scopeViewports.get(nodeId);
-  if (boardScope === null)
-    scopeReturn = {
-      view: store.activeView,
-      viewport: clone(store.viewport),
-      timeline: timeline.context(),
-    };
+  if (boardScope === null) {
+    scopeReturn = boardOverview
+      ? {
+          ...overviewReturn,
+          overview: {
+            viewport: { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) },
+          },
+        }
+      : {
+          view: store.activeView,
+          viewport: clone(store.viewport),
+          timeline: timeline.context(),
+        };
+  }
+  boardOverview = false;
+  $('#toast').hidden = true;
+  overviewReturn = null;
   boardScope = nodeId;
   timelineActive = false;
   if (store.activeView === 'mind') store.switchView('card');
@@ -811,7 +888,8 @@ function capFitZoom() {
     position: { x: cx - (cx - pan.x) / zoom, y: cyy - (cyy - pan.y) / zoom },
   });
 }
-async function leaveBoard() {
+// A board opened from "View all" goes back there, unless the caller asks for the Timeline.
+async function leaveBoard({ timeline: toTimeline = false } = {}) {
   if (boardScope === null || feedback.state || layoutPreview || !(await guardDraft())) return false;
   if (adapter.gesturing) adapter.cancelGesture?.();
   const nodeId = boardScope;
@@ -819,6 +897,12 @@ async function leaveBoard() {
   scopeViewports.set(nodeId, { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) });
   boardScope = null;
   scopeReturn = null;
+  if (back?.overview && !toTimeline) {
+    overviewReturn = { view: back.view, viewport: back.viewport, timeline: back.timeline };
+    showOverview(back.overview.viewport);
+    adapter.boardFrames.element(nodeId)?.focus({ preventScroll: true });
+    return true;
+  }
   if (back && back.view !== store.activeView) store.switchView(back.view);
   timelineActive = hasTimeline(store.project);
   previousPanelKey = null;
@@ -827,6 +911,86 @@ async function leaveBoard() {
   adapter.setViewport(store.viewport);
   if (back && timelineActive) timeline.restore(back.timeline);
   timeline.element(nodeId, 'board')?.focus({ preventScroll: true });
+  return true;
+}
+async function openOverview(focusId) {
+  if (home || feedback.state || layoutPreview || !hasTimeline(store.project)) return false;
+  if (!(await guardDraft())) return false;
+  if (focusId && !(await select({ kind: 'card', id: focusId }))) return false;
+  if (adapter.gesturing) adapter.cancelGesture?.();
+  overviewReturn = {
+    view: store.activeView,
+    viewport: clone(store.viewport),
+    timeline: timeline.context(),
+  };
+  showOverview(overviewViewport, focusId);
+  return true;
+}
+function showOverview(viewport, focusId) {
+  boardOverview = true;
+  timelineActive = false;
+  boardScope = null;
+  if (store.activeView === 'mind') store.switchView('card');
+  previousPanelKey = null;
+  render();
+  adapter.cy.resize();
+  if (viewport) adapter.setViewport(viewport);
+  else if (canvasProject().cards.length) fitOverview();
+  else adapter.setViewport({ zoom: 1, position: { x: 0, y: 0 } });
+  const card = focusId && adapter.cards.get(focusId);
+  if (card) {
+    adapter.focus(focusId);
+    card.focus({ preventScroll: true });
+  } else scopeBar.focusCurrent();
+}
+// Fit the cards and board frames into the part of the canvas not covered by the header or zoom bar.
+function fitOverview() {
+  const { cy, region } = adapter;
+  cy.resize();
+  const box = cy.elements().boundingBox();
+  let { x1, y1, x2, y2 } = box;
+  for (const f of overviewLayout(store.project).frames) {
+    x1 = Math.min(x1, f.x);
+    y1 = Math.min(y1, f.y);
+    x2 = Math.max(x2, f.x + f.width);
+    y2 = Math.max(y2, f.y + f.height);
+  }
+  const rect = region.getBoundingClientRect();
+  const top = $('#board-scope').getBoundingClientRect().bottom - rect.top + OVERVIEW_FIT_GAP;
+  const bottom =
+    rect.height - ($('.zoom-controls').offsetHeight + OVERVIEW_FIT_GAP * 2 + ZOOM_BAR_OFFSET);
+  const left = OVERVIEW_FIT_GAP,
+    right = rect.width - OVERVIEW_FIT_GAP;
+  const zoom = Math.min(
+    1,
+    Math.max(0.1, Math.min((right - left) / (x2 - x1), (bottom - top) / (y2 - y1))),
+  );
+  adapter.setViewport({
+    zoom,
+    position: {
+      x: (left + right) / 2 - ((x1 + x2) * zoom) / 2,
+      y: (top + bottom) / 2 - ((y1 + y2) * zoom) / 2,
+    },
+  });
+}
+// target 'timeline' returns to the Timeline scroll; 'card' lands on the ordinary project board.
+async function exitOverview(target) {
+  if (!boardOverview || feedback.state || layoutPreview || !(await guardDraft())) return false;
+  if (adapter.gesturing) adapter.cancelGesture?.();
+  const back = overviewReturn;
+  overviewViewport = { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) };
+  boardOverview = false;
+  overviewReturn = null;
+  if (target === 'timeline' && back && back.view !== store.activeView) store.switchView(back.view);
+  timelineActive = target === 'timeline' && hasTimeline(store.project);
+  previousPanelKey = null;
+  render();
+  if (back && back.view === store.activeView)
+    store.setView(back.viewport.zoom, back.viewport.position);
+  adapter.setViewport(store.viewport);
+  $('#toast').hidden = true; // The overview lock hint does not belong to the board we return to.
+  if (timelineActive && back) timeline.restore(back.timeline);
+  if (timelineActive) $('[data-timeline-action=overview]')?.focus({ preventScroll: true });
   return true;
 }
 // Quick background colour: one guarded command (all unpinned selected notes when the clicked one is
@@ -915,7 +1079,8 @@ const overviewEditor = createCardOverviewEditor({
   fallback: (id, field) =>
     detailOpen
       ? document.querySelector('#edit-card-overview')
-      : (timelineActive && timeline.element(id, field)) ||
+      : (boardScope === id && scopeBar.element(field)) ||
+        (timelineActive && timeline.element(id, field)) ||
         adapter.cards.get(id)?.querySelector('[data-overview-field="' + field + '"]') ||
         adapter.cards.get(id)?.querySelector('h3'),
   onApply: (id, values, styles, shared) => {
@@ -982,18 +1147,25 @@ const overviewEditor = createCardOverviewEditor({
       scheduleRecovery();
       return true;
     }
-    if (JSON.stringify(project) === JSON.stringify(store.project)) return announceApplied(true);
+    // Edited from the board header: say what changed instead of the format-oriented message.
+    const notice = boardScope === id ? 'noteTextUpdated' : 'formatUpdated';
+    if (JSON.stringify(project) === JSON.stringify(store.project))
+      return announceApplied(true, notice);
     return announceApplied(
       change((p) => {
         p.cards = project.cards;
         if (project.extensions) p.extensions = project.extensions;
         else delete p.extensions;
       }),
+      notice,
     );
   },
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
   board: (id) => void enterBoard(id),
+  frameOpen: (id) => void enterBoard(id),
+  arranged: () => boardOverview,
+  arrangedDrag: () => toast('boardOverviewLocked'),
   // Owned cards are outside the scoped projection, so the count comes from the full project.
   boardCount: (id) => (boardScope === null ? ownedCounts(store.project).get(id) || 0 : 0),
   edgeCorners: (id, value) =>
@@ -1016,7 +1188,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   selectMany: (ids, options) => selectMany(ids, options),
   groupAction: (id, action) =>
     action === 'edit' ? editGroup(id) : change((p) => removeGroup(p, id)),
-  groupLocked: () => adapter.callbacks.locked() || connectMode || home,
+  groupLocked: () => selectionBlocked() || boardOverview,
+  selectionLocked: () => selectionBlocked(),
   date: (id, anchor) => {
     if (inspector.hasPending()) {
       void inspector.close();
@@ -1065,6 +1238,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
     overviewEditor.show(id, anchor, field);
   },
   connectFrom: async (id) => {
+    if (overviewBlocked()) return;
     if (selectionLocked(store.project, { kind: 'card', id })) {
       toast('pinnedCardLocked');
       return;
@@ -1107,7 +1281,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   groupConnection: (source, group) => groupConnection(source, group),
   connectingFrom: () => (connectMode ? connectSource : null),
   viewport: (zoom, position) => {
-    if (boardScope === null) store.setView(zoom, position);
+    if (boardOverview) overviewViewport = { zoom, position: clone(position) };
+    else if (boardScope === null) store.setView(zoom, position);
     else scopeViewports.set(boardScope, { zoom, position: clone(position) });
     updateStatus();
   },
@@ -1120,6 +1295,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       layoutPreview ||
       dateEditor.open ||
       scheduleEditor.open ||
+      timelineInfoEditor.open ||
       statusPopover.open ||
       colorPopover.open ||
       overviewEditor.open ||
@@ -1128,6 +1304,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       adapter.edgeDragging,
     ),
 });
+const selectionBlocked = () => adapter.callbacks.locked() || connectMode || home;
 const currentView = () => (timelineActive ? 'timeline' : store.activeView);
 function render() {
   // Undo/Redo or removing the Timeline can delete the open node: fall back to the project board.
@@ -1140,9 +1317,15 @@ function render() {
     scopeReturn = null;
     timelineActive = hasTimeline(store.project);
   }
+  const overviewClosed = boardOverview && !hasTimeline(store.project);
+  if (overviewClosed) {
+    boardOverview = false;
+    overviewReturn = null;
+  }
   const timelineAvailable = !home && hasTimeline(store.project);
   if (!hasTimeline(store.project)) timelineActive = false;
   $('#canvas-region').dataset.view = store.activeView;
+  $('#canvas-region').classList.toggle('board-overview', boardOverview);
   $('#map-view').hidden = home;
   $('#map-view').setAttribute('aria-label', t('mapView'));
   $('[data-action=inspector]').disabled = home;
@@ -1210,6 +1393,7 @@ function render() {
     collapsed: store.collapsed,
     selectedCards,
     focusRoot: focusBranch ? selection.id : null,
+    frames: boardOverview ? overviewLayout(store.project).frames : undefined,
   });
   $('#selection-tools').hidden =
     selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
@@ -1219,7 +1403,7 @@ function render() {
   createGroupButton.hidden = selectedCards.size < 2;
   // Notes that all sit directly in one group form a subgroup of it.
   const place = selectedCards.size ? newGroupParent(store.project, [...selectedCards]) : {};
-  createGroupButton.disabled = Boolean(place.issue);
+  createGroupButton.disabled = Boolean(place.issue) || boardOverview;
   createGroupButton.title = t(
     place.issue || (place.parentId ? 'groupCreateSubgroup' : 'groupCreate'),
   );
@@ -1280,21 +1464,17 @@ function render() {
   palette.render();
   renderList();
   renderPanel();
-  if (timelineActive)
-    timeline.render({
-      project: store.project,
-      selection: selectedCards,
-      revealLabel: t(store.activeView === 'mind' ? 'mindMap' : 'cardMap'),
-    });
+  if (timelineActive) timeline.render({ project: store.project, selection: selectedCards });
   updateStatus();
   translate();
   renderScopeChrome(scoped);
-  if (scopeClosed) {
+  if (scopeClosed || overviewClosed) {
     adapter.setViewport(store.viewport);
-    toast('boardScopeClosed');
+    toast(scopeClosed ? 'boardScopeClosed' : 'boardOverviewClosed');
   }
   dateEditor.syncLocale();
   scheduleEditor.syncLocale();
+  timelineInfoEditor.syncLocale();
   statusPopover.syncLocale();
   colorPopover.syncLocale();
   overviewEditor.syncLocale();
@@ -1303,15 +1483,26 @@ function render() {
 // Breadcrumb, empty-board text and the Mind Map lock; runs after translate() so it wins over data-i18n.
 function renderScopeChrome(scoped) {
   const node = boardScope === null ? null : projectIndex(store.project).cards.get(boardScope);
-  scopeBar.render(
-    node
-      ? {
-          projectTitle: store.project.metadata.title,
-          nodeTitle: node.title,
-          count: scoped.cards.length,
-        }
-      : null,
-  );
+  const projectTitle = store.project.metadata.title;
+  let header = null;
+  if (boardOverview)
+    header = {
+      mode: 'overview',
+      projectTitle,
+      cards: scoped.cards.length,
+      boards: overviewLayout(store.project).frames.length,
+    };
+  else if (node)
+    header = {
+      mode: 'node',
+      projectTitle,
+      back: scopeReturn?.overview ? 'overview' : 'timeline',
+      title: node.title,
+      summary: node.summary,
+      count: scoped.cards.length,
+      pinned: isPinned(node),
+    };
+  scopeBar.render(header);
   if (node && !scoped.cards.length) {
     $('#welcome h1').textContent = t('boardScopeEmptyTitle', { title: node.title });
     $('#welcome p').textContent = t('boardScopeEmptyBody');
@@ -1335,9 +1526,12 @@ const renderCardList = createCardList({
   host: $('#card-list'),
   onSelect: async (id) => {
     const owner = ownerOf(projectIndex(store.project).cards.get(id) ?? { extensions: {} });
-    if (owner !== null) {
-      if (owner !== boardScope && !(await enterBoard(owner, id))) return;
-    } else if (boardScope !== null && !(await leaveBoard())) return;
+    // "View all" shows every note: search only selects and focuses, the scope never changes.
+    if (!boardOverview) {
+      if (owner !== null) {
+        if (owner !== boardScope && !(await enterBoard(owner, id))) return;
+      } else if (boardScope !== null && !(await leaveBoard())) return;
+    }
     if (await select({ kind: 'card', id }, false, true)) {
       closeSearch();
       if (timelineActive) timeline.reveal(id);
@@ -1409,7 +1603,7 @@ async function select(next, edit = false, open = false) {
   return true;
 }
 function selectMany(ids, { marquee = false } = {}) {
-  if (adapter.callbacks.groupLocked()) return false;
+  if (selectionBlocked()) return false;
   if (inspector.hasPending()) {
     void inspector.close();
     return false;
@@ -2118,6 +2312,7 @@ async function guardDraft() {
 }
 /** Draws an arrow from a card to a group frame as one Undo step. */
 async function groupConnection(source, groupId) {
+  if (overviewBlocked()) return;
   connectMode = false;
   connectSource = null;
   if (isPinned(projectIndex(store.project).cards.get(source))) {
@@ -2137,6 +2332,7 @@ async function groupConnection(source, groupId) {
   render();
 }
 async function connection(source, target, position) {
+  if (overviewBlocked()) return;
   if ([source, target].some((id) => isPinned(projectIndex(store.project).cards.get(id)))) {
     toast('pinnedCardLocked');
     return;
@@ -2195,6 +2391,7 @@ function closeSearch() {
   if (wasOpen && !detailOpen) $('[data-action=search]').focus();
 }
 async function createPaletteNode(option, point, file) {
+  if (overviewBlocked()) return;
   if (detailOpen || home || layoutPreview || feedback.state || !(await guardDraft())) return;
   const snapshot = store.project,
     view = store.activeView;
@@ -2267,7 +2464,7 @@ async function createPaletteNode(option, point, file) {
 }
 
 async function addCard() {
-  if (!(await guardDraft())) return;
+  if (overviewBlocked() || !(await guardDraft())) return;
   const pos = adapter.center(),
     card = newCard(
       { x: pos.x - DEFAULT_CARD_SIZE.width / 2, y: pos.y - DEFAULT_CARD_SIZE.height / 2 },
@@ -2288,6 +2485,7 @@ async function addCard() {
   render();
 }
 async function duplicate() {
+  if (overviewBlocked()) return;
   if (selectionLocked(store.project, selection)) {
     toast('pinnedCardLocked');
     return;
@@ -2330,7 +2528,7 @@ function copySelection() {
   return true;
 }
 async function pasteSnapshot(snapshot, offset) {
-  if (adapter.callbacks.groupLocked() || !(await guardDraft())) return false;
+  if (overviewBlocked() || adapter.callbacks.groupLocked() || !(await guardDraft())) return false;
   if (
     store.project.cards.length + snapshot.cards.length > LIMITS.cards ||
     store.project.relations.length + snapshot.relations.length > LIMITS.relations
@@ -2359,6 +2557,7 @@ async function duplicateSelection() {
   if (ids.length) await pasteSnapshot(copyCards(store.project, ids), PASTE_OFFSET);
 }
 async function deleteSelected() {
+  if (overviewBlocked()) return;
   if (selectedCards.size > 1) {
     toast('groupMoveOnly');
     return;
@@ -2563,7 +2762,7 @@ async function initializeRecovery() {
 }
 
 async function exportSelectionJSON(mode) {
-  if (adapter.callbacks.groupLocked() || !selectedCards.size) return;
+  if (selectionBlocked() || !selectedCards.size) return;
   const project = store.project;
   const ids = [...selectedCards];
   let result;
@@ -2773,6 +2972,9 @@ async function replaceProject(p, adjusted = false) {
   timelineActive = hasTimeline(p);
   boardScope = null;
   scopeReturn = null;
+  boardOverview = false;
+  overviewViewport = null;
+  overviewReturn = null;
   scopeViewports.clear();
   timeline.reset();
   store.replace(p, adjusted);
@@ -2882,13 +3084,19 @@ async function switchMapView(targetView) {
     $('#detail-map-view').value = currentView();
     return;
   }
+  // Leaving "View all" for Mind Map or Note Board lands on the ordinary project board first.
+  if (boardOverview) {
+    if (!(await exitOverview(targetView === 'timeline' ? 'timeline' : 'card'))) return;
+    if (targetView === 'mind') await switchMapView('mind');
+    return;
+  }
   if (boardScope !== null && targetView === 'timeline') {
-    await leaveBoard();
+    await leaveBoard({ timeline: true });
     return;
   }
   // From a note's board "Note Board" means the project board, not the Timeline it was opened from.
   if (boardScope !== null && targetView === 'card') {
-    if (!(await leaveBoard())) return;
+    if (!(await leaveBoard({ timeline: true }))) return;
     if (timelineActive) await switchMapView('card');
     return;
   }
@@ -3150,6 +3358,7 @@ const actions = {
       toast(result.changed ? 'autoRouteEnabled' : 'autoRouteNoCandidates');
   },
   'edge-adjust': async () => {
+    if (overviewBlocked()) return;
     if (store.activeView === 'mind') {
       toast('mindCurvesOnly');
       return;
@@ -3220,6 +3429,7 @@ const actions = {
   'selection-copy-json': () => exportSelectionJSON('copy'),
   'selection-download-json': () => exportSelectionJSON('download'),
   'group-create': () => {
+    if (overviewBlocked()) return;
     if (!adapter.callbacks.groupLocked()) editGroup(null, [...selectedCards]);
   },
   help: async () => {
@@ -3232,6 +3442,7 @@ const actions = {
   new: createProject,
   add: addCard,
   connect: async () => {
+    if (overviewBlocked()) return;
     if (selectionLocked(store.project, selection)) {
       toast('pinnedCardLocked');
       return;
@@ -3347,6 +3558,7 @@ document.addEventListener('keydown', (e) => {
   if (
     dateEditor.open ||
     scheduleEditor.open ||
+    timelineInfoEditor.open ||
     statusPopover.open ||
     colorPopover.open ||
     overviewEditor.open
@@ -3453,6 +3665,7 @@ window.addEventListener('beforeunload', (e) => {
     draftDirty() ||
     dateEditor.dirty ||
     scheduleEditor.dirty ||
+    timelineInfoEditor.dirty ||
     overviewEditor.dirty
   ) {
     e.preventDefault();

@@ -9,7 +9,7 @@ const FIXTURE = JSON.parse(
 const boardButton = (page, id) =>
   page.locator(`#timeline-view li.timeline-entry[data-card-id="${id}"] button.timeline-board`);
 const scroller = (page) => page.locator('#timeline-view .timeline-scroll');
-const scope = (page) => page.locator('nav#board-scope');
+const scope = (page) => page.locator('#board-scope');
 const cards = (page) => page.locator('.graph-card');
 
 async function openFixture(page) {

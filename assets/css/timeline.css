@@ -40,6 +40,106 @@
 .workspace.timeline-active #shape-library {
   display: none;
 }
+/* Timeline's own title and purpose, top-left like the node board header (.board-scope). */
+/* The timeline body hosts the strip; its title card floats over the top-left corner like the
+   node board header, and stays put while the strip scrolls sideways. */
+.timeline-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.timeline-intro {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  z-index: 2;
+  box-sizing: border-box;
+  max-width: min(28rem, calc(100% - 32px));
+  padding: 6px 10px 8px;
+  border: 1px solid var(--pencil-stroke);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--surface-shadow);
+}
+.timeline-intro-heading {
+  margin: 0;
+  font-family: var(--chrome-hand-font);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+.timeline-intro-row {
+  margin: 0;
+}
+.timeline-intro :is(.timeline-intro-title, .timeline-intro-description) {
+  display: block;
+  box-sizing: border-box;
+  max-width: min(40rem, 100%);
+  height: auto;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: text;
+}
+.timeline-intro .timeline-intro-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.timeline-intro .timeline-intro-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  padding: 2px 6px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.timeline-intro .is-empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+.timeline-intro :is(.timeline-intro-title, .timeline-intro-description):hover {
+  background: var(--hover);
+}
+.timeline-intro :is(.timeline-intro-title, .timeline-intro-description):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.timeline-info-editor {
+  width: 360px;
+}
+.timeline-info-editor :is(input, textarea) {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--soft);
+  color: var(--ink);
+  font: inherit;
+}
+.timeline-info-editor textarea {
+  resize: vertical;
+}
+.timeline-info-editor input + label {
+  margin-top: 10px;
+}
+.timeline-info-editor::backdrop {
+  background: #20251f26;
+  backdrop-filter: none;
+}
 .timeline-toolbar {
   --timeline-control-height: 34px;
   display: flex;
@@ -90,7 +190,7 @@
 .timeline-nav-start,
 .timeline-nav-end,
 .timeline-info-button,
-.timeline-reveal,
+.timeline-overview,
 .timeline-schedule-icon {
   --timeline-icon: none;
 }
@@ -103,8 +203,8 @@
 .timeline-info-button {
   --timeline-icon: url('../images/icons/info.svg');
 }
-.timeline-reveal {
-  --timeline-icon: url('../images/icons/board.svg');
+.timeline-overview {
+  --timeline-icon: url('../images/icons/node-board.svg');
 }
 .timeline-schedule-icon {
   --timeline-icon: url('../images/icons/calendar.svg');
@@ -112,7 +212,7 @@
 .timeline-nav-start::before,
 .timeline-nav-end::before,
 .timeline-info-button::before,
-.timeline-reveal::before,
+.timeline-overview::before,
 .timeline-schedule-icon::before {
   content: '';
   display: block;
@@ -428,21 +528,6 @@
   border-radius: 50%;
   background: var(--status-chip-bg);
 }
-.timeline-reveal {
-  display: inline-flex;
-  flex: none;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--timeline-card-soft);
-}
-.timeline-reveal:hover {
-  background: color-mix(in srgb, var(--timeline-card-ink) 10%, transparent);
-  color: var(--timeline-card-ink);
-}
 .timeline-entry[data-card-status='cancelled'] .timeline-card {
   opacity: 0.6;
 }
@@ -499,7 +584,7 @@
 }
 .timeline-unscheduled ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 8px;
   margin: 8px 0 0;
   padding: 0;
@@ -621,7 +706,12 @@
   display: none;
 }
 
-/* Node boards: count button on Timeline cards and the breadcrumb shown inside a node's board. */
+/* Node boards: board button on Timeline cards, the scope header and the board overview frames. */
+.timeline-toolbar .timeline-overview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .timeline-board {
   --timeline-icon: url('../images/icons/node-board.svg');
   display: inline-flex;
@@ -630,20 +720,26 @@
   flex: 0 1 auto;
   min-width: 0;
   min-height: 24px;
-  padding: 0 6px;
-  border: 0;
+  padding: 0 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
   border-radius: var(--radius-sm);
-  background: transparent;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--timeline-card-ink, var(--ink));
   font-size: 12px;
+  font-weight: 600;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .timeline-board > span {
+  flex: none;
+}
+.timeline-board > span + span {
+  flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--timeline-card-soft, var(--muted));
+  font-weight: 400;
 }
 .timeline-board::before {
   content: '';
@@ -655,27 +751,40 @@
   -webkit-mask: var(--timeline-icon) center / contain no-repeat;
 }
 .timeline-board:hover {
-  background: color-mix(in srgb, var(--timeline-card-ink, var(--ink)) 10%, transparent);
-}
-.timeline-board[data-count='0'] {
-  color: var(--timeline-card-soft, var(--muted));
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 .timeline-board:focus-visible,
 .board-scope button:focus-visible,
-.board-scope .board-scope-title:focus-visible {
+.board-frame-open:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 .timeline-unscheduled li .timeline-board {
-  color: var(--muted);
+  min-height: 22px;
+  padding: 0 6px;
+}
+/* In the compact unscheduled rows the note title gets the room: the board button keeps only
+   its icon and count (its aria-label still names the action), and the title takes the rest. */
+.timeline-unscheduled li .timeline-board {
+  flex: none;
+}
+.timeline-unscheduled li .timeline-board-label {
+  display: none;
+}
+.timeline-unscheduled li .timeline-title {
+  flex: 1 1 auto;
+  min-width: 3rem;
+  text-align: left;
 }
 .board-scope {
   position: absolute;
   top: 12px;
   left: 16px;
   z-index: 4;
-  max-width: calc(100% - 32px);
-  padding: 4px 12px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(26rem, calc(100% - 32px));
+  padding: 6px 12px 8px;
   border: 1px solid var(--pencil-stroke);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -685,33 +794,23 @@
 .board-scope[hidden] {
   display: none;
 }
-.board-scope ol {
+.board-scope-path {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.board-scope li {
-  display: flex;
-  align-items: baseline;
-  gap: 0;
+  gap: 4px;
   min-width: 0;
-  font-size: 13px;
+  font-size: 12px;
 }
-.board-scope li + li::before {
+.board-scope-path > button + button::before {
   content: '/';
-  flex: none;
-  padding: 0 6px 0 0;
+  margin-right: 8px;
   color: var(--muted);
+  text-decoration: none;
+  display: inline-block;
 }
 .board-scope-project {
-  flex: 0 1 auto;
-}
-.board-scope-project > button {
-  display: block;
-  max-width: 100%;
+  min-width: 0;
+  max-width: 14rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -719,53 +818,173 @@
 .board-scope-project[hidden] {
   display: none;
 }
-.board-scope-project[hidden] + li::before {
-  content: none;
-}
-.board-scope-project,
-.board-scope-title {
-  max-width: 220px;
-}
 .board-scope button {
-  height: 28px;
-  padding: 0 8px;
+  min-height: 24px;
+  padding: 0 6px;
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
   box-shadow: none;
   color: var(--accent);
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .board-scope button:hover {
   background: var(--hover);
 }
-.board-scope-title {
-  display: block;
-  overflow: hidden;
+.board-scope-heading {
+  margin: 2px 0 0;
   font-family: var(--chrome-hand-font);
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+.board-scope .board-scope-title,
+.board-scope .board-scope-summary {
+  display: block;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+  cursor: text;
+}
+.board-scope .board-scope-title {
+  height: auto;
+  padding: 0 6px;
+  overflow: hidden;
+  color: var(--ink);
+  font: inherit;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.board-scope-count {
-  flex: none;
-  margin-left: 6px;
+.board-scope .board-scope-title[hidden],
+.board-scope-summary-row[hidden] {
+  display: none;
+}
+.board-scope-overview-title {
+  display: block;
+  padding: 0 6px;
+}
+.board-scope-overview-title[hidden] {
+  display: none;
+}
+.board-scope-summary-row {
+  margin: 0;
+}
+.board-scope .board-scope-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  padding: 2px 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.board-scope .board-scope-summary[hidden] {
+  display: none;
+}
+.board-scope-pin {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: -2px;
+  background: url('../images/pushpin-red.svg') center / contain no-repeat;
+}
+.board-scope .board-scope-summary.is-empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+.board-scope :is(.board-scope-title, .board-scope-summary):hover {
+  background: var(--hover);
+}
+.board-scope :is(.board-scope-title, .board-scope-summary)[aria-disabled='true'] {
+  cursor: default;
+}
+.board-scope :is(.board-scope-title, .board-scope-summary)[aria-disabled='true']:hover {
+  background: transparent;
+}
+.board-scope-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  margin: 2px 0 0;
+  padding: 0 6px;
   color: var(--muted);
   font-size: 12px;
-  white-space: nowrap;
 }
-.board-scope li[aria-current='page'] {
-  flex: 1 1 auto;
+.board-scope-count,
+.board-scope-hint {
+  color: var(--muted);
+}
+.board-scope-hint {
+  font-size: 11px;
+}
+.board-scope-hint[hidden] {
+  display: none;
+}
+.board-frame {
+  position: absolute;
+  z-index: 0;
+  box-sizing: border-box;
+  border: 1.5px dashed var(--pencil-stroke);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--soft) 55%, transparent);
+  pointer-events: none;
+}
+.board-frame-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc((100% - 16px) / var(--board-frame-scale, 1));
+  min-height: 28px;
+  transform: scale(var(--board-frame-scale, 1));
+  transform-origin: top left;
+  margin: 6px 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+  font-family: var(--chrome-hand-font);
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+.board-frame-open::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background-color: currentColor;
+  mask: url('../images/icons/node-board.svg') center / contain no-repeat;
+  -webkit-mask: url('../images/icons/node-board.svg') center / contain no-repeat;
+}
+.board-frame-open:hover {
+  background: var(--hover);
+}
+#canvas-region.board-overview :is(.connector, .resize-handle, .group-frame-header button) {
+  display: none;
 }
 @media (max-width: 1150px) {
   .board-scope {
     left: 12px;
-    max-width: calc(100% - 24px);
+    max-width: min(26rem, calc(100% - 24px));
   }
-  .board-scope-project,
-  .board-scope-title {
-    max-width: 140px;
-  }
+}
+.timeline-toolbar .timeline-overview::before {
+  margin: 0;
+}
+
+/* An empty board has nothing to count: "Board trống" alone says both the action and the state. */
+.timeline-board[data-count='0'] .timeline-board-label {
+  display: none;
 }

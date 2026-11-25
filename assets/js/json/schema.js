@@ -1,6 +1,6 @@
 import { COMMENTS, COMMENT_LIMITS } from '../graph/card-comments.js';
 import { STATUS, STATUS_VALUES } from '../graph/card-status.js';
-import { SCHEDULE, TIMELINE } from '../graph/timeline.js';
+import { SCHEDULE, TIMELINE, TIMELINE_INFO_LIMITS } from '../graph/timeline.js';
 import { OWNER } from '../graph/card-scope.js';
 const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -271,7 +271,18 @@ schema.properties.extensions = extensions({
     },
     ['groups'],
   ),
-  [TIMELINE]: object({ version: { const: 1 } }, ['version']),
+  [TIMELINE]: object(
+    {
+      version: { const: 1 },
+      title: { type: 'string', pattern: '\\S', maxLength: TIMELINE_INFO_LIMITS.title },
+      description: {
+        type: 'string',
+        pattern: '\\S',
+        maxLength: TIMELINE_INFO_LIMITS.description,
+      },
+    },
+    ['version'],
+  ),
   'card-atlas:views': object({ mindMap: { $ref: '#/$defs/mindView' } }),
   'card-atlas:mind-map': object({ rootId: { $ref: '#/$defs/id' } }),
 });

@@ -111,6 +111,16 @@
           "properties": {
             "version": {
               "const": 1
+            },
+            "title": {
+              "type": "string",
+              "pattern": "\\S",
+              "maxLength": 200
+            },
+            "description": {
+              "type": "string",
+              "pattern": "\\S",
+              "maxLength": 500
             }
           },
           "required": [

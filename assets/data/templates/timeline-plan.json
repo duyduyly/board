@@ -3418,7 +3418,9 @@
   ],
   "extensions": {
     "card-atlas:timeline": {
-      "version": 1
+      "version": 1,
+      "title": "Lộ trình ra mắt sản phẩm",
+      "description": "Các mốc chính từ khảo sát thị trường đến ngày phát hành."
     }
   }
 }
