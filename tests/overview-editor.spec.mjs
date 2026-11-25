@@ -1,7 +1,17 @@
 import { view as switchMapView } from './ui-driver.mjs';
-import { applyAndContinue } from './ui-driver.mjs';
 import { test, expect } from '@playwright/test';
-import { setDraftTitle, expectDraftTitle } from './overview-test-helpers.mjs';
+async function expectDocumentContent(page, contains) {
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const { store } = await import('/assets/js/app.js');
+        return store.project.cards
+          .find((c) => c.id === 'card-user-service')
+          .content.includes('Draft content');
+      }),
+    )
+    .toBe(contains);
+}
 test('Canvas popup inherits global locale, edits text/style atomically and resets to defaults', async ({
   page,
 }) => {
@@ -52,7 +62,7 @@ test('Canvas popup inherits global locale, edits text/style atomically and reset
   await expect(title).not.toHaveCSS('font-size', '24px');
   expect(errors).toEqual([]);
 });
-test('Detail Edit keeps Markdown primary and popup edits stay in the shared draft until Apply', async ({
+test('Detail Edit keeps the block editor primary; the popup is guarded by the draft and edits apply in one step', async ({
   page,
 }) => {
   await page.goto('/');
@@ -61,27 +71,42 @@ test('Detail Edit keeps Markdown primary and popup edits stay in the shared draf
   await card.locator('.card-open').click();
   await page.locator('#panel-tabs button').nth(1).click();
   await expect(page.locator('#panel-body [name=title]')).toHaveCount(0);
-  await page.locator('[name=content]').fill('# Draft content');
-  await setDraftTitle(page, 'Draft title');
-  await expectDraftTitle(page, 'Draft title');
-  await expect(card.locator('h3')).toHaveText('User Service');
+  const editor = page.frameLocator('#block-editor .gjs-frame');
+  await editor.locator('p').first().dblclick();
+  await page.keyboard.press('Control+a');
+  await page.keyboard.insertText('Draft content');
+  await expect(editor.locator('body')).toContainText('Draft content');
   await page.locator('#panel-tabs button').nth(2).click();
-  await expect(page.locator('#format-card-preview h3')).toHaveText('Draft title');
-  await applyAndContinue(page, page.locator('#panel-body form [type=submit]'));
+  // The popup is a separate editor now: a dirty Detail draft goes through the draft guard first.
+  const guard = page.getByRole('dialog', { name: 'Giữ các chỉnh sửa?' });
+  await page.locator('#edit-card-overview').click();
+  await expect(guard).toBeVisible();
+  await guard.getByRole('button', { name: 'Hủy' }).click();
+  await expect(guard).not.toBeVisible();
+  await expect(page.locator('#detail-panel')).toBeVisible();
+  await expect(page.locator('#card-overview-editor')).not.toBeVisible();
+  await expect(card.locator('h3')).toHaveText('User Service');
+  await page.locator('#edit-card-overview').click();
+  await guard.getByRole('button', { name: 'Áp dụng' }).click();
+  await expect(page.locator('#detail-panel')).not.toBeVisible();
+  await expect(page.locator('#card-overview-editor')).toBeVisible();
+  await expectDocumentContent(page, true);
+  await page.locator('#overview-field').selectOption('title');
+  await page.locator('#overview-text').fill('Draft title');
+  await expect(card.locator('h3')).toHaveText('User Service');
+  await page.locator('[data-overview-apply]').click();
   await expect(card.locator('h3')).toHaveText('Draft title');
-  await page.locator('[data-action=close]').click();
   await page.locator('[data-action=undo]').first().click();
   await expect(card.locator('h3')).toHaveText('User Service');
-  const data = await page.evaluate(async () => {
+  await expectDocumentContent(page, true);
+  await page.locator('[data-action=undo]').first().click();
+  await expectDocumentContent(page, false);
+  const errors = await page.evaluate(async () => {
     const { store } = await import('/assets/js/app.js');
     const { stage, serialize } = await import('/assets/js/json/validator.js');
-    return {
-      errors: stage(serialize(store.project)).errors,
-      content: store.project.cards.find((c) => c.id === 'card-user-service').content,
-    };
+    return stage(serialize(store.project)).errors;
   });
-  expect(data.errors).toEqual([]);
-  expect(data.content).not.toBe('# Draft content');
+  expect(errors).toEqual([]);
 });
 
 test('invalid staged fields cannot commit; fractional sizes and independent summary/type styles round-trip', async ({
@@ -94,7 +119,7 @@ test('invalid staged fields cannot commit; fractional sizes and independent summ
     popup = page.locator('#card-overview-editor');
   await card.locator('h3').click();
   await page.locator('#overview-text').fill('');
-  await page.locator('[data-overview-apply]').click();
+  await expect(page.locator('[data-overview-apply]')).toBeDisabled();
   await expect(popup).toBeVisible();
   await expect(card.locator('h3')).toHaveText('User Service');
   await page.locator('#overview-text').fill('Fractional');

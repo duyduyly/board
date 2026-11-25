@@ -230,7 +230,8 @@ export function createGroupEditor({ dialog, toast, project, onApply }) {
           row.textContent = groupTitle(child);
           const tag = document.createElement('span');
           tag.className = 'group-editor-badge';
-          tag.textContent = t('groupNoteCount', { count: groupCardIds(original, child).length });
+          const count = groupCardIds(original, child).length;
+          tag.textContent = t(count === 1 ? 'groupNoteCountOne' : 'groupNoteCount', { count });
           row.append(tag);
           nested.list.append(row);
         }
