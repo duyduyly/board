@@ -689,6 +689,8 @@ export default {
   projectName: 'Tên dự án',
   createProject: 'Tạo dự án',
   projectCreated: 'Đã tạo dự án mới',
+  newProjectTimeline: 'Tạo Timeline cho dự án này',
+  newProjectTimelineHint: 'Dự án sẽ mở ở view Timeline; có thể gỡ sau trong menu ?.',
   newProjectHint: 'Tạo một sơ đồ trống. Dữ liệu hiện tại chưa xuất sẽ được hỏi trước khi thay thế.',
   darkMode: 'Chuyển sang chế độ tối',
   lightMode: 'Chuyển sang chế độ sáng',

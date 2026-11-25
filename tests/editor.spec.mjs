@@ -540,7 +540,7 @@ test('New Project names blank projects and preserves work when replacement is ca
   await page.locator('[data-action=example]').click();
   await page.locator('[data-palette-kind=card]').click();
   await page.keyboard.press('Enter');
-  await expect(page.locator('.graph-card')).toHaveCount(4);
+  await expect(page.locator('.graph-card')).toHaveCount(5);
   const snapshot = () =>
     page.evaluate(async () => {
       const { store } = await import('/assets/js/app.js');

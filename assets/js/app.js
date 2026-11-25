@@ -2427,6 +2427,7 @@ async function exportDocument(format) {
 async function createProject() {
   if (!(await guardDraft())) return;
   let title = t('untitledProject');
+  let withTimeline = false;
   const body = () => {
     const container = document.createElement('div');
     const label = document.createElement('label');
@@ -2450,7 +2451,22 @@ async function createProject() {
     label.append(input);
     const hint = document.createElement('p');
     hint.textContent = t('newProjectHint');
-    container.append(label, hint);
+    const option = document.createElement('label');
+    option.className = 'new-project-option';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'new-project-timeline';
+    checkbox.checked = withTimeline;
+    checkbox.onchange = () => {
+      withTimeline = checkbox.checked;
+    };
+    const optionText = document.createElement('span');
+    optionText.textContent = t('newProjectTimeline');
+    option.append(checkbox, optionText);
+    const optionHint = document.createElement('p');
+    optionHint.className = 'new-project-option-hint';
+    optionHint.textContent = t('newProjectTimelineHint');
+    container.append(label, hint, option, optionHint);
     return container;
   };
   const choice = dialog('newProject', body, [
@@ -2462,6 +2478,7 @@ async function createProject() {
   if ((await choice) !== 'create') return;
   const project = blank();
   project.metadata.title = title.trim();
+  if (withTimeline) enableTimeline(project);
   if (await replaceProject(project)) toast('projectCreated');
 }
 async function replaceProject(p, adjusted = false) {

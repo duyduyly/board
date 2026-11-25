@@ -692,6 +692,9 @@ export default {
   projectName: 'Project name',
   createProject: 'Create project',
   projectCreated: 'New project created',
+  newProjectTimeline: 'Add a Timeline to this project',
+  newProjectTimelineHint:
+    'The project opens in the Timeline view; you can remove it later in the ? menu.',
   newProjectHint: 'Create a blank diagram. You will be asked before replacing unexported work.',
   darkMode: 'Switch to dark mode',
   lightMode: 'Switch to light mode',

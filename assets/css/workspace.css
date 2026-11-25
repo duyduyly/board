@@ -1484,3 +1484,21 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
   color: var(--active-ink);
   box-shadow: inset 0 0 0 1.5px var(--accent);
 }
+
+/* New project dialog: Timeline opt-in row (checkbox stays outside .new-project-label). */
+.new-project-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+.new-project-option input {
+  margin: 0;
+}
+.new-project-option-hint {
+  margin: 4px 0 0 24px;
+  font-size: 12px;
+  color: var(--muted);
+}

@@ -108,6 +108,11 @@ export function createTimelineView({
     footer.append(chip, revealButton);
 
     const article = node('article', 'timeline-card');
+    // Same appearance variables as the canvas card, so the note keeps its own colours.
+    const { backgroundColor, textColor, borderColor } = card.style || {};
+    if (backgroundColor) article.style.setProperty('--card-background', backgroundColor);
+    if (textColor) article.style.setProperty('--card-ink', textColor);
+    if (borderColor) article.style.setProperty('--card-border', borderColor);
     article.append(date, title, node('p', 'timeline-summary', card.summary || ''), footer);
     li.append(node('span', 'timeline-marker'), article);
     return li;
