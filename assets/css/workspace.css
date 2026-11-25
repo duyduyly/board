@@ -886,6 +886,10 @@ dialog.detail-panel .editor .editor-actions:has(button[type='submit']) {
   color: #fff;
   box-shadow: 0 1px 3px #17251d20;
 }
+#map-view button[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 #map-view[hidden] {
   display: none;
 }

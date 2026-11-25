@@ -1,0 +1,286 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Timeline boards fixture",
+    "description": "Timeline project whose scheduled notes own boards."
+  },
+  "canvas": {
+    "zoom": 1,
+    "position": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "cards": [
+    {
+      "id": "node-a",
+      "title": "Node A",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "Node A",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-02",
+          "end": "2026-03-08"
+        }
+      }
+    },
+    {
+      "id": "node-b",
+      "title": "Node B",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "Node B",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-09",
+          "end": "2026-03-15"
+        }
+      }
+    },
+    {
+      "id": "node-c",
+      "title": "Node C",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "Node C",
+      "position": {
+        "x": 800,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:schedule": {
+          "start": "2026-03-16"
+        }
+      }
+    },
+    {
+      "id": "node-d",
+      "title": "Node D",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "Node D",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    },
+    {
+      "id": "node-e",
+      "title": "Node E",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "Node E",
+      "position": {
+        "x": 400,
+        "y": 300
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {}
+    },
+    {
+      "id": "a-child-1",
+      "title": "A child 1",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "A child 1",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:owner": {
+          "nodeId": "node-a"
+        }
+      }
+    },
+    {
+      "id": "a-child-2",
+      "title": "A child 2",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "A child 2",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:owner": {
+          "nodeId": "node-a"
+        }
+      }
+    },
+    {
+      "id": "b-child-1",
+      "title": "B child 1",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "B child 1",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:owner": {
+          "nodeId": "node-b"
+        }
+      }
+    },
+    {
+      "id": "b-child-2",
+      "title": "B child 2",
+      "summary": "",
+      "type": "task",
+      "tags": [],
+      "content": "B child 2",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "size": {
+        "width": 260,
+        "height": 190
+      },
+      "style": {
+        "backgroundColor": "#FFF2B0",
+        "textColor": "#23332D",
+        "borderColor": "#C8B76B"
+      },
+      "extensions": {
+        "card-atlas:owner": {
+          "nodeId": "node-b"
+        }
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-root",
+      "source": "node-d",
+      "target": "node-e",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    },
+    {
+      "id": "rel-a",
+      "source": "a-child-1",
+      "target": "a-child-2",
+      "label": "",
+      "description": "",
+      "type": "default",
+      "style": {
+        "color": "#64748b",
+        "line": "solid",
+        "arrow": "end"
+      }
+    }
+  ],
+  "extensions": {
+    "card-atlas:timeline": {
+      "version": 1
+    },
+    "card-atlas:groups": {
+      "groups": [
+        {
+          "id": "group-b",
+          "title": "B group",
+          "cardIds": ["b-child-1", "b-child-2"]
+        }
+      ]
+    }
+  }
+}

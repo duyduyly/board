@@ -1,6 +1,7 @@
 import { COMMENTS, COMMENT_LIMITS } from '../graph/card-comments.js';
 import { STATUS, STATUS_VALUES } from '../graph/card-status.js';
 import { SCHEDULE, TIMELINE } from '../graph/timeline.js';
+import { OWNER } from '../graph/card-scope.js';
 const schema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'Card Atlas Project 1.0',
@@ -315,6 +316,7 @@ schema.$defs.card.properties.extensions = extensions({
   ),
   [STATUS]: object({ value: { enum: [...STATUS_VALUES] } }, ['value']),
   [SCHEDULE]: object({ start: scheduleDate, end: scheduleDate }, ['start']),
+  [OWNER]: object({ nodeId: { $ref: '#/$defs/id' } }, ['nodeId']),
   'card-atlas:node': { $ref: '#/$defs/nodePresentation' },
   'card-atlas:appearance': object({
     radius: { type: 'number', minimum: 0, maximum: 100 },

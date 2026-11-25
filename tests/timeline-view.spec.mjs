@@ -32,7 +32,7 @@ async function menuAction(page, action) {
   await page.locator('[data-action="' + action + '"]').click();
 }
 async function createTimeline(page) {
-  await menuAction(page, 'timeline-create');
+  await timelineButton(page).click();
   await expect(timelineView(page)).toBeVisible();
 }
 const expectTimeline = async (page) => {
@@ -44,19 +44,21 @@ const expectBoard = async (page) => {
   await expect(page.locator('[data-map-view=card]')).toHaveAttribute('aria-pressed', 'true');
 };
 
-test('a project without Timeline hides the view button and opens the Note Board', async ({
+test('a project without Timeline still shows the view button and opens the Note Board', async ({
   page,
 }) => {
   await startBoard(page);
-  await expect(timelineButton(page)).toBeHidden();
+  await expect(timelineButton(page)).toBeVisible();
   await expect(timelineView(page)).not.toBeVisible();
   await expectBoard(page);
   await page.locator('#project-menu > summary').click();
-  await expect(page.locator('[data-action=timeline-create]')).toBeVisible();
+  await expect(page.locator('[data-action=timeline-create]')).toHaveCount(0);
   await expect(page.locator('[data-action=timeline-remove]')).toBeHidden();
 });
 
-test('create Timeline from the ? menu, then Undo and Redo move one step', async ({ page }) => {
+test('create Timeline from the view switcher, then Undo and Redo move one step', async ({
+  page,
+}) => {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await startBoard(page);
@@ -67,7 +69,7 @@ test('create Timeline from the ? menu, then Undo and Redo move one step', async 
 
   await page.keyboard.press('Control+z');
   await expectBoard(page);
-  await expect(timelineButton(page)).toBeHidden();
+  await expect(timelineButton(page)).toBeVisible();
 
   // Redo restores the configuration only; the session stays on the active view.
   await page.keyboard.press('Control+Shift+z');
@@ -140,7 +142,7 @@ test('remove Timeline: Cancel keeps it, confirm returns to board keeping notes, 
   await page.locator('#modal [data-choice=remove]').click();
   await expect(page.locator('#modal')).not.toBeVisible();
   await expectBoard(page);
-  await expect(timelineButton(page)).toBeHidden();
+  await expect(timelineButton(page)).toBeVisible();
   expect(await stored()).toEqual(before);
 
   // Undo restores the configuration only; the session stays on the active view.

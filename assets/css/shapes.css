@@ -343,6 +343,41 @@
   mask: url('../images/icons/comment.svg') center / contain no-repeat;
   -webkit-mask: url('../images/icons/comment.svg') center / contain no-repeat;
 }
+/* Board badge (project board only): count of notes on the card's own board; opens that board. */
+.card-status-strip > .card-board-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.card-status-strip > .card-board-badge[hidden] {
+  display: none;
+}
+.card-status-strip > .card-board-badge:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+.card-status-strip > .card-board-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card-status-strip > .card-board-badge::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  flex: none;
+  background-color: currentColor;
+  mask: url('../images/icons/node-board.svg') center / contain no-repeat;
+  -webkit-mask: url('../images/icons/node-board.svg') center / contain no-repeat;
+}
 /* Status chip: icon + label inside the strip; colours come from tokens, geometry stays untouched. */
 .card-status-strip > .card-status-chip {
   display: inline-flex;

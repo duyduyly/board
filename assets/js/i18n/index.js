@@ -36,6 +36,12 @@ export function issueMessage(issue) {
     duplicateRelation: 'errorDuplicateRelation',
     defaultAdded: 'errorDefaultAdded',
     scheduleOrder: 'errorScheduleOrder',
+    ownerMissing: 'errorOwnerMissing',
+    ownerNested: 'errorOwnerNested',
+    ownerWithoutTimeline: 'errorOwnerWithoutTimeline',
+    relationScope: 'errorRelationScope',
+    groupScope: 'errorGroupScope',
+    mindRootScope: 'errorMindRootScope',
   }[issue.code];
   return key ? t(key) : t('errorSchema', { code: issue.code });
 }

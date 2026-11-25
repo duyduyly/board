@@ -1,4 +1,5 @@
 import { cardDateValue } from './card-metadata.js';
+import { ownerOf } from './card-scope.js';
 import { effectiveStatus } from './card-status.js';
 
 export const SCHEDULE = 'card-atlas:schedule';
@@ -120,6 +121,8 @@ export function timelineEntries(project) {
   /** @type {string[]} */
   const unscheduled = [];
   (project.cards || []).forEach((/** @type {any} */ card, /** @type {number} */ index) => {
+    // Cards on a node's board belong to that node, not to the project Timeline.
+    if (ownerOf(card)) return;
     const entry = entryOf(card);
     if (entry) dated.push({ entry, index });
     else unscheduled.push(card.id);

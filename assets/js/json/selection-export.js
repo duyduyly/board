@@ -2,6 +2,7 @@ import { clone } from '../common/data.js';
 import { GROUPS } from '../graph/card-groups.js';
 import { MIND, VIEWS } from '../graph/mind-map.js';
 import { TIMELINE } from '../graph/timeline.js';
+import { ownerOf, setOwner } from '../graph/card-scope.js';
 import { serialize, stage } from './validator.js';
 
 const supportedProjectExtensions = new Set([GROUPS, MIND, VIEWS, TIMELINE]);
@@ -22,6 +23,8 @@ export function selectionFile(project, selectedIds, { viewport, viewports } = {}
   if ([...ids].some((id) => !existing.has(id))) throw new Error('selectionMissing');
 
   const cards = project.cards.filter((card) => ids.has(card.id)).map(clone);
+  // A board card whose node is left out would reference a missing owner, so it becomes a project card.
+  for (const card of cards) if (!ids.has(ownerOf(card))) setOwner(card, null);
   const relations = project.relations
     .filter((edge) => ids.has(edge.source) && ids.has(edge.target))
     .map(clone);

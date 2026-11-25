@@ -1,10 +1,19 @@
+import { ownedCounts } from '../graph/card-scope.js';
 import { effectiveStatus } from '../graph/card-status.js';
 import { filterEntries, timelineEntries, todayIndex, todayKey } from '../graph/timeline.js';
 import { calendarDate, dateRange, getLocale, statusLabel, t } from '../i18n/index.js';
 
 const ACTION_SELECTOR = '[data-timeline-action]';
 const TITLE_SELECTOR = '.timeline-title';
-const PART_ACTION = { title: 'open', date: 'schedule', status: 'status' };
+// Parts a caller can focus again after an editor closes (see `element`).
+const PART_SELECTOR = {
+  title: '[data-timeline-action="edit"][data-timeline-field="title"]',
+  summary: '[data-timeline-action="edit"][data-timeline-field="summary"]',
+  date: '[data-timeline-action="schedule"]',
+  status: '[data-timeline-action="status"]',
+  open: '[data-timeline-action="open"]',
+  board: '[data-timeline-action="board-open"]',
+};
 
 /** @param {string} tag @param {string} [className] @param {string} [text] */
 function node(tag, className, text) {
@@ -22,6 +31,46 @@ function actionButton(action, label, className) {
   return button;
 }
 
+/**
+ * Opens the node's own board; the count says how many notes it holds.
+ * @param {string} title @param {number} count
+ */
+function boardButton(title, count) {
+  const button = actionButton('board-open', '', 'timeline-board');
+  button.dataset.count = String(count);
+  button.append(
+    node(
+      'span',
+      '',
+      count
+        ? t(count === 1 ? 'timelineBoardCountOne' : 'timelineBoardCount', { count })
+        : t('timelineBoardEmpty'),
+    ),
+  );
+  const label = t(count === 1 ? 'timelineBoardOpenForOne' : 'timelineBoardOpenFor', {
+    title,
+    count,
+  });
+  button.title = label;
+  button.setAttribute('aria-label', label);
+  return button;
+}
+
+/**
+ * Text field that opens the shared overview editor (same affordance as a note on the canvas).
+ * @param {string} field @param {string} text @param {string} className @param {boolean} pinned
+ */
+function editButton(field, text, className, pinned) {
+  const button = actionButton('edit', text, className);
+  button.dataset.timelineField = field;
+  button.setAttribute(
+    'aria-label',
+    pinned ? t('pinnedReadOnly') : t('editOverviewField', { field: t(field), value: text }),
+  );
+  if (pinned) button.setAttribute('aria-disabled', 'true');
+  return button;
+}
+
 /** @param {unknown} selection @returns {Set<string>} */
 function selectedIds(selection) {
   if (!selection) return new Set();
@@ -36,20 +85,26 @@ function selectedIds(selection) {
  * @param {{
  *   host: HTMLElement,
  *   onOpen: (id: string) => void,
+ *   onEdit: (id: string, anchor: HTMLElement, field: string) => void,
  *   onStatus: (id: string, anchor: HTMLElement) => void,
  *   onSchedule: (id: string, anchor: HTMLElement) => void,
  *   onReveal: (id: string) => void,
+ *   onOpenBoard: (id: string) => void,
  *   onBoard: () => void,
+ *   onAddNote: () => void,
  *   isPinned: (id: string) => boolean,
  * }} ports
  */
 export function createTimelineView({
   host,
   onOpen,
+  onEdit,
   onStatus,
   onSchedule,
   onReveal,
+  onOpenBoard,
   onBoard,
+  onAddNote,
   isPinned,
 }) {
   const filterSelect = /** @type {HTMLSelectElement} */ (
@@ -76,7 +131,7 @@ export function createTimelineView({
   /** @type {HTMLElement | null} */
   let todayEl = null;
 
-  function buildEntry(card, entry, side, revealLabel) {
+  function buildEntry(card, entry, side, revealLabel, counts) {
     const status = effectiveStatus(card);
     const pinned = isPinned(card.id);
     const range = dateRange(entry.start, entry.end);
@@ -93,7 +148,11 @@ export function createTimelineView({
     if (pinned) date.setAttribute('aria-disabled', 'true');
 
     const title = node('h3');
-    title.append(actionButton('open', card.title, 'timeline-title'));
+    const openButton = actionButton('open', '', 'timeline-open');
+    const openText = `${t('openDetail')}: ${card.title}`;
+    openButton.title = openText;
+    openButton.setAttribute('aria-label', openText);
+    title.append(editButton('title', card.title, 'timeline-title', pinned), openButton);
 
     const chip = actionButton('status', '', 'timeline-status-chip');
     const label = statusLabel(status);
@@ -102,10 +161,12 @@ export function createTimelineView({
     if (pinned) chip.setAttribute('aria-disabled', 'true');
 
     const footer = node('footer', 'timeline-card-footer');
+    // Icon-only: the full label stays as tooltip and accessible name.
     const revealText = t('timelineOpenOn', { view: revealLabel });
-    const revealButton = actionButton('reveal', revealText, 'timeline-reveal');
+    const revealButton = actionButton('reveal', '', 'timeline-reveal');
     revealButton.title = revealText;
-    footer.append(chip, revealButton);
+    revealButton.setAttribute('aria-label', revealText);
+    footer.append(chip, boardButton(card.title, counts.get(card.id) || 0), revealButton);
 
     const article = node('article', 'timeline-card');
     // Same appearance variables as the canvas card, so the note keeps its own colours.
@@ -113,17 +174,34 @@ export function createTimelineView({
     if (backgroundColor) article.style.setProperty('--card-background', backgroundColor);
     if (textColor) article.style.setProperty('--card-ink', textColor);
     if (borderColor) article.style.setProperty('--card-border', borderColor);
-    article.append(date, title, node('p', 'timeline-summary', card.summary || ''), footer);
+    // An empty summary keeps a clickable (placeholder) target so it can still be written here.
+    const summary = node('p', 'timeline-summary');
+    summary.append(
+      editButton(
+        'summary',
+        card.summary || t('timelineSummaryEmpty'),
+        'timeline-summary-edit',
+        pinned,
+      ),
+    );
+    if (!card.summary) summary.classList.add('is-empty');
+    article.append(title, date, summary, footer);
     li.append(node('span', 'timeline-marker'), article);
     return li;
   }
 
-  function buildUnscheduled(card) {
+  function buildUnscheduled(card, counts) {
     const li = node('li');
     li.dataset.cardId = card.id;
-    const date = actionButton('schedule', t('timelineSetDate'));
+    const date = actionButton('schedule', '', 'timeline-schedule-icon');
+    date.title = t('timelineSetDate');
+    date.setAttribute('aria-label', t('timelineSetDate'));
     if (isPinned(card.id)) date.setAttribute('aria-disabled', 'true');
-    li.append(actionButton('open', card.title, 'timeline-title'), date);
+    li.append(
+      editButton('title', card.title, 'timeline-title', isPinned(card.id)),
+      boardButton(card.title, counts.get(card.id) || 0),
+      date,
+    );
     return li;
   }
 
@@ -135,6 +213,7 @@ export function createTimelineView({
     todayEl = null;
     filterSelect.value = filter;
     const model = timelineEntries(project);
+    const counts = ownedCounts(project);
     const entries = filterEntries(project, model.entries, filter || null);
     const cards = new Map((project.cards || []).map((card) => [card.id, card]));
     const unscheduled = filter
@@ -142,18 +221,27 @@ export function createTimelineView({
       : model.unscheduled;
 
     const items = entries.map((entry, index) => {
-      const li = buildEntry(cards.get(entry.id), entry, index % 2 ? 'below' : 'above', revealLabel);
+      const li = buildEntry(
+        cards.get(entry.id),
+        entry,
+        index % 2 ? 'below' : 'above',
+        revealLabel,
+        counts,
+      );
       entryEls.set(entry.id, li);
       return li;
     });
     if (items.length) {
       todayEl = node('li', 'timeline-today');
       todayEl.setAttribute('aria-label', `${t('timelineToday')}: ${calendarDate(todayKey())}`);
+      todayEl.dataset.label = t('timelineToday');
       items.splice(todayIndex(entries, todayKey()), 0, todayEl);
     }
     trackEl.replaceChildren(...items);
 
-    unscheduledList.replaceChildren(...unscheduled.map((id) => buildUnscheduled(cards.get(id))));
+    unscheduledList.replaceChildren(
+      ...unscheduled.map((id) => buildUnscheduled(cards.get(id), counts)),
+    );
     unscheduledEl.hidden = !unscheduled.length;
     unscheduledSummary.textContent = t('timelineUnscheduled', { count: unscheduled.length });
     if (!model.entries.length && unscheduled.length) unscheduledEl.open = true;
@@ -179,7 +267,8 @@ export function createTimelineView({
       node('p', '', t(cardCount ? 'timelineFilterEmpty' : 'timelineEmpty')),
       cardCount
         ? actionButton('clear-filter', t('timelineClearFilter'))
-        : actionButton('board', t('timelineOpenBoard')),
+        : actionButton('add-note', t('timelineAddNote'), 'timeline-add'),
+      ...(cardCount ? [] : [actionButton('board', t('timelineOpenBoard'))]),
     );
   }
 
@@ -226,13 +315,11 @@ export function createTimelineView({
 
   /** @param {string} id @param {string} part */
   function element(id, part) {
-    const action = PART_ACTION[part];
+    const selector = PART_SELECTOR[part];
     const owner = [...host.querySelectorAll('[data-card-id]')].find(
       (el) => el.dataset.cardId === id,
     );
-    const button = action
-      ? owner?.querySelector(`[data-timeline-action="${action}"]`) || null
-      : null;
+    const button = selector ? owner?.querySelector(selector) || null : null;
     // A button inside the closed list cannot take focus.
     if (button && unscheduledEl.contains(button)) unscheduledEl.open = true;
     return button;
@@ -265,11 +352,14 @@ export function createTimelineView({
     else if (action === 'start') scrollEl.scrollLeft = 0;
     else if (action === 'end') scrollEl.scrollLeft = scrollEl.scrollWidth;
     else if (action === 'board') onBoard();
+    else if (action === 'add-note') onAddNote();
     else if (action === 'clear-filter') setFilter('');
     else if (id && action === 'open') onOpen(id);
+    else if (id && action === 'edit') onEdit(id, button, button.dataset.timelineField || 'title');
     else if (id && action === 'status') onStatus(id, button);
     else if (id && action === 'schedule') onSchedule(id, button);
     else if (id && action === 'reveal') onReveal(id);
+    else if (id && action === 'board-open') onOpenBoard(id);
   });
 
   host.addEventListener('change', (event) => {
@@ -304,5 +394,10 @@ export function createTimelineView({
     { passive: false },
   );
 
-  return { render, reveal, element, reset };
+  const context = () => ({ scrollLeft: scrollEl.scrollLeft });
+  const restore = ({ scrollLeft }) => {
+    scrollEl.scrollLeft = scrollLeft;
+  };
+
+  return { render, reveal, element, reset, context, restore };
 }

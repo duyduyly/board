@@ -27,7 +27,14 @@ export function createCardOverviewEditor({
     element.querySelector(first).before(section);
     for (const selector of selectors) section.append(element.querySelector(selector));
   };
-  group('metadata', '[data-label=field]', ['[data-label=field]', '#overview-field', '[data-label=text]', '#overview-text', '[data-tags-label]', '#overview-tags']);
+  group('metadata', '[data-label=field]', [
+    '[data-label=field]',
+    '#overview-field',
+    '[data-label=text]',
+    '#overview-text',
+    '[data-tags-label]',
+    '#overview-tags',
+  ]);
   group('inspectorTypographySection', '.overview-style-grid', ['.overview-style-grid']);
   group('inspectorTextPreview', '.overview-preview', ['.overview-preview']);
   document.body.append(element);
@@ -50,8 +57,11 @@ export function createCardOverviewEditor({
   const snapshot = () => JSON.stringify({ values, styles, shared: shared.checked });
   function updateApply() {
     const button = element.querySelector('[data-overview-apply]');
-    button.disabled = Boolean(element.closest('#format-inspector')) &&
-      (snapshot() === initial || !String(values.title || '').trim() || !element.querySelector('form').checkValidity());
+    button.disabled =
+      Boolean(element.closest('#format-inspector')) &&
+      (snapshot() === initial ||
+        !String(values.title || '').trim() ||
+        !element.querySelector('form').checkValidity());
   }
   const surface = dialogSurface(element, {
     onRequestClose: () => close(),
@@ -93,9 +103,11 @@ export function createCardOverviewEditor({
       // The compact typography row is icon-only in the dock and the popup; the name stays accessible.
       if (element.closest('#format-inspector') || node.closest('.overview-style-grid')) {
         node.title = text;
-        node.innerHTML = formatPropertyIcon(key) + (node.tagName === 'LABEL' || node.tagName === 'BUTTON'
-          ? '<span class="format-property-name">' + esc(text) + '</span>'
-          : esc(text));
+        node.innerHTML =
+          formatPropertyIcon(key) +
+          (node.tagName === 'LABEL' || node.tagName === 'BUTTON'
+            ? '<span class="format-property-name">' + esc(text) + '</span>'
+            : esc(text));
       } else {
         node.removeAttribute('title');
         node.textContent = text;
@@ -109,13 +121,21 @@ export function createCardOverviewEditor({
     decorate(element.querySelector('[data-tags-label]'), 'tags', t('tags'));
     element.querySelector('[data-uniform-hint]').textContent = t('uniformStylesHint');
     for (const label of element.querySelectorAll('[data-label]'))
-      decorate(label, label.dataset.label === 'field' ? 'overviewField' : label.dataset.label === 'text' ? 'overviewText' : label.dataset.label, t(
+      decorate(
+        label,
         label.dataset.label === 'field'
           ? 'overviewField'
           : label.dataset.label === 'text'
             ? 'overviewText'
             : label.dataset.label,
-      ));
+        t(
+          label.dataset.label === 'field'
+            ? 'overviewField'
+            : label.dataset.label === 'text'
+              ? 'overviewText'
+              : label.dataset.label,
+        ),
+      );
     field.replaceChildren(
       ...textFields.map((f) => new window.Option(t(f === 'type' ? 'contentType' : f), f)),
     );
@@ -142,11 +162,23 @@ export function createCardOverviewEditor({
   function syncScope() {
     const ctx = context();
     element.querySelector('[data-overview-apply]').textContent = t(
-      ctx.combined ? 'inspectorApplyCombined' : ctx.draft ? 'updateOverviewDraft' : shared.checked ? 'applyUniformCount' : 'applyThisCard',
+      ctx.combined
+        ? 'inspectorApplyCombined'
+        : ctx.draft
+          ? 'updateOverviewDraft'
+          : shared.checked
+            ? 'applyUniformCount'
+            : 'applyThisCard',
       { count: ctx.count },
     );
     element.querySelector('[data-overview-scope]').textContent = t(
-      ctx.combined ? 'inspectorCombinedScope' : ctx.draft ? 'overviewDraftScope' : shared.checked ? 'overviewBulkScope' : 'overviewCardScope',
+      ctx.combined
+        ? 'inspectorCombinedScope'
+        : ctx.draft
+          ? 'overviewDraftScope'
+          : shared.checked
+            ? 'overviewBulkScope'
+            : 'overviewCardScope',
       { count: ctx.count },
     );
     updateApply();

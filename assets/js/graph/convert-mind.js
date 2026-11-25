@@ -3,6 +3,7 @@ import { selectionLocked } from './card-lock.js';
 import { isPinned } from './card-metadata.js';
 import { MIND, nodeStyle, setRoot, setGeometry, relationKind } from './mind-map.js';
 import { radialLayout, applyLayout } from './radial-layout.js';
+import { ownerOf, projectScope } from './card-scope.js';
 import { validate } from '../json/validator.js';
 
 export function convertMind(project, rootId) {
@@ -39,7 +40,7 @@ export function convertMind(project, rootId) {
       edge.extensions[MIND] = { ...edge.extensions[MIND], kind: 'branch' };
     }
   for (const card of next.cards) {
-    if (isPinned(card) || nodeStyle(card).kind !== 'card') continue;
+    if (isPinned(card) || ownerOf(card) !== null || nodeStyle(card).kind !== 'card') continue;
     setGeometry(
       next,
       card.id,
@@ -49,7 +50,7 @@ export function convertMind(project, rootId) {
     );
   }
   if (validate(next).errors.length) throw Error('mindConvertFailed');
-  const layout = radialLayout(next);
+  const layout = radialLayout(projectScope(next, null));
   applyLayout(next, layout);
   return { project: next, warnings: layout.warnings };
 }

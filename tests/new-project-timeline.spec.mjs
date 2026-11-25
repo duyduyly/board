@@ -14,20 +14,18 @@ async function openNewProject(page) {
 
 test('new project without the Timeline option opens the Note Board', async ({ page }) => {
   await openNewProject(page);
-  await expect(timelineOption(page)).not.toBeChecked();
+  await expect(timelineOption(page)).toBeChecked();
+  await timelineOption(page).uncheck();
   await page.locator('#modal [data-choice=create]').click();
   await expect(page.locator('[data-map-view=card]')).toHaveAttribute('aria-pressed', 'true');
-  await expect(timelineButton(page)).toBeHidden();
+  await expect(timelineButton(page)).toBeVisible();
   await expect(timelineView(page)).not.toBeVisible();
 });
 
-test('new project with the Timeline option opens an empty Timeline and exports it', async ({
+test('new project opens (Timeline ticked by default) an empty Timeline and exports it', async ({
   page,
 }) => {
   await openNewProject(page);
-  await page.keyboard.press('Tab');
-  await expect(timelineOption(page)).toBeFocused();
-  await page.keyboard.press('Space');
   await expect(timelineOption(page)).toBeChecked();
   await page.locator('#modal #new-project-title').focus();
   await page.keyboard.press('Enter');

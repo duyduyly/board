@@ -43,7 +43,6 @@
               data-map-view="timeline"
               aria-pressed="false"
               data-i18n="timelineView"
-              hidden
             ></button>
           </div>
           <div class="history-buttons">
@@ -140,7 +139,6 @@
                 ></h3>
                 <button data-action="inspector" data-i18n="inspectorTitle"></button>
                 <button data-action="convert-mind" data-i18n="convertMind"></button>
-                <button data-action="timeline-create" data-i18n="timelineCreate"></button>
                 <button data-action="timeline-remove" data-i18n="timelineRemove" hidden></button>
                 <div id="counts"></div>
                 <p id="save-state" class="save-state"></p>
@@ -242,22 +240,56 @@
           >
             <div class="timeline-toolbar">
               <h2 id="timeline-heading" data-i18n="timelineView"></h2>
-              <p class="timeline-mode-note" data-i18n="timelineEventOrder"></p>
-              <label class="timeline-filter">
-                <span data-i18n="timelineFilterLabel"></span>
-                <select id="timeline-status-filter">
-                  <option value="" data-i18n="timelineFilterAll"></option>
-                  <option value="new" data-i18n="statusNew"></option>
-                  <option value="in-progress" data-i18n="statusInProgress"></option>
-                  <option value="done" data-i18n="statusDone"></option>
-                  <option value="blocked" data-i18n="statusBlocked"></option>
-                  <option value="cancelled" data-i18n="statusCancelled"></option>
-                </select>
-              </label>
-              <button type="button" data-timeline-action="today" data-i18n="timelineToday"></button>
-              <button type="button" data-timeline-action="start" data-i18n="timelineStart"></button>
-              <button type="button" data-timeline-action="end" data-i18n="timelineEnd"></button>
+              <span class="timeline-info">
+                <button
+                  type="button"
+                  class="timeline-info-button"
+                  data-i18n-aria="timelineEventOrder"
+                ></button>
+                <span
+                  class="timeline-mode-note"
+                  aria-hidden="true"
+                  data-i18n="timelineEventOrder"
+                ></span>
+              </span>
+              <select
+                id="timeline-status-filter"
+                class="timeline-filter"
+                data-i18n-aria="timelineFilterLabel"
+              >
+                <option value="" data-i18n="timelineFilterAll"></option>
+                <option value="new" data-i18n="statusNew"></option>
+                <option value="in-progress" data-i18n="statusInProgress"></option>
+                <option value="done" data-i18n="statusDone"></option>
+                <option value="blocked" data-i18n="statusBlocked"></option>
+                <option value="cancelled" data-i18n="statusCancelled"></option>
+              </select>
+              <div class="timeline-nav">
+                <button
+                  type="button"
+                  class="timeline-nav-start"
+                  data-timeline-action="start"
+                  data-i18n-title="timelineStart"
+                ></button>
+                <button
+                  type="button"
+                  data-timeline-action="today"
+                  data-i18n="timelineToday"
+                ></button>
+                <button
+                  type="button"
+                  class="timeline-nav-end"
+                  data-timeline-action="end"
+                  data-i18n-title="timelineEnd"
+                ></button>
+              </div>
               <span class="timeline-count" role="status"></span>
+              <button
+                type="button"
+                class="timeline-add primary"
+                data-timeline-action="add-note"
+                data-i18n="timelineAddNote"
+              ></button>
             </div>
             <div class="timeline-scroll">
               <ol class="timeline-track" data-i18n-aria="timelineRegion"></ol>
@@ -268,6 +300,25 @@
             </details>
             <div class="timeline-empty" hidden></div>
           </section>
+          <nav id="board-scope" class="board-scope" data-i18n-aria="boardScopeLabel" hidden>
+            <ol>
+              <li class="board-scope-project">
+                <button type="button" data-scope-action="root"></button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  data-scope-action="timeline"
+                  data-i18n="timelineView"
+                  data-i18n-title="boardScopeBack"
+                ></button>
+              </li>
+              <li aria-current="page">
+                <span class="board-scope-title" tabindex="-1"></span>
+                <span class="board-scope-count"></span>
+              </li>
+            </ol>
+          </nav>
           <div id="welcome" class="welcome">
             <h1 data-i18n="welcome"></h1>
             <p data-i18n="welcomeBody"></p>

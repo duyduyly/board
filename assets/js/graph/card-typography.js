@@ -48,14 +48,14 @@ export function uniformProfile(card, styles) {
     ]),
   );
 }
-export function applyUniformStyles(project, profile, view, measure) {
+export function applyUniformStyles(project, profile, view, measure, include = () => true) {
   for (const card of project.cards) {
-    if (isPinned(card)) continue;
+    if (isPinned(card) || !include(card)) continue;
     card.extensions ||= {};
     card.extensions[TYPOGRAPHY] = structuredClone(profile);
   }
   for (const card of project.cards) {
-    if (isPinned(card)) continue;
+    if (isPinned(card) || !include(card)) continue;
     if (card.extensions?.['card-atlas:appearance']?.sizeMode !== 'fit') continue;
     const size = measure(card);
     if (!size) throw new Error('fitOverflow');

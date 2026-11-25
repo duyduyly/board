@@ -1,6 +1,7 @@
 import { metadataIssues } from '../graph/card-metadata.js';
 import { commentIssues } from '../graph/card-comments.js';
-import { scheduleIssues } from '../graph/timeline.js';
+import { hasTimeline, scheduleIssues } from '../graph/timeline.js';
+import { scopeIssues } from '../graph/card-scope.js';
 import { documentIssues } from '../graph/html-document.js';
 import { routingIssues } from '../graph/edge-routing.js';
 import { groupIssues } from '../graph/card-groups.js';
@@ -87,6 +88,7 @@ export function validate(raw) {
   errors.push(...mindIssues(raw));
   errors.push(...routingIssues(raw));
   errors.push(...groupIssues(raw));
+  errors.push(...scopeIssues(raw, { timeline: hasTimeline(raw) }));
   return { errors, warnings };
 }
 export function normalize(raw) {

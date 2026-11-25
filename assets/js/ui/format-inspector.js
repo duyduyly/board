@@ -9,7 +9,16 @@ const tabIcons = {
   edge: 'M3 12h16M15 8l4 4-4 4',
 };
 
-export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onGlobal, context, dirty, canDismiss }) {
+export function createFormatInspector({
+  guard,
+  guardGlobal,
+  onSwitch,
+  onTab,
+  onGlobal,
+  context,
+  dirty,
+  canDismiss,
+}) {
   const host = document.querySelector('#format-inspector');
   const tabs = document.querySelector('#inspector-tabs');
   const global = document.querySelector('#inspector-global');
@@ -29,7 +38,8 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
   );
   let globalBaseline = structuredClone(typography);
   let globalOptions = {};
-  const globalDirty = () => Object.values(globalOptions).some(Boolean) ||
+  const globalDirty = () =>
+    Object.values(globalOptions).some(Boolean) ||
     JSON.stringify(typography) !== JSON.stringify(globalBaseline);
   function resetGlobal() {
     for (const field of textFields) Object.assign(typography[field], globalBaseline[field]);
@@ -60,7 +70,14 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
       button.disabled =
         ['text', 'card'].includes(key) && (selected.locked || selected.kind !== 'card');
       if (key === 'edge' && (selected.kind !== 'relation' || selected.locked))
-        button.title = label + ': ' + t(selected.locked && selected.kind === 'relation' ? 'inspectorLockedRelationHint' : 'inspectorSelectRelationHint');
+        button.title =
+          label +
+          ': ' +
+          t(
+            selected.locked && selected.kind === 'relation'
+              ? 'inspectorLockedRelationHint'
+              : 'inspectorSelectRelationHint',
+          );
       button.onclick = async () => {
         if (key === active) {
           if (key === 'text' && !host.querySelector('#card-overview-editor')?.open) onTab(key);
@@ -89,8 +106,12 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
       section.append(heading);
       const scope = document.createElement('p');
       scope.className = 'inspector-scope';
-      scope.textContent = t(group === 'cards' ? 'inspectorEligibleCards' : 'inspectorEligibleEdges')
-        .replace('{count}', String(group === 'cards' ? selected.eligibleCards : selected.eligibleEdges));
+      scope.textContent = t(
+        group === 'cards' ? 'inspectorEligibleCards' : 'inspectorEligibleEdges',
+      ).replace(
+        '{count}',
+        String(group === 'cards' ? selected.eligibleCards : selected.eligibleEdges),
+      );
       section.append(scope);
       for (const key of keys) {
         const label = document.createElement('label');
@@ -98,12 +119,21 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
         input.type = 'checkbox';
         input.name = key;
         input.checked = Boolean(globalOptions[key]);
-        input.addEventListener('change', () => { globalOptions[key] = input.checked; });
+        input.addEventListener('change', () => {
+          globalOptions[key] = input.checked;
+        });
         input.disabled =
           (key === 'routes' && selected.view === 'mind') ||
           (key === 'arrows' && (selected.kind !== 'relation' || selected.locked)) ||
           (key === 'surface' && (selected.kind !== 'card' || selected.locked));
-        if (input.disabled) label.title = t(key === 'routes' ? 'inspectorRoutesMindHint' : key === 'arrows' ? 'inspectorNeedArrow' : 'inspectorNeedCard');
+        if (input.disabled)
+          label.title = t(
+            key === 'routes'
+              ? 'inspectorRoutesMindHint'
+              : key === 'arrows'
+                ? 'inspectorNeedArrow'
+                : 'inspectorNeedCard',
+          );
         label.append(input);
         label.insertAdjacentHTML('beforeend', formatPropertyIcon(key));
         label.append(document.createTextNode(t('inspectorBulk' + key)));
@@ -181,8 +211,20 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
     actions.append(state, cancel, apply);
     form.append(actions);
     const updateApply = () => {
-      const eligible = { routes: selected.eligibleRoutes, arrows: selected.eligibleEdges, surface: selected.eligibleCards, typography: selected.eligibleCards };
-      apply.disabled = ![...form.elements].some((element) => element.type === 'checkbox' && element.name && element.checked && eligible[element.name] > 0) || !form.checkValidity();
+      const eligible = {
+        routes: selected.eligibleRoutes,
+        arrows: selected.eligibleEdges,
+        surface: selected.eligibleCards,
+        typography: selected.eligibleCards,
+      };
+      apply.disabled =
+        ![...form.elements].some(
+          (element) =>
+            element.type === 'checkbox' &&
+            element.name &&
+            element.checked &&
+            eligible[element.name] > 0,
+        ) || !form.checkValidity();
       state.textContent = t(globalDirty() ? 'editorUnsaved' : 'editorSaved');
     };
     form.addEventListener('input', updateApply);
@@ -218,8 +260,13 @@ export function createFormatInspector({ guard, guardGlobal, onSwitch, onTab, onG
     const edgeUnavailable = key === 'edge' && (selected.kind !== 'relation' || selected.locked);
     const edgeHint = document.querySelector('#inspector-edge-hint');
     edgeHint.hidden = !edgeUnavailable;
-    edgeHint.textContent = t(selected.locked && selected.kind === 'relation' ? 'inspectorLockedRelationHint' : 'inspectorSelectRelationHint');
-    document.querySelector('#inspector-fields').hidden = !['card', 'edge'].includes(key) || edgeUnavailable;
+    edgeHint.textContent = t(
+      selected.locked && selected.kind === 'relation'
+        ? 'inspectorLockedRelationHint'
+        : 'inspectorSelectRelationHint',
+    );
+    document.querySelector('#inspector-fields').hidden =
+      !['card', 'edge'].includes(key) || edgeUnavailable;
     sync();
   }
   function hide() {

@@ -1,13 +1,13 @@
 import { dialogSurface, anchorDialog } from './dialog-surface.js';
 import { t, getLocale } from '../i18n/index.js';
 import { todayKey } from '../graph/timeline.js';
-/** `suggest(id)` optionally proposes a start date for a card without schedule (default: today). */
-export function createCardScheduleEditor({ current, onApply, fallback, suggest }) {
+/** `suggest(id)` optionally proposes a start date for a card without schedule (default: today); `title(id)` names the note being edited. */
+export function createCardScheduleEditor({ current, onApply, fallback, suggest, title }) {
   const element = document.createElement('dialog');
   element.className = 'card-date-editor card-schedule-editor';
   element.id = 'card-schedule-editor';
   element.innerHTML =
-    '<form><div class="date-editor-heading"><h2></h2></div><label for="schedule-start" data-schedule-start-label></label><input id="schedule-start" type="date" min="0001-01-01" max="9999-12-31" required><label for="schedule-end" data-schedule-end-label></label><input id="schedule-end" type="date" min="0001-01-01" max="9999-12-31"><p class="date-editor-help"></p><p class="date-editor-error" role="alert" hidden></p><div class="date-editor-actions"><button type="button" data-schedule-clear></button><button type="button" data-schedule-cancel></button><button type="submit" class="primary" data-schedule-apply></button></div></form>';
+    '<form><div class="date-editor-heading"><h2></h2></div><p class="schedule-card-title"></p><label for="schedule-start" data-schedule-start-label></label><input id="schedule-start" type="date" min="0001-01-01" max="9999-12-31" required><label for="schedule-end" data-schedule-end-label></label><input id="schedule-end" type="date" min="0001-01-01" max="9999-12-31"><p class="date-editor-help"></p><p class="date-editor-error" role="alert" hidden></p><div class="date-editor-actions"><button type="button" data-schedule-clear></button><button type="button" data-schedule-cancel></button><button type="submit" class="primary" data-schedule-apply></button></div></form>';
   document.body.append(element);
   const start = element.querySelector('#schedule-start'),
     end = element.querySelector('#schedule-end'),
@@ -89,6 +89,7 @@ export function createCardScheduleEditor({ current, onApply, fallback, suggest }
       end.value = initial.end;
       clear.hidden = !schedule;
       error.hidden = true;
+      element.querySelector('.schedule-card-title').textContent = title?.(cardId) || '';
       syncLocale();
       surface.show(start);
       anchorDialog(element, anchor);

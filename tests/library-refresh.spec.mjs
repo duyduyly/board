@@ -12,10 +12,12 @@ test('all refreshed library templates open in their intended view and Mind templ
     if (item.category === 'mind') await page.locator('[data-category=mind]').click();
     await page.locator('[data-template="' + item.id + '"]').click();
     const source = JSON.parse(await fs.readFile(item.path, 'utf8'));
-    await expect(page.locator('.graph-card')).toHaveCount(source.cards.length);
+    // The root board only renders cards that are not owned by a Timeline node.
+    const rootCards = source.cards.filter((card) => !card.extensions?.['card-atlas:owner']);
+    await expect(page.locator('.graph-card')).toHaveCount(rootCards.length);
     await expect(page.locator('#map-view')).toHaveAttribute(
       'data-active-view',
-      item.view || 'card',
+      source.extensions?.['card-atlas:timeline'] ? 'timeline' : item.view || 'card',
     );
     if (item.view === 'mind') {
       await expect(page.locator('.paper-note')).toHaveCount(0);
@@ -24,7 +26,7 @@ test('all refreshed library templates open in their intended view and Mind templ
       );
       expect(curves.every((c) => c === 'unbundled-bezier')).toBe(true);
       await switchMapView(page, 'card');
-      await expect(page.locator('.graph-card')).toHaveCount(source.cards.length);
+      await expect(page.locator('.graph-card')).toHaveCount(rootCards.length);
     }
   }
   await page.goto('/');

@@ -4,12 +4,12 @@ import { shapeAnchor } from './shape-registry.js';
 
 const GAP = 16,
   EPS = 0.001;
-export function enableAutoRoutes(project, view) {
+export function enableAutoRoutes(project, view, include = () => true) {
   const pins = new Set(project.cards.filter(isPinned).map((c) => c.id));
   let changed = 0,
     skipped = 0;
   for (const r of project.relations) {
-    if (edgeRoute(r) !== 'orthogonal' || r.source === r.target) continue;
+    if (edgeRoute(r) !== 'orthogonal' || r.source === r.target || !include(r)) continue;
     const config = r.extensions?.[EDGE];
     if (
       pins.has(r.source) ||

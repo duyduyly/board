@@ -104,14 +104,49 @@ test.describe('Timeline interaction', () => {
     for (const id of UNSCHEDULED) await expect(entry(page, id)).toHaveCount(0);
   });
 
-  test('title opens Detail and closing returns focus to the title', async ({ page }) => {
+  test('title and summary open the shared overview editor; Apply is one Undo step', async ({
+    page,
+  }) => {
     await openTimeline(page);
+    const editor = page.locator('#card-overview-editor');
     const title = entry(page, 'task-03').locator('button.timeline-title');
+    const summary = entry(page, 'task-03').locator('button.timeline-summary-edit');
+
     await title.click();
+    await expect(editor).toBeVisible();
+    await expect(page.locator('#overview-field')).toHaveValue('title');
+    await page.locator('#overview-text').fill('Renamed on Timeline');
+    await editor.locator('[data-overview-cancel]').click();
+    await expect(editor).not.toBeVisible();
+    await expect(title).toHaveText('Task 03');
+    await expect(title).toBeFocused();
+
+    await title.click();
+    await page.locator('#overview-text').fill('Renamed on Timeline');
+    await editor.locator('button[type=submit]').click();
+    await expect(editor).not.toBeVisible();
+    await expect(title).toHaveText('Renamed on Timeline');
+    await expect(title).toBeFocused();
+    await page.locator('[data-action=undo]').first().click();
+    await expect(title).toHaveText('Task 03');
+
+    await summary.click();
+    await expect(editor).toBeVisible();
+    await expect(page.locator('#overview-field')).toHaveValue('summary');
+    await page.locator('#overview-text').fill('New summary text');
+    await editor.locator('button[type=submit]').click();
+    await expect(summary).toHaveText('New summary text');
+    await expect(summary).toBeFocused();
+  });
+
+  test('open button opens Detail and closing returns focus to it', async ({ page }) => {
+    await openTimeline(page);
+    const open = entry(page, 'task-03').locator('button.timeline-open');
+    await open.click();
     await expect(page.locator('#detail-panel')).toBeVisible();
     await page.locator('#detail-panel [data-action=close]').click();
     await expect(page.locator('#detail-panel')).not.toBeVisible();
-    await expect(title).toBeFocused();
+    await expect(open).toBeFocused();
   });
 
   test('schedule editor validates, applies, clears and undoes in one step', async ({ page }) => {
@@ -172,6 +207,8 @@ test.describe('Timeline interaction', () => {
     await expect(page.locator('#toast')).toBeVisible();
     await expect(page.locator('#toast')).toContainText('ghim');
     await expect(page.locator('#card-schedule-editor')).not.toBeVisible();
+    await entry(page, PINNED).locator('button.timeline-title').click({ force: true });
+    await expect(page.locator('#card-overview-editor')).not.toBeVisible();
     await entry(page, PINNED).locator('button.timeline-status-chip').click({ force: true });
     await expect(page.locator('#card-status-popover')).not.toBeVisible();
   });
@@ -191,7 +228,7 @@ test.describe('Timeline interaction', () => {
     await expect(entries(page)).toHaveCount(DATED.length);
   });
 
-  test('keyboard moves between titles and Enter opens Detail', async ({ page }) => {
+  test('keyboard moves between titles and Enter opens the overview editor', async ({ page }) => {
     await openTimeline(page);
     const titles = page.locator('#timeline-view li.timeline-entry button.timeline-title');
     await titles.first().focus();
@@ -204,7 +241,7 @@ test.describe('Timeline interaction', () => {
     await page.keyboard.press('Home');
     await expect(titles.first()).toBeFocused();
     await page.keyboard.press('Enter');
-    await expect(page.locator('#detail-panel')).toBeVisible();
+    await expect(page.locator('#card-overview-editor')).toBeVisible();
   });
 
   test('reveal on the board selects the right note', async ({ page }) => {
@@ -224,6 +261,18 @@ test.describe('Timeline interaction', () => {
     const title = entry(page, 'task-24').locator('button.timeline-title');
     await expect(title).toBeInViewport();
     expect(await scrollLeft(page)).toBeGreaterThan(0);
+  });
+
+  test('Add note only adds a note dated today and Undo removes it in one step', async ({
+    page,
+  }) => {
+    await openTimeline(page);
+    await page.locator('#timeline-view .timeline-toolbar [data-timeline-action=add-note]').click();
+    await expect(page.locator('#detail-panel')).not.toBeVisible();
+    await expect(entries(page)).toHaveCount(DATED.length + 1);
+    await expect(page.locator('#timeline-view li.timeline-entry.selected')).toHaveCount(1);
+    await page.keyboard.press('Control+z');
+    await expect(entries(page)).toHaveCount(DATED.length);
   });
 
   for (const theme of ['light', 'dark'])

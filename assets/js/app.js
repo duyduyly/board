@@ -42,12 +42,22 @@ import {
 import { createCardColorPopover } from './ui/card-color-popover.js';
 import { createCardScheduleEditor } from './ui/card-schedule-editor.js';
 import { createTimelineView } from './ui/timeline-view.js';
+import { createBoardScopeBar } from './ui/board-scope-bar.js';
+import {
+  adoptNewCards,
+  clearOwners,
+  ownedCounts,
+  ownedIds,
+  ownerOf,
+  scopedProject,
+} from './graph/card-scope.js';
 import {
   cardSchedule,
   disableTimeline,
   enableTimeline,
   hasTimeline,
   setSchedule,
+  todayKey,
 } from './graph/timeline.js';
 import {
   stampCreated,
@@ -148,6 +158,9 @@ let selection = null,
   hasSession = false,
   // Timeline is a session surface over the Project Model: store.activeView keeps the last canvas view.
   timelineActive = false,
+  // Board of one Timeline node (session only, CC-23): the canvas draws a projection of its notes.
+  boardScope = null,
+  scopeReturn = null,
   loadingTemplate = false,
   expanded = false,
   readingScale = 1,
@@ -163,13 +176,21 @@ let selection = null,
   recoveredSnapshot = null,
   draftMindSize = null,
   originalMindSize = null;
+// Per-board viewports stay in session memory; only the project board viewport is exported.
+const scopeViewports = new Map();
+const canvasProject = () => scopedProject(store.project, boardScope);
+const inBoardScope = (card) => ownerOf(card) === boardScope;
+const relationInBoardScope = (project) => {
+  const ids = new Set(project.cards.filter(inBoardScope).map((c) => c.id));
+  return (relation) => ids.has(relation.source) && ids.has(relation.target);
+};
 const feedback = createFeedback();
 const { toast, dialog, renderModal, finishDialog, showMessage } = feedback;
 const formatGuide = createFormatGuide({ dialog, toast });
 const editGroup = createGroupEditor({
   dialog,
   toast,
-  project: () => store.project,
+  project: canvasProject,
   onApply: (id, values) =>
     change((p) => {
       if (id) updateGroup(p, id, values);
@@ -226,14 +247,14 @@ const inspector = createFormatInspector({
     kind: selection?.kind,
     view: store.activeView,
     locked: selectionLocked(store.project, selection),
-    eligibleCards: store.project.cards.filter((card) => !isPinned(card)).length,
-    eligibleEdges: store.project.relations.filter(
+    eligibleCards: canvasProject().cards.filter((card) => !isPinned(card)).length,
+    eligibleEdges: canvasProject().relations.filter(
       (relation) => !selectionLocked(store.project, { kind: 'relation', id: relation.id }),
     ).length,
     eligibleRoutes:
       store.activeView === 'mind'
         ? 0
-        : store.project.relations.filter(
+        : canvasProject().relations.filter(
             (relation) =>
               relation.extensions?.[EDGE]?.route === 'orthogonal' &&
               !selectionLocked(store.project, { kind: 'relation', id: relation.id }),
@@ -302,11 +323,11 @@ const inspector = createFormatInspector({
     if (!Object.values(options).some(Boolean)) return;
     const affectedCards =
       options.surface || options.typography
-        ? store.project.cards.filter((card) => !isPinned(card)).length
+        ? canvasProject().cards.filter((card) => !isPinned(card)).length
         : 0;
     const affectedEdges =
       options.routes || options.arrows
-        ? store.project.relations.filter(
+        ? canvasProject().relations.filter(
             (relation) =>
               !selectionLocked(store.project, { kind: 'relation', id: relation.id }) &&
               (options.arrows ||
@@ -334,9 +355,11 @@ const inspector = createFormatInspector({
       return;
     if (
       change((p) => {
+        const inScopeRelation = relationInBoardScope(p);
         if (options.routes)
           for (const relation of p.relations) {
             if (
+              inScopeRelation(relation) &&
               relation.extensions?.[EDGE]?.route === 'orthogonal' &&
               !selectionLocked(p, { kind: 'relation', id: relation.id })
             )
@@ -344,20 +367,28 @@ const inspector = createFormatInspector({
           }
         if (options.surface)
           for (const card of p.cards) {
-            if (!isPinned(card)) card.style = clone(source.style);
+            if (inBoardScope(card) && !isPinned(card)) card.style = clone(source.style);
           }
         if (options.arrows && edgeSource)
           for (const relation of p.relations) {
-            if (!selectionLocked(p, { kind: 'relation', id: relation.id }))
+            if (
+              inScopeRelation(relation) &&
+              !selectionLocked(p, { kind: 'relation', id: relation.id })
+            )
               relation.style = clone(edgeSource.style);
           }
         if (options.typography)
-          applyUniformStyles(p, typographyProfile, store.activeView, (card) =>
-            measureOverview(
-              { ...card, size: geometry(p, card, store.activeView).size },
-              null,
-              store.activeView,
-            ),
+          applyUniformStyles(
+            p,
+            typographyProfile,
+            store.activeView,
+            (card) =>
+              measureOverview(
+                { ...card, size: geometry(p, card, store.activeView).size },
+                null,
+                store.activeView,
+              ),
+            inBoardScope,
           );
       })
     ) {
@@ -525,7 +556,11 @@ function errorLines(issues) {
 function change(mutator) {
   if (layoutPreview) return false;
   try {
-    const result = store.commit(mutator);
+    const before = new Set(store.project.cards.map((c) => c.id));
+    const result = store.commit((p) => {
+      mutator(p);
+      if (hasTimeline(p)) adoptNewCards(p, before, boardScope);
+    });
     lastExport = false;
     if (store.notice) toast('historyLimit');
     return result;
@@ -595,6 +630,7 @@ const statusPopover = createCardStatusPopover({
   },
 });
 const scheduleEditor = createCardScheduleEditor({
+  title: (id) => projectIndex(store.project).cards.get(id)?.title || '',
   // Prefill with the date the timeline already shows for the note (its note date).
   suggest: (id) => {
     const card = projectIndex(store.project).cards.get(id);
@@ -654,6 +690,58 @@ async function timelineOpen(id) {
   draftOriginal = null;
   render();
 }
+// Same editor as a canvas note, shown as a popup anchored to the clicked text (not in the Format dock).
+function timelineEdit(id, anchor, field) {
+  const card = projectIndex(store.project).cards.get(id);
+  if (!card || overviewEditor.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (isPinned(card)) toast('pinnedReadOnly');
+  else if (statusBlocked() || dateEditor.open || statusPopover.open || scheduleEditor.open)
+    toast('timelineEditBlocked');
+  else {
+    selectMany([id]);
+    document.body.append($('#card-overview-editor'));
+    overviewEditor.show(id, anchor, field);
+  }
+}
+const TIMELINE_NOTE_GAP = 40;
+// New Timeline note: dated today, placed right of the existing notes so it never overlaps one.
+async function timelineAddNote() {
+  if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
+  const view = store.activeView;
+  const rootCards = scopedProject(store.project, null).cards;
+  const right = rootCards.reduce((edge, card) => {
+    const { position, size } = geometry(store.project, card, view);
+    return Math.max(edge, position.x + size.width);
+  }, 0);
+  const top = rootCards.reduce(
+    (edge, card) => Math.min(edge, geometry(store.project, card, view).position.y),
+    Infinity,
+  );
+  const card = newCard(
+    {
+      x: rootCards.length ? right + TIMELINE_NOTE_GAP : 0,
+      y: Number.isFinite(top) ? top : 0,
+    },
+    t('newCard'),
+  );
+  if (
+    !change((p) => {
+      p.cards.push(card);
+      setGeometry(p, card.id, 'mind', 'size', card.size);
+      if (view === 'mind') setGeometry(p, card.id, 'mind', 'position', card.position);
+      setSchedule(p.cards.at(-1), { start: todayKey() });
+    })
+  )
+    return;
+  // Only add the entry; its title, summary and dates are edited in place on the card.
+  selection = { kind: 'card', id: card.id };
+  render();
+  timeline.reveal(card.id);
+}
 async function timelineReveal(id) {
   if (feedback.state || !(await guardDraft()) || !(await select({ kind: 'card', id }))) return;
   timelineActive = false;
@@ -665,12 +753,82 @@ async function timelineReveal(id) {
 const timeline = createTimelineView({
   host: $('#timeline-view'),
   onOpen: timelineOpen,
+  onEdit: timelineEdit,
   onStatus: timelineStatus,
   onSchedule: timelineSchedule,
   onReveal: timelineReveal,
   onBoard: () => switchMapView('card'),
+  onOpenBoard: (id) => enterBoard(id),
+  onAddNote: () => timelineAddNote(),
   isPinned: (id) => isPinned(projectIndex(store.project).cards.get(id)),
 });
+const scopeBar = createBoardScopeBar({
+  host: $('#board-scope'),
+  onTimeline: () => leaveBoard(),
+  onRoot: () => switchMapView('card'),
+});
+async function enterBoard(nodeId, focusId) {
+  if (home || feedback.state || layoutPreview || !(await guardDraft())) return false;
+  const node = projectIndex(store.project).cards.get(nodeId);
+  if (!node || ownerOf(node) !== null) return false;
+  if (adapter.gesturing) adapter.cancelGesture?.();
+  // Read before the scope changes: syncing a new projection moves the viewport.
+  const saved = scopeViewports.get(nodeId);
+  if (boardScope === null)
+    scopeReturn = {
+      view: store.activeView,
+      viewport: clone(store.viewport),
+      timeline: timeline.context(),
+    };
+  boardScope = nodeId;
+  timelineActive = false;
+  if (store.activeView === 'mind') store.switchView('card');
+  previousPanelKey = null;
+  render();
+  adapter.cy.resize();
+  if (saved) adapter.setViewport(saved);
+  else if (canvasProject().cards.length) {
+    adapter.fit();
+    capFitZoom();
+  } else adapter.setViewport({ zoom: 1, position: { x: 0, y: 0 } });
+  const card = focusId && adapter.cards.get(focusId);
+  if (card) {
+    adapter.focus(focusId);
+    card.focus({ preventScroll: true });
+  } else scopeBar.focusCurrent();
+  return true;
+}
+// A first fit on a few notes would blow them up; keep them at 100% around the same centre.
+function capFitZoom() {
+  const { cy } = adapter;
+  const zoom = cy.zoom();
+  if (zoom <= 1) return;
+  const pan = cy.pan();
+  const cx = adapter.region.clientWidth / 2,
+    cyy = adapter.region.clientHeight / 2;
+  adapter.setViewport({
+    zoom: 1,
+    position: { x: cx - (cx - pan.x) / zoom, y: cyy - (cyy - pan.y) / zoom },
+  });
+}
+async function leaveBoard() {
+  if (boardScope === null || feedback.state || layoutPreview || !(await guardDraft())) return false;
+  if (adapter.gesturing) adapter.cancelGesture?.();
+  const nodeId = boardScope;
+  const back = scopeReturn;
+  scopeViewports.set(nodeId, { zoom: adapter.cy.zoom(), position: clone(adapter.cy.pan()) });
+  boardScope = null;
+  scopeReturn = null;
+  if (back && back.view !== store.activeView) store.switchView(back.view);
+  timelineActive = hasTimeline(store.project);
+  previousPanelKey = null;
+  render();
+  if (back) store.setView(back.viewport.zoom, back.viewport.position);
+  adapter.setViewport(store.viewport);
+  if (back && timelineActive) timeline.restore(back.timeline);
+  timeline.element(nodeId, 'board')?.focus({ preventScroll: true });
+  return true;
+}
 // Quick background colour: one guarded command (all unpinned selected notes when the clicked one is
 // part of a multi-selection), so Undo is one step. A transparent note becomes opaque, or the colour
 // would not show.
@@ -757,7 +915,8 @@ const overviewEditor = createCardOverviewEditor({
   fallback: (id, field) =>
     detailOpen
       ? document.querySelector('#edit-card-overview')
-      : adapter.cards.get(id)?.querySelector('[data-overview-field="' + field + '"]') ||
+      : (timelineActive && timeline.element(id, field)) ||
+        adapter.cards.get(id)?.querySelector('[data-overview-field="' + field + '"]') ||
         adapter.cards.get(id)?.querySelector('h3'),
   onApply: (id, values, styles, shared) => {
     if (feedback.state || layoutPreview || dateEditor.open) return false;
@@ -781,12 +940,17 @@ const overviewEditor = createCardOverviewEditor({
     if (fitted) setGeometry(project, id, store.activeView, 'size', fitted);
     if (shared && !editing) {
       try {
-        applyUniformStyles(project, profile, store.activeView, (card) =>
-          measureOverview(
-            { ...card, size: geometry(project, card, store.activeView).size },
-            null,
-            store.activeView,
-          ),
+        applyUniformStyles(
+          project,
+          profile,
+          store.activeView,
+          (card) =>
+            measureOverview(
+              { ...card, size: geometry(project, card, store.activeView).size },
+              null,
+              store.activeView,
+            ),
+          inBoardScope,
         );
       } catch {
         return false;
@@ -829,6 +993,9 @@ const overviewEditor = createCardOverviewEditor({
   },
 });
 export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), {
+  board: (id) => void enterBoard(id),
+  // Owned cards are outside the scoped projection, so the count comes from the full project.
+  boardCount: (id) => (boardScope === null ? ownedCounts(store.project).get(id) || 0 : 0),
   edgeCorners: (id, value) =>
     change((p) =>
       setEdgeCorners(
@@ -940,7 +1107,8 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
   groupConnection: (source, group) => groupConnection(source, group),
   connectingFrom: () => (connectMode ? connectSource : null),
   viewport: (zoom, position) => {
-    store.setView(zoom, position);
+    if (boardScope === null) store.setView(zoom, position);
+    else scopeViewports.set(boardScope, { zoom, position: clone(position) });
     updateStatus();
   },
   collapse: (id) => toggleBranch(id),
@@ -962,6 +1130,16 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
 });
 const currentView = () => (timelineActive ? 'timeline' : store.activeView);
 function render() {
+  // Undo/Redo or removing the Timeline can delete the open node: fall back to the project board.
+  const scopeNode = boardScope === null ? null : projectIndex(store.project).cards.get(boardScope);
+  const scopeClosed =
+    boardScope !== null &&
+    (!hasTimeline(store.project) || !scopeNode || ownerOf(scopeNode) !== null);
+  if (scopeClosed) {
+    boardScope = null;
+    scopeReturn = null;
+    timelineActive = hasTimeline(store.project);
+  }
   const timelineAvailable = !home && hasTimeline(store.project);
   if (!hasTimeline(store.project)) timelineActive = false;
   $('#canvas-region').dataset.view = store.activeView;
@@ -970,9 +1148,6 @@ function render() {
   $('[data-action=inspector]').disabled = home;
   $('#mind-view-banner').hidden = home || timelineActive || store.activeView !== 'mind';
   $('[data-action=convert-mind]').hidden = home || store.activeView === 'mind';
-  $('[data-map-view=timeline]').hidden = !timelineAvailable;
-  $('#detail-map-view option[value=timeline]').hidden = !timelineAvailable;
-  $('[data-action=timeline-create]').hidden = home || hasTimeline(store.project);
   $('[data-action=timeline-remove]').hidden = !timelineAvailable;
   $('#timeline-view').hidden = !timelineActive;
   $('.workspace').classList.toggle('timeline-active', timelineActive);
@@ -985,14 +1160,26 @@ function render() {
   $('#detail-theme').dataset.i18nTitle = theme === 'dark' ? 'lightMode' : 'darkMode';
   $('[data-action=expand]').dataset.i18nTitle = expanded ? 'restoreDetail' : 'fullDetail';
 
-  const existing = new Set(store.project.cards.map((c) => c.id));
+  const scoped = canvasProject();
+  const scopedIndex = projectIndex(scoped);
+  if (
+    (selection?.kind === 'card' && !scopedIndex.cards.has(selection.id)) ||
+    (selection?.kind === 'relation' && !scopedIndex.relations.has(selection.id))
+  ) {
+    selection = null;
+    draft = null;
+    draftOriginal = null;
+    detailOpen = false;
+  }
+  const existing = new Set(scoped.cards.map((c) => c.id));
   selectedCards = new Set([...selectedCards].filter((id) => existing.has(id)));
   if (detailOpen || selection?.kind !== 'card' || !selectedCards.has(selection.id))
     selectedCards = new Set(
       selection?.kind === 'card' && existing.has(selection.id) ? [selection.id] : [],
     );
-  if ([...store.collapsed].some((id) => !existing.has(id)))
-    store.collapsed = new Set([...store.collapsed].filter((id) => existing.has(id)));
+  const allIds = new Set(store.project.cards.map((c) => c.id));
+  if ([...store.collapsed].some((id) => !allIds.has(id)))
+    store.collapsed = new Set([...store.collapsed].filter((id) => allIds.has(id)));
   if (layoutPreview && layoutPreview.project !== store.project) {
     cancelLayout();
     return;
@@ -1018,7 +1205,7 @@ function render() {
     draftOriginal = null;
   }
   if (!layoutPreview) revealSelection(selection);
-  adapter.sync(store.project, selection, store.activeView, {
+  adapter.sync(scoped, selection, store.activeView, {
     positions: layoutPreview?.result.positions,
     collapsed: store.collapsed,
     selectedCards,
@@ -1052,7 +1239,6 @@ function render() {
     'export-word',
     'export-markdown',
     'recovery',
-    'timeline-create',
     'timeline-remove',
   ])
     for (const el of document.querySelectorAll('[data-action="' + action + '"]'))
@@ -1072,14 +1258,14 @@ function render() {
   const projectNameLabel = t('projectSettings') + ': ' + store.project.metadata.title;
   $('#project-name').title = projectNameLabel;
   $('#project-name').setAttribute('aria-label', projectNameLabel);
-  $('#welcome').hidden = store.project.cards.length > 0;
+  $('#welcome').hidden = scoped.cards.length > 0;
   $('#project-menu > summary').setAttribute('aria-label', t('helpAndTools'));
   $('#counts').textContent =
-    number(store.project.cards.length) +
+    number(scoped.cards.length) +
     ' ' +
     t('cards') +
     ' · ' +
-    number(store.project.relations.length) +
+    number(scoped.relations.length) +
     ' ' +
     t('relations');
   for (const key of ['undo', 'redo'])
@@ -1102,6 +1288,11 @@ function render() {
     });
   updateStatus();
   translate();
+  renderScopeChrome(scoped);
+  if (scopeClosed) {
+    adapter.setViewport(store.viewport);
+    toast('boardScopeClosed');
+  }
   dateEditor.syncLocale();
   scheduleEditor.syncLocale();
   statusPopover.syncLocale();
@@ -1109,9 +1300,44 @@ function render() {
   overviewEditor.syncLocale();
   scheduleRecovery();
 }
+// Breadcrumb, empty-board text and the Mind Map lock; runs after translate() so it wins over data-i18n.
+function renderScopeChrome(scoped) {
+  const node = boardScope === null ? null : projectIndex(store.project).cards.get(boardScope);
+  scopeBar.render(
+    node
+      ? {
+          projectTitle: store.project.metadata.title,
+          nodeTitle: node.title,
+          count: scoped.cards.length,
+        }
+      : null,
+  );
+  if (node && !scoped.cards.length) {
+    $('#welcome h1').textContent = t('boardScopeEmptyTitle', { title: node.title });
+    $('#welcome p').textContent = t('boardScopeEmptyBody');
+  }
+  const mindControls = [
+    ...document.querySelectorAll('[data-map-view=mind]'),
+    ...$('#detail-map-view').querySelectorAll('option[value=mind]'),
+  ];
+  for (const el of mindControls) {
+    if (node) {
+      el.setAttribute('aria-disabled', 'true');
+      el.title = t('boardScopeMindUnavailable');
+    } else {
+      el.removeAttribute('aria-disabled');
+      if (el.dataset.i18nTitle) el.title = t(el.dataset.i18nTitle);
+      else el.removeAttribute('title');
+    }
+  }
+}
 const renderCardList = createCardList({
   host: $('#card-list'),
   onSelect: async (id) => {
+    const owner = ownerOf(projectIndex(store.project).cards.get(id) ?? { extensions: {} });
+    if (owner !== null) {
+      if (owner !== boardScope && !(await enterBoard(owner, id))) return;
+    } else if (boardScope !== null && !(await leaveBoard())) return;
     if (await select({ kind: 'card', id }, false, true)) {
       closeSearch();
       if (timelineActive) timeline.reveal(id);
@@ -1831,12 +2057,17 @@ function applyDraft() {
   const profile = selection.kind === 'card' ? uniformDrafts.get(draftOriginal) : null;
   if (profile) {
     try {
-      applyUniformStyles(p, profile, store.activeView, (card) =>
-        measureOverview(
-          { ...card, size: geometry(p, card, store.activeView).size },
-          null,
-          store.activeView,
-        ),
+      applyUniformStyles(
+        p,
+        profile,
+        store.activeView,
+        (card) =>
+          measureOverview(
+            { ...card, size: geometry(p, card, store.activeView).size },
+            null,
+            store.activeView,
+          ),
+        inBoardScope,
       );
     } catch {
       $('#panel-body .form-errors').textContent = t('fitOverflow');
@@ -2143,12 +2374,46 @@ async function deleteSelected() {
     s.kind === 'card'
       ? { title: index.cards.get(s.id)?.title ?? '', count: index.degrees.get(s.id) || 0 }
       : null;
-  if (!change((p) => remove(p, s))) return;
-  if (deleted)
-    toast(deleted.count ? 'deletedCard' : 'deletedCardOnly', {
-      params: { title: deleted.title, count: number(deleted.count) },
+  const childIds = s.kind === 'card' ? ownedIds(store.project, s.id) : [];
+  if (childIds.length) {
+    if (childIds.some((id) => isPinned(index.cards.get(id)))) {
+      toast('boardDeletePinned');
+      return;
+    }
+    const choice = await dialog(
+      'boardDeleteTitle',
+      () =>
+        '<p>' +
+        esc(
+          t(childIds.length === 1 ? 'boardDeleteBodyOne' : 'boardDeleteBody', {
+            title: deleted.title,
+            count: number(childIds.length),
+          }),
+        ) +
+        '</p>',
+      [
+        ['cancel', 'cancel'],
+        ['boardDeleteConfirm', 'remove', true],
+      ],
+    );
+    if (choice !== 'remove') return;
+    if (
+      !change((p) => {
+        for (const id of [...childIds, s.id]) remove(p, { kind: 'card', id });
+      })
+    )
+      return;
+    toast(childIds.length === 1 ? 'deletedCardWithBoardOne' : 'deletedCardWithBoard', {
+      params: { title: deleted.title, count: number(childIds.length) },
     });
-  else toast('deletedRelation');
+  } else {
+    if (!change((p) => remove(p, s))) return;
+    if (deleted)
+      toast(deleted.count ? 'deletedCard' : 'deletedCardOnly', {
+        params: { title: deleted.title, count: number(deleted.count) },
+      });
+    else toast('deletedRelation');
+  }
   selection = null;
   detailOpen = false;
   draft = null;
@@ -2427,7 +2692,7 @@ async function exportDocument(format) {
 async function createProject() {
   if (!(await guardDraft())) return;
   let title = t('untitledProject');
-  let withTimeline = false;
+  let withTimeline = true;
   const body = () => {
     const container = document.createElement('div');
     const label = document.createElement('label');
@@ -2506,6 +2771,9 @@ async function replaceProject(p, adjusted = false) {
   lastExport = false;
   comments.clear();
   timelineActive = hasTimeline(p);
+  boardScope = null;
+  scopeReturn = null;
+  scopeViewports.clear();
   timeline.reset();
   store.replace(p, adjusted);
   adapter.setViewport(store.viewport);
@@ -2609,11 +2877,22 @@ async function switchMapView(targetView) {
     $('#detail-map-view').value = currentView();
     return;
   }
-  if (targetView === currentView()) return;
-  if (targetView === 'timeline' && !hasTimeline(store.project)) {
+  if (boardScope !== null && targetView === 'mind') {
+    toast('boardScopeMindUnavailable');
     $('#detail-map-view').value = currentView();
     return;
   }
+  if (boardScope !== null && targetView === 'timeline') {
+    await leaveBoard();
+    return;
+  }
+  // From a note's board "Note Board" means the project board, not the Timeline it was opened from.
+  if (boardScope !== null && targetView === 'card') {
+    if (!(await leaveBoard())) return;
+    if (timelineActive) await switchMapView('card');
+    return;
+  }
+  if (targetView === currentView()) return;
   // Cancel a transient group drag before evaluating the view's draft guard.
   if (adapter.gesturing) adapter.cancelGesture?.();
   if (layoutPreview) {
@@ -2625,9 +2904,20 @@ async function switchMapView(targetView) {
     return;
   }
   if (targetView === 'timeline') {
+    const created = !hasTimeline(store.project);
+    if (created && !change((p) => enableTimeline(p))) {
+      $('#detail-map-view').value = currentView();
+      return;
+    }
     timelineActive = true;
     previousPanelKey = null;
     render();
+    if (created) {
+      const heading = $('#timeline-heading');
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      toast('timelineCreated');
+    }
     return;
   }
   if (targetView === 'mind' && !store.project.extensions?.[MIND]?.rootId) {
@@ -2700,7 +2990,7 @@ async function startLayout() {
   detailOpen = false;
   detailSurface.close();
   try {
-    const result = radialLayout(store.project);
+    const result = radialLayout(scopedProject(store.project, null));
     layoutPreview = {
       result,
       project: store.project,
@@ -2753,34 +3043,40 @@ function acceptLayout() {
 }
 const actions = {
   inspector: () => inspector.activate('global'),
-  'timeline-create': async () => {
-    if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
-    if (hasTimeline(store.project) || !change((p) => enableTimeline(p))) return;
-    timelineActive = true;
-    render();
-    const heading = $('#timeline-heading');
-    heading.tabIndex = -1;
-    heading.focus({ preventScroll: true });
-    toast('timelineCreated');
-  },
   'timeline-remove': async () => {
     if (home || feedback.state || layoutPreview || !hasTimeline(store.project)) return;
     if (!(await guardDraft())) return;
+    const owned = store.project.cards.filter((c) => ownerOf(c) !== null);
+    if (owned.some(isPinned)) return toast('timelineRemovePinnedBoards');
     const choice = await dialog(
       'timelineRemoveTitle',
-      () => '<p>' + esc(t('timelineRemoveBody')) + '</p>',
+      () =>
+        '<p>' +
+        esc(t('timelineRemoveBody')) +
+        '</p>' +
+        (owned.length
+          ? '<p>' + esc(t('timelineRemoveBoardsBody', { count: number(owned.length) })) + '</p>'
+          : ''),
       [
         ['cancel', 'cancel'],
         ['timelineRemove', 'remove', true],
       ],
     );
-    if (choice !== 'remove' || !change((p) => disableTimeline(p))) return;
+    if (
+      choice !== 'remove' ||
+      !change((p) => {
+        clearOwners(p);
+        disableTimeline(p);
+      })
+    )
+      return;
     timelineActive = false;
     render();
     adapter.setViewport(store.viewport);
     toast('timelineRemoved');
   },
   'convert-mind': async () => {
+    if (boardScope !== null) return toast('boardScopeMindUnavailable');
     if (home || feedback.state || layoutPreview || !(await guardDraft())) return;
     let rootId =
       selection?.kind === 'card' && !isPinned(entity())
@@ -2848,7 +3144,7 @@ const actions = {
     if (home || !(await guardDraft())) return;
     let result;
     const ok = change((p) => {
-      result = enableAutoRoutes(p, store.activeView);
+      result = enableAutoRoutes(p, store.activeView, relationInBoardScope(p));
     });
     if (ok || result?.changed === 0)
       toast(result.changed ? 'autoRouteEnabled' : 'autoRouteNoCandidates');
@@ -2903,7 +3199,7 @@ const actions = {
   'layout-reset': () => {
     if (layoutPreview) {
       try {
-        layoutPreview.result = radialLayout(store.project);
+        layoutPreview.result = radialLayout(scopedProject(store.project, null));
         render();
         adapter.fit();
       } catch {

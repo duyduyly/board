@@ -7,6 +7,7 @@ import { NODE, MIND, VIEWS, geometry, setGeometry } from '../graph/mind-map.js';
 import { APPEARANCE } from '../detail/appearance.js';
 import { IMAGE_NAMESPACE } from '../detail/attachments.js';
 import { TIMELINE } from '../graph/timeline.js';
+import { ownerOf, setOwner } from '../graph/card-scope.js';
 
 const known = new Set([CARD_META, TYPOGRAPHY, NODE, APPEARANCE, IMAGE_NAMESPACE, DOCUMENT]);
 export function transferError(code, issues = []) {
@@ -56,6 +57,7 @@ export function nodeFile(project, card, { includeUnused = true, excludeUnknown =
   const excluded = excludedProjectNamespaces(project);
   if (excluded.length && !excludeUnknown) throw transferError('transferAcknowledge');
   const selected = clone(card);
+  setOwner(selected, null);
   const used = assertReferences(selected);
   if (!includeUnused && selected.extensions?.[IMAGE_NAMESPACE])
     selected.extensions[IMAGE_NAMESPACE] = Object.fromEntries(
@@ -155,6 +157,7 @@ export function mergeNode(current, incoming, { takeFormat = false, takeUnknown =
     if (node?.coverImageId) node.coverImageId = mapping.get(node.coverImageId) || node.coverImageId;
   }
   assertReferences(card);
+  setOwner(card, ownerOf(current));
   return { card, remapped: [...mapping].filter(([id, next]) => id !== next) };
 }
 export function updateNodeProject(project, id, merged, source, view, takeFormat) {
@@ -171,6 +174,7 @@ export function addNodeProject(project, source, id, view, position) {
     card = clone(source.cards[0]);
   card.id = id;
   card.position = clone(position);
+  setOwner(card, null);
   assertReferences(card);
   next.cards.push(card);
   if (view === 'mind') {

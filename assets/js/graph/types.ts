@@ -123,6 +123,10 @@ export interface CardSchedule {
   end?: string;
 }
 
+export interface CardOwner {
+  nodeId: string;
+}
+
 export interface TimelineConfig {
   version: 1;
 }

@@ -1,6 +1,7 @@
 import { MAX_GROUP_DEPTH, cardGroups, groupTree } from '../graph/card-groups.js';
 import { geometry, MIND } from '../graph/mind-map.js';
 import { branchTree } from '../graph/radial-layout.js';
+import { ownerOf } from '../graph/card-scope.js';
 
 /**
  * @typedef {import('../graph/types.js').Project} Project
@@ -43,6 +44,35 @@ function branchOrder(project, rootId) {
 }
 
 /**
+ * Moves each owned card (board scope) right after its owner node, children in reading order of
+ * position. Cards whose owner is missing keep their place; cycles fall back to the input order.
+ * @param {Project} project @param {string[]} order @param {'card' | 'mind'} view
+ */
+function withOwnedAfterOwner(project, order, view) {
+  const byId = new Map(project.cards.map((c) => [c.id, c]));
+  const owned = project.cards.filter((c) => byId.has(ownerOf(c)) && ownerOf(c) !== c.id);
+  if (!owned.length) return order;
+  const ownedIds = new Set(owned.map((c) => c.id));
+  const children = new Map();
+  for (const card of byGeometry(project, owned, view)) {
+    const list = children.get(ownerOf(card)) || [];
+    list.push(card.id);
+    children.set(ownerOf(card), list);
+  }
+  const result = [],
+    seen = new Set();
+  const visit = (id) => {
+    if (seen.has(id)) return;
+    seen.add(id);
+    result.push(id);
+    for (const child of children.get(id) || []) visit(child);
+  };
+  for (const id of order) if (!ownedIds.has(id)) visit(id);
+  for (const id of order) visit(id);
+  return result;
+}
+
+/**
  * Reading rank of every card for the active view: Mind Map follows the branch tree from the root
  * (cards outside it come last); Note Board and a Mind Map without a root follow position.
  * @param {Project} project
@@ -60,7 +90,8 @@ export function cardRank(project, view) {
     project.cards.filter((c) => !placed.has(c.id)),
     mind ? 'mind' : 'card',
   ).map((c) => c.id);
-  return new Map([...tree, ...rest].map((id, index) => [id, index]));
+  const order = withOwnedAfterOwner(project, [...tree, ...rest], mind ? 'mind' : 'card');
+  return new Map(order.map((id, index) => [id, index]));
 }
 
 /**

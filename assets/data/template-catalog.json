@@ -50,6 +50,13 @@
     "preview": "assets/images/templates/roadmap.svg"
   },
   {
+    "id": "timeline-plan",
+    "category": "project",
+    "titleKey": "templateTimeline",
+    "path": "assets/data/templates/timeline-plan.json",
+    "preview": "assets/images/templates/timeline-plan.svg"
+  },
+  {
     "id": "journal",
     "category": "learning",
     "titleKey": "templateJournal",

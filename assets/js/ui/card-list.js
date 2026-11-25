@@ -2,6 +2,7 @@ import { t, number, getLocale, statusLabel } from '../i18n/index.js';
 import { search, searchExcerpt } from '../store/project-store.js';
 import { effectiveStatus } from '../graph/card-status.js';
 import { projectIndex } from '../graph/project-index.js';
+import { ownerOf } from '../graph/card-scope.js';
 export function createCardList({ host, onSelect }) {
   let listProject = null,
     listQuery = null,
@@ -33,6 +34,7 @@ export function createCardList({ host, onSelect }) {
       p.textContent = t('noResults');
       host.append(p);
     }
+    let titles = null;
     for (const c of cards) {
       const btn = document.createElement('button');
       btn.className =
@@ -58,6 +60,15 @@ export function createCardList({ host, onSelect }) {
       btn.onclick = async () => {
         await onSelect(c.id);
       };
+      const ownerId = ownerOf(c);
+      if (ownerId) {
+        titles ||= new Map(project.cards.map((card) => [card.id, card.title]));
+        const scope = document.createElement('small');
+        scope.className = 'search-excerpt';
+        scope.textContent = t('boardScopeIn', { title: titles.get(ownerId) ?? '' });
+        btn.append(scope);
+        btn.classList.add('has-excerpt');
+      }
       const excerpt = query && searchExcerpt(c, query);
       if (excerpt) {
         const snippet = document.createElement('small');

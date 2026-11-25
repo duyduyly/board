@@ -444,6 +444,18 @@
               ],
               "additionalProperties": false
             },
+            "card-atlas:owner": {
+              "type": "object",
+              "properties": {
+                "nodeId": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "required": [
+                "nodeId"
+              ],
+              "additionalProperties": false
+            },
             "card-atlas:node": {
               "$ref": "#/$defs/nodePresentation"
             },

@@ -126,6 +126,8 @@ export class GraphAdapter {
       if (chip) this.callbacks.status(chip.closest('.graph-card').dataset.id, chip);
       const color = e.target.closest('.card-color-button');
       if (color) this.callbacks.color(color.closest('.graph-card').dataset.id, color);
+      const board = e.target.closest('.card-board-badge');
+      if (board) this.callbacks.board(board.closest('.graph-card').dataset.id);
     });
     installMultiSelection(this);
     this.groupFrames = createGroupFrames(this);
@@ -207,7 +209,11 @@ export class GraphAdapter {
           if (more) more.title = t('moreTags', { tags: more.dataset.tags });
         }
         for (const [id, el] of this.cards)
-          updateCardMetadata(el, projectIndex(project).cards.get(id));
+          updateCardMetadata(
+            el,
+            projectIndex(project).cards.get(id),
+            this.callbacks.boardCount(id),
+          );
         this.lastLocale = getLocale();
       }
       this.lastSelection = selection;
@@ -267,11 +273,14 @@ export class GraphAdapter {
           this.cards.set(c.id, el);
           el.addEventListener('pointerdown', (e) => this.cardStart(e, c.id));
           el.addEventListener('dblclick', (e) => {
-            if (!e.target.closest('.card-status-chip, .card-color-button'))
+            if (!e.target.closest('.card-status-chip, .card-color-button, .card-board-badge'))
               this.callbacks.open({ kind: 'card', id: c.id });
           });
           el.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.target.closest('.card-status-chip, .card-color-button')) {
+            if (
+              e.key === 'Enter' &&
+              !e.target.closest('.card-status-chip, .card-color-button, .card-board-badge')
+            ) {
               e.preventDefault();
               this.callbacks.open({ kind: 'card', id: c.id });
             }
@@ -328,7 +337,7 @@ export class GraphAdapter {
         const date = el.querySelector('.card-created-date');
         date.tabIndex = isPinned(c) ? -1 : 0;
         date.setAttribute('aria-disabled', String(isPinned(c)));
-        updateCardMetadata(el, c);
+        updateCardMetadata(el, c, this.callbacks.boardCount(c.id));
         date.onpointerdown = (e) => e.stopPropagation();
         date.ondblclick = (e) => e.stopPropagation();
         const openDate = () => {
@@ -713,7 +722,7 @@ export class GraphAdapter {
   cardStart(e, id) {
     if (
       e.target.closest(
-        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, .card-color-button, [data-overview-field]',
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, .card-color-button, .card-board-badge, [data-overview-field]',
       ) ||
       this.space ||
       e.button !== 0

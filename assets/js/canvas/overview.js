@@ -127,7 +127,11 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   color.type = 'button';
   color.className = 'card-color-button';
   color.setAttribute('aria-haspopup', 'menu');
-  strip.append(date, status, comments, color, pin);
+  const board = document.createElement('button');
+  board.type = 'button';
+  board.className = 'card-board-badge';
+  board.hidden = true;
+  strip.append(date, status, comments, board, color, pin);
   el.append(strip);
   updateCardMetadata(el, card);
   applyAppearance(el, card);
@@ -144,12 +148,14 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   return el;
 }
 
-export function updateCardMetadata(el, card) {
+/** `boardCount`: notes on this card's own board (project board only); 0 hides the badge. */
+export function updateCardMetadata(el, card, boardCount = 0) {
   const meta = cardMetadata(card),
     date = el.querySelector('.card-created-date'),
     status = el.querySelector('.card-status-chip'),
     comments = el.querySelector('.card-comment-count'),
     color = el.querySelector('.card-color-button'),
+    board = el.querySelector('.card-board-badge'),
     pin = el.querySelector('.card-pin');
   el.classList.toggle('pinned-card', Boolean(meta.pinned));
   if (meta.pinned) el.setAttribute('aria-description', t('pinnedReadOnly'));
@@ -201,6 +207,15 @@ export function updateCardMetadata(el, card) {
     comments.textContent = String(count);
     comments.title = count === 1 ? t('commentCountOne') : t('commentCount', { count });
     comments.setAttribute('aria-label', comments.title);
+  }
+  if (board) {
+    board.hidden = boardCount === 0;
+    board.textContent = String(boardCount);
+    board.title = t(boardCount === 1 ? 'timelineBoardOpenForOne' : 'timelineBoardOpenFor', {
+      title: card.title,
+      count: boardCount,
+    });
+    board.setAttribute('aria-label', board.title);
   }
   if (pin) {
     pin.setAttribute('aria-pressed', String(Boolean(meta.pinned)));
