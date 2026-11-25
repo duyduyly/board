@@ -9,6 +9,12 @@ import {
 } from '../graph/timeline.js';
 import { calendarDate, dateRange, getLocale, statusLabel, t } from '../i18n/index.js';
 
+const TIMELINE_CREAM = '#FFF5D6';
+
+// Movement before a press on the empty strip becomes a drag, so plain clicks stay clicks.
+const DRAG_THRESHOLD = 4;
+const DRAG_IGNORE = 'button, a, input, select, textarea, summary, .timeline-card';
+
 const ACTION_SELECTOR = '[data-timeline-action]';
 const TITLE_SELECTOR = '.timeline-title';
 // Parts a caller can focus again after an editor closes (see `element`).
@@ -18,6 +24,7 @@ const PART_SELECTOR = {
   date: '[data-timeline-action="schedule"]',
   status: '[data-timeline-action="status"]',
   open: '[data-timeline-action="open"]',
+  color: '[data-timeline-action="color"]',
   board: '[data-timeline-action="board-open"]',
 };
 
@@ -95,6 +102,7 @@ function selectedIds(selection) {
  *   onEdit: (id: string, anchor: HTMLElement, field: string) => void,
  *   onStatus: (id: string, anchor: HTMLElement) => void,
  *   onSchedule: (id: string, anchor: HTMLElement) => void,
+ *   onColor: (id: string, anchor: HTMLElement) => void,
  *   onInfo: (field: string, anchor: HTMLElement) => void,
  *   onOpenBoard: (id: string) => void,
  *   onBoard: () => void,
@@ -109,6 +117,7 @@ export function createTimelineView({
   onEdit,
   onStatus,
   onSchedule,
+  onColor,
   onInfo,
   onOpenBoard,
   onBoard,
@@ -168,7 +177,17 @@ export function createTimelineView({
     const openText = `${t('openDetail')}: ${card.title}`;
     openButton.title = openText;
     openButton.setAttribute('aria-label', openText);
-    title.append(editButton('title', card.title, 'timeline-title', pinned), openButton);
+    const colorButton = actionButton('color', '', 'timeline-color');
+    const colorText = t(pinned ? 'quickColorPinnedHint' : 'quickColor');
+    colorButton.title = colorText;
+    colorButton.setAttribute('aria-label', t('quickColor'));
+    colorButton.setAttribute('aria-haspopup', 'menu');
+    if (pinned) colorButton.setAttribute('aria-disabled', 'true');
+    title.append(
+      editButton('title', card.title, 'timeline-title', pinned),
+      colorButton,
+      openButton,
+    );
 
     const chip = actionButton('status', '', 'timeline-status-chip');
     const label = statusLabel(status);
@@ -182,7 +201,9 @@ export function createTimelineView({
     const article = node('article', 'timeline-card');
     // Same appearance variables as the canvas card, so the note keeps its own colours.
     const { backgroundColor, textColor, borderColor } = card.style || {};
-    if (backgroundColor) article.style.setProperty('--card-background', backgroundColor);
+    // The default yellow note paper reads as a softer cream on the Timeline; other colours stay.
+    const paper = /^#fff2b0$/i.test(backgroundColor || '') ? TIMELINE_CREAM : backgroundColor;
+    if (paper) article.style.setProperty('--card-background', paper);
     if (textColor) article.style.setProperty('--card-ink', textColor);
     if (borderColor) article.style.setProperty('--card-border', borderColor);
     // An empty summary keeps a clickable (placeholder) target so it can still be written here.
@@ -385,6 +406,7 @@ export function createTimelineView({
     else if (id && action === 'edit') onEdit(id, button, button.dataset.timelineField || 'title');
     else if (id && action === 'status') onStatus(id, button);
     else if (id && action === 'schedule') onSchedule(id, button);
+    else if (id && action === 'color') onColor(id, button);
     else if (id && action === 'board-open') onOpenBoard(id);
   });
 
@@ -419,6 +441,37 @@ export function createTimelineView({
     },
     { passive: false },
   );
+
+  // Press-and-drag on the empty strip scrolls it; the preview is only scrollLeft (nothing committed).
+  /** @type {{ id: number, x: number, left: number, active: boolean } | null} */
+  let drag = null;
+  function endDrag() {
+    if (!drag) return;
+    if (scrollEl.hasPointerCapture(drag.id)) scrollEl.releasePointerCapture(drag.id);
+    scrollEl.classList.remove('is-dragging');
+    drag = null;
+  }
+  scrollEl.addEventListener('pointerdown', (event) => {
+    const target = /** @type {HTMLElement} */ (event.target);
+    if (event.button !== 0 || target.closest(DRAG_IGNORE) || drag) return;
+    if (scrollEl.scrollWidth <= scrollEl.clientWidth) return;
+    drag = { id: event.pointerId, x: event.clientX, left: scrollEl.scrollLeft, active: false };
+  });
+  scrollEl.addEventListener('pointermove', (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const dx = event.clientX - drag.x;
+    if (!drag.active) {
+      if (Math.abs(dx) < DRAG_THRESHOLD) return;
+      drag.active = true;
+      scrollEl.setPointerCapture(drag.id);
+      scrollEl.classList.add('is-dragging');
+    }
+    scrollEl.scrollLeft = drag.left - dx;
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'])
+    scrollEl.addEventListener(type, endDrag);
+  window.addEventListener('blur', endDrag);
+  host.addEventListener('keydown', (event) => event.key === 'Escape' && endDrag());
 
   const context = () => ({ scrollLeft: scrollEl.scrollLeft });
   const restore = ({ scrollLeft }) => {

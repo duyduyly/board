@@ -127,11 +127,15 @@ export function overviewElement(card, view, size = card.size, renderShape = true
   color.type = 'button';
   color.className = 'card-color-button';
   color.setAttribute('aria-haspopup', 'menu');
+  const group = document.createElement('button');
+  group.type = 'button';
+  group.className = 'card-group-button';
+  group.hidden = true;
   const board = document.createElement('button');
   board.type = 'button';
   board.className = 'card-board-badge';
   board.hidden = true;
-  strip.append(date, status, comments, board, color, pin);
+  strip.append(date, status, comments, board, color, group, pin);
   el.append(strip);
   updateCardMetadata(el, card);
   applyAppearance(el, card);

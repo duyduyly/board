@@ -278,6 +278,64 @@
   flex-wrap: wrap;
   gap: 6px;
 }
+/* Group picker: the board's groups as an indented tree, one option per group. */
+.group-picker-popover {
+  position: fixed;
+  margin: 0;
+  width: 260px;
+  max-width: calc(100vw - 24px);
+  max-height: min(360px, calc(100vh - 24px));
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--dialog-shadow, 0 12px 40px #0002);
+}
+.group-picker-popover::backdrop {
+  background: transparent;
+  backdrop-filter: none;
+}
+.group-picker-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.group-picker-option {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 10px 6px calc(10px + var(--group-depth, 0) * 14px);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.group-picker-option:hover {
+  background: var(--hover);
+}
+.group-picker-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.group-picker-option-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.group-picker-option-count {
+  flex: none;
+  color: var(--muted);
+  font-size: 12px;
+}
+/* One clicked note: only the group buttons, so the bar does not cover notes beside it. */
+.selection-tools.compact > :not([data-action^='group-']) {
+  display: none;
+}
 .selection-json {
   position: static;
 }

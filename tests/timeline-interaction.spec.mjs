@@ -200,6 +200,52 @@ test.describe('Timeline interaction', () => {
     await expect(entry(page, 'task-01')).toHaveAttribute('data-card-status', 'new');
   });
 
+  test('colour button recolours the card through the shared popover in one Undo step', async ({
+    page,
+  }) => {
+    await openTimeline(page);
+    const card = entry(page, 'task-01').locator('.timeline-card');
+    const paper = () => card.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    const before = await paper();
+    await entry(page, 'task-01').locator('button.timeline-color').click();
+    const popover = page.locator('#card-color-popover');
+    await expect(popover).toBeVisible();
+    await popover.locator('[data-swatch=blue]').click();
+    await expect(popover).not.toBeVisible();
+    await expect.poll(paper).not.toBe(before);
+    await expect(entry(page, 'task-01').locator('button.timeline-color')).toBeFocused();
+    await page.locator('[data-action=undo]').first().click();
+    await expect.poll(paper).toBe(before);
+  });
+
+  test('status line between notes uses the source status colour, not the neutral axis', async ({
+    page,
+  }) => {
+    await openTimeline(page);
+    const colours = await page.evaluate(() => {
+      const first = document.querySelector('#timeline-view li.timeline-entry');
+      const segment = window.getComputedStyle(first, '::after').backgroundColor;
+      const axis = window.getComputedStyle(first.parentElement, '::before').backgroundColor;
+      return { segment, axis };
+    });
+    expect(colours.segment).not.toBe(colours.axis);
+    expect(colours.segment).not.toBe('rgba(0, 0, 0, 0)');
+  });
+
+  test('dragging the empty strip scrolls it and clicks on cards still work', async ({ page }) => {
+    await openTimeline(page);
+    const box = await scroller(page).boundingBox();
+    const y = box.y + 20;
+    const before = await scrollLeft(page);
+    await page.mouse.move(box.x + 600, y);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 400, y, { steps: 6 });
+    await page.mouse.up();
+    expect(await scrollLeft(page)).toBeGreaterThan(before + 100);
+    await entry(page, 'task-03').locator('button.timeline-title').click();
+    await expect(page.locator('#card-overview-editor')).toBeVisible();
+  });
+
   test('pinned note shows a toast and opens no editor', async ({ page }) => {
     await openTimeline(page);
     // Pinned controls are aria-disabled; the click still reaches the app, which explains the lock.

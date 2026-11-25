@@ -21,6 +21,12 @@ import {
   groupLinkIssue,
   newGroupParent,
   updateGroup,
+  cardGroups,
+  groupOfCard,
+  groupOutline,
+  addCardsToGroup,
+  removeCardsFromGroup,
+  removeFromGroupIssue,
 } from './graph/card-groups.js';
 import { copyCards, pasteCards } from './graph/copy-cards.js';
 import { selectionLocked } from './graph/card-lock.js';
@@ -32,6 +38,7 @@ import { createCardComments } from './ui/card-comments.js';
 import { addComment, removeComment } from './graph/card-comments.js';
 import { effectiveStatus, setStatus } from './graph/card-status.js';
 import { createCardStatusPopover } from './ui/card-status-popover.js';
+import { createGroupPickerPopover } from './ui/group-picker-popover.js';
 import {
   currentQuickBackground,
   quickBackgroundValue,
@@ -651,6 +658,27 @@ const statusPopover = createCardStatusPopover({
     );
   },
 });
+// Notes in the selection that sit in no group yet; the picker only adds these.
+const ungroupedSelection = () => [...selectedCards].filter((id) => !groupOfCard(store.project, id));
+// The picker serves the toolbar button (whole selection) and a note's own "+" button (that note).
+let pickerIds = [],
+  pickerFallback = null;
+const groupPicker = createGroupPickerPopover({
+  groups: () => groupOutline(canvasProject()),
+  fallback: () => pickerFallback?.(),
+  onApply: (groupId) => {
+    const ids = pickerIds;
+    const title = cardGroups(store.project).find((g) => g.id === groupId)?.title;
+    if (ids.length && change((p) => addCardsToGroup(p, groupId, ids)))
+      toast('groupCardsAdded', { params: { count: ids.length, title } });
+  },
+});
+function removeFromGroups(ids) {
+  const issue = removeFromGroupIssue(store.project, ids);
+  if (issue) toast(issue);
+  else if (change((p) => removeCardsFromGroup(p, ids)))
+    toast('groupCardsRemoved', { params: { count: ids.length } });
+}
 const scheduleEditor = createCardScheduleEditor({
   title: (id) => projectIndex(store.project).cards.get(id)?.title || '',
   // Prefill with the date the timeline already shows for the note (its note date).
@@ -710,6 +738,25 @@ function timelineSchedule(id, anchor) {
   else if (statusBlocked() || statusPopover.open || dateEditor.open || overviewEditor.open)
     toast('scheduleBlocked');
   else scheduleEditor.show(id, anchor);
+}
+function timelineColor(id, anchor) {
+  const card = projectIndex(store.project).cards.get(id);
+  if (!card || colorPopover.open) return;
+  if (inspector.hasPending()) {
+    void inspector.close();
+    return;
+  }
+  if (isPinned(card)) toast('quickColorPinnedHint');
+  else if (
+    statusBlocked() ||
+    statusPopover.open ||
+    dateEditor.open ||
+    overviewEditor.open ||
+    scheduleEditor.open ||
+    timelineInfoEditor.open
+  )
+    toast('quickColorBlocked');
+  else colorPopover.show(id, anchor);
 }
 async function timelineOpen(id) {
   if (!(await guardDraft()) || !(await select({ kind: 'card', id }, false, true))) return;
@@ -806,6 +853,7 @@ const timeline = createTimelineView({
   onEdit: timelineEdit,
   onStatus: timelineStatus,
   onSchedule: timelineSchedule,
+  onColor: (id, anchor) => timelineColor(id, anchor),
   onInfo: timelineInfoEdit,
   onOverview: () =>
     selectedCards.size === 1 ? openOverview([...selectedCards][0]) : openOverview(),
@@ -1042,7 +1090,9 @@ const colorPopover = createCardColorPopover({
       background: card.style.backgroundColor,
     };
   },
-  fallback: (id) => adapter.cards.get(id)?.querySelector('.card-color-button'),
+  fallback: (id) =>
+    (timelineActive && timeline.element(id, 'color')) ||
+    adapter.cards.get(id)?.querySelector('.card-color-button'),
   onApply: (id, swatch) => {
     if (statusBlocked()) {
       toast('quickColorBlocked');
@@ -1255,6 +1305,14 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       colorPopover.show(id, anchor);
     }
   },
+  groupButtons: () => !boardOverview && !layoutPreview,
+  group: (id, anchor) => {
+    if (adapter.callbacks.groupLocked() || layoutPreview) return;
+    if (groupOfCard(store.project, id)) return removeFromGroups([id]);
+    pickerIds = [id];
+    pickerFallback = () => adapter.cards.get(id)?.querySelector('.card-group-button');
+    groupPicker.show(anchor);
+  },
   overview: (id, anchor, field) => {
     if (inspector.hasPending()) {
       void inspector.close();
@@ -1325,6 +1383,7 @@ export const adapter = new GraphAdapter($('#canvas-region'), $('#cards-layer'), 
       scheduleEditor.open ||
       timelineInfoEditor.open ||
       statusPopover.open ||
+      groupPicker.open ||
       colorPopover.open ||
       overviewEditor.open ||
       adapter.gesturing ||
@@ -1425,8 +1484,26 @@ function render() {
     focusRoot: focusBranch ? selection.id : null,
     frames: boardOverview ? overviewLayout(store.project).frames : undefined,
   });
+  const groupedIds = [...selectedCards].filter((id) => groupOfCard(store.project, id));
+  const addButton = $('[data-action=group-add]');
+  const removeButton = $('[data-action=group-remove]');
+  const mixedMembership = groupedIds.length > 0 && groupedIds.length < selectedCards.size;
+  addButton.hidden =
+    groupedIds.length === selectedCards.size || !cardGroups(canvasProject()).length;
+  addButton.disabled = groupedIds.length > 0 || boardOverview;
+  addButton.title = t(mixedMembership ? 'groupAddMixed' : 'groupAddCardsHint');
+  removeButton.hidden = !groupedIds.length;
+  removeButton.disabled = boardOverview;
+  // One selected note shows the bar only when it offers a group action (or came from a marquee).
   $('#selection-tools').hidden =
-    selectedCards.size < 2 && !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId));
+    selectedCards.size < 2 &&
+    !(selectedCards.size === 1 && selectedCards.has(singleMarqueeId)) &&
+    !(selectedCards.size === 1 && (!addButton.hidden || !removeButton.hidden));
+  // A single clicked note only needs the group actions; the short bar stays clear of nearby notes.
+  $('#selection-tools').classList.toggle(
+    'compact',
+    selectedCards.size === 1 && !selectedCards.has(singleMarqueeId),
+  );
   if ($('#selection-tools').hidden) $('#selection-json').open = false;
   $('#selection-count').textContent = t('selectedCardsCount', { count: selectedCards.size });
   const createGroupButton = $('[data-action=group-create]');
@@ -1504,6 +1581,7 @@ function render() {
   scheduleEditor.syncLocale();
   timelineInfoEditor.syncLocale();
   statusPopover.syncLocale();
+  groupPicker.syncLocale();
   colorPopover.syncLocale();
   overviewEditor.syncLocale();
   scheduleRecovery();
@@ -3446,6 +3524,16 @@ const actions = {
     if (overviewBlocked()) return;
     if (!adapter.callbacks.groupLocked()) editGroup(null, [...selectedCards]);
   },
+  'group-add': () => {
+    if (overviewBlocked() || adapter.callbacks.groupLocked() || layoutPreview) return;
+    pickerIds = ungroupedSelection();
+    pickerFallback = () => $('[data-action=group-add]');
+    groupPicker.show($('[data-action=group-add]'));
+  },
+  'group-remove': () => {
+    if (overviewBlocked() || adapter.callbacks.groupLocked() || layoutPreview) return;
+    removeFromGroups([...selectedCards].filter((id) => groupOfCard(store.project, id)));
+  },
   help: async () => {
     if (adapter.gesturing || adapter.resizing || feedback.state) return;
     await dialog('quickHelpTitle', quickHelpBody, [['close', 'cancel', true]]);
@@ -3574,6 +3662,7 @@ document.addEventListener('keydown', (e) => {
     scheduleEditor.open ||
     timelineInfoEditor.open ||
     statusPopover.open ||
+    groupPicker.open ||
     colorPopover.open ||
     overviewEditor.open
   )

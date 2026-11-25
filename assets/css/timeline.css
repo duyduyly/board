@@ -272,7 +272,13 @@
 .timeline-toolbar .timeline-add {
   font-weight: 600;
 }
+/* The empty strip uses the Note Board pencil (CA-UI-08); cards and controls keep the normal cursor. */
 .timeline-scroll {
+  /* Dragging pans the strip; it must not sweep a text selection across the cards. */
+  user-select: none;
+  cursor:
+    url('../images/cursors/note.svg') 3 29,
+    default;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -319,14 +325,37 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 2px solid var(--ink);
-  background: var(--status-chip-bg, var(--accent));
+  border: 2px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  background: var(--timeline-status, var(--status-chip-bg, var(--accent)));
   box-shadow: 0 0 0 3px var(--canvas);
+}
+/* Status line: the status colour at ~78% over the canvas (opaque, so the neutral axis under it
+   does not show through). The segment runs from this marker's centre to the next one's. */
+.timeline-entry {
+  --timeline-line: color-mix(
+    in srgb,
+    var(--timeline-status, var(--timeline-axis)) 78%,
+    var(--canvas)
+  );
+}
+.timeline-entry:not(:last-child, :has(+ .timeline-today:last-child))::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--timeline-slot);
+  height: 2px;
+  margin-top: -1px;
+  background: var(--timeline-line);
+}
+/* The Today slot sits between two entries: the segment runs across it. */
+.timeline-entry:has(+ .timeline-today:not(:last-child))::after {
+  width: calc(var(--timeline-slot) + var(--timeline-card-width));
 }
 .timeline-entry[data-date-source='card-date'] .timeline-marker {
   background: var(--canvas);
   border-style: dashed;
-  border-color: var(--status-chip-bg, var(--accent));
+  border-color: var(--timeline-status, var(--status-chip-bg, var(--accent)));
 }
 .timeline-card {
   --timeline-card-ink: var(--card-ink, var(--ink));
@@ -339,6 +368,10 @@
   width: var(--timeline-card-width);
   padding: 12px;
   border: 1px solid var(--card-border, var(--border));
+  /* Status accent: same colour as the status dot; the 3px extra width comes off the left
+     padding so the content and card size stay where they were. */
+  border-left: 4px solid var(--timeline-status, var(--card-border, var(--border)));
+  padding-left: 9px;
   border-radius: var(--radius-md);
   background: var(--card-background, var(--surface));
   color: var(--timeline-card-ink);
@@ -347,6 +380,7 @@
 :root[data-theme='dark'] .timeline-card {
   background: color-mix(in srgb, var(--card-background, var(--surface)) 3%, var(--surface));
   border-color: color-mix(in srgb, var(--card-border, var(--border)) 38%, var(--border));
+  border-left-color: var(--timeline-status, var(--border));
   --timeline-card-ink: var(--ink);
 }
 .timeline-entry[data-side='above'] .timeline-card {
@@ -362,11 +396,11 @@
 .timeline-card::after {
   content: '';
   position: absolute;
-  left: 50%;
   width: 0;
   height: var(--timeline-connector);
-  border-left: 1px solid var(--timeline-axis);
-  opacity: 0.8;
+  /* 1.5px off: the status accent makes the padding box sit 1.5px right of the card's centre. */
+  left: calc(50% - 2.5px);
+  border-left: 2px solid var(--timeline-line);
 }
 .timeline-entry[data-side='above'] .timeline-card::after {
   top: 100%;
@@ -374,9 +408,16 @@
 .timeline-entry[data-side='below'] .timeline-card::after {
   bottom: 100%;
 }
+.timeline-card {
+  cursor: default;
+}
 .timeline-card button {
   font: inherit;
   cursor: pointer;
+}
+.timeline-scroll.is-dragging,
+.timeline-scroll.is-dragging * {
+  cursor: grabbing;
 }
 .timeline-card button:focus-visible,
 .timeline-toolbar button:focus-visible,
@@ -453,7 +494,22 @@
   mask: url('../images/icons/card-open.svg') center / 14px no-repeat;
   -webkit-mask: url('../images/icons/card-open.svg') center / 14px no-repeat;
 }
-.timeline-open:hover {
+.timeline-color {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background-color: var(--timeline-card-soft);
+  mask: url('../images/icons/palette.svg') center / 14px no-repeat;
+  -webkit-mask: url('../images/icons/palette.svg') center / 14px no-repeat;
+}
+.timeline-color[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.timeline-open:hover,
+.timeline-color:not([aria-disabled='true']):hover {
   background-color: var(--timeline-card-ink);
 }
 .timeline-summary-edit {
@@ -526,17 +582,22 @@
   height: 8px;
   flex: none;
   border-radius: 50%;
-  background: var(--status-chip-bg);
+  background: var(--timeline-status, var(--status-chip-bg));
 }
 .timeline-entry[data-card-status='cancelled'] .timeline-card {
-  opacity: 0.6;
+  /* Subdued through a softer ink, not opacity, so the text and buttons stay readable. */
+  --timeline-card-ink: color-mix(
+    in srgb,
+    var(--card-ink, var(--ink)) 72%,
+    var(--card-background, var(--surface))
+  );
 }
 .timeline-entry[data-card-status='cancelled'] .timeline-title {
   text-decoration: line-through;
 }
 .timeline-entry.selected .timeline-card,
 .timeline-entry[aria-current='true'] .timeline-card {
-  outline: 2px dashed var(--accent);
+  outline: 1.5px dashed color-mix(in srgb, var(--accent) 75%, transparent);
   outline-offset: 4px;
 }
 .timeline-today {
@@ -721,9 +782,9 @@
   min-width: 0;
   min-height: 24px;
   padding: 0 8px;
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   color: var(--timeline-card-ink, var(--ink));
   font-size: 12px;
   font-weight: 600;
@@ -751,7 +812,7 @@
   -webkit-mask: var(--timeline-icon) center / contain no-repeat;
 }
 .timeline-board:hover {
-  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 .timeline-board:focus-visible,
 .board-scope button:focus-visible,
@@ -994,4 +1055,58 @@
 /* An empty board has nothing to count: "Board trống" alone says both the action and the state. */
 .timeline-board[data-count='0'] .timeline-board-label {
   display: none;
+}
+
+/* Timeline accent palette: the chip hues in muted shades that sit on the cream paper cards;
+   lighter shades of the same hues on the charcoal theme. */
+.timeline-entry[data-card-status='new'] {
+  --timeline-status: #5b83b4;
+}
+.timeline-entry[data-card-status='in-progress'] {
+  --timeline-status: #c49a48;
+}
+.timeline-entry[data-card-status='done'] {
+  --timeline-status: #63966f;
+}
+.timeline-entry[data-card-status='blocked'] {
+  --timeline-status: #ba6862;
+}
+.timeline-entry[data-card-status='cancelled'] {
+  --timeline-status: #9ca09b;
+}
+:root[data-theme='dark'] .timeline-entry[data-card-status='new'] {
+  --timeline-status: #8aaad3;
+}
+:root[data-theme='dark'] .timeline-entry[data-card-status='in-progress'] {
+  --timeline-status: #d9b56e;
+}
+:root[data-theme='dark'] .timeline-entry[data-card-status='done'] {
+  --timeline-status: #8cbf98;
+}
+:root[data-theme='dark'] .timeline-entry[data-card-status='blocked'] {
+  --timeline-status: #d98c86;
+}
+:root[data-theme='dark'] .timeline-entry[data-card-status='cancelled'] {
+  --timeline-status: #a9ada8;
+}
+/* Hover and selection: the whole card outline takes the status colour (same width, so nothing
+   shifts). */
+.timeline-entry .timeline-card:hover,
+.timeline-entry.selected .timeline-card,
+.timeline-entry[aria-current='true'] .timeline-card {
+  border-color: var(--timeline-status, var(--accent));
+  /* Soft status-coloured ring outside the border (no size change), over the paper shadow. */
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--timeline-status, var(--accent)) 28%, transparent),
+    0 2px 8px color-mix(in srgb, var(--timeline-status, var(--accent)) 22%, transparent);
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-entry .timeline-card:hover,
+  .timeline-entry.selected .timeline-card,
+  .timeline-entry[aria-current='true'] .timeline-card {
+    transition: none;
+  }
 }

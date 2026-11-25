@@ -314,6 +314,17 @@ export default {
   groupMoveHint:
     'Drag the frame title to move its notes. Pins stay fixed. Ungroup keeps all notes.',
   groupSelectCards: 'Select at least two notes to create a group.',
+  groupAddCards: 'Add to group…',
+  groupAddCardsHint: 'Add the selected notes to an existing group on this board.',
+  groupAddCardsTitle: 'Choose a group to add the notes to',
+  groupAddMixed:
+    'Some notes already belong to a group. Remove them from it before adding to another.',
+  groupCardsAdded: 'Added {count} notes to “{title}”. Press Ctrl+Z to undo.',
+  groupRemoveCards: 'Remove from group',
+  groupRemoveCardsHint:
+    'Notes in a subgroup go back to the parent group; notes stay on the Canvas.',
+  groupCardsRemoved: 'Removed {count} notes from the group. Press Ctrl+Z to undo.',
+  groupRemoveCardFrom: 'Remove from group “{title}”',
   groupAlreadyAssigned: 'A note already belongs to another group. Remove it from that group first.',
   edgeRoute: 'Connector route',
   routecurved: 'Curved',

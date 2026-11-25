@@ -230,3 +230,109 @@ export function frameBounds(rects, ids, inner = []) {
     height: Math.max(...members.map((g) => g.position.y + g.size.height)) + 28 - y,
   };
 }
+
+/** The group a card sits in directly, or null. */
+export function groupOfCard(project, cardId) {
+  return cardGroups(project).find((g) => g.cardIds.includes(cardId)) || null;
+}
+
+/**
+ * Every group as a tree walked depth-first, for pickers: top-level groups first, children under
+ * their parent. `count` is the number of notes in the group and its subgroups.
+ * @returns {{ id: string, title: string, depth: number, count: number }[]}
+ */
+export function groupOutline(project) {
+  const { byId, children } = groupTree(project);
+  const result = [];
+  const walk = (id, depth, seen) => {
+    if (seen.has(id)) return;
+    const group = byId.get(id);
+    result.push({
+      id,
+      title: group.title,
+      depth,
+      count: groupCardIds(project, id).length,
+    });
+    for (const child of children.get(id)) walk(child, depth + 1, new Set([...seen, id]));
+  };
+  for (const g of cardGroups(project))
+    if (!g.parentId || !byId.has(g.parentId)) walk(g.id, 1, new Set());
+  return result;
+}
+
+/**
+ * Adds ungrouped notes to a group inside a store command. Arrows from these notes to the group or
+ * to one of its parents would now point at their own group, so they are dropped in the same command.
+ * @returns {number} how many arrows were dropped
+ */
+export function addCardsToGroup(project, groupId, ids) {
+  const { byId } = groupTree(project);
+  const group = byId.get(groupId);
+  if (!group) throw Error('groupLinkMissing');
+  if (ids.some((id) => groupOfCard(project, id))) throw Error('groupAlreadyAssigned');
+  group.cardIds = [...group.cardIds, ...ids];
+  let dropped = 0;
+  const seen = new Set();
+  for (let g = group; g && !seen.has(g.id); g = byId.get(g.parentId)) {
+    seen.add(g.id);
+    if (!g.links) continue;
+    const links = g.links.filter((link) => !ids.includes(link.source));
+    dropped += g.links.length - links.length;
+    if (links.length) g.links = links;
+    else delete g.links;
+  }
+  return dropped;
+}
+
+/** Notes selected for removal, grouped by the group they sit in directly. */
+function removalsByGroup(project, ids) {
+  const removals = new Map();
+  for (const g of cardGroups(project)) {
+    const taken = g.cardIds.filter((id) => ids.includes(id));
+    if (taken.length) removals.set(g.id, taken);
+  }
+  return removals;
+}
+
+/**
+ * Why `ids` cannot leave their groups, or null when they can: a group may not end up with neither
+ * notes nor subgroups.
+ * @returns {'groupNeedsMember' | 'groupNeedsMemberNested' | null}
+ */
+export function removeFromGroupIssue(project, ids) {
+  const removals = removalsByGroup(project, ids);
+  if (!removals.size) return null;
+  const draft = {
+    ...project,
+    extensions: { ...project.extensions, [GROUPS]: structuredClone(project.extensions[GROUPS]) },
+  };
+  applyRemoval(draft, ids);
+  const { children } = groupTree(draft);
+  const empty = cardGroups(draft).find((g) => !g.cardIds.length && !children.get(g.id).length);
+  if (!empty) return null;
+  return empty.parentId ? 'groupNeedsMemberNested' : 'groupNeedsMember';
+}
+
+function applyRemoval(project, ids) {
+  const removals = removalsByGroup(project, ids);
+  for (const g of cardGroups(project)) {
+    const taken = removals.get(g.id);
+    if (!taken) continue;
+    updateGroup(project, g.id, {
+      title: g.title,
+      description: g.description,
+      cardIds: g.cardIds.filter((id) => !taken.includes(id)),
+      linkIds: (g.links || []).map((link) => link.id),
+    });
+  }
+}
+
+/**
+ * Takes notes out of their group inside a store command: notes of a subgroup go back to its parent,
+ * notes of a top-level group leave all groups. Ungrouped ids are ignored.
+ */
+export function removeCardsFromGroup(project, ids) {
+  const issue = removeFromGroupIssue(project, ids);
+  if (issue) throw Error(issue);
+  applyRemoval(project, ids);
+}

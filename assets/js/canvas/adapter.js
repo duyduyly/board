@@ -1,5 +1,6 @@
 import { overviewElement, updateCardMetadata } from './overview.js';
 import { isPinned } from '../graph/card-metadata.js';
+import { cardGroups } from '../graph/card-groups.js';
 import { edgeRoute } from '../graph/edge-routing.js';
 import { createEdgeEditor, applyEdgePath } from './edge-editor.js';
 import { createAutoEdges } from './auto-edges.js';
@@ -130,6 +131,8 @@ export class GraphAdapter {
       if (color) this.callbacks.color(color.closest('.graph-card').dataset.id, color);
       const board = e.target.closest('.card-board-badge');
       if (board) this.callbacks.board(board.closest('.graph-card').dataset.id);
+      const group = e.target.closest('.card-group-button');
+      if (group) this.callbacks.group(group.closest('.graph-card').dataset.id, group);
     });
     installMultiSelection(this);
     this.groupFrames = createGroupFrames(this);
@@ -230,6 +233,7 @@ export class GraphAdapter {
       this.autoEdges.sync(project, view, this.hiddenNodes || new Set());
       this.groupFrames.sync(project, this.hiddenNodes || new Set());
       this.boardFrames.sync(project, options.frames || null);
+      this.paintGroupButtons(project);
       this.view();
       return;
     }
@@ -283,13 +287,19 @@ export class GraphAdapter {
           this.cards.set(c.id, el);
           el.addEventListener('pointerdown', (e) => this.cardStart(e, c.id));
           el.addEventListener('dblclick', (e) => {
-            if (!e.target.closest('.card-status-chip, .card-color-button, .card-board-badge'))
+            if (
+              !e.target.closest(
+                '.card-status-chip, .card-color-button, .card-group-button, .card-board-badge',
+              )
+            )
               this.callbacks.open({ kind: 'card', id: c.id });
           });
           el.addEventListener('keydown', (e) => {
             if (
               e.key === 'Enter' &&
-              !e.target.closest('.card-status-chip, .card-color-button, .card-board-badge')
+              !e.target.closest(
+                '.card-status-chip, .card-color-button, .card-group-button, .card-board-badge',
+              )
             ) {
               e.preventDefault();
               this.callbacks.open({ kind: 'card', id: c.id });
@@ -540,8 +550,31 @@ export class GraphAdapter {
     this.syncFocus(project, view, options, true);
     this.groupFrames.sync(project, this.hiddenNodes);
     this.boardFrames.sync(project, options.frames || null);
+    this.paintedGroupsProject = null; // cards were rebuilt
+    this.paintGroupButtons(project);
     this.edgeEditor.sync(project, selection);
     this.view();
+  }
+  // "+" on a note outside every group, "−" on a member; one pass per project/locale/availability.
+  paintGroupButtons(project) {
+    const available = Boolean(this.callbacks.groupButtons?.());
+    const key = [getLocale(), available].join('|');
+    if (project === this.paintedGroupsProject && key === this.paintedGroupsKey) return;
+    this.paintedGroupsProject = project;
+    this.paintedGroupsKey = key;
+    const groups = cardGroups(project);
+    const owner = new Map(groups.flatMap((g) => g.cardIds.map((id) => [id, g])));
+    for (const [id, el] of this.cards) {
+      const button = el.querySelector('.card-group-button');
+      if (!button) continue;
+      const group = owner.get(id);
+      button.hidden = !available || (!group && !groups.length);
+      if (button.hidden) continue;
+      button.dataset.state = group ? 'member' : 'free';
+      button.title = group ? t('groupRemoveCardFrom', { title: group.title }) : t('groupAddCards');
+      button.setAttribute('aria-label', button.title);
+      button.setAttribute('aria-haspopup', group ? 'false' : 'menu');
+    }
   }
   paintSelection(ids) {
     for (const id of new Set([...(this.paintedSelection || []), ...ids])) {
@@ -740,7 +773,7 @@ export class GraphAdapter {
   cardStart(e, id) {
     if (
       e.target.closest(
-        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, .card-color-button, .card-board-badge, [data-overview-field]',
+        '.connector, .card-open, .branch-toggle, .resize-handle, .card-pin, .card-created-date, .card-status-chip, .card-color-button, .card-group-button, .card-board-badge, [data-overview-field]',
       ) ||
       this.space ||
       e.button !== 0
